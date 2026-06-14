@@ -34,7 +34,8 @@ The product focus is **trust and suitability** (not lowest price): official-webs
 
 | Route | Page | Description |
 |-------|------|-------------|
-| `/` | **Home** | Hero, destination + travel-style discovery, featured destinations, featured hotels, "StayEasy is not an OTA" explainer |
+| `/` | **Home** | Hero, **AI hotel search**, featured destinations, featured hotels, "StayEasy is not an OTA" explainer |
+| `/search` | **AI Search** | Natural-language hotel recommender — describe your trip in any language, get ranked matches with reasons |
 | `/destinations/vietnam` | **Vietnam overview** | Destination cards, travel-style guide, balanced direct-booking explanation |
 | `/destinations/da-nang` | **Da Nang hotel list** | Filter bar (Area / Travel type / Features / Official benefits) + suitability-first cards + "how to choose" |
 | `/hotels/:slug` | **Hotel detail** | StayEasy summary, official benefits, room guide, location guide, facilities, cancellation checklist, prominent **Book on Official Website** CTA, similar hotels, disclaimer |
@@ -53,10 +54,17 @@ The product focus is **trust and suitability** (not lowest price): official-webs
 - **Vite 5** (dev server & build)
 - **Tailwind CSS 3** (mobile-first design system)
 - **React Router 6** (client-side routing)
+- **Vitest** smoke tests (data integrity, locale parity, AI search, hotel localization)
 - Local **mock data** in `src/data/` — **12 sample Da Nang hotels**, no backend, no API, no payment
 
+### 🌐 Languages (i18n)
+Full UI + hotel content in **5 languages** — English, 한국어, Tiếng Việt, 中文, 日本語 — with a navbar language switcher, `localStorage` persistence, `<html lang>` sync, and per-page localized SEO/OG meta. Source in `src/i18n/` (`locales/*` for UI, `hotelContent/*` for hotel text).
+
+### 🤖 AI hotel search
+A natural-language recommender (`src/lib/searchEngine.ts`) that runs **entirely on-device** — no backend, no API key. It parses a free-text request in any of the 5 languages into weighted intent signals, scores each hotel, and ranks results with human-readable reasons. The same interface can later be backed by a real LLM via a serverless proxy.
+
 ### Reusable components (`src/components/`)
-`Button` · `HotelCard` · `HotelImage` · `SponsoredBadge` · `Facilities` (chips/grid/tags) · `DiscoveryBlock` · `Navbar` · `Footer` · `Layout` · `SectionHeading` · `TrustStrip`
+`Button` · `HotelCard` · `HotelImage` · `SponsoredBadge` · `Facilities` · `AISearch` · `LanguageSwitcher` · `ErrorBoundary` · `Navbar` · `Footer` · `Layout` · `SectionHeading` · `TrustStrip`
 
 > Hotel images use placeholder photos with a branded gradient + emoji fallback, so the prototype still renders cleanly offline if an image fails to load.
 

@@ -1,14 +1,18 @@
 import { Link } from 'react-router-dom'
 import Button from '../components/Button'
 import { TrustStrip } from '../components/TrustStrip'
-import { DiscoveryBlock } from '../components/DiscoveryBlock'
+import { AISearch } from '../components/AISearch'
 import { SectionHeading } from '../components/SectionHeading'
 import { HotelCard } from '../components/HotelCard'
 import { HotelImage } from '../components/HotelImage'
 import { hotels } from '../data/hotels'
 import { destinations } from '../data/destinations'
+import { useT } from '../i18n'
+import { useDocumentMeta } from '../lib/useDocumentMeta'
 
 export default function HomePage() {
+  const t = useT()
+  useDocumentMeta(t.home.metaTitle, t.home.metaDesc)
   // 3 sample Da Nang hotels, leading with a sponsored one.
   const featured = [
     ...hotels.filter((h) => h.isSponsored),
@@ -22,24 +26,23 @@ export default function HomePage() {
         <div className="absolute inset-0 opacity-20 [background-image:radial-gradient(circle_at_20%_20%,white_0,transparent_35%),radial-gradient(circle_at_85%_60%,white_0,transparent_30%)]" />
         <div className="container-page relative grid items-center gap-10 py-16 lg:grid-cols-2 lg:py-24">
           <div className="text-white">
-            <span className="pill bg-white/15 text-white ring-1 ring-white/25">🇻🇳 Vietnam hotels · Starting in Da Nang</span>
+            <span className="pill bg-white/15 text-white ring-1 ring-white/25">{t.home.heroBadge}</span>
             <h1 className="mt-4 text-4xl font-extrabold leading-[1.1] tracking-tight sm:text-5xl">
-              Book Vietnam hotels directly with confidence
+              {t.home.heroTitle}
             </h1>
             <p className="mt-5 max-w-xl text-lg text-white/90">
-              StayEasy helps you choose the right hotel through clear content, official booking benefits, and
-              practical travel guidance.
+              {t.home.heroSubtitle}
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
-              <Button to="/destinations/da-nang" variant="white" size="lg">Explore Da Nang Hotels</Button>
+              <Button to="/destinations/da-nang" variant="white" size="lg">{t.home.ctaExplore}</Button>
               <Button to="/guides/direct-booking" variant="ghost" size="lg" className="!text-white hover:!bg-white/10">
-                Why Book Direct?
+                {t.home.ctaWhy}
               </Button>
             </div>
             <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-white/80">
-              <span>✓ Not an OTA</span>
-              <span>✓ No booking commission</span>
-              <span>✓ Family · Couple · Business · Beach · Long stay</span>
+              <span>✓ {t.home.heroPoint1}</span>
+              <span>✓ {t.home.heroPoint2}</span>
+              <span>✓ {t.home.heroPoint3}</span>
             </div>
           </div>
 
@@ -54,9 +57,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 2. Search / discovery block */}
+      {/* 2. AI search / discovery block */}
       <section className="container-page -mt-10 relative z-10">
-        <DiscoveryBlock />
+        <AISearch />
       </section>
 
       {/* Trust */}
@@ -66,7 +69,7 @@ export default function HomePage() {
 
       {/* 3. Featured destinations */}
       <section className="container-page mt-16">
-        <SectionHeading eyebrow="Vietnam" title="Featured destinations" subtitle="Da Nang is live now. More coastal cities are onboarding official hotel partners." />
+        <SectionHeading eyebrow={t.home.featuredDestEyebrow} title={t.home.featuredDestTitle} subtitle={t.home.featuredDestSubtitle} />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {destinations.map((d) => (
             <Link
@@ -79,9 +82,9 @@ export default function HomePage() {
               <div className="absolute bottom-0 left-0 p-4 text-white">
                 <div className="flex items-center gap-2">
                   <h3 className="text-lg font-bold">{d.city}</h3>
-                  {!d.available && <span className="pill bg-white/20 text-white">Coming soon</span>}
+                  {!d.available && <span className="pill bg-white/20 text-white">{t.common.comingSoon}</span>}
                 </div>
-                <p className="text-xs text-white/85">{d.available ? `${d.hotelCount} hotels` : 'Onboarding partners'}</p>
+                <p className="text-xs text-white/85">{d.available ? `${d.hotelCount} ${t.common.hotels}` : t.home.onboarding}</p>
               </div>
             </Link>
           ))}
@@ -90,9 +93,9 @@ export default function HomePage() {
 
       {/* 4. Featured hotels */}
       <section className="container-page mt-16">
-        <SectionHeading eyebrow="Da Nang" title="Featured hotels">
+        <SectionHeading eyebrow={t.home.featuredHotelsEyebrow} title={t.home.featuredHotelsTitle}>
           <Link to="/destinations/da-nang" className="hidden text-sm font-semibold text-brand-700 hover:underline sm:block">
-            See all Da Nang hotels →
+            {t.home.seeAll} →
           </Link>
         </SectionHeading>
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -101,7 +104,7 @@ export default function HomePage() {
           ))}
         </div>
         <p className="mt-4 text-xs text-ink-700/60">
-          ★ Sponsored hotels pay for featured placement. We always label them. We never take a cut of your booking.
+          {t.home.sponsoredNote}
         </p>
       </section>
 
@@ -110,23 +113,22 @@ export default function HomePage() {
         <div className="overflow-hidden rounded-3xl bg-white shadow-card ring-1 ring-black/5">
           <div className="grid lg:grid-cols-2">
             <div className="bg-gradient-to-br from-ink-900 to-brand-800 p-8 text-white sm:p-10">
-              <span className="pill bg-white/15 text-white ring-1 ring-white/25">Our position</span>
-              <h2 className="mt-4 text-3xl font-extrabold">StayEasy is not an OTA</h2>
+              <span className="pill bg-white/15 text-white ring-1 ring-white/25">{t.home.notOtaPosition}</span>
+              <h2 className="mt-4 text-3xl font-extrabold">{t.home.notOtaTitle}</h2>
               <p className="mt-3 text-white/85">
-                We’re a hotel content and direct-booking guide. We help you understand hotels better — then you book
-                straight with the hotel.
+                {t.home.notOtaText}
               </p>
               <div className="mt-6">
-                <Button to="/guides/direct-booking" variant="white" size="md">Read the direct booking guide</Button>
+                <Button to="/guides/direct-booking" variant="white" size="md">{t.home.notOtaCta}</Button>
               </div>
             </div>
             <div className="p-8 sm:p-10">
               <ul className="space-y-4">
                 {[
-                  { icon: '🚫', t: 'We do not process bookings', d: 'No reservations or payments happen on StayEasy.' },
-                  { icon: '📚', t: 'We help travelers understand hotels better', d: 'Clear guides on rooms, location, breakfast, pools, and policies.' },
-                  { icon: '🏨', t: 'Final booking is made directly with the hotel', d: 'You complete your booking on the hotel’s official website.' },
-                  { icon: '🏷️', t: 'Hotels promote official benefits, commission-free', d: 'Hotels reach travelers without paying OTA booking commission.' },
+                  { icon: '🚫', t: t.home.notOta1t, d: t.home.notOta1d },
+                  { icon: '📚', t: t.home.notOta2t, d: t.home.notOta2d },
+                  { icon: '🏨', t: t.home.notOta3t, d: t.home.notOta3d },
+                  { icon: '🏷️', t: t.home.notOta4t, d: t.home.notOta4d },
                 ].map((r) => (
                   <li key={r.t} className="flex gap-3">
                     <span className="text-2xl">{r.icon}</span>
@@ -147,15 +149,14 @@ export default function HomePage() {
         <div className="overflow-hidden rounded-3xl bg-ink-900 p-8 text-white sm:p-12">
           <div className="grid items-center gap-6 lg:grid-cols-2">
             <div>
-              <h2 className="text-2xl font-extrabold sm:text-3xl">Own a hotel in Vietnam?</h2>
+              <h2 className="text-2xl font-extrabold sm:text-3xl">{t.home.partnerCtaTitle}</h2>
               <p className="mt-3 max-w-lg text-white/80">
-                Promote your official booking benefits through trusted content and sponsored placements — and keep
-                100% of your booking revenue.
+                {t.home.partnerCtaText}
               </p>
             </div>
             <div className="flex flex-wrap gap-3 lg:justify-end">
-              <Button to="/partners" variant="primary" size="lg">Partner with StayEasy</Button>
-              <Button to="/dashboard" variant="white" size="lg">See the hotel dashboard</Button>
+              <Button to="/partners" variant="primary" size="lg">{t.home.partnerCtaBtn}</Button>
+              <Button to="/dashboard" variant="white" size="lg">{t.home.partnerCtaBtn2}</Button>
             </div>
           </div>
         </div>

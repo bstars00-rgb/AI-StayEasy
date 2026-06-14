@@ -8,6 +8,7 @@ import BookingGuidePage from './pages/BookingGuidePage'
 import PartnerPage from './pages/PartnerPage'
 import DashboardPage from './pages/DashboardPage'
 import AboutPage from './pages/AboutPage'
+import SearchPage from './pages/SearchPage'
 import NotFoundPage from './pages/NotFoundPage'
 
 /** Redirect legacy /hotel/:slug → /hotels/:slug while preserving the slug. */
@@ -22,6 +23,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
 
+        <Route path="/search" element={<SearchPage />} />
         <Route path="/destinations/vietnam" element={<VietnamPage />} />
         <Route path="/destinations/da-nang" element={<HotelListPage />} />
         <Route path="/hotels/:slug" element={<HotelDetailPage />} />

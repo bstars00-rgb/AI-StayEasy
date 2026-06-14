@@ -1,15 +1,18 @@
 import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
-
-const links = [
-  { to: '/destinations/vietnam', label: 'Destinations' },
-  { to: '/destinations/da-nang', label: 'Da Nang hotels' },
-  { to: '/guides/direct-booking', label: 'Direct booking guide' },
-  { to: '/partners', label: 'For hotels' },
-]
+import { useT } from '../i18n'
+import { LanguageSwitcher } from './LanguageSwitcher'
 
 export function Navbar() {
   const [open, setOpen] = useState(false)
+  const t = useT()
+
+  const links = [
+    { to: '/destinations/vietnam', label: t.nav.destinations },
+    { to: '/destinations/da-nang', label: t.nav.daNangHotels },
+    { to: '/guides/direct-booking', label: t.nav.guide },
+    { to: '/partners', label: t.nav.forHotels },
+  ]
 
   return (
     <header className="sticky top-0 z-40 border-b border-black/5 bg-sand-50/85 backdrop-blur">
@@ -39,8 +42,11 @@ export function Navbar() {
             to="/dashboard"
             className="ml-2 rounded-full bg-ink-900 px-4 py-2 text-sm font-semibold text-white hover:bg-ink-800"
           >
-            Hotel login
+            {t.nav.hotelLogin}
           </Link>
+          <div className="ml-1">
+            <LanguageSwitcher />
+          </div>
         </div>
 
         <button
@@ -75,8 +81,11 @@ export function Navbar() {
               onClick={() => setOpen(false)}
               className="mt-1 rounded-lg bg-ink-900 px-3 py-2.5 text-center text-sm font-semibold text-white"
             >
-              Hotel login
+              {t.nav.hotelLogin}
             </Link>
+            <div className="mt-2">
+              <LanguageSwitcher block />
+            </div>
           </div>
         </div>
       )}

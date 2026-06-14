@@ -4,6 +4,8 @@ import Button from '../components/Button'
 import { HotelCard } from '../components/HotelCard'
 import { hotelsByCity } from '../data/hotels'
 import type { Hotel } from '../types'
+import { useT } from '../i18n'
+import { useDocumentMeta } from '../lib/useDocumentMeta'
 
 type GroupKey = 'area' | 'travel' | 'features' | 'benefits'
 
@@ -23,6 +25,8 @@ const matchers: Record<GroupKey, (h: Hotel, value: string) => boolean> = {
 }
 
 export default function HotelListPage() {
+  const t = useT()
+  useDocumentMeta(t.list.metaTitle, t.list.metaDesc)
   const all = hotelsByCity('Da Nang')
   const [searchParams, setSearchParams] = useSearchParams()
   const [selected, setSelected] = useState<Record<GroupKey, string[]>>({ area: [], travel: [], features: [], benefits: [] })
@@ -48,6 +52,29 @@ export default function HotelListPage() {
 
   const activeCount = Object.values(selected).reduce((n, arr) => n + arr.length, 0)
 
+  // Translated display labels for filter groups. Underlying VALUES stay English.
+  const groupLabel: Record<GroupKey, string> = {
+    area: t.list.groupArea,
+    travel: t.list.groupTravel,
+    features: t.list.groupFeatures,
+    benefits: t.list.groupBenefits,
+  }
+
+  // Translated display label for a filter option. The option string itself
+  // (used by matchers/state) is never changed.
+  const benefitLabel: Record<string, string> = {
+    'Free breakfast': t.list.benefitFreeBreakfast,
+    'Flexible cancellation': t.list.benefitFlexCancel,
+    'Room upgrade': t.list.benefitUpgrade,
+    'Late checkout': t.list.benefitLateCheckout,
+  }
+  const optionLabel = (g: GroupKey, opt: string): string => {
+    if (g === 'area') return (t.enums.area as Record<string, string>)[opt] ?? opt
+    if (g === 'travel') return (t.enums.travelStyle as Record<string, string>)[opt] ?? opt
+    if (g === 'features') return (t.enums.facility as Record<string, string>)[opt] ?? opt
+    return benefitLabel[opt] ?? opt
+  }
+
   const results = useMemo(() => {
     return all.filter((h) =>
       (Object.keys(selected) as GroupKey[]).every((g) => {
@@ -64,10 +91,10 @@ export default function HotelListPage() {
         <div className="container-page">
           <nav className="mb-3 text-sm text-white/70">
             <Link to="/" className="hover:text-white">Home</Link> <span className="px-1">/</span>
-            <Link to="/destinations/vietnam" className="hover:text-white"> Vietnam</Link> <span className="px-1">/</span> Da Nang
+            <Link to="/destinations/vietnam" className="hover:text-white"> Vietnam</Link> <span className="px-1">/</span> {t.enums.city['Da Nang']}
           </nav>
-          <h1 className="text-4xl font-extrabold tracking-tight">Da Nang hotels for direct booking</h1>
-          <p className="mt-2 max-w-2xl text-white/85">Compare hotels by location, travel style, and official booking benefits.</p>
+          <h1 className="text-4xl font-extrabold tracking-tight">{t.list.heroTitle}</h1>
+          <p className="mt-2 max-w-2xl text-white/85">{t.list.heroSubtitle}</p>
         </div>
       </section>
 
@@ -75,17 +102,17 @@ export default function HotelListPage() {
         {/* 2. Filter bar */}
         <div className="rounded-2xl bg-white p-4 shadow-card ring-1 ring-black/5 sm:p-5">
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-bold text-ink-900">Filter by what matters for your trip</h2>
+            <h2 className="text-sm font-bold text-ink-900">{t.list.filterTitle}</h2>
             {activeCount > 0 && (
               <button onClick={clearAll} className="text-xs font-semibold text-ink-700/60 underline hover:text-ink-900">
-                Clear all ({activeCount})
+                {t.list.clearAll} ({activeCount})
               </button>
             )}
           </div>
           <div className="mt-4 space-y-4">
             {(Object.keys(FILTERS) as GroupKey[]).map((g) => (
               <div key={g}>
-                <p className="text-xs font-bold uppercase tracking-wide text-ink-700/50">{FILTERS[g].label}</p>
+                <p className="text-xs font-bold uppercase tracking-wide text-ink-700/50">{groupLabel[g]}</p>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {FILTERS[g].options.map((opt) => {
                     const on = selected[g].includes(opt)
@@ -98,7 +125,7 @@ export default function HotelListPage() {
                           on ? 'border-brand-600 bg-brand-600 text-white' : 'border-black/10 bg-white text-ink-700 hover:bg-sand-50'
                         }`}
                       >
-                        {opt}
+                        {optionLabel(g, opt)}
                       </button>
                     )
                   })}
@@ -111,9 +138,9 @@ export default function HotelListPage() {
         {/* 3. Hotel cards */}
         <div className="mt-5 flex items-center justify-between">
           <p className="text-sm text-ink-700/70">
-            <span className="font-semibold text-ink-900">{results.length}</span> hotel{results.length !== 1 && 's'} match your trip
+            <span className="font-semibold text-ink-900">{results.length}</span> {t.common.hotels} {t.list.resultsMatch}
           </p>
-          <p className="hidden text-xs text-ink-700/50 sm:block">Curated for suitability — not sorted by lowest price.</p>
+          <p className="hidden text-xs text-ink-700/50 sm:block">{t.list.curatedNote}</p>
         </div>
 
         <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -125,10 +152,10 @@ export default function HotelListPage() {
         {results.length === 0 && (
           <div className="rounded-2xl bg-white p-10 text-center shadow-card ring-1 ring-black/5">
             <div className="text-3xl">🔍</div>
-            <h3 className="mt-2 font-bold text-ink-900">No hotels match those filters</h3>
-            <p className="mt-1 text-sm text-ink-700/70">Try removing a filter to see more options.</p>
+            <h3 className="mt-2 font-bold text-ink-900">{t.list.noneTitle}</h3>
+            <p className="mt-1 text-sm text-ink-700/70">{t.list.noneText}</p>
             <button onClick={clearAll} className="mt-4 rounded-full bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-700">
-              Reset filters
+              {t.list.reset}
             </button>
           </div>
         )}
@@ -137,14 +164,14 @@ export default function HotelListPage() {
       {/* 4. Content block — how to choose */}
       <section className="container-page mt-16">
         <div className="rounded-3xl bg-white p-8 shadow-card ring-1 ring-black/5 sm:p-10">
-          <h2 className="text-2xl font-extrabold text-ink-900">How to choose a Da Nang hotel</h2>
-          <p className="mt-2 text-sm text-ink-700/80">Pick your area first — it shapes the whole trip.</p>
+          <h2 className="text-2xl font-extrabold text-ink-900">{t.list.chooseTitle}</h2>
+          <p className="mt-2 text-sm text-ink-700/80">{t.list.chooseIntro}</p>
           <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {[
-              { icon: '🏖️', t: 'My Khe Beach', d: 'Best for a beach trip — sand, sea-view rooms, and family resorts.' },
-              { icon: '🌉', t: 'Han River', d: 'Best for city access — walkable to the Dragon Bridge, dining, and nightlife.' },
-              { icon: '🌴', t: 'Resort Area', d: 'Best for a family or couples’ vacation — quieter, spread-out resorts.' },
-              { icon: '🏙️', t: 'City Center', d: 'Best for business and short stays — central, convenient, and well-connected.' },
+              { icon: '🏖️', t: t.list.choose1t, d: t.list.choose1d },
+              { icon: '🌉', t: t.list.choose2t, d: t.list.choose2d },
+              { icon: '🌴', t: t.list.choose3t, d: t.list.choose3d },
+              { icon: '🏙️', t: t.list.choose4t, d: t.list.choose4d },
             ].map((c) => (
               <div key={c.t} className="rounded-2xl bg-sand-50 p-5 ring-1 ring-black/5">
                 <div className="text-2xl">{c.icon}</div>
@@ -160,10 +187,10 @@ export default function HotelListPage() {
       <section className="container-page my-16">
         <div className="flex flex-col items-center justify-between gap-4 rounded-3xl bg-gradient-to-br from-ink-900 to-brand-800 p-8 text-white sm:flex-row sm:p-10">
           <div>
-            <h2 className="text-xl font-extrabold sm:text-2xl">Are you a hotel in Da Nang?</h2>
-            <p className="mt-1 text-white/80">Promote your official booking benefits on StayEasy — commission-free.</p>
+            <h2 className="text-xl font-extrabold sm:text-2xl">{t.list.hotelCtaTitle}</h2>
+            <p className="mt-1 text-white/80">{t.list.hotelCtaText}</p>
           </div>
-          <Button to="/partners" variant="white" size="lg">Partner with StayEasy</Button>
+          <Button to="/partners" variant="white" size="lg">{t.list.hotelCtaBtn}</Button>
         </div>
       </section>
     </>

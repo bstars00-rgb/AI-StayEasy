@@ -1,11 +1,13 @@
-const points = [
-  { icon: '🤝', title: 'Book directly with the hotel', text: 'We don’t process bookings. You reserve on the hotel’s official website — no middleman markup.' },
-  { icon: '🏷️', title: 'Official booking benefits', text: 'Free breakfast, upgrades, late checkout, and best-rate guarantees you only get booking direct.' },
-  { icon: '🔍', title: 'Honest, labeled content', text: 'Sponsored placements are always marked. We help you understand hotels, not chase the lowest price.' },
-  { icon: '👨‍👩‍👧‍👦', title: 'Chosen for real trips', text: 'Family, couple, business, beach, or long stay — matched to how you actually travel.' },
-]
+import { useT } from '../i18n'
 
 export function TrustStrip() {
+  const t = useT()
+  const points = [
+    { icon: '🤝', title: t.home.trust.t1, text: t.home.trust.d1 },
+    { icon: '🏷️', title: t.home.trust.t2, text: t.home.trust.d2 },
+    { icon: '🔍', title: t.home.trust.t3, text: t.home.trust.d3 },
+    { icon: '👨‍👩‍👧‍👦', title: t.home.trust.t4, text: t.home.trust.d4 },
+  ]
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {points.map((p) => (

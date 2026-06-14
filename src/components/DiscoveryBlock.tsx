@@ -2,12 +2,14 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { destinations } from '../data/destinations'
 import type { TravelStyle } from '../types'
+import { useT } from '../i18n'
 
 const styles: TravelStyle[] = ['Family', 'Couple', 'Business', 'Beach', 'Long Stay', 'Korean-friendly']
 
 /** Destination + travel-style discovery. Routes to the Da Nang list with a style filter. */
 export function DiscoveryBlock() {
   const navigate = useNavigate()
+  const t = useT()
   const [city, setCity] = useState('da-nang')
   const [style, setStyle] = useState<TravelStyle | null>(null)
 
@@ -23,7 +25,7 @@ export function DiscoveryBlock() {
       <div className="grid gap-4 lg:grid-cols-[1fr_auto] lg:items-end">
         <div className="space-y-4">
           <div>
-            <label className="text-xs font-bold uppercase tracking-wide text-ink-700/50">Where to?</label>
+            <label className="text-xs font-bold uppercase tracking-wide text-ink-700/50">{t.home.discovery.whereTo}</label>
             <div className="mt-2 flex flex-wrap gap-2">
               {destinations.map((d) => (
                 <button
@@ -38,14 +40,15 @@ export function DiscoveryBlock() {
                         : 'cursor-not-allowed border-black/5 bg-sand-50 text-ink-700/40'
                   }`}
                 >
-                  {d.emoji} {d.city}{!d.available && ' · soon'}
+                  {d.emoji} {(t.enums.city as Record<string, string>)[d.city] ?? d.city}
+                  {!d.available && ` · ${t.home.discovery.soon}`}
                 </button>
               ))}
             </div>
           </div>
 
           <div>
-            <label className="text-xs font-bold uppercase tracking-wide text-ink-700/50">Travel style</label>
+            <label className="text-xs font-bold uppercase tracking-wide text-ink-700/50">{t.home.discovery.travelStyle}</label>
             <div className="mt-2 flex flex-wrap gap-2">
               {styles.map((s) => (
                 <button
@@ -57,7 +60,7 @@ export function DiscoveryBlock() {
                       : 'border-black/10 bg-white text-ink-700 hover:bg-sand-50'
                   }`}
                 >
-                  {s}
+                  {(t.enums.travelStyle as Record<string, string>)[s] ?? s}
                 </button>
               ))}
             </div>
@@ -68,7 +71,7 @@ export function DiscoveryBlock() {
           onClick={go}
           className="h-12 rounded-full bg-brand-600 px-7 text-sm font-bold text-white shadow-sm hover:bg-brand-700"
         >
-          Find hotels →
+          {t.home.discovery.find} →
         </button>
       </div>
     </div>

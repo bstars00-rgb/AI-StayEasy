@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useT } from '../i18n'
+import { useDocumentMeta } from '../lib/useDocumentMeta'
 
 type Period = 'Last 7 days' | 'Last 30 days' | 'This month'
 const periods: Period[] = ['Last 7 days', 'Last 30 days', 'This month']
@@ -7,49 +9,57 @@ const periods: Period[] = ['Last 7 days', 'Last 30 days', 'This month']
 // Sample figures scale with the selected period (mock only).
 const factor: Record<Period, number> = { 'Last 7 days': 1, 'Last 30 days': 4.1, 'This month': 3.6 }
 
-const kpis = (f: number) => [
-  { icon: '👀', label: 'Page views', base: 4480, delta: '+12%' },
-  { icon: '↗️', label: 'Official website clicks', base: 770, delta: '+23%' },
-  { icon: '🎯', label: 'Click-through rate', base: -1, delta: '+1.4pt', fixed: '17.2%' },
-  { icon: '📣', label: 'Sponsored impressions', base: 9900, delta: '+18%' },
-  { icon: '🧑‍🤝‍🧑', label: 'Top traveler type', base: -1, delta: '', fixed: 'Family' },
-  { icon: '🌍', label: 'Top market', base: -1, delta: '', fixed: '🇰🇷 Korea' },
-].map((k) => ({ ...k, value: k.fixed ?? Math.round(k.base * f).toLocaleString() }))
-
-const trafficSources = [
-  { src: 'Organic search', pct: 34 },
-  { src: 'StayEasy destination page', pct: 28 },
-  { src: 'Sponsored article', pct: 19 },
-  { src: 'Social media', pct: 12 },
-  { src: 'Direct', pct: 7 },
-]
-
-const travelerInterest = [
-  { type: 'Family', pct: 42 },
-  { type: 'Couple', pct: 24 },
-  { type: 'Beach', pct: 18 },
-  { type: 'Business', pct: 9 },
-  { type: 'Long Stay', pct: 7 },
-]
-
-const content = [
-  { title: 'Family guide: best rooms for kids', views: '5,210', clicks: '980', ctr: '18.8%', status: 'Published' },
-  { title: 'Why book our official website', views: '3,940', clicks: '910', ctr: '23.1%', status: 'Published' },
-  { title: 'Late checkout & breakfast perks', views: '2,180', clicks: '300', ctr: '13.8%', status: 'Published' },
-  { title: 'Summer campaign 2026 (draft)', views: '—', clicks: '—', ctr: '—', status: 'Draft' },
-]
-
-const recommendations = [
-  { icon: '🇰🇷', t: 'Add Korean family travel content', d: 'Your top market is Korea and top traveler type is Family — lean in.' },
-  { icon: '🕑', t: 'Highlight the late-checkout benefit', d: 'It’s your second-best converting message — feature it higher.' },
-  { icon: '🔘', t: 'Improve your official website CTA', d: 'A clearer button could lift click-through above 20%.' },
-  { icon: '☀️', t: 'Create a summer campaign page', d: 'Seasonal demand is rising — publish your draft before peak.' },
-]
-
 export default function DashboardPage() {
+  const t = useT()
+  useDocumentMeta(t.dashboard.metaTitle, t.dashboard.metaDesc)
   const [period, setPeriod] = useState<Period>('Last 7 days')
   const f = factor[period]
+
+  const periodLabel: Record<Period, string> = {
+    'Last 7 days': t.dashboard.period7,
+    'Last 30 days': t.dashboard.period30,
+    'This month': t.dashboard.periodMonth,
+  }
+
+  const kpis = [
+    { icon: '👀', label: t.dashboard.kpiViews, base: 4480, delta: '+12%', fixed: undefined as string | undefined },
+    { icon: '↗️', label: t.dashboard.kpiClicks, base: 770, delta: '+23%', fixed: undefined as string | undefined },
+    { icon: '🎯', label: t.dashboard.kpiCtr, base: -1, delta: '+1.4pt', fixed: '17.2%' },
+    { icon: '📣', label: t.dashboard.kpiImpressions, base: 9900, delta: '+18%', fixed: undefined as string | undefined },
+    { icon: '🧑‍🤝‍🧑', label: t.dashboard.kpiTraveler, base: -1, delta: '', fixed: 'Family' },
+    { icon: '🌍', label: t.dashboard.kpiMarket, base: -1, delta: '', fixed: '🇰🇷 Korea' },
+  ].map((k) => ({ ...k, value: k.fixed ?? Math.round(k.base * f).toLocaleString() }))
+
+  const trafficSources = [
+    { src: t.dashboard.src.organic, pct: 34 },
+    { src: t.dashboard.src.stayeasy, pct: 28 },
+    { src: t.dashboard.src.sponsored, pct: 19 },
+    { src: t.dashboard.src.social, pct: 12 },
+    { src: t.dashboard.src.direct, pct: 7 },
+  ]
   const maxSource = Math.max(...trafficSources.map((s) => s.pct))
+
+  const travelerInterest = [
+    { type: t.enums.travelStyle.Family, pct: 42 },
+    { type: t.enums.travelStyle.Couple, pct: 24 },
+    { type: t.enums.travelStyle.Beach, pct: 18 },
+    { type: t.enums.travelStyle.Business, pct: 9 },
+    { type: t.enums.travelStyle['Long Stay'], pct: 7 },
+  ]
+
+  const content = [
+    { title: t.dashboard.content.c1, views: '5,210', clicks: '980', ctr: '18.8%', status: 'Published' },
+    { title: t.dashboard.content.c2, views: '3,940', clicks: '910', ctr: '23.1%', status: 'Published' },
+    { title: t.dashboard.content.c3, views: '2,180', clicks: '300', ctr: '13.8%', status: 'Published' },
+    { title: t.dashboard.content.c4, views: '—', clicks: '—', ctr: '—', status: 'Draft' },
+  ]
+
+  const recommendations = [
+    { icon: '🇰🇷', t: t.dashboard.reco.r1t, d: t.dashboard.reco.r1d },
+    { icon: '🕑', t: t.dashboard.reco.r2t, d: t.dashboard.reco.r2d },
+    { icon: '🔘', t: t.dashboard.reco.r3t, d: t.dashboard.reco.r3d },
+    { icon: '☀️', t: t.dashboard.reco.r4t, d: t.dashboard.reco.r4d },
+  ]
 
   return (
     <div className="bg-sand-100/60">
@@ -57,8 +67,8 @@ export default function DashboardPage() {
         {/* 1. Header */}
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="text-sm text-ink-700/60">Hotel partner dashboard · demo account</p>
-            <h1 className="text-2xl font-extrabold text-ink-900">Sample Da Nang Beach Hotel</h1>
+            <p className="text-sm text-ink-700/60">{t.dashboard.subtitle}</p>
+            <h1 className="text-2xl font-extrabold text-ink-900">{t.dashboard.hotelName}</h1>
           </div>
           <div className="inline-flex rounded-full bg-white p-1 shadow-card ring-1 ring-black/5">
             {periods.map((p) => (
@@ -67,19 +77,19 @@ export default function DashboardPage() {
                 onClick={() => setPeriod(p)}
                 className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors ${period === p ? 'bg-ink-900 text-white' : 'text-ink-700 hover:bg-sand-50'}`}
               >
-                {p}
+                {periodLabel[p]}
               </button>
             ))}
           </div>
         </div>
 
         <div className="mt-4 rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-800 ring-1 ring-amber-200">
-          🧪 Mock dashboard with sample data — for hotel sales demo only. No real login, analytics, or payments.
+          {t.dashboard.demoNotice}
         </div>
 
         {/* 2. KPI cards */}
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {kpis(f).map((k) => (
+          {kpis.map((k) => (
             <div key={k.label} className="rounded-2xl bg-white p-5 shadow-card ring-1 ring-black/5">
               <div className="flex items-center justify-between">
                 <span className="text-2xl">{k.icon}</span>
@@ -94,7 +104,7 @@ export default function DashboardPage() {
         {/* 3 & 4. Chart blocks: traffic sources + traveler interest */}
         <div className="mt-6 grid gap-6 lg:grid-cols-2">
           <div className="rounded-2xl bg-white p-5 shadow-card ring-1 ring-black/5">
-            <h3 className="font-bold text-ink-900">Traffic sources</h3>
+            <h3 className="font-bold text-ink-900">{t.dashboard.trafficTitle}</h3>
             <div className="mt-4 space-y-3">
               {trafficSources.map((s) => (
                 <div key={s.src}>
@@ -111,15 +121,15 @@ export default function DashboardPage() {
           </div>
 
           <div className="rounded-2xl bg-white p-5 shadow-card ring-1 ring-black/5">
-            <h3 className="font-bold text-ink-900">Traveler interest</h3>
+            <h3 className="font-bold text-ink-900">{t.dashboard.interestTitle}</h3>
             <div className="mt-4 flex h-44 items-end gap-3">
-              {travelerInterest.map((t) => (
-                <div key={t.type} className="flex flex-1 flex-col items-center gap-2">
+              {travelerInterest.map((tv) => (
+                <div key={tv.type} className="flex flex-1 flex-col items-center gap-2">
                   <div className="flex w-full flex-1 items-end">
-                    <div className="w-full rounded-t-md bg-gradient-to-t from-brand-600 to-brand-400" style={{ height: `${t.pct * 2}%` }} title={`${t.type}: ${t.pct}%`} />
+                    <div className="w-full rounded-t-md bg-gradient-to-t from-brand-600 to-brand-400" style={{ height: `${tv.pct * 2}%` }} title={`${tv.type}: ${tv.pct}%`} />
                   </div>
-                  <span className="text-[11px] font-semibold text-ink-900">{t.pct}%</span>
-                  <span className="text-[10px] text-ink-700/60">{t.type}</span>
+                  <span className="text-[11px] font-semibold text-ink-900">{tv.pct}%</span>
+                  <span className="text-[10px] text-ink-700/60">{tv.type}</span>
                 </div>
               ))}
             </div>
@@ -129,17 +139,17 @@ export default function DashboardPage() {
         {/* 6. Content performance table */}
         <div className="mt-6 overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-black/5">
           <div className="border-b border-black/5 p-5">
-            <h3 className="font-bold text-ink-900">Content performance</h3>
+            <h3 className="font-bold text-ink-900">{t.dashboard.contentTitle}</h3>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead>
                 <tr className="bg-sand-50 text-xs uppercase tracking-wide text-ink-700/60">
-                  <th className="p-4">Content title</th>
-                  <th className="p-4">Views</th>
-                  <th className="p-4">Clicks</th>
-                  <th className="p-4">CTR</th>
-                  <th className="p-4">Status</th>
+                  <th className="p-4">{t.dashboard.colTitle}</th>
+                  <th className="p-4">{t.dashboard.colViews}</th>
+                  <th className="p-4">{t.dashboard.colClicks}</th>
+                  <th className="p-4">{t.dashboard.colCtr}</th>
+                  <th className="p-4">{t.dashboard.colStatus}</th>
                 </tr>
               </thead>
               <tbody>
@@ -150,7 +160,7 @@ export default function DashboardPage() {
                     <td className="p-4 text-ink-700/80">{c.clicks}</td>
                     <td className="p-4 text-ink-700/80">{c.ctr}</td>
                     <td className="p-4">
-                      <span className={`pill ${c.status === 'Published' ? 'bg-brand-50 text-brand-700' : 'bg-amber-100 text-amber-800'}`}>{c.status}</span>
+                      <span className={`pill ${c.status === 'Published' ? 'bg-brand-50 text-brand-700' : 'bg-amber-100 text-amber-800'}`}>{c.status === 'Published' ? t.dashboard.published : t.dashboard.draft}</span>
                     </td>
                   </tr>
                 ))}
@@ -161,7 +171,7 @@ export default function DashboardPage() {
 
         {/* 7. Recommendations */}
         <div className="mt-6 rounded-2xl bg-white p-5 shadow-card ring-1 ring-black/5">
-          <h3 className="font-bold text-ink-900">🤖 Recommendations</h3>
+          <h3 className="font-bold text-ink-900">🤖 {t.dashboard.recoTitle}</h3>
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
             {recommendations.map((r) => (
               <div key={r.t} className="flex gap-3 rounded-xl bg-sand-50 p-4 ring-1 ring-black/5">
@@ -178,11 +188,11 @@ export default function DashboardPage() {
         {/* 8. CTA */}
         <div className="mt-6 flex flex-col items-center justify-between gap-4 rounded-2xl bg-ink-900 p-6 text-white sm:flex-row sm:p-8">
           <div>
-            <h3 className="text-lg font-extrabold">Want more visibility?</h3>
-            <p className="text-sm text-white/75">Move to the top of city and destination pages with a labeled sponsored slot.</p>
+            <h3 className="text-lg font-extrabold">{t.dashboard.upgradeTitle}</h3>
+            <p className="text-sm text-white/75">{t.dashboard.upgradeText}</p>
           </div>
           <Link to="/partners" className="rounded-full bg-brand-500 px-6 py-3 text-sm font-bold text-white hover:bg-brand-400">
-            Upgrade to Sponsored Placement
+            {t.dashboard.upgradeBtn}
           </Link>
         </div>
       </div>
