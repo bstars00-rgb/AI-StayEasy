@@ -18,16 +18,16 @@ export const destinations: Destination[] = [
   {
     city: 'Ho Chi Minh City',
     slug: 'ho-chi-minh-city',
-    available: false,
+    available: true,
     shortDescription: 'The energetic southern metropolis — French-colonial landmarks, rooftop bars, and street-food legends.',
     description:
-      'Vietnam’s largest city blends history, nightlife, and food. StayEasy is onboarding official hotel partners now.',
+      'Vietnam’s largest city blends history, nightlife, and food, with central District 1, leafy Thao Dien, and easy airport stays.',
     bestFor: ['City breaks', 'Food lovers', 'Business + leisure'],
     recommendedTraveler: 'City explorers, foodies, and business travelers.',
     heroColor: 'from-amber-500 to-orange-500',
     emoji: '🌆',
     highlights: ['Ben Thanh Market', 'District 1 rooftops', 'Mekong Delta day trip'],
-    hotelCount: 0,
+    hotelCount: 4,
   },
   {
     city: 'Nha Trang',

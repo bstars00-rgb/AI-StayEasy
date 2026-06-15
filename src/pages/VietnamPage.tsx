@@ -60,7 +60,7 @@ export default function VietnamPage() {
 
                 <div className="mt-5">
                   {d.available ? (
-                    <Button to="/destinations/da-nang" size="md">{t.vietnam.exploreHotels} →</Button>
+                    <Button to={`/destinations/${d.slug}`} size="md">{t.vietnam.exploreHotels} →</Button>
                   ) : (
                     <button disabled className="inline-flex cursor-not-allowed items-center gap-2 rounded-full bg-sand-100 px-5 py-2.5 text-sm font-semibold text-ink-700/50">
                       {t.vietnam.exploreSoon}

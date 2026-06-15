@@ -1,6 +1,15 @@
 export type City = 'Da Nang' | 'Ho Chi Minh City' | 'Nha Trang' | 'Phu Quoc'
 
-export type Area = 'My Khe Beach' | 'Han River' | 'City Center' | 'Resort Area'
+export type Area =
+  // Da Nang
+  | 'My Khe Beach'
+  | 'Han River'
+  | 'City Center'
+  | 'Resort Area'
+  // Ho Chi Minh City
+  | 'District 1'
+  | 'Thao Dien'
+  | 'Airport Area'
 
 export type HotelType =
   | 'Beach resort'
@@ -12,6 +21,9 @@ export type HotelType =
 
 /** Travel-style labels used across discovery filters and "Best for" content. */
 export type TravelStyle = 'Family' | 'Couple' | 'Business' | 'Beach' | 'Long Stay' | 'Korean-friendly'
+
+/** Relative price band — used by AI search only; never shown as a price. */
+export type PriceTier = 'budget' | 'mid' | 'premium'
 
 export interface RoomGuide {
   couples: string
@@ -44,6 +56,8 @@ export interface Hotel {
   /** Things a traveler should verify before booking (StayEasy summary). */
   thingsToCheck: string[]
   tags: TravelStyle[]
+  /** Relative price band for AI search matching (not displayed as a price). */
+  priceTier: PriceTier
   facilities: string[]
   officialBenefits: string[]
   roomGuide: RoomGuide

@@ -28,16 +28,17 @@ export type Signal =
   | 'luxury'
   | 'budget'
   | 'firsttime'
+  | 'hoian'
 
 export const ALL_SIGNALS: Signal[] = [
   'family', 'couple', 'business', 'beach', 'longstay', 'korean', 'pool', 'breakfast',
-  'kids', 'spa', 'gym', 'airport', 'kitchen', 'city', 'quiet', 'golf', 'luxury', 'budget', 'firsttime',
+  'kids', 'spa', 'gym', 'airport', 'kitchen', 'city', 'quiet', 'golf', 'luxury', 'budget', 'firsttime', 'hoian',
 ]
 
 // Strong "what kind of trip" signals weigh more than individual amenities.
 const WEIGHT: Record<Signal, number> = {
   family: 3, couple: 3, business: 3, beach: 3, longstay: 3, korean: 3, firsttime: 2,
-  city: 2, quiet: 2, luxury: 2, budget: 2, golf: 2,
+  city: 2, quiet: 2, luxury: 2, budget: 2, golf: 2, hoian: 2,
   pool: 1, breakfast: 1, kids: 2, spa: 1, gym: 1, airport: 1, kitchen: 1,
 }
 
@@ -47,9 +48,9 @@ const SYNONYMS: Record<Signal, string[]> = {
   family: ['family', 'families', 'kid', 'kids', 'child', 'children', 'toddler', '가족', '아이', '애들', '자녀', '아기', 'gia đình', 'trẻ em', 'con nhỏ', '家庭', '孩子', '亲子', '带娃', '家族', '子供', 'こども', '子連れ'],
   couple: ['couple', 'romantic', 'romance', 'honeymoon', 'anniversary', '커플', '연인', '로맨틱', '신혼', '허니문', '기념일', 'cặp đôi', 'lãng mạn', 'tuần trăng mật', 'kỷ niệm', '情侣', '浪漫', '蜜月', '纪念日', 'カップル', 'ロマン', '新婚', 'ハネムーン', '記念日'],
   business: ['business', 'work trip', 'meeting', 'conference', 'corporate', '출장', '업무', '비즈니스', '회의', 'công tác', 'công việc', 'hội nghị', '商务', '出差', '会议', 'ビジネス', '出張', '会議'],
-  beach: ['beach', 'seaside', 'ocean', 'sea view', 'seafront', 'sand', '해변', '바다', '해수욕', '비치', '오션뷰', 'biển', 'bãi biển', 'view biển', '海滩', '海边', '沙滩', '海景', 'ビーチ', '海辺', 'オーシャン', '海'],
+  beach: ['beach', 'seaside', 'ocean', 'sea view', 'seafront', 'sand', 'my khe', 'non nuoc', '해변', '바다', '해수욕', '비치', '오션뷰', '미케', '논느억', 'biển', 'bãi biển', 'view biển', 'mỹ khê', '海滩', '海边', '沙滩', '海景', '美溪', 'ビーチ', '海辺', 'オーシャン', '海', 'ミーケ'],
   longstay: ['long stay', 'long-stay', 'monthly', 'a month', 'weekly', 'a week', 'extended', 'digital nomad', 'remote work', 'workation', '장기', '한달', '한 달', '월세', '워케이션', 'dài hạn', 'dài ngày', 'hàng tháng', 'một tháng', '长住', '长期', '一个月', '月租', '長期', '長期滞在', 'ワーケーション', '一ヶ月'],
-  korean: ['korean', 'korea', '한국', '한국인', '한국어', '한국적', '한국 사람', 'hàn quốc', 'người hàn', 'tiếng hàn', '韩国', '韩语', '韩国人', '韓国', '韓国語', '韓国人'],
+  korean: ['korean', 'korea', 'korean town', 'an thuong', '한국', '한국인', '한국어', '한국적', '한국 사람', '코리아타운', '한국타운', '안탄', 'hàn quốc', 'người hàn', 'tiếng hàn', 'phố hàn', '韩国', '韩语', '韩国人', '韩国城', '韓国', '韓国語', '韓国人', 'コリアンタウン'],
   pool: ['pool', 'swim', 'swimming', 'infinity pool', '수영', '수영장', '풀', '인피니티', 'bể bơi', 'hồ bơi', 'bơi', '泳池', '游泳', '无边泳池', 'プール', '泳ぎ', 'インフィニティ'],
   breakfast: ['breakfast', 'brunch', 'buffet', '조식', '아침', '뷔페', 'bữa sáng', 'ăn sáng', '早餐', '早饭', '自助早餐', '朝食', '朝ごはん', 'モーニング', 'ビュッフェ'],
   kids: ['kids club', 'kids', 'playground', 'playroom', 'kid friendly', 'kids pool', '키즈', '놀이방', '키즈클럽', '놀이터', '아이 수영', 'khu vui chơi', 'trẻ em chơi', 'sân chơi', '儿童', '儿童俱乐部', '游乐', '亲子设施', 'キッズ', '子供向け', 'プレイルーム'],
@@ -57,12 +58,13 @@ const SYNONYMS: Record<Signal, string[]> = {
   gym: ['gym', 'fitness', 'workout', 'exercise', '헬스', '피트니스', '운동', '체육관', 'phòng gym', 'tập gym', 'thể dục', '健身', '健身房', 'フィットネス', 'ジム', '運動'],
   airport: ['airport', 'shuttle', 'transfer', 'pickup', 'pick up', 'pick-up', '공항', '셔틀', '픽업', '공항 픽업', 'sân bay', 'đưa đón', 'đón sân bay', '机场', '接送', '机场接送', '空港', '送迎', '空港送迎'],
   kitchen: ['kitchen', 'cook', 'cooking', 'self-cater', 'kitchenette', 'self catering', '주방', '부엌', '취사', '요리', '조리', 'bếp', 'nấu ăn', 'tự nấu', '厨房', '做饭', '自炊', 'キッチン', '自炊', '料理'],
-  city: ['city', 'downtown', 'central', 'city center', 'nightlife', 'walkable', 'urban', 'shopping', '시내', '도심', '중심가', '번화가', '야경', '쇼핑', '걷기 좋', 'trung tâm', 'thành phố', 'mua sắm', '市中心', '市区', '夜生活', '逛街', '市内', '繁華街', '街中', '夜景'],
-  quiet: ['quiet', 'calm', 'peaceful', 'relax', 'relaxing', 'secluded', 'tranquil', 'getaway', '조용', '한적', '휴식', '힐링', '평화', '여유', 'yên tĩnh', 'thư giãn', 'yên bình', '安静', '宁静', '放松', '静か', 'のんびり', 'リラックス', '癒やし'],
+  city: ['city', 'downtown', 'central', 'city center', 'nightlife', 'walkable', 'urban', 'shopping', 'han river', 'dragon bridge', 'riverside', '시내', '도심', '중심가', '번화가', '야경', '쇼핑', '걷기 좋', '한강', '드래곤브리지', '강변', 'trung tâm', 'thành phố', 'mua sắm', 'sông hàn', 'cầu rồng', '市中心', '市区', '夜生活', '逛街', '韩江', '龙桥', '市内', '繁華街', '街中', '夜景', 'ハン川', 'ドラゴン橋'],
+  quiet: ['quiet', 'calm', 'peaceful', 'relax', 'relaxing', 'secluded', 'tranquil', 'getaway', 'son tra', '조용', '한적', '휴식', '힐링', '평화', '여유', '손짜', '손트라', 'yên tĩnh', 'thư giãn', 'yên bình', 'sơn trà', '安静', '宁静', '放松', '山茶', '静か', 'のんびり', 'リラックス', '癒やし', 'ソンチャ'],
   golf: ['golf', '골프', 'gôn', 'đánh gôn', '高尔夫', 'ゴルフ'],
   luxury: ['luxury', 'luxurious', '5-star', '5 star', 'five star', 'premium', 'high-end', 'upscale', '럭셔리', '고급', '5성', '프리미엄', '최고급', 'sang trọng', 'cao cấp', '5 sao', '奢华', '豪华', '五星', '高级', 'ラグジュアリー', '高級', '五つ星'],
   budget: ['budget', 'cheap', 'affordable', 'value', 'inexpensive', 'low cost', '저렴', '가성비', '싼', '예산', '알뜰', 'giá rẻ', 'tiết kiệm', 'bình dân', '便宜', '实惠', '性价比', '经济', '格安', '安い', 'リーズナブル', 'コスパ'],
   firsttime: ['first time', 'first-time', 'first visit', 'first trip', 'beginner', 'never been', '처음', '첫 베트남', '초행', '처음 가', 'lần đầu', 'mới đến', 'chưa từng', '第一次', '初次', '首次', '初めて', '初訪問', '初ベトナム'],
+  hoian: ['hoi an', 'hoian', 'hoi-an', '호이안', 'hội an', '会安', 'ホイアン'],
 }
 
 // Whether a hotel satisfies a given signal (uses canonical English data).
@@ -83,9 +85,10 @@ const SATISFIES: Record<Signal, (h: Hotel) => boolean> = {
   city: (h) => h.area === 'City Center' || h.area === 'Han River',
   quiet: (h) => h.area === 'Resort Area' || (h.tags.includes('Couple') && h.area !== 'City Center' && h.area !== 'Han River'),
   golf: (h) => /golf/i.test(h.name),
-  luxury: (h) => h.hotelType === 'Beach resort' || /resort/i.test(h.name),
-  budget: (h) => h.hotelType === 'City hotel',
+  luxury: (h) => h.priceTier === 'premium',
+  budget: (h) => h.priceTier === 'budget',
   firsttime: (h) => h.koreanFriendly || h.facilities.includes('Airport transfer') || h.area === 'City Center',
+  hoian: (h) => /hoi an/i.test(`${h.locationGuide.nearby} ${h.locationGuide.gettingAround} ${h.locationGuide.nearbyFood}`),
 }
 
 // Composite intents pull in related signals so "honeymoon" implies couple+quiet+spa, etc.

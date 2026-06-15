@@ -15,6 +15,9 @@ export const ja: Locale = {
       'Han River': 'ハン川',
       'City Center': '市内中心部',
       'Resort Area': 'リゾートエリア',
+      'District 1': '1区',
+      'Thao Dien': 'タオディエン',
+      'Airport Area': '空港周辺',
     },
     hotelType: {
       'Beach resort': 'ビーチリゾート',

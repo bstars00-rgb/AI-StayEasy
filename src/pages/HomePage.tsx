@@ -74,7 +74,7 @@ export default function HomePage() {
           {destinations.map((d) => (
             <Link
               key={d.city}
-              to={d.available ? '/destinations/da-nang' : '/destinations/vietnam'}
+              to={d.available ? `/destinations/${d.slug}` : '/destinations/vietnam'}
               className="group relative overflow-hidden rounded-2xl shadow-card ring-1 ring-black/5"
             >
               <HotelImage gradient={d.heroColor} emoji={d.emoji} rounded="" className="h-40 w-full" label={d.city} />

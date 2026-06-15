@@ -15,6 +15,9 @@ export const ko: Locale = {
       'Han River': '한강 강변',
       'City Center': '시내 중심',
       'Resort Area': '리조트 지역',
+      'District 1': '1군(중심가)',
+      'Thao Dien': '타오디엔',
+      'Airport Area': '공항 인근',
     },
     hotelType: {
       'Beach resort': '비치 리조트',

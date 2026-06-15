@@ -47,7 +47,7 @@ export const searchStrings: Record<Lang, SearchStrings> = {
       longstay: 'Good for long stays', korean: 'Korean-friendly', pool: 'Swimming pool', breakfast: 'Breakfast',
       kids: 'Kids facilities', spa: 'Spa', gym: 'Fitness center', airport: 'Airport transfer', kitchen: 'Kitchen',
       city: 'Central / walkable', quiet: 'Quiet & relaxing', golf: 'Golf nearby', luxury: 'Upscale resort',
-      budget: 'Good value', firsttime: 'Easy for first-timers',
+      budget: 'Good value', firsttime: 'Easy for first-timers', hoian: 'Near Hoi An',
     },
   },
   ko: {
@@ -76,7 +76,7 @@ export const searchStrings: Record<Lang, SearchStrings> = {
       longstay: '장기 숙박에 좋음', korean: '한국어 가능', pool: '수영장', breakfast: '조식',
       kids: '키즈 시설', spa: '스파', gym: '피트니스', airport: '공항 셔틀', kitchen: '주방',
       city: '시내 중심·도보 편리', quiet: '조용하고 편안함', golf: '골프 인접', luxury: '고급 리조트',
-      budget: '가성비 좋음', firsttime: '첫 방문에 편리',
+      budget: '가성비 좋음', firsttime: '첫 방문에 편리', hoian: '호이안 근처',
     },
   },
   vi: {
@@ -105,7 +105,7 @@ export const searchStrings: Record<Lang, SearchStrings> = {
       longstay: 'Tốt cho lưu trú dài', korean: 'Thân thiện khách Hàn', pool: 'Hồ bơi', breakfast: 'Bữa sáng',
       kids: 'Tiện ích trẻ em', spa: 'Spa', gym: 'Phòng gym', airport: 'Đưa đón sân bay', kitchen: 'Bếp',
       city: 'Trung tâm / dễ đi bộ', quiet: 'Yên tĩnh & thư giãn', golf: 'Gần sân golf', luxury: 'Resort cao cấp',
-      budget: 'Giá trị tốt', firsttime: 'Dễ cho người lần đầu',
+      budget: 'Giá trị tốt', firsttime: 'Dễ cho người lần đầu', hoian: 'Gần Hội An',
     },
   },
   zh: {
@@ -134,7 +134,7 @@ export const searchStrings: Record<Lang, SearchStrings> = {
       longstay: '适合长住', korean: '韩国游客友好', pool: '泳池', breakfast: '早餐',
       kids: '儿童设施', spa: '水疗', gym: '健身房', airport: '机场接送', kitchen: '厨房',
       city: '市中心·步行便利', quiet: '安静放松', golf: '邻近高尔夫', luxury: '高档度假村',
-      budget: '高性价比', firsttime: '适合初次到访',
+      budget: '高性价比', firsttime: '适合初次到访', hoian: '邻近会安',
     },
   },
   ja: {
@@ -163,7 +163,7 @@ export const searchStrings: Record<Lang, SearchStrings> = {
       longstay: 'ロングステイ向き', korean: '韓国人向け', pool: 'プール', breakfast: '朝食',
       kids: 'キッズ設備', spa: 'スパ', gym: 'フィットネス', airport: '空港送迎', kitchen: 'キッチン',
       city: '市内中心・徒歩便利', quiet: '静かでくつろげる', golf: 'ゴルフ近く', luxury: '高級リゾート',
-      budget: 'コスパ良好', firsttime: '初訪問に便利',
+      budget: 'コスパ良好', firsttime: '初訪問に便利', hoian: 'ホイアン近く',
     },
   },
 }

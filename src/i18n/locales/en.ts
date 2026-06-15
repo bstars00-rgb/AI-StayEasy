@@ -15,6 +15,9 @@ export const en = {
       'Han River': 'Han River',
       'City Center': 'City Center',
       'Resort Area': 'Resort Area',
+      'District 1': 'District 1',
+      'Thao Dien': 'Thao Dien',
+      'Airport Area': 'Airport Area',
     },
     hotelType: {
       'Beach resort': 'Beach resort',

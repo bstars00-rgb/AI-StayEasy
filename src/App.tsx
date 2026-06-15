@@ -25,7 +25,7 @@ export default function App() {
 
         <Route path="/search" element={<SearchPage />} />
         <Route path="/destinations/vietnam" element={<VietnamPage />} />
-        <Route path="/destinations/da-nang" element={<HotelListPage />} />
+        <Route path="/destinations/:citySlug" element={<HotelListPage />} />
         <Route path="/hotels/:slug" element={<HotelDetailPage />} />
         <Route path="/guides/direct-booking" element={<BookingGuidePage />} />
         <Route path="/partners" element={<PartnerPage />} />

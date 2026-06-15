@@ -15,6 +15,9 @@ export const vi: Locale = {
       'Han River': 'Sông Hàn',
       'City Center': 'Trung tâm thành phố',
       'Resort Area': 'Khu nghỉ dưỡng',
+      'District 1': 'Quận 1',
+      'Thao Dien': 'Thảo Điền',
+      'Airport Area': 'Khu sân bay',
     },
     hotelType: {
       'Beach resort': 'Resort biển',

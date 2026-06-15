@@ -38,6 +38,7 @@ export function AISearch({ autoFocus = false }: { autoFocus?: boolean }) {
           <textarea
             value={query}
             autoFocus={autoFocus}
+            aria-label={s.title}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === 'Enter' && !e.shiftKey) {
@@ -78,15 +79,19 @@ export function AISearch({ autoFocus = false }: { autoFocus?: boolean }) {
 
       {/* Loading */}
       {loading && (
-        <div className="mt-5 flex items-center justify-center gap-3 rounded-2xl bg-white p-8 text-ink-700/70 shadow-card ring-1 ring-black/5">
-          <span className="h-5 w-5 animate-spin rounded-full border-2 border-brand-200 border-t-brand-600" />
+        <div
+          role="status"
+          aria-live="polite"
+          className="mt-5 flex items-center justify-center gap-3 rounded-2xl bg-white p-8 text-ink-700/70 shadow-card ring-1 ring-black/5"
+        >
+          <span aria-hidden="true" className="h-5 w-5 animate-spin rounded-full border-2 border-brand-200 border-t-brand-600" />
           {s.thinking}
         </div>
       )}
 
       {/* Results */}
       {rec && !loading && (
-        <div className="mt-6">
+        <div className="mt-6" aria-live="polite">
           {/* Understood intents */}
           {rec.detected.length > 0 && (
             <div className="mb-4 rounded-2xl bg-brand-50 px-4 py-3 ring-1 ring-brand-100">

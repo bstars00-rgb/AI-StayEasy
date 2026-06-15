@@ -19,10 +19,12 @@ function shapePaths(obj: unknown, prefix = ''): string[] {
 }
 
 describe('hotel data integrity', () => {
-  it('has 12 hotels with unique ids and slugs', () => {
-    expect(hotels).toHaveLength(12)
-    expect(new Set(hotels.map((h) => h.id)).size).toBe(12)
-    expect(new Set(hotels.map((h) => h.slug)).size).toBe(12)
+  it('has 16 hotels (Da Nang + Ho Chi Minh City) with unique ids and slugs', () => {
+    expect(hotels).toHaveLength(16)
+    expect(new Set(hotels.map((h) => h.id)).size).toBe(16)
+    expect(new Set(hotels.map((h) => h.slug)).size).toBe(16)
+    expect(hotels.filter((h) => h.city === 'Da Nang')).toHaveLength(12)
+    expect(hotels.filter((h) => h.city === 'Ho Chi Minh City')).toHaveLength(4)
   })
 
   it('every required field is populated', () => {
@@ -86,6 +88,22 @@ describe('AI search engine', () => {
     const rec = recommend('', hotels)
     expect(rec.generic).toBe(true)
     expect(rec.results.length).toBeGreaterThan(0)
+  })
+
+  it('matches budget/luxury via price tier', () => {
+    const cheap = recommend('cheap budget hotel', hotels)
+    expect(cheap.detected).toContain('budget')
+    expect(cheap.results[0].hotel.priceTier).toBe('budget')
+
+    const lux = recommend('luxury 5-star resort', hotels)
+    expect(lux.detected).toContain('luxury')
+    expect(lux.results[0].hotel.priceTier).toBe('premium')
+  })
+
+  it('detects place-name intents (Hoi An)', () => {
+    const rec = recommend('hotel near Hoi An', hotels)
+    expect(rec.detected).toContain('hoian')
+    expect(rec.results.every((r) => r.hotel.priceTier)).toBe(true)
   })
 })
 

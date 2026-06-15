@@ -15,6 +15,9 @@ export const zh: Locale = {
       'Han River': '韩江',
       'City Center': '市中心',
       'Resort Area': '度假区',
+      'District 1': '第一郡',
+      'Thao Dien': '草田',
+      'Airport Area': '机场周边',
     },
     hotelType: {
       'Beach resort': '海滨度假村',
