@@ -41,8 +41,11 @@ The product focus is **trust and suitability** (not lowest price): official-webs
 | `/hotels/:slug` | **Hotel detail** | StayEasy summary, official benefits, room guide, location guide, facilities, cancellation checklist, prominent **Book on Official Website** CTA, similar hotels, disclaimer |
 | `/guides/direct-booking` | **Direct booking guide** | Neutral OTA-vs-direct comparison table, when each is better, pre-booking checklist |
 | `/partners` | **Hotel partner page** | Value prop, 6 products, plans (Starter / Growth / Campaign), sample report, mock contact form |
-| `/dashboard` | **Mock hotel dashboard** | Period selector, KPI cards, traffic & traveler charts, content table, recommendations |
+| `/dashboard` | **Mock hotel dashboard** | Partner-facing: period selector, KPI cards, traffic & traveler charts, content table, recommendations |
+| `/admin` | **Back-office (operator console)** | Sidebar shell with Overview / Hotels / Partners / Campaigns / Inquiries — its own chrome, mock data |
 | `/about` | **About** | Position + business model summary |
+
+**Destinations live:** Da Nang (12), Ho Chi Minh City (4), Nha Trang (4), Phu Quoc (4) — 24 sample hotels across 4 cities, via a city-parameterized list route `/destinations/:citySlug`.
 
 > Legacy routes (`/da-nang`, `/vietnam`, `/booking-guide`, `/hotel/:slug`) redirect to their new paths. `vercel.json` adds a SPA rewrite so deep links resolve on refresh.
 
@@ -177,6 +180,10 @@ This is a demonstration prototype. Hotels, official-website URLs, benefits, dash
 **StayEasy does not process hotel reservations or payments. Final booking is completed through each hotel's official website.**
 
 ---
+
+## 📱 Mobile app concept
+
+A mobile app concept (positioning, features, IA, AI strategy, tech stack with web-code reuse, MVP roadmap) is drafted in **[docs/APP_CONCEPT.md](docs/APP_CONCEPT.md)**. Recommended approach: React Native + Expo sharing a `packages/core` (data, types, i18n, search engine, design tokens) with this web app.
 
 ## 🗺️ Roadmap ideas
 

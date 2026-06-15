@@ -32,7 +32,7 @@ export const destinations: Destination[] = [
   {
     city: 'Nha Trang',
     slug: 'nha-trang',
-    available: false,
+    available: true,
     shortDescription: 'A curving bay of turquoise water, offshore islands, and big resort pools.',
     description: 'Beach resorts and island hopping on Vietnam’s south-central coast. Partner onboarding is underway.',
     bestFor: ['Couples', 'Resort pools', 'Snorkeling'],
@@ -40,12 +40,12 @@ export const destinations: Destination[] = [
     heroColor: 'from-cyan-500 to-blue-500',
     emoji: '🐚',
     highlights: ['Nha Trang Bay', 'Island hopping', 'Mud-spa resorts'],
-    hotelCount: 0,
+    hotelCount: 4,
   },
   {
     city: 'Phu Quoc',
     slug: 'phu-quoc',
-    available: false,
+    available: true,
     shortDescription: 'Vietnam’s tropical island escape — white-sand beaches and laid-back resorts.',
     description: 'An island of quiet beaches, a long cable car, and sunset coasts. StayEasy partner program launching next.',
     bestFor: ['Honeymoons', 'Island resorts', 'Quiet getaways'],
@@ -53,7 +53,7 @@ export const destinations: Destination[] = [
     heroColor: 'from-teal-500 to-emerald-500',
     emoji: '🌴',
     highlights: ['Sao Beach', 'Hon Thom cable car', 'Sunset coast'],
-    hotelCount: 0,
+    hotelCount: 4,
   },
 ]
 

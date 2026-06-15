@@ -18,6 +18,10 @@ export const en = {
       'District 1': 'District 1',
       'Thao Dien': 'Thao Dien',
       'Airport Area': 'Airport Area',
+      'Nha Trang Beach': 'Nha Trang Beach',
+      'North Nha Trang': 'North Nha Trang',
+      'Long Beach': 'Long Beach',
+      'Sao Beach': 'Sao Beach',
     },
     hotelType: {
       'Beach resort': 'Beach resort',
@@ -38,6 +42,7 @@ export const en = {
     facility: {
       Pool: 'Pool',
       Breakfast: 'Breakfast',
+      Beachfront: 'Beachfront',
       'Kids club': 'Kids club',
       'Kids-friendly': 'Kids-friendly',
       'Korean-friendly': 'Korean-friendly',

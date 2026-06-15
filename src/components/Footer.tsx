@@ -30,6 +30,7 @@ export function Footer() {
             <li><Link className="hover:text-brand-700" to="/destinations/vietnam">{t.footer.destinations}</Link></li>
             <li><Link className="hover:text-brand-700" to="/destinations/da-nang">{t.footer.daNang}</Link></li>
             <li><Link className="hover:text-brand-700" to="/dashboard">{t.footer.dashboard}</Link></li>
+            <li><Link className="hover:text-brand-700" to="/admin">Back-office (demo)</Link></li>
           </ul>
         </div>
 

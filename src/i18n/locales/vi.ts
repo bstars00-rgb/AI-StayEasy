@@ -18,6 +18,10 @@ export const vi: Locale = {
       'District 1': 'Quận 1',
       'Thao Dien': 'Thảo Điền',
       'Airport Area': 'Khu sân bay',
+      'Nha Trang Beach': 'Biển Nha Trang',
+      'North Nha Trang': 'Bắc Nha Trang',
+      'Long Beach': 'Bãi Dài',
+      'Sao Beach': 'Bãi Sao',
     },
     hotelType: {
       'Beach resort': 'Resort biển',
@@ -38,6 +42,7 @@ export const vi: Locale = {
     facility: {
       Pool: 'Hồ bơi',
       Breakfast: 'Bữa sáng',
+      Beachfront: 'Mặt biển',
       'Kids club': 'Câu lạc bộ trẻ em',
       'Kids-friendly': 'Thân thiện với trẻ em',
       'Korean-friendly': 'Thân thiện với khách Hàn',

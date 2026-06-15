@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate, useParams } from 'react-router-dom'
+import { Routes, Route, Navigate, Outlet, useParams } from 'react-router-dom'
 import { Layout } from './components/Layout'
 import HomePage from './pages/HomePage'
 import VietnamPage from './pages/VietnamPage'
@@ -9,6 +9,7 @@ import PartnerPage from './pages/PartnerPage'
 import DashboardPage from './pages/DashboardPage'
 import AboutPage from './pages/AboutPage'
 import SearchPage from './pages/SearchPage'
+import AdminPage from './pages/AdminPage'
 import NotFoundPage from './pages/NotFoundPage'
 
 /** Redirect legacy /hotel/:slug → /hotels/:slug while preserving the slug. */
@@ -17,12 +18,23 @@ function HotelSlugRedirect() {
   return <Navigate to={`/hotels/${slug}`} replace />
 }
 
-export default function App() {
+/** Public site chrome (navbar + footer) wrapping the matched route. */
+function PublicLayout() {
   return (
     <Layout>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
+      <Outlet />
+    </Layout>
+  )
+}
 
+export default function App() {
+  return (
+    <Routes>
+      {/* Back-office uses its own full-screen shell — no public navbar/footer. */}
+      <Route path="/admin" element={<AdminPage />} />
+
+      <Route element={<PublicLayout />}>
+        <Route path="/" element={<HomePage />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/destinations/vietnam" element={<VietnamPage />} />
         <Route path="/destinations/:citySlug" element={<HotelListPage />} />
@@ -39,7 +51,7 @@ export default function App() {
         <Route path="/hotel/:slug" element={<HotelSlugRedirect />} />
 
         <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-    </Layout>
+      </Route>
+    </Routes>
   )
 }

@@ -18,6 +18,10 @@ export const ko: Locale = {
       'District 1': '1군(중심가)',
       'Thao Dien': '타오디엔',
       'Airport Area': '공항 인근',
+      'Nha Trang Beach': '나트랑 비치',
+      'North Nha Trang': '나트랑 북부',
+      'Long Beach': '롱비치',
+      'Sao Beach': '사오 비치',
     },
     hotelType: {
       'Beach resort': '비치 리조트',
@@ -38,6 +42,7 @@ export const ko: Locale = {
     facility: {
       Pool: '수영장',
       Breakfast: '조식',
+      Beachfront: '비치프런트',
       'Kids club': '키즈 클럽',
       'Kids-friendly': '아이 동반 친화',
       'Korean-friendly': '한국인 친화',

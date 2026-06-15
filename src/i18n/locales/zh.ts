@@ -18,6 +18,10 @@ export const zh: Locale = {
       'District 1': '第一郡',
       'Thao Dien': '草田',
       'Airport Area': '机场周边',
+      'Nha Trang Beach': '芽庄海滩',
+      'North Nha Trang': '芽庄北部',
+      'Long Beach': '长滩',
+      'Sao Beach': '星星海滩',
     },
     hotelType: {
       'Beach resort': '海滨度假村',
@@ -38,6 +42,7 @@ export const zh: Locale = {
     facility: {
       Pool: '泳池',
       Breakfast: '早餐',
+      Beachfront: '海滨',
       'Kids club': '儿童俱乐部',
       'Kids-friendly': '亲子友好',
       'Korean-friendly': '韩国游客友好',

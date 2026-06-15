@@ -18,6 +18,10 @@ export const ja: Locale = {
       'District 1': '1区',
       'Thao Dien': 'タオディエン',
       'Airport Area': '空港周辺',
+      'Nha Trang Beach': 'ニャチャンビーチ',
+      'North Nha Trang': 'ニャチャン北部',
+      'Long Beach': 'ロングビーチ',
+      'Sao Beach': 'サオビーチ',
     },
     hotelType: {
       'Beach resort': 'ビーチリゾート',
@@ -38,6 +42,7 @@ export const ja: Locale = {
     facility: {
       Pool: 'プール',
       Breakfast: '朝食',
+      Beachfront: 'ビーチフロント',
       'Kids club': 'キッズクラブ',
       'Kids-friendly': '子ども連れに優しい',
       'Korean-friendly': '韓国人向け',

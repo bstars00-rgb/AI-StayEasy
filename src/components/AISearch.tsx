@@ -29,7 +29,7 @@ export function AISearch({ autoFocus = false }: { autoFocus?: boolean }) {
       {/* Search box */}
       <div className="rounded-3xl bg-white p-5 shadow-card ring-1 ring-black/5 sm:p-6">
         <div className="flex items-center gap-2 text-brand-700">
-          <span className="grid h-8 w-8 place-items-center rounded-lg bg-brand-600 text-white">✨</span>
+          <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-brand-500 to-accent-500 text-white shadow-glow-accent">✨</span>
           <h2 className="text-lg font-extrabold text-ink-900">{s.title}</h2>
         </div>
         <p className="mt-1.5 text-sm text-ink-700/80">{s.subtitle}</p>

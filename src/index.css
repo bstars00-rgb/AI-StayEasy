@@ -5,9 +5,18 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   body {
     @apply bg-sand-50 text-ink-800 antialiased;
+  }
+  /* Headings use the display typeface automatically (modern, friendly, premium). */
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display tracking-tightest;
   }
 }
 
@@ -17,5 +26,9 @@
   }
   .pill {
     @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold;
+  }
+  /* Premium gradient text accent for hero highlights. */
+  .text-gradient-brand {
+    @apply bg-gradient-to-r from-brand-500 to-accent-500 bg-clip-text text-transparent;
   }
 }

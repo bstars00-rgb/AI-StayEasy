@@ -2,6 +2,7 @@
 const ICONS: Record<string, string> = {
   pool: '🏊',
   breakfast: '🍳',
+  beachfront: '🏖️',
   'kids club': '🧸',
   'kids-friendly': '🧒',
   'korean-friendly': '🇰🇷',

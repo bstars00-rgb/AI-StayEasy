@@ -19,12 +19,14 @@ function shapePaths(obj: unknown, prefix = ''): string[] {
 }
 
 describe('hotel data integrity', () => {
-  it('has 16 hotels (Da Nang + Ho Chi Minh City) with unique ids and slugs', () => {
-    expect(hotels).toHaveLength(16)
-    expect(new Set(hotels.map((h) => h.id)).size).toBe(16)
-    expect(new Set(hotels.map((h) => h.slug)).size).toBe(16)
+  it('has 24 hotels across 4 cities with unique ids and slugs', () => {
+    expect(hotels).toHaveLength(24)
+    expect(new Set(hotels.map((h) => h.id)).size).toBe(24)
+    expect(new Set(hotels.map((h) => h.slug)).size).toBe(24)
     expect(hotels.filter((h) => h.city === 'Da Nang')).toHaveLength(12)
     expect(hotels.filter((h) => h.city === 'Ho Chi Minh City')).toHaveLength(4)
+    expect(hotels.filter((h) => h.city === 'Nha Trang')).toHaveLength(4)
+    expect(hotels.filter((h) => h.city === 'Phu Quoc')).toHaveLength(4)
   })
 
   it('every required field is populated', () => {

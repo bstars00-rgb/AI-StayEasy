@@ -10,6 +10,12 @@ export type Area =
   | 'District 1'
   | 'Thao Dien'
   | 'Airport Area'
+  // Nha Trang
+  | 'Nha Trang Beach'
+  | 'North Nha Trang'
+  // Phu Quoc
+  | 'Long Beach'
+  | 'Sao Beach'
 
 export type HotelType =
   | 'Beach resort'
