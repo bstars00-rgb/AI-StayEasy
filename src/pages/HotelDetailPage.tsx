@@ -95,8 +95,17 @@ export default function HotelDetailPage() {
         </nav>
         <div className="grid gap-3 sm:grid-cols-3 sm:grid-rows-2">
           <HotelImage src={hotel.imageUrl} gradient={hotel.heroColor} emoji={hotel.emoji} className="h-64 sm:col-span-2 sm:row-span-2 sm:h-full" label={hotel.name} />
-          <HotelImage gradient="from-sand-200 to-sand-300" emoji="🛏️" className="hidden h-full sm:flex" label="Rooms" />
-          <HotelImage gradient="from-brand-200 to-brand-400" emoji="🏊" className="hidden h-full sm:flex" label="Pool" />
+          {hotel.gallery && hotel.gallery.length >= 2 ? (
+            <>
+              <HotelImage src={hotel.gallery[0]} gradient={hotel.heroColor} emoji={hotel.emoji} className="hidden h-full sm:flex" label={`${hotel.name} — photo 2`} />
+              <HotelImage src={hotel.gallery[1]} gradient={hotel.heroColor} emoji={hotel.emoji} className="hidden h-full sm:flex" label={`${hotel.name} — photo 3`} />
+            </>
+          ) : (
+            <>
+              <HotelImage gradient="from-sand-200 to-sand-300" emoji="🛏️" className="hidden h-full sm:flex" label="Rooms" />
+              <HotelImage gradient="from-brand-200 to-brand-400" emoji="🏊" className="hidden h-full sm:flex" label="Pool" />
+            </>
+          )}
         </div>
       </section>
 

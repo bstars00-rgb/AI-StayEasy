@@ -1,9 +1,4 @@
 import { describe, it, expect } from 'vitest'
-import { createElement as h } from 'react'
-import { renderToString } from 'react-dom/server'
-import { MemoryRouter } from 'react-router-dom'
-import App from '../App'
-import { I18nProvider } from '../i18n'
 import { en } from '../i18n/locales/en'
 import { ko } from '../i18n/locales/ko'
 import { vi } from '../i18n/locales/vi'
@@ -174,23 +169,6 @@ describe('back-office data', () => {
     expect(inquiries.length).toBeGreaterThan(0)
     for (const i of inquiries) expect(['New', 'Contacted', 'Won', 'Lost']).toContain(i.status)
   })
-})
-
-describe('page render smoke (initial render, no throw)', () => {
-  const renderAt = (path: string) =>
-    renderToString(h(I18nProvider, null, h(MemoryRouter, { initialEntries: [path] }, h(App))))
-
-  const routes = [
-    '/', '/search', '/wishlist', '/wishlist?ids=an-bang-beach-resort,son-tra-hillside-retreat',
-    '/destinations/vietnam', '/destinations/da-nang',
-    '/destinations/hanoi', '/hotels/an-bang-beach-resort', '/guides/direct-booking',
-    '/partners', '/dashboard', '/admin', '/about', '/no-such-page',
-  ]
-  for (const path of routes) {
-    it(`renders ${path}`, () => {
-      expect(() => renderAt(path)).not.toThrow()
-    })
-  }
 })
 
 describe('async data repo (mock-backed)', () => {

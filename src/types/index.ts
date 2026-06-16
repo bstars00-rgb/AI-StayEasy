@@ -109,6 +109,8 @@ export interface Hotel {
   cancellationChecklist: string[]
   /** Placeholder image URL. Falls back to a branded gradient if it fails to load. */
   imageUrl: string
+  /** Optional extra gallery photos (showcase hotels). Falls back to placeholders. */
+  gallery?: string[]
   officialWebsiteUrl: string
   isSponsored: boolean
   /** Optional downloadable direct-booking discount voucher from the hotel. */

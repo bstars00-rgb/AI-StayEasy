@@ -1,17 +1,31 @@
+import { lazy, Suspense } from 'react'
 import { Routes, Route, Navigate, Outlet, useParams } from 'react-router-dom'
 import { Layout } from './components/Layout'
+import { Spinner } from './components/Loading'
 import HomePage from './pages/HomePage'
-import VietnamPage from './pages/VietnamPage'
-import HotelListPage from './pages/HotelListPage'
-import HotelDetailPage from './pages/HotelDetailPage'
-import BookingGuidePage from './pages/BookingGuidePage'
-import PartnerPage from './pages/PartnerPage'
-import DashboardPage from './pages/DashboardPage'
-import AboutPage from './pages/AboutPage'
-import SearchPage from './pages/SearchPage'
-import WishlistPage from './pages/WishlistPage'
-import AdminPage from './pages/AdminPage'
-import NotFoundPage from './pages/NotFoundPage'
+
+// The landing page loads eagerly (fast first paint); every other route is
+// code-split so it ships in its own chunk and only downloads on navigation.
+const VietnamPage = lazy(() => import('./pages/VietnamPage'))
+const HotelListPage = lazy(() => import('./pages/HotelListPage'))
+const HotelDetailPage = lazy(() => import('./pages/HotelDetailPage'))
+const BookingGuidePage = lazy(() => import('./pages/BookingGuidePage'))
+const PartnerPage = lazy(() => import('./pages/PartnerPage'))
+const DashboardPage = lazy(() => import('./pages/DashboardPage'))
+const AboutPage = lazy(() => import('./pages/AboutPage'))
+const SearchPage = lazy(() => import('./pages/SearchPage'))
+const WishlistPage = lazy(() => import('./pages/WishlistPage'))
+const AdminPage = lazy(() => import('./pages/AdminPage'))
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
+
+/** Suspense fallback while a route's code chunk downloads. */
+function RouteFallback() {
+  return (
+    <div className="container-page py-24" data-testid="route-loading">
+      <Spinner />
+    </div>
+  )
+}
 
 /** Redirect legacy /hotel/:slug → /hotels/:slug while preserving the slug. */
 function HotelSlugRedirect() {
@@ -23,7 +37,9 @@ function HotelSlugRedirect() {
 function PublicLayout() {
   return (
     <Layout>
-      <Outlet />
+      <Suspense fallback={<RouteFallback />}>
+        <Outlet />
+      </Suspense>
     </Layout>
   )
 }
@@ -32,7 +48,14 @@ export default function App() {
   return (
     <Routes>
       {/* Back-office uses its own full-screen shell — no public navbar/footer. */}
-      <Route path="/admin" element={<AdminPage />} />
+      <Route
+        path="/admin"
+        element={
+          <Suspense fallback={<RouteFallback />}>
+            <AdminPage />
+          </Suspense>
+        }
+      />
 
       <Route element={<PublicLayout />}>
         <Route path="/" element={<HomePage />} />

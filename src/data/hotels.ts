@@ -8,7 +8,23 @@ import type { Hotel } from '../types'
  * commission. `officialWebsiteUrl` is where the real booking happens (mock URLs).
  * Pricing is intentionally omitted — StayEasy compares *suitability*, not lowest price.
  */
-const img = (slug: string) => `https://picsum.photos/seed/stayeasy-${slug}/800/600`
+/** Real, free-to-use photography (Unsplash CDN) for the showcase/sponsored
+ *  hotels — removes the "demo placeholder" look on the most visible listings. */
+const u = (id: string, w = 800) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=70`
+
+// Curated hero photo per sponsored hotel (others keep deterministic placeholders).
+const realPhotos: Record<string, string> = {
+  'an-bang-beach-resort': u('1455587734955-081b22074882'),
+  'han-river-grand-hotel': u('1611892440504-42a792e24d32'),
+  'saigon-central-boutique': u('1571896349842-33c89424de2d'),
+  'seoul-stay-da-nang': u('1520250497591-112f2f40a3f4'),
+  'nha-trang-bay-resort': u('1551882547-ff40c63fe5fa'),
+  'long-beach-grand-resort': u('1582719478250-c89cae4dc85b'),
+  'hoi-an-lantern-boutique': u('1578683010236-d716f9a3f461'),
+  'old-quarter-boutique-hanoi': u('1566073771259-6a8506099945'),
+}
+
+const img = (slug: string) => realPhotos[slug] ?? `https://picsum.photos/seed/stayeasy-${slug}/800/600`
 
 export const hotels: Hotel[] = [
   {
@@ -43,6 +59,12 @@ export const hotels: Hotel[] = [
     },
     cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
     imageUrl: img('an-bang-beach-resort'),
+    gallery: [
+      u('1507525428034-b723cf961d3e', 1200), // beach
+      u('1582719478250-c89cae4dc85b', 1200), // pool
+      u('1571896349842-33c89424de2d', 1200), // room
+      u('1566073771259-6a8506099945', 1200), // resort grounds
+    ],
     officialWebsiteUrl: 'https://www.anbangbeachresort.example/booking?ref=stayeasy',
     voucher: { code: 'ANBANG10', discountLabel: '10% off your direct booking + free breakfast for two', terms: 'Show this voucher when you book on the official website. Min 2 nights; subject to availability; not combinable with other promotions.', validUntil: '2026-12-31' },
     isSponsored: true,
