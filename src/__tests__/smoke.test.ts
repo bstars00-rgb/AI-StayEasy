@@ -150,7 +150,8 @@ describe('page render smoke (initial render, no throw)', () => {
     renderToString(h(I18nProvider, null, h(MemoryRouter, { initialEntries: [path] }, h(App))))
 
   const routes = [
-    '/', '/search', '/wishlist', '/destinations/vietnam', '/destinations/da-nang',
+    '/', '/search', '/wishlist', '/wishlist?ids=an-bang-beach-resort,son-tra-hillside-retreat',
+    '/destinations/vietnam', '/destinations/da-nang',
     '/destinations/hanoi', '/hotels/an-bang-beach-resort', '/guides/direct-booking',
     '/partners', '/dashboard', '/admin', '/about', '/no-such-page',
   ]

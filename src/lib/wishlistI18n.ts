@@ -11,6 +11,11 @@ export interface WishlistStrings {
   browse: string
   clear: string
   countSuffix: string
+  viewCards: string
+  viewCompare: string
+  share: string
+  copied: string
+  sharedBanner: string
 }
 
 export const wishlistStrings: Record<Lang, WishlistStrings> = {
@@ -25,6 +30,11 @@ export const wishlistStrings: Record<Lang, WishlistStrings> = {
     browse: 'Browse Da Nang hotels',
     clear: 'Clear all',
     countSuffix: 'saved',
+    viewCards: 'Cards',
+    viewCompare: 'Compare',
+    share: 'Share',
+    copied: 'Link copied!',
+    sharedBanner: 'A shared list — tap the heart to save any of these to your own wishlist.',
   },
   ko: {
     nav: '위시리스트',
@@ -37,6 +47,11 @@ export const wishlistStrings: Record<Lang, WishlistStrings> = {
     browse: '다낭 호텔 둘러보기',
     clear: '전체 삭제',
     countSuffix: '개 저장',
+    viewCards: '카드',
+    viewCompare: '비교',
+    share: '공유',
+    copied: '링크 복사됨!',
+    sharedBanner: '공유된 목록이에요 — 하트를 눌러 내 위시리스트에 저장하세요.',
   },
   vi: {
     nav: 'Yêu thích',
@@ -49,6 +64,11 @@ export const wishlistStrings: Record<Lang, WishlistStrings> = {
     browse: 'Xem khách sạn Đà Nẵng',
     clear: 'Xóa tất cả',
     countSuffix: 'đã lưu',
+    viewCards: 'Thẻ',
+    viewCompare: 'So sánh',
+    share: 'Chia sẻ',
+    copied: 'Đã sao chép liên kết!',
+    sharedBanner: 'Danh sách được chia sẻ — nhấn trái tim để lưu vào danh sách yêu thích của bạn.',
   },
   zh: {
     nav: '心愿单',
@@ -61,6 +81,11 @@ export const wishlistStrings: Record<Lang, WishlistStrings> = {
     browse: '浏览岘港酒店',
     clear: '清空',
     countSuffix: '个收藏',
+    viewCards: '卡片',
+    viewCompare: '对比',
+    share: '分享',
+    copied: '链接已复制！',
+    sharedBanner: '这是分享的清单——点按爱心即可收藏到您自己的心愿单。',
   },
   ja: {
     nav: 'お気に入り',
@@ -73,5 +98,10 @@ export const wishlistStrings: Record<Lang, WishlistStrings> = {
     browse: 'ダナンのホテルを見る',
     clear: 'すべて削除',
     countSuffix: '件保存',
+    viewCards: 'カード',
+    viewCompare: '比較',
+    share: '共有',
+    copied: 'リンクをコピーしました！',
+    sharedBanner: '共有されたリストです — ハートをタップしてご自身のお気に入りに保存できます。',
   },
 }
