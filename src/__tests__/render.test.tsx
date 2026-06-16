@@ -4,6 +4,7 @@ import { render, screen, waitFor, fireEvent, cleanup } from '@testing-library/re
 import { MemoryRouter } from 'react-router-dom'
 import App from '../App'
 import VietnamPage from '../pages/VietnamPage'
+import AdminPage from '../pages/AdminPage'
 import { VoucherCard } from '../components/VoucherCard'
 import { I18nProvider } from '../i18n'
 import { getHotel } from '../data/hotels'
@@ -69,6 +70,23 @@ describe('interaction: Vietnam "see recommended cities" toggle', () => {
 
     // After expanding, the trending tile appears.
     expect(await screen.findByText('Sapa')).toBeTruthy()
+  })
+})
+
+describe('interaction: register a hotel in the unified Partners registry', () => {
+  it('adds a new partner row via the registration form', async () => {
+    render(
+      <MemoryRouter>
+        <AdminPage />
+      </MemoryRouter>,
+    )
+    // Go to the Partners section, then open the registration form.
+    fireEvent.click(screen.getByRole('button', { name: /^partners$/i }))
+    fireEvent.click(screen.getByRole('button', { name: /register hotel/i }))
+    fireEvent.change(screen.getByLabelText(/hotel name/i), { target: { value: 'Test Onboard Hotel' } })
+    fireEvent.click(screen.getByRole('button', { name: /register partner/i }))
+    // The newly registered hotel appears in the table.
+    expect(await screen.findByText('Test Onboard Hotel')).toBeTruthy()
   })
 })
 

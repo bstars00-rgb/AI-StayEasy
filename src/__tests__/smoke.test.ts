@@ -145,11 +145,16 @@ describe('AI search engine', () => {
 })
 
 describe('back-office data', () => {
-  it('derives partners with valid plans and statuses', () => {
-    expect(partners.length).toBeGreaterThan(0)
+  it('manages every hotel as a single partner registry with valid plans/statuses', () => {
+    // Unified model: one partner record per listed hotel (no hotels/partners split).
+    expect(partners).toHaveLength(hotels.length)
     for (const p of partners) {
       expect(['Starter', 'Growth', 'Campaign']).toContain(p.plan)
-      expect(['Active', 'Pending', 'Paused']).toContain(p.status)
+      expect(['Active', 'Pending', 'Paused', 'Listed']).toContain(p.status)
+    }
+    // Free 'Listed' hotels carry no fee; paid plans do.
+    for (const p of partners) {
+      if (p.status === 'Listed') expect(p.monthlyFee).toBe(0)
     }
   })
 

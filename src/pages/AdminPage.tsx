@@ -1,14 +1,15 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { hotels } from '../data/hotels'
-import { partners, campaigns, inquiries, overviewKpis, clicksByCity } from '../data/adminData'
+import type { PriceTier } from '../types'
+import { partners, campaigns, inquiries, overviewKpis, clicksByCity, feeByPlan, PLANS } from '../data/adminData'
+import type { Partner, Plan } from '../data/adminData'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 
-type Section = 'overview' | 'hotels' | 'partners' | 'campaigns' | 'inquiries'
+type Section = 'overview' | 'partners' | 'campaigns' | 'inquiries'
 
 const NAV: { key: Section; label: string; icon: string }[] = [
   { key: 'overview', label: 'Overview', icon: '📊' },
-  { key: 'hotels', label: 'Hotels', icon: '🏨' },
   { key: 'partners', label: 'Partners', icon: '🤝' },
   { key: 'campaigns', label: 'Campaigns', icon: '📣' },
   { key: 'inquiries', label: 'Inquiries', icon: '📨' },
@@ -31,19 +32,46 @@ export default function AdminPage() {
   useDocumentMeta('Back-office — StayEasy Admin', 'Operator console for StayEasy Vietnam (demo).')
   const [section, setSection] = useState<Section>('overview')
   const [navOpen, setNavOpen] = useState(false)
-  const [hotelQuery, setHotelQuery] = useState('')
+  const [query, setQuery] = useState('')
   const [inqFilter, setInqFilter] = useState<'All' | 'New' | 'Contacted' | 'Won' | 'Lost'>('All')
+  // Hotels registered through the back-office form (demo: in-memory only).
+  const [extraPartners, setExtraPartners] = useState<Partner[]>([])
+  const [showRegister, setShowRegister] = useState(false)
 
-  const filteredHotels = useMemo(
+  const allPartners = useMemo(() => [...extraPartners, ...partners], [extraPartners])
+  const filteredPartners = useMemo(
     () =>
-      hotels.filter(
-        (h) =>
-          !hotelQuery ||
-          h.name.toLowerCase().includes(hotelQuery.toLowerCase()) ||
-          h.city.toLowerCase().includes(hotelQuery.toLowerCase()),
+      allPartners.filter(
+        (p) =>
+          !query ||
+          p.name.toLowerCase().includes(query.toLowerCase()) ||
+          p.city.toLowerCase().includes(query.toLowerCase()),
       ),
-    [hotelQuery],
+    [allPartners, query],
   )
+  const cityOptions = useMemo(() => [...new Set(hotels.map((h) => h.city))], [])
+  const typeOptions = useMemo(() => [...new Set(hotels.map((h) => h.hotelType))], [])
+
+  function registerPartner(f: RegisterFields) {
+    const newPartner: Partner = {
+      id: `new-${extraPartners.length + 1}`,
+      name: f.name.trim(),
+      slug: f.name.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
+      city: f.city,
+      hotelType: f.type,
+      tier: f.tier,
+      plan: f.plan,
+      monthlyFee: feeByPlan[f.plan],
+      clicks30d: 0,
+      sponsored: false,
+      status: 'Pending',
+      since: new Date().toISOString().slice(0, 7),
+    }
+    setExtraPartners((prev) => [newPartner, ...prev])
+    setShowRegister(false)
+    setSection('partners')
+  }
+
   const filteredInquiries = inquiries.filter((i) => inqFilter === 'All' || i.status === inqFilter)
   const maxCityClicks = Math.max(...clicksByCity.map((c) => c.clicks), 1)
 
@@ -170,59 +198,53 @@ export default function AdminPage() {
             </div>
           )}
 
-          {/* ---- Hotels ---- */}
-          {section === 'hotels' && (
-            <div className="rounded-2xl bg-white shadow-card ring-1 ring-black/5">
-              <div className="flex flex-col gap-3 border-b border-black/5 p-4 sm:flex-row sm:items-center sm:justify-between">
-                <h2 className="font-bold text-ink-900">{filteredHotels.length} hotels</h2>
-                <input
-                  value={hotelQuery}
-                  onChange={(e) => setHotelQuery(e.target.value)}
-                  placeholder="Search hotels or cities…"
-                  className="w-full rounded-xl border border-black/10 bg-sand-50 px-3 py-2 text-sm outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 sm:w-72"
-                />
-              </div>
-              <div className="overflow-x-auto">
-                <table className="w-full min-w-[680px]">
-                  <thead className="bg-sand-50">
-                    <tr><Th>Hotel</Th><Th>City</Th><Th>Type</Th><Th>Tier</Th><Th>Sponsored</Th><Th>Status</Th></tr>
-                  </thead>
-                  <tbody>
-                    {filteredHotels.map((h) => (
-                      <tr key={h.id} className="border-t border-black/5 hover:bg-sand-50/50">
-                        <Td className="font-medium text-ink-900">{h.name.replace(' (Sample)', '')}</Td>
-                        <Td>{h.city}</Td>
-                        <Td className="text-ink-600">{h.hotelType}</Td>
-                        <Td><span className="pill bg-sand-100 text-ink-700 capitalize">{h.priceTier}</span></Td>
-                        <Td>{h.isSponsored ? <span className="pill bg-accent-50 text-accent-700 ring-1 ring-accent-200">★ Sponsored</span> : <span className="text-ink-600/50">—</span>}</Td>
-                        <Td><span className="pill bg-brand-50 text-brand-700 ring-1 ring-brand-200">Published</span></Td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
-
-          {/* ---- Partners ---- */}
+          {/* ---- Partners (unified hotel + partner registry) ---- */}
           {section === 'partners' && (
             <div className="rounded-2xl bg-white shadow-card ring-1 ring-black/5">
-              <div className="border-b border-black/5 p-4"><h2 className="font-bold text-ink-900">{partners.length} partners</h2></div>
+              <div className="flex flex-col gap-3 border-b border-black/5 p-4 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <h2 className="font-bold text-ink-900">{filteredPartners.length} partners</h2>
+                  <p className="text-xs text-ink-600/70">Every listed hotel is managed here — paid plans and free ‘Listed’ hotels together.</p>
+                </div>
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                  <input
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder="Search hotels or cities…"
+                    className="w-full rounded-xl border border-black/10 bg-sand-50 px-3 py-2 text-sm outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 sm:w-64"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowRegister(true)}
+                    className="shrink-0 rounded-xl bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-700"
+                  >
+                    + Register hotel
+                  </button>
+                </div>
+              </div>
               <div className="overflow-x-auto">
-                <table className="w-full min-w-[720px]">
+                <table className="w-full min-w-[860px]">
                   <thead className="bg-sand-50">
-                    <tr><Th>Hotel</Th><Th>City</Th><Th>Plan</Th><Th>Monthly</Th><Th>Clicks (30d)</Th><Th>Since</Th><Th>Status</Th></tr>
+                    <tr><Th>Hotel</Th><Th>City</Th><Th>Type</Th><Th>Plan</Th><Th>Monthly</Th><Th>Clicks (30d)</Th><Th>Sponsored</Th><Th>Status</Th><Th>Listing</Th></tr>
                   </thead>
                   <tbody>
-                    {partners.map((p) => (
+                    {filteredPartners.map((p) => (
                       <tr key={p.id} className="border-t border-black/5 hover:bg-sand-50/50">
                         <Td className="font-medium text-ink-900">{p.name}</Td>
                         <Td>{p.city}</Td>
+                        <Td className="text-ink-600">{p.hotelType}</Td>
                         <Td><span className="pill bg-brand-50 text-brand-700">{p.plan}</span></Td>
                         <Td>{p.monthlyFee ? `$${p.monthlyFee.toLocaleString()}` : 'Free'}</Td>
                         <Td>{p.clicks30d.toLocaleString()}</Td>
-                        <Td className="text-ink-600">{p.since}</Td>
+                        <Td>{p.sponsored ? <span className="pill bg-accent-50 text-accent-700 ring-1 ring-accent-200">★</span> : <span className="text-ink-600/40">—</span>}</Td>
                         <Td><span className={`pill ${statusClass(p.status)}`}>{p.status}</span></Td>
+                        <Td>
+                          {p.status === 'Pending' && p.id.startsWith('new-') ? (
+                            <span className="text-ink-600/50">Draft</span>
+                          ) : (
+                            <Link to={`/hotels/${p.slug}`} className="text-brand-700 hover:underline">View ↗</Link>
+                          )}
+                        </Td>
                       </tr>
                     ))}
                   </tbody>
@@ -298,6 +320,126 @@ export default function AdminPage() {
           )}
         </main>
       </div>
+
+      {showRegister && (
+        <RegisterPartnerModal
+          cityOptions={cityOptions}
+          typeOptions={typeOptions}
+          onClose={() => setShowRegister(false)}
+          onSubmit={registerPartner}
+        />
+      )}
+    </div>
+  )
+}
+
+interface RegisterFields {
+  name: string
+  city: string
+  type: string
+  tier: PriceTier
+  plan: Plan
+  url: string
+  contact: string
+}
+
+/** Hotel onboarding form. Demo only — no backend; submits into in-memory state. */
+function RegisterPartnerModal({
+  cityOptions,
+  typeOptions,
+  onClose,
+  onSubmit,
+}: {
+  cityOptions: string[]
+  typeOptions: string[]
+  onClose: () => void
+  onSubmit: (f: RegisterFields) => void
+}) {
+  const [f, setF] = useState<RegisterFields>({
+    name: '',
+    city: cityOptions[0] ?? 'Da Nang',
+    type: typeOptions[0] ?? 'City hotel',
+    tier: 'mid',
+    plan: 'Growth',
+    url: '',
+    contact: '',
+  })
+  const set =
+    (k: keyof RegisterFields) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
+      setF((prev) => ({ ...prev, [k]: e.target.value }))
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!f.name.trim()) return
+    onSubmit(f)
+  }
+
+  const field = 'w-full rounded-xl border border-black/10 bg-sand-50 px-3 py-2 text-sm outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100'
+  const label = 'text-xs font-semibold uppercase tracking-wide text-ink-600/70'
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 p-0 sm:items-center sm:p-4" onClick={onClose}>
+      <form
+        onClick={(e) => e.stopPropagation()}
+        onSubmit={submit}
+        className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-t-3xl bg-white p-6 shadow-card sm:rounded-3xl"
+      >
+        <div className="flex items-start justify-between">
+          <div>
+            <h2 className="text-lg font-extrabold text-ink-900">Register a hotel</h2>
+            <p className="text-sm text-ink-600/70">Onboard a hotel as a partner. It starts as <b>Pending</b> until activated.</p>
+          </div>
+          <button type="button" onClick={onClose} aria-label="Close" className="grid h-8 w-8 place-items-center rounded-lg text-ink-600 hover:bg-sand-100">✕</button>
+        </div>
+
+        <div className="mt-5 space-y-4">
+          <div>
+            <label className={label} htmlFor="r-name">Hotel name *</label>
+            <input id="r-name" value={f.name} onChange={set('name')} required placeholder="e.g. Riverside Pearl Hotel" className={`mt-1 ${field}`} />
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label className={label} htmlFor="r-city">City</label>
+              <select id="r-city" value={f.city} onChange={set('city')} className={`mt-1 ${field}`}>
+                {cityOptions.map((c) => <option key={c} value={c}>{c}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className={label} htmlFor="r-type">Hotel type</label>
+              <select id="r-type" value={f.type} onChange={set('type')} className={`mt-1 ${field}`}>
+                {typeOptions.map((tp) => <option key={tp} value={tp}>{tp}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className={label} htmlFor="r-tier">Price tier</label>
+              <select id="r-tier" value={f.tier} onChange={set('tier')} className={`mt-1 ${field} capitalize`}>
+                {(['budget', 'mid', 'premium'] as PriceTier[]).map((tr) => <option key={tr} value={tr}>{tr}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className={label} htmlFor="r-plan">Plan</label>
+              <select id="r-plan" value={f.plan} onChange={set('plan')} className={`mt-1 ${field}`}>
+                {PLANS.map((pl) => <option key={pl} value={pl}>{pl} {feeByPlan[pl] ? `($${feeByPlan[pl]}/mo)` : '(Free)'}</option>)}
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label className={label} htmlFor="r-url">Official website</label>
+            <input id="r-url" value={f.url} onChange={set('url')} placeholder="https://hotel.example/booking" className={`mt-1 ${field}`} />
+          </div>
+          <div>
+            <label className={label} htmlFor="r-contact">Contact email</label>
+            <input id="r-contact" type="email" value={f.contact} onChange={set('contact')} placeholder="owner@hotel.example" className={`mt-1 ${field}`} />
+          </div>
+        </div>
+
+        <div className="mt-6 flex gap-2">
+          <button type="button" onClick={onClose} className="flex-1 rounded-xl bg-sand-100 px-4 py-2.5 text-sm font-semibold text-ink-800 hover:bg-sand-200">Cancel</button>
+          <button type="submit" className="flex-1 rounded-xl bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-700">Register partner</button>
+        </div>
+        <p className="mt-3 text-center text-xs text-ink-600/60">🧪 Demo — saved in memory only (resets on reload).</p>
+      </form>
     </div>
   )
 }

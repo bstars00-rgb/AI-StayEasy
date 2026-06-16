@@ -16,36 +16,56 @@ const between = (s: string, min: number, max: number) => min + (seed(s) % (max -
 
 const cleanName = (n: string) => n.replace(' (Sample)', '')
 
-type Plan = 'Starter' | 'Growth' | 'Campaign'
+export type Plan = 'Starter' | 'Growth' | 'Campaign'
+export const PLANS: Plan[] = ['Starter', 'Growth', 'Campaign']
 const planByTier: Record<PriceTier, Plan> = { premium: 'Campaign', mid: 'Growth', budget: 'Starter' }
-const feeByPlan: Record<Plan, number> = { Starter: 0, Growth: 390, Campaign: 1200 }
+export const feeByPlan: Record<Plan, number> = { Starter: 0, Growth: 390, Campaign: 1200 }
+
+export type PartnerStatus = 'Active' | 'Pending' | 'Paused' | 'Listed'
 
 export interface Partner {
   id: string
   name: string
+  slug: string
   city: string
+  hotelType: string
+  tier: PriceTier
   plan: Plan
   monthlyFee: number
   clicks30d: number
-  status: 'Active' | 'Pending' | 'Paused'
+  sponsored: boolean
+  status: PartnerStatus
   since: string
 }
 
-export const partners: Partner[] = hotels
-  .filter((h) => h.isSponsored || h.koreanFriendly)
-  .map((h) => {
-    const plan = planByTier[h.priceTier]
-    return {
-      id: h.id,
-      name: cleanName(h.name),
-      city: h.city,
-      plan,
-      monthlyFee: feeByPlan[plan],
-      clicks30d: between(h.id + 'clk', 180, 1450),
-      status: pick(h.id + 'st', ['Active', 'Active', 'Active', 'Pending', 'Paused'] as const),
-      since: `2026-0${1 + (seed(h.id) % 6)}`,
-    }
-  })
+/**
+ * Unified partner registry — EVERY listed hotel is a partner record. Hotels with
+ * a commercial relationship (sponsored or Korean-friendly) get a paid plan and an
+ * Active/Pending/Paused status; the rest are 'Listed' on the free Starter tier.
+ * There is no separate "hotels" vs "partners" split — this single list is the
+ * back-office source of truth.
+ */
+export const partners: Partner[] = hotels.map((h) => {
+  const commercial = h.isSponsored || h.koreanFriendly
+  const plan: Plan = commercial ? planByTier[h.priceTier] : 'Starter'
+  const status: PartnerStatus = commercial
+    ? pick(h.id + 'st', ['Active', 'Active', 'Active', 'Pending', 'Paused'] as const)
+    : 'Listed'
+  return {
+    id: h.id,
+    name: cleanName(h.name),
+    slug: h.slug,
+    city: h.city,
+    hotelType: h.hotelType,
+    tier: h.priceTier,
+    plan,
+    monthlyFee: status === 'Listed' ? 0 : feeByPlan[plan],
+    clicks30d: commercial ? between(h.id + 'clk', 180, 1450) : between(h.id + 'clk', 20, 180),
+    sponsored: h.isSponsored,
+    status,
+    since: `2026-0${1 + (seed(h.id) % 6)}`,
+  }
+})
 
 export interface Campaign {
   id: string
