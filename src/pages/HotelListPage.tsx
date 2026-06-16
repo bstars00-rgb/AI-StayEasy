@@ -2,8 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link, Navigate, useParams, useSearchParams } from 'react-router-dom'
 import Button from '../components/Button'
 import { HotelCard } from '../components/HotelCard'
-import { hotelsByCity } from '../data/hotels'
-import { getDestination } from '../data/destinations'
+import { repo } from '../data/repo'
 import type { Hotel } from '../types'
 import { useT } from '../i18n'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
@@ -25,7 +24,7 @@ const matchers: Record<GroupKey, (h: Hotel, value: string) => boolean> = {
 export default function HotelListPage() {
   const t = useT()
   const { citySlug } = useParams()
-  const dest = getDestination(citySlug ?? 'da-nang')
+  const dest = repo.getDestination(citySlug ?? 'da-nang')
 
   useDocumentMeta(t.list.metaTitle, t.list.metaDesc)
 
@@ -33,7 +32,7 @@ export default function HotelListPage() {
   const [selected, setSelected] = useState<Record<GroupKey, string[]>>({ area: [], travel: [], features: [], benefits: [] })
 
   // City's hotels + the areas that actually exist for this city.
-  const all = useMemo(() => (dest ? hotelsByCity(dest.city) : []), [dest])
+  const all = useMemo(() => (dest ? repo.listHotelsByCity(dest.city) : []), [dest])
   const areaOptions = useMemo(() => Array.from(new Set(all.map((h) => h.area))), [all])
 
   // Reset filters when the city changes.
@@ -54,6 +53,22 @@ export default function HotelListPage() {
 
   const cityName = (t.enums.city as Record<string, string>)[dest.city] ?? dest.city
   const isDaNang = dest.city === 'Da Nang'
+
+  // City listed but no hotels onboarded yet → friendly "coming soon" panel.
+  if (!dest.available) {
+    return (
+      <section className="container-page py-20 text-center">
+        <div className="text-5xl">{dest.emoji}</div>
+        <h1 className="mt-4 text-3xl font-extrabold text-ink-900">{cityName}</h1>
+        <p className="mx-auto mt-2 max-w-xl text-ink-700/75">{dest.shortDescription}</p>
+        <span className="pill mt-4 inline-flex bg-amber-50 text-amber-700 ring-1 ring-amber-200">{t.common.comingSoon}</span>
+        <div className="mt-6 flex flex-wrap justify-center gap-3">
+          <Button to="/destinations/vietnam">← {t.vietnam.destTitle}</Button>
+          <Button to="/destinations/da-nang" variant="white">{t.list.heroTitle}</Button>
+        </div>
+      </section>
+    )
+  }
 
   const filters: Record<GroupKey, string[]> = {
     area: areaOptions,

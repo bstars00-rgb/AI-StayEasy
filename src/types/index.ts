@@ -1,4 +1,22 @@
-export type City = 'Da Nang' | 'Ho Chi Minh City' | 'Nha Trang' | 'Phu Quoc'
+export type City =
+  // Live (hotels available)
+  | 'Da Nang'
+  | 'Ho Chi Minh City'
+  | 'Nha Trang'
+  | 'Phu Quoc'
+  // Discoverable destinations (onboarding hotel partners)
+  | 'Hanoi'
+  | 'Ha Long Bay'
+  | 'Sapa'
+  | 'Ninh Binh'
+  | 'Hue'
+  | 'Hoi An'
+  | 'Da Lat'
+  | 'Mui Ne'
+  | 'Can Tho'
+  | 'Vung Tau'
+  | 'Quy Nhon'
+  | 'Con Dao'
 
 export type Area =
   // Da Nang

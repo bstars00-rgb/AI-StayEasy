@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import Button from '../components/Button'
 import { SectionHeading } from '../components/SectionHeading'
 import { HotelImage } from '../components/HotelImage'
-import { destinations } from '../data/destinations'
+import { repo } from '../data/repo'
 import { travelStyles } from '../data/travelStyles'
 import { useT } from '../i18n'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
@@ -10,6 +10,7 @@ import { useDocumentMeta } from '../lib/useDocumentMeta'
 export default function VietnamPage() {
   const t = useT()
   useDocumentMeta(t.vietnam.metaTitle, t.vietnam.metaDesc)
+  const destinations = repo.listDestinations()
   const destText = t.destText as unknown as Record<string, { short: string; bestFor: string[]; recommended: string; highlights: string[] }>
   const cityNames = t.enums.city as Record<string, string>
 
@@ -34,7 +35,14 @@ export default function VietnamPage() {
       <section className="container-page mt-12">
         <SectionHeading eyebrow={t.vietnam.destEyebrow} title={t.vietnam.destTitle} />
         <div className="grid gap-6 lg:grid-cols-2">
-          {destinations.map((d) => (
+          {destinations.map((d) => {
+            // Use translated destination text when present; fall back to the
+            // destination's own (English) fields for newer "coming soon" cities.
+            const dt = destText[d.slug]
+            const short = dt?.short ?? d.shortDescription
+            const best = dt?.bestFor ?? d.bestFor
+            const rec = dt?.recommended ?? d.recommendedTraveler
+            return (
             <div key={d.city} className="overflow-hidden rounded-3xl bg-white shadow-card ring-1 ring-black/5">
               <div className="relative">
                 <HotelImage gradient={d.heroColor} emoji={d.emoji} rounded="" className="h-44 w-full" label={cityNames[d.city] ?? d.city} />
@@ -51,11 +59,11 @@ export default function VietnamPage() {
                   <h3 className="text-2xl font-extrabold text-ink-900">{cityNames[d.city] ?? d.city}</h3>
                   {d.available && <span className="text-sm font-semibold text-brand-700">{d.hotelCount} {t.common.hotels}</span>}
                 </div>
-                <p className="mt-2 text-sm text-ink-700/80">{destText[d.slug].short}</p>
+                <p className="mt-2 text-sm text-ink-700/80">{short}</p>
 
                 <div className="mt-4 space-y-2 text-sm">
-                  <p><span className="font-semibold text-ink-900">{t.vietnam.bestForLabel}</span> <span className="text-ink-700/80">{destText[d.slug].bestFor.join(', ')}</span></p>
-                  <p><span className="font-semibold text-ink-900">{t.vietnam.recommendedLabel}</span> <span className="text-ink-700/80">{destText[d.slug].recommended}</span></p>
+                  <p><span className="font-semibold text-ink-900">{t.vietnam.bestForLabel}</span> <span className="text-ink-700/80">{best.join(', ')}</span></p>
+                  <p><span className="font-semibold text-ink-900">{t.vietnam.recommendedLabel}</span> <span className="text-ink-700/80">{rec}</span></p>
                 </div>
 
                 <div className="mt-5">
@@ -69,7 +77,8 @@ export default function VietnamPage() {
                 </div>
               </div>
             </div>
-          ))}
+            )
+          })}
         </div>
       </section>
 

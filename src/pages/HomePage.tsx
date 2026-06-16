@@ -5,14 +5,15 @@ import { AISearch } from '../components/AISearch'
 import { SectionHeading } from '../components/SectionHeading'
 import { HotelCard } from '../components/HotelCard'
 import { HotelImage } from '../components/HotelImage'
-import { hotels } from '../data/hotels'
-import { destinations } from '../data/destinations'
+import { repo } from '../data/repo'
 import { useT } from '../i18n'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 
 export default function HomePage() {
   const t = useT()
   useDocumentMeta(t.home.metaTitle, t.home.metaDesc)
+  const hotels = repo.allHotels()
+  const destinations = repo.listDestinations()
   // 3 sample Da Nang hotels, leading with a sponsored one.
   const featured = [
     ...hotels.filter((h) => h.isSponsored),
@@ -71,10 +72,10 @@ export default function HomePage() {
       <section className="container-page mt-16">
         <SectionHeading eyebrow={t.home.featuredDestEyebrow} title={t.home.featuredDestTitle} subtitle={t.home.featuredDestSubtitle} />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {destinations.map((d) => (
+          {destinations.filter((d) => d.available).map((d) => (
             <Link
               key={d.city}
-              to={d.available ? `/destinations/${d.slug}` : '/destinations/vietnam'}
+              to={`/destinations/${d.slug}`}
               className="group relative overflow-hidden rounded-2xl shadow-card ring-1 ring-black/5"
             >
               <HotelImage gradient={d.heroColor} emoji={d.emoji} rounded="" className="h-40 w-full" label={d.city} />

@@ -5,7 +5,7 @@ import { HotelImage } from '../components/HotelImage'
 import { SponsoredBadge } from '../components/SponsoredBadge'
 import { FacilityGrid, TagChips } from '../components/Facilities'
 import { HotelCard } from '../components/HotelCard'
-import { getHotel, getSimilarHotels } from '../data/hotels'
+import { repo } from '../data/repo'
 import { useT, useLang, localizeHotel } from '../i18n'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 
@@ -39,7 +39,7 @@ export default function HotelDetailPage() {
   const { slug } = useParams()
   const t = useT()
   const { lang } = useLang()
-  const rawHotel = slug ? getHotel(slug) : undefined
+  const rawHotel = slug ? repo.getHotel(slug) : undefined
 
   // Document meta: built from the (localized) hotel when present, else a
   // generic fallback. useDocumentMeta is called unconditionally before any
@@ -61,7 +61,7 @@ export default function HotelDetailPage() {
   }
 
   const hotel = localizeHotel(rawHotel, lang)
-  const similar = getSimilarHotels(rawHotel)
+  const similar = repo.getSimilarHotels(rawHotel)
   const area = (t.enums.area as Record<string, string>)[hotel.area] ?? hotel.area
   const city = (t.enums.city as Record<string, string>)[hotel.city] ?? hotel.city
   const hotelType = (t.enums.hotelType as Record<string, string>)[hotel.hotelType] ?? hotel.hotelType

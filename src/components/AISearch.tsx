@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useLang } from '../i18n'
-import { hotels } from '../data/hotels'
-import { recommend, type Recommendation } from '../lib/searchEngine'
+import { repo } from '../data/repo'
+import { type Recommendation } from '../lib/searchEngine'
 import { searchStrings } from '../lib/searchI18n'
 import { HotelCard } from './HotelCard'
 
@@ -19,7 +19,7 @@ export function AISearch({ autoFocus = false }: { autoFocus?: boolean }) {
     setRec(null)
     // Brief delay for an "AI thinking" feel; the work itself is synchronous.
     window.setTimeout(() => {
-      setRec(recommend(text, hotels))
+      setRec(repo.recommend(text))
       setLoading(false)
     }, 450)
   }
