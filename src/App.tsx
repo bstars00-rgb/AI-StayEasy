@@ -9,6 +9,7 @@ import PartnerPage from './pages/PartnerPage'
 import DashboardPage from './pages/DashboardPage'
 import AboutPage from './pages/AboutPage'
 import SearchPage from './pages/SearchPage'
+import WishlistPage from './pages/WishlistPage'
 import AdminPage from './pages/AdminPage'
 import NotFoundPage from './pages/NotFoundPage'
 
@@ -36,6 +37,7 @@ export default function App() {
       <Route element={<PublicLayout />}>
         <Route path="/" element={<HomePage />} />
         <Route path="/search" element={<SearchPage />} />
+        <Route path="/wishlist" element={<WishlistPage />} />
         <Route path="/destinations/vietnam" element={<VietnamPage />} />
         <Route path="/destinations/:citySlug" element={<HotelListPage />} />
         <Route path="/hotels/:slug" element={<HotelDetailPage />} />

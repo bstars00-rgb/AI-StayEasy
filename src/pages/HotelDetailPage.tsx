@@ -4,6 +4,7 @@ import Button from '../components/Button'
 import { HotelImage } from '../components/HotelImage'
 import { SponsoredBadge } from '../components/SponsoredBadge'
 import { FacilityGrid, TagChips } from '../components/Facilities'
+import { WishlistButton } from '../components/WishlistButton'
 import { HotelCard } from '../components/HotelCard'
 import { repo } from '../data/repo'
 import { useAsync } from '../lib/useAsync'
@@ -113,7 +114,10 @@ export default function HotelDetailPage() {
             <div className="mt-3"><TagChips items={hotel.tags} /></div>
           </div>
           <div className="shrink-0">
-            <BookOfficialButton href={hotel.officialWebsiteUrl} hotelName={hotel.name} label={t.common.bookOfficial} className="w-full lg:w-auto" />
+            <div className="flex flex-col gap-2 sm:flex-row lg:flex-col lg:items-end">
+              <BookOfficialButton href={hotel.officialWebsiteUrl} hotelName={hotel.name} label={t.common.bookOfficial} className="w-full lg:w-auto" />
+              <WishlistButton hotelId={hotel.slug} variant="pill" className="w-full justify-center sm:w-auto lg:w-auto" />
+            </div>
             <p className="mt-2 text-center text-xs text-ink-700/60 lg:text-right">{t.detail.noCommission}</p>
           </div>
         </div>

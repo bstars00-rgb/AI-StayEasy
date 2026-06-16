@@ -15,6 +15,7 @@ import { recommend } from '../lib/searchEngine'
 import { partners, campaigns, inquiries, overviewKpis, clicksByCity } from '../data/adminData'
 import { endpoints, API_BASE } from '../api/contract'
 import { repo } from '../data/repo'
+import { wishlist } from '../lib/wishlist'
 
 /** Collects the sorted set of key-paths (leaves = strings/arrays) of an object. */
 function shapePaths(obj: unknown, prefix = ''): string[] {
@@ -149,7 +150,7 @@ describe('page render smoke (initial render, no throw)', () => {
     renderToString(h(I18nProvider, null, h(MemoryRouter, { initialEntries: [path] }, h(App))))
 
   const routes = [
-    '/', '/search', '/destinations/vietnam', '/destinations/da-nang',
+    '/', '/search', '/wishlist', '/destinations/vietnam', '/destinations/da-nang',
     '/destinations/hanoi', '/hotels/an-bang-beach-resort', '/guides/direct-booking',
     '/partners', '/dashboard', '/admin', '/about', '/no-such-page',
   ]
@@ -173,6 +174,21 @@ describe('async data repo (mock-backed)', () => {
     expect((await repo.listHotelsByCity('Da Nang'))).toHaveLength(12)
     const rec = await repo.recommend('family beach hotel with a pool')
     expect(rec.results.length).toBeGreaterThan(0)
+  })
+})
+
+describe('wishlist store', () => {
+  it('toggles, dedupes, removes, and clears', () => {
+    wishlist.clear()
+    expect(wishlist.get()).toEqual([])
+    wishlist.toggle('an-bang-beach-resort')
+    wishlist.toggle('son-tra-hillside-retreat')
+    expect(wishlist.has('an-bang-beach-resort')).toBe(true)
+    expect(wishlist.get()).toHaveLength(2)
+    wishlist.toggle('an-bang-beach-resort') // toggle off
+    expect(wishlist.has('an-bang-beach-resort')).toBe(false)
+    wishlist.remove('son-tra-hillside-retreat')
+    expect(wishlist.get()).toEqual([])
   })
 })
 

@@ -3,6 +3,7 @@ import type { Hotel } from '../types'
 import { HotelImage } from './HotelImage'
 import { SponsoredBadge } from './SponsoredBadge'
 import { FacilityChips } from './Facilities'
+import { WishlistButton } from './WishlistButton'
 import { useLang, useT, localizeHotel } from '../i18n'
 
 /**
@@ -19,7 +20,8 @@ export function HotelCard({ hotel: raw }: { hotel: Hotel }) {
   const type = (t.enums.hotelType as Record<string, string>)[hotel.hotelType] ?? hotel.hotelType
 
   return (
-    <div className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-black/5 transition-all hover:-translate-y-0.5 hover:shadow-card-hover">
+    <div className="group relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-black/5 transition-all hover:-translate-y-0.5 hover:shadow-card-hover">
+      <WishlistButton hotelId={raw.slug} className="absolute right-3 top-3 z-10" />
       <Link to={`/hotels/${hotel.slug}`} className="relative block">
         <HotelImage
           src={hotel.imageUrl}

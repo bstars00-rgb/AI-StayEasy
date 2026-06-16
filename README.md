@@ -36,6 +36,7 @@ The product focus is **trust and suitability** (not lowest price): official-webs
 |-------|------|-------------|
 | `/` | **Home** | Hero, **AI hotel search**, featured destinations, featured hotels, "StayEasy is not an OTA" explainer |
 | `/search` | **AI Search** | Natural-language hotel recommender — describe your trip in any language, get ranked matches with reasons |
+| `/wishlist` | **Wishlist** | Save hotels (localStorage) via the heart on any card/detail; navbar count badge; 5-language |
 | `/destinations/vietnam` | **Vietnam overview** | Destination cards, travel-style guide, balanced direct-booking explanation |
 | `/destinations/da-nang` | **Da Nang hotel list** | Filter bar (Area / Travel type / Features / Official benefits) + suitability-first cards + "how to choose" |
 | `/hotels/:slug` | **Hotel detail** | StayEasy summary, official benefits, room guide, location guide, facilities, cancellation checklist, prominent **Book on Official Website** CTA, similar hotels, disclaimer |
