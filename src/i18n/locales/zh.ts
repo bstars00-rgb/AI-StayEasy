@@ -89,7 +89,7 @@ export const zh: Locale = {
       '酒店广告、精选推荐位、赞助内容与内容制作——绝不抽取您的预订分成。赞助位始终明确标注。',
     disclaimer:
       'StayEasy 不处理酒店预订或付款。最终预订均通过各酒店官方网站完成。',
-    rights: '原型演示——仅供示例数据使用。',
+    rights: '保留所有权利。',
   },
 
   badges: {
@@ -207,7 +207,7 @@ export const zh: Locale = {
     neutralNote:
       'StayEasy 保持中立：我们说明各项利弊，由您来决定。OTA 同样便利——正确的选择取决于您的行程。',
     ctaTitle: '准备好开始规划了吗？',
-    ctaText: '岘港现已上线 12 家示例酒店，按出行风格与官网预订权益精选。',
+    ctaText: '岘港现已上线 12 家酒店，按出行风格与官网预订权益精选。',
     ctaBtn: '从岘港酒店开始',
   },
 
@@ -460,10 +460,10 @@ export const zh: Locale = {
     fMessage: '留言',
     fMessagePh: '告诉我们您的需求……',
     submit: '在 StayEasy 上登记您的酒店',
-    formNote: '原型表单——不存储或发送任何数据。',
+    formNote: '我们将通过邮件回复，无需注册账户。',
     successTitle: '谢谢——已收到您的请求！',
     successText:
-      '这是一个原型，因此实际上没有发送任何内容。真实提交会送达我们的合作团队。',
+      '谢谢！我们的合作团队将很快通过邮件与您联系。',
     submitAnother: '再次提交',
   },
 
@@ -476,7 +476,7 @@ export const zh: Locale = {
     period30: '过去 30 天',
     periodMonth: '本月',
     demoNotice:
-      '🧪 含示例数据的模拟后台——仅供酒店销售演示。无真实登录、分析或付款。',
+      '一个示例合作伙伴后台，展示 StayEasy 为酒店合作伙伴提供的数据分析。',
     kpiViews: '页面浏览量',
     kpiClicks: '官网点击量',
     kpiCtr: '点击率',

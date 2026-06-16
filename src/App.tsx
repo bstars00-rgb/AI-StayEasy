@@ -10,6 +10,11 @@ const VietnamPage = lazy(() => import('./pages/VietnamPage'))
 const HotelListPage = lazy(() => import('./pages/HotelListPage'))
 const HotelDetailPage = lazy(() => import('./pages/HotelDetailPage'))
 const BookingGuidePage = lazy(() => import('./pages/BookingGuidePage'))
+const GuidesIndexPage = lazy(() => import('./pages/GuidesIndexPage'))
+const GuideArticlePage = lazy(() => import('./pages/GuideArticlePage'))
+const PrivacyPage = lazy(() => import('./pages/PrivacyPage'))
+const TermsPage = lazy(() => import('./pages/TermsPage'))
+const ContactPage = lazy(() => import('./pages/ContactPage'))
 const PartnerPage = lazy(() => import('./pages/PartnerPage'))
 const DashboardPage = lazy(() => import('./pages/DashboardPage'))
 const AboutPage = lazy(() => import('./pages/AboutPage'))
@@ -73,10 +78,15 @@ export default function App() {
         <Route path="/destinations/vietnam" element={<VietnamPage />} />
         <Route path="/destinations/:citySlug" element={<HotelListPage />} />
         <Route path="/hotels/:slug" element={<HotelDetailPage />} />
+        <Route path="/guides" element={<GuidesIndexPage />} />
         <Route path="/guides/direct-booking" element={<BookingGuidePage />} />
+        <Route path="/guides/:slug" element={<GuideArticlePage />} />
         <Route path="/partners" element={<PartnerPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/privacy" element={<PrivacyPage />} />
+        <Route path="/terms" element={<TermsPage />} />
+        <Route path="/contact" element={<ContactPage />} />
 
         {/* Legacy route redirects */}
         <Route path="/vietnam" element={<Navigate to="/destinations/vietnam" replace />} />

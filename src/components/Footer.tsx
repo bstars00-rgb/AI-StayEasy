@@ -18,9 +18,9 @@ export function Footer() {
           <h4 className="text-sm font-bold text-ink-900">{t.footer.colStayeasy}</h4>
           <ul className="mt-3 space-y-2 text-sm text-ink-700/80">
             <li><Link className="hover:text-brand-700" to="/about">{t.footer.about}</Link></li>
-            <li><Link className="hover:text-brand-700" to="/guides/direct-booking">{t.footer.directGuide}</Link></li>
+            <li><Link className="hover:text-brand-700" to="/guides">Guides</Link></li>
             <li><Link className="hover:text-brand-700" to="/partners">{t.footer.partner}</Link></li>
-            <li><a className="hover:text-brand-700" href="#contact">{t.footer.contact}</a></li>
+            <li><Link className="hover:text-brand-700" to="/contact">{t.footer.contact}</Link></li>
           </ul>
         </div>
 
@@ -29,8 +29,8 @@ export function Footer() {
           <ul className="mt-3 space-y-2 text-sm text-ink-700/80">
             <li><Link className="hover:text-brand-700" to="/destinations/vietnam">{t.footer.destinations}</Link></li>
             <li><Link className="hover:text-brand-700" to="/destinations/da-nang">{t.footer.daNang}</Link></li>
-            <li><Link className="hover:text-brand-700" to="/dashboard">{t.footer.dashboard}</Link></li>
-            <li><Link className="hover:text-brand-700" to="/admin">Back-office (demo)</Link></li>
+            <li><Link className="hover:text-brand-700" to="/guides">Guides</Link></li>
+            <li><Link className="hover:text-brand-700" to="/partners">{t.footer.partner}</Link></li>
           </ul>
         </div>
 
@@ -46,8 +46,12 @@ export function Footer() {
             ⚠️ {t.footer.disclaimer}
           </p>
           <div className="flex flex-col items-center justify-between gap-2 sm:flex-row">
-            <p>© {new Date().getFullYear()} StayEasy Vietnam · {t.footer.rights}</p>
-            <p>Da Nang · Ho Chi Minh City · Nha Trang · Phu Quoc</p>
+            <p>© {new Date().getFullYear()} StayEasy · {t.footer.rights}</p>
+            <nav className="flex flex-wrap items-center gap-x-4 gap-y-1">
+              <Link className="hover:text-brand-700" to="/privacy">Privacy Policy</Link>
+              <Link className="hover:text-brand-700" to="/terms">Terms of Use</Link>
+              <Link className="hover:text-brand-700" to="/contact">Contact</Link>
+            </nav>
           </div>
         </div>
       </div>

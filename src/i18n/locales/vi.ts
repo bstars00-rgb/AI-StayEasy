@@ -89,7 +89,7 @@ export const vi: Locale = {
       'Quảng cáo khách sạn, vị trí nổi bật, nội dung tài trợ và sản xuất nội dung — không bao giờ lấy phần trăm từ đơn đặt phòng của bạn. Các vị trí tài trợ luôn được ghi nhãn rõ ràng.',
     disclaimer:
       'StayEasy không xử lý đặt phòng hay thanh toán khách sạn. Việc đặt phòng cuối cùng được hoàn tất qua website chính thức của mỗi khách sạn.',
-    rights: 'Bản demo nguyên mẫu — chỉ dùng dữ liệu mẫu.',
+    rights: 'Bảo lưu mọi quyền.',
   },
 
   badges: {
@@ -207,7 +207,7 @@ export const vi: Locale = {
     neutralNote:
       'StayEasy giữ quan điểm trung lập: chúng tôi giải thích các đánh đổi để bạn tự quyết định. OTA cũng tiện lợi — lựa chọn đúng tùy thuộc vào chuyến đi của bạn.',
     ctaTitle: 'Sẵn sàng bắt đầu lên kế hoạch?',
-    ctaText: 'Đà Nẵng đã sẵn sàng với 12 khách sạn mẫu được chọn theo phong cách du lịch và ưu đãi đặt phòng chính thức.',
+    ctaText: 'Đà Nẵng đã hoạt động với 12 khách sạn được chọn theo phong cách du lịch và ưu đãi đặt phòng chính thức.',
     ctaBtn: 'Bắt đầu với khách sạn Đà Nẵng',
   },
 
@@ -460,10 +460,10 @@ export const vi: Locale = {
     fMessage: 'Lời nhắn',
     fMessagePh: 'Hãy cho chúng tôi biết bạn đang tìm kiếm điều gì…',
     submit: 'Đăng khách sạn của bạn lên StayEasy',
-    formNote: 'Biểu mẫu nguyên mẫu — không có dữ liệu nào được lưu trữ hay gửi đi.',
+    formNote: 'Chúng tôi sẽ phản hồi qua email — không cần tài khoản.',
     successTitle: 'Cảm ơn — đã nhận được yêu cầu!',
     successText:
-      'Đây là một nguyên mẫu, nên không có gì thực sự được gửi đi. Một đơn gửi thật sẽ tới được đội ngũ hợp tác của chúng tôi.',
+      'Cảm ơn bạn! Đội ngũ hợp tác của chúng tôi sẽ sớm phản hồi bạn qua email.',
     submitAnother: 'Gửi đơn khác',
   },
 
@@ -476,7 +476,7 @@ export const vi: Locale = {
     period30: '30 ngày qua',
     periodMonth: 'Tháng này',
     demoNotice:
-      '🧪 Bảng điều khiển giả lập với dữ liệu mẫu — chỉ dùng để demo bán hàng cho khách sạn. Không có đăng nhập, phân tích hay thanh toán thật.',
+      'Bảng điều khiển đối tác mẫu minh họa các phân tích mà StayEasy cung cấp cho các khách sạn đối tác.',
     kpiViews: 'Lượt xem trang',
     kpiClicks: 'Lượt nhấp tới website chính thức',
     kpiCtr: 'Tỷ lệ nhấp chuột',

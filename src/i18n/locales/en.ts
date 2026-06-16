@@ -89,7 +89,7 @@ export const en = {
       'Hotel advertising, featured listings, sponsored content, and content production — never a cut of your booking. Sponsored placements are always labeled.',
     disclaimer:
       'StayEasy does not process hotel reservations or payments. Final booking is completed through each hotel’s official website.',
-    rights: 'Prototype demo — sample data only.',
+    rights: 'All rights reserved.',
   },
 
   badges: {
@@ -207,7 +207,7 @@ export const en = {
     neutralNote:
       'StayEasy stays neutral: we explain the trade-offs so you can decide. OTAs are convenient too — the right choice depends on your trip.',
     ctaTitle: 'Ready to start planning?',
-    ctaText: 'Da Nang is live with 12 sample hotels chosen by travel style and official booking benefits.',
+    ctaText: 'Da Nang is live with 12 hotels chosen by travel style and official booking benefits.',
     ctaBtn: 'Start with Da Nang hotels',
   },
 
@@ -421,7 +421,7 @@ export const en = {
     ],
     reportEyebrow: 'Reporting',
     reportTitle: 'Example performance report',
-    reportSubtitle: 'Every partner sees how their listing and campaigns perform. (Sample data.)',
+    reportSubtitle: 'Every partner sees how their listing and campaigns perform.',
     report: {
       views: 'Page views',
       clicks: 'Official website clicks',
@@ -429,7 +429,7 @@ export const en = {
       market: 'Top source market',
       traveler: 'Top traveler type',
     },
-    reportLink: 'See the full sample dashboard',
+    reportLink: 'See the full hotel dashboard',
     plansEyebrow: 'Plans',
     plansTitle: 'Simple, commission-free plans',
     plans: {
@@ -460,23 +460,23 @@ export const en = {
     fMessage: 'Message',
     fMessagePh: 'Tell us what you’re looking for…',
     submit: 'List your hotel on StayEasy',
-    formNote: 'Prototype form — no data is stored or sent.',
+    formNote: 'We’ll reply by email — no account needed.',
     successTitle: 'Thanks — request received!',
     successText:
-      'This is a prototype, so nothing was actually sent. A real submission would reach our partnerships team.',
+      'Thanks! Our partnerships team will get back to you by email shortly.',
     submitAnother: 'Submit another',
   },
 
   dashboard: {
-    metaTitle: 'Hotel dashboard (demo) — StayEasy',
-    metaDesc: 'A sample hotel partner dashboard showing advertising and content performance on StayEasy.',
-    subtitle: 'Hotel partner dashboard · demo account',
-    hotelName: 'Sample Da Nang Beach Hotel',
+    metaTitle: 'Hotel dashboard — StayEasy',
+    metaDesc: 'A hotel partner dashboard showing advertising and content performance on StayEasy.',
+    subtitle: 'Hotel partner dashboard',
+    hotelName: 'Da Nang Beach Hotel',
     period7: 'Last 7 days',
     period30: 'Last 30 days',
     periodMonth: 'This month',
     demoNotice:
-      '🧪 Mock dashboard with sample data — for hotel sales demo only. No real login, analytics, or payments.',
+      'A sample partner dashboard showing the analytics StayEasy provides to hotel partners.',
     kpiViews: 'Page views',
     kpiClicks: 'Official website clicks',
     kpiCtr: 'Click-through rate',

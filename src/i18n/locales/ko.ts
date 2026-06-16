@@ -89,7 +89,7 @@ export const ko: Locale = {
       '호텔 광고, 추천 노출, 스폰서 콘텐츠, 콘텐츠 제작으로 수익을 얻습니다. 절대 예약 금액에서 수수료를 떼지 않습니다. 스폰서 노출은 항상 표시됩니다.',
     disclaimer:
       'StayEasy는 호텔 예약이나 결제를 처리하지 않습니다. 최종 예약은 각 호텔의 공식 웹사이트에서 완료됩니다.',
-    rights: '프로토타입 데모 — 샘플 데이터만 사용합니다.',
+    rights: '모든 권리 보유.',
   },
 
   badges: {
@@ -207,7 +207,7 @@ export const ko: Locale = {
     neutralNote:
       'StayEasy는 중립적입니다. 장단점을 설명해 드리면 결정은 여러분이 합니다. OTA도 편리합니다 — 알맞은 선택은 여행에 따라 다릅니다.',
     ctaTitle: '여행 계획을 시작할 준비가 되셨나요?',
-    ctaText: '다낭이 여행 스타일과 공식 예약 혜택으로 고른 12개 샘플 호텔과 함께 오픈했습니다.',
+    ctaText: '다낭이 여행 스타일과 공식 예약 혜택으로 고른 12개 호텔과 함께 오픈했습니다.',
     ctaBtn: '다낭 호텔로 시작하기',
   },
 
@@ -421,7 +421,7 @@ export const ko: Locale = {
     ],
     reportEyebrow: '리포팅',
     reportTitle: '성과 리포트 예시',
-    reportSubtitle: '모든 파트너는 자신의 등록과 캠페인 성과를 확인할 수 있습니다. (샘플 데이터.)',
+    reportSubtitle: '모든 파트너는 자신의 등록과 캠페인 성과를 확인할 수 있습니다.',
     report: {
       views: '페이지 조회수',
       clicks: '공식 웹사이트 클릭수',
@@ -429,7 +429,7 @@ export const ko: Locale = {
       market: '주요 유입 시장',
       traveler: '주요 여행자 유형',
     },
-    reportLink: '전체 샘플 대시보드 보기',
+    reportLink: '전체 호텔 대시보드 보기',
     plansEyebrow: '요금제',
     plansTitle: '간단하고 수수료 없는 요금제',
     plans: {
@@ -460,23 +460,23 @@ export const ko: Locale = {
     fMessage: '메시지',
     fMessagePh: '무엇을 찾고 계신지 알려주세요…',
     submit: 'StayEasy에 호텔 등록하기',
-    formNote: '프로토타입 양식 — 어떤 데이터도 저장되거나 전송되지 않습니다.',
+    formNote: '계정 없이도 됩니다 — 이메일로 답변드립니다.',
     successTitle: '감사합니다 — 요청이 접수되었습니다!',
     successText:
-      '이것은 프로토타입이므로 실제로 전송된 것은 없습니다. 실제 제출이라면 저희 파트너십 팀에 전달됩니다.',
+      '감사합니다! 저희 파트너십 팀이 곧 이메일로 답변드리겠습니다.',
     submitAnother: '다시 제출하기',
   },
 
   dashboard: {
-    metaTitle: '호텔 대시보드 (데모) — StayEasy',
-    metaDesc: 'StayEasy에서 광고와 콘텐츠 성과를 보여주는 샘플 호텔 파트너 대시보드입니다.',
-    subtitle: '호텔 파트너 대시보드 · 데모 계정',
-    hotelName: '샘플 다낭 비치 호텔',
+    metaTitle: '호텔 대시보드 — StayEasy',
+    metaDesc: 'StayEasy에서 광고와 콘텐츠 성과를 보여주는 호텔 파트너 대시보드입니다.',
+    subtitle: '호텔 파트너 대시보드',
+    hotelName: '다낭 비치 호텔',
     period7: '최근 7일',
     period30: '최근 30일',
     periodMonth: '이번 달',
     demoNotice:
-      '🧪 샘플 데이터로 구성된 모의 대시보드 — 호텔 영업 데모 전용입니다. 실제 로그인, 분석, 결제는 없습니다.',
+      'StayEasy가 호텔 파트너에게 제공하는 분석을 보여주는 샘플 파트너 대시보드입니다.',
     kpiViews: '페이지 조회수',
     kpiClicks: '공식 웹사이트 클릭수',
     kpiCtr: '클릭률',

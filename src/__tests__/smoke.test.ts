@@ -13,6 +13,7 @@ import { repo } from '../data/repo'
 import { wishlist } from '../lib/wishlist'
 import { buildVoucherSvg } from '../lib/voucher'
 import { countries, liveMarkets, getCountry } from '../data/countries'
+import { guides, getGuide } from '../data/guides'
 
 /** Collects the sorted set of key-paths (leaves = strings/arrays) of an object. */
 function shapePaths(obj: unknown, prefix = ''): string[] {
@@ -53,6 +54,26 @@ describe('hotel data integrity', () => {
       for (const slug of h.similarHotelSlugs) {
         expect(getHotel(slug), `${h.slug} → ${slug}`).toBeDefined()
       }
+    }
+  })
+})
+
+describe('editorial guides', () => {
+  it('has original guides with unique slugs and substantial content', () => {
+    expect(guides.length).toBeGreaterThanOrEqual(8)
+    expect(new Set(guides.map((g) => g.slug)).size).toBe(guides.length)
+    for (const g of guides) {
+      expect(getGuide(g.slug)).toBe(g)
+      expect(g.title.length).toBeGreaterThan(0)
+      expect(g.intro.length).toBeGreaterThan(80)
+      expect(g.sections.length).toBeGreaterThanOrEqual(2)
+      expect(['Direct booking', 'City guide', 'Planning']).toContain(g.category)
+    }
+  })
+
+  it('has no demo/sample/prototype wording in hotel names', () => {
+    for (const h of hotels) {
+      expect(h.name).not.toMatch(/sample|demo|mock|prototype|fictional/i)
     }
   })
 })
