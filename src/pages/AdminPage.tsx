@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { hotels } from '../data/hotels'
-import type { PriceTier } from '../types'
-import { partners, campaigns, inquiries, overviewKpis, clicksByCity, feeByPlan, PLANS } from '../data/adminData'
-import type { Partner, Plan } from '../data/adminData'
+import { Link, useSearchParams } from 'react-router-dom'
+import { partners, campaigns, inquiries, overviewKpis, clicksByCity, feeByPlan } from '../data/adminData'
+import type { Partner } from '../data/adminData'
+import { usePartnerDrafts } from '../lib/partnerDrafts'
+import type { HotelDraft } from '../lib/partnerDrafts'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 
 type Section = 'overview' | 'partners' | 'campaigns' | 'inquiries'
@@ -28,17 +28,36 @@ function Td({ children, className = '' }: { children: React.ReactNode; className
   return <td className={`p-3 text-sm text-ink-800 ${className}`}>{children}</td>
 }
 
+/** Maps a registered hotel draft to a Partner row for the unified registry. */
+function draftToPartner(d: HotelDraft, i: number): Partner {
+  return {
+    id: `draft-${i}-${d.hotel.slug}`,
+    name: d.hotel.name,
+    slug: d.hotel.slug,
+    city: d.hotel.city,
+    hotelType: d.hotel.hotelType,
+    tier: d.hotel.priceTier,
+    plan: d.plan,
+    monthlyFee: feeByPlan[d.plan],
+    clicks30d: 0,
+    sponsored: d.hotel.isSponsored,
+    status: 'Pending',
+    since: d.createdAt.slice(0, 7),
+  }
+}
+
 export default function AdminPage() {
   useDocumentMeta('Back-office — StayEasy Admin', 'Operator console for StayEasy Vietnam (demo).')
-  const [section, setSection] = useState<Section>('overview')
+  const [searchParams] = useSearchParams()
+  const initialSection = (NAV.find((n) => n.key === searchParams.get('tab'))?.key ?? 'overview') as Section
+  const [section, setSection] = useState<Section>(initialSection)
   const [navOpen, setNavOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [inqFilter, setInqFilter] = useState<'All' | 'New' | 'Contacted' | 'Won' | 'Lost'>('All')
-  // Hotels registered through the back-office form (demo: in-memory only).
-  const [extraPartners, setExtraPartners] = useState<Partner[]>([])
-  const [showRegister, setShowRegister] = useState(false)
 
-  const allPartners = useMemo(() => [...extraPartners, ...partners], [extraPartners])
+  // Hotels registered through the onboarding page (persisted in localStorage).
+  const drafts = usePartnerDrafts()
+  const allPartners = useMemo(() => [...drafts.map(draftToPartner), ...partners], [drafts])
   const filteredPartners = useMemo(
     () =>
       allPartners.filter(
@@ -49,28 +68,6 @@ export default function AdminPage() {
       ),
     [allPartners, query],
   )
-  const cityOptions = useMemo(() => [...new Set(hotels.map((h) => h.city))], [])
-  const typeOptions = useMemo(() => [...new Set(hotels.map((h) => h.hotelType))], [])
-
-  function registerPartner(f: RegisterFields) {
-    const newPartner: Partner = {
-      id: `new-${extraPartners.length + 1}`,
-      name: f.name.trim(),
-      slug: f.name.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
-      city: f.city,
-      hotelType: f.type,
-      tier: f.tier,
-      plan: f.plan,
-      monthlyFee: feeByPlan[f.plan],
-      clicks30d: 0,
-      sponsored: false,
-      status: 'Pending',
-      since: new Date().toISOString().slice(0, 7),
-    }
-    setExtraPartners((prev) => [newPartner, ...prev])
-    setShowRegister(false)
-    setSection('partners')
-  }
 
   const filteredInquiries = inquiries.filter((i) => inqFilter === 'All' || i.status === inqFilter)
   const maxCityClicks = Math.max(...clicksByCity.map((c) => c.clicks), 1)
@@ -213,13 +210,12 @@ export default function AdminPage() {
                     placeholder="Search hotels or cities…"
                     className="w-full rounded-xl border border-black/10 bg-sand-50 px-3 py-2 text-sm outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 sm:w-64"
                   />
-                  <button
-                    type="button"
-                    onClick={() => setShowRegister(true)}
-                    className="shrink-0 rounded-xl bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-700"
+                  <Link
+                    to="/admin/register"
+                    className="shrink-0 rounded-xl bg-brand-600 px-4 py-2 text-center text-sm font-semibold text-white hover:bg-brand-700"
                   >
                     + Register hotel
-                  </button>
+                  </Link>
                 </div>
               </div>
               <div className="overflow-x-auto">
@@ -320,126 +316,6 @@ export default function AdminPage() {
           )}
         </main>
       </div>
-
-      {showRegister && (
-        <RegisterPartnerModal
-          cityOptions={cityOptions}
-          typeOptions={typeOptions}
-          onClose={() => setShowRegister(false)}
-          onSubmit={registerPartner}
-        />
-      )}
-    </div>
-  )
-}
-
-interface RegisterFields {
-  name: string
-  city: string
-  type: string
-  tier: PriceTier
-  plan: Plan
-  url: string
-  contact: string
-}
-
-/** Hotel onboarding form. Demo only — no backend; submits into in-memory state. */
-function RegisterPartnerModal({
-  cityOptions,
-  typeOptions,
-  onClose,
-  onSubmit,
-}: {
-  cityOptions: string[]
-  typeOptions: string[]
-  onClose: () => void
-  onSubmit: (f: RegisterFields) => void
-}) {
-  const [f, setF] = useState<RegisterFields>({
-    name: '',
-    city: cityOptions[0] ?? 'Da Nang',
-    type: typeOptions[0] ?? 'City hotel',
-    tier: 'mid',
-    plan: 'Growth',
-    url: '',
-    contact: '',
-  })
-  const set =
-    (k: keyof RegisterFields) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
-      setF((prev) => ({ ...prev, [k]: e.target.value }))
-  const submit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!f.name.trim()) return
-    onSubmit(f)
-  }
-
-  const field = 'w-full rounded-xl border border-black/10 bg-sand-50 px-3 py-2 text-sm outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100'
-  const label = 'text-xs font-semibold uppercase tracking-wide text-ink-600/70'
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 p-0 sm:items-center sm:p-4" onClick={onClose}>
-      <form
-        onClick={(e) => e.stopPropagation()}
-        onSubmit={submit}
-        className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-t-3xl bg-white p-6 shadow-card sm:rounded-3xl"
-      >
-        <div className="flex items-start justify-between">
-          <div>
-            <h2 className="text-lg font-extrabold text-ink-900">Register a hotel</h2>
-            <p className="text-sm text-ink-600/70">Onboard a hotel as a partner. It starts as <b>Pending</b> until activated.</p>
-          </div>
-          <button type="button" onClick={onClose} aria-label="Close" className="grid h-8 w-8 place-items-center rounded-lg text-ink-600 hover:bg-sand-100">✕</button>
-        </div>
-
-        <div className="mt-5 space-y-4">
-          <div>
-            <label className={label} htmlFor="r-name">Hotel name *</label>
-            <input id="r-name" value={f.name} onChange={set('name')} required placeholder="e.g. Riverside Pearl Hotel" className={`mt-1 ${field}`} />
-          </div>
-
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div>
-              <label className={label} htmlFor="r-city">City</label>
-              <select id="r-city" value={f.city} onChange={set('city')} className={`mt-1 ${field}`}>
-                {cityOptions.map((c) => <option key={c} value={c}>{c}</option>)}
-              </select>
-            </div>
-            <div>
-              <label className={label} htmlFor="r-type">Hotel type</label>
-              <select id="r-type" value={f.type} onChange={set('type')} className={`mt-1 ${field}`}>
-                {typeOptions.map((tp) => <option key={tp} value={tp}>{tp}</option>)}
-              </select>
-            </div>
-            <div>
-              <label className={label} htmlFor="r-tier">Price tier</label>
-              <select id="r-tier" value={f.tier} onChange={set('tier')} className={`mt-1 ${field} capitalize`}>
-                {(['budget', 'mid', 'premium'] as PriceTier[]).map((tr) => <option key={tr} value={tr}>{tr}</option>)}
-              </select>
-            </div>
-            <div>
-              <label className={label} htmlFor="r-plan">Plan</label>
-              <select id="r-plan" value={f.plan} onChange={set('plan')} className={`mt-1 ${field}`}>
-                {PLANS.map((pl) => <option key={pl} value={pl}>{pl} {feeByPlan[pl] ? `($${feeByPlan[pl]}/mo)` : '(Free)'}</option>)}
-              </select>
-            </div>
-          </div>
-
-          <div>
-            <label className={label} htmlFor="r-url">Official website</label>
-            <input id="r-url" value={f.url} onChange={set('url')} placeholder="https://hotel.example/booking" className={`mt-1 ${field}`} />
-          </div>
-          <div>
-            <label className={label} htmlFor="r-contact">Contact email</label>
-            <input id="r-contact" type="email" value={f.contact} onChange={set('contact')} placeholder="owner@hotel.example" className={`mt-1 ${field}`} />
-          </div>
-        </div>
-
-        <div className="mt-6 flex gap-2">
-          <button type="button" onClick={onClose} className="flex-1 rounded-xl bg-sand-100 px-4 py-2.5 text-sm font-semibold text-ink-800 hover:bg-sand-200">Cancel</button>
-          <button type="submit" className="flex-1 rounded-xl bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-700">Register partner</button>
-        </div>
-        <p className="mt-3 text-center text-xs text-ink-600/60">🧪 Demo — saved in memory only (resets on reload).</p>
-      </form>
     </div>
   )
 }

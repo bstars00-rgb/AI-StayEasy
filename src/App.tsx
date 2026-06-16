@@ -16,6 +16,7 @@ const AboutPage = lazy(() => import('./pages/AboutPage'))
 const SearchPage = lazy(() => import('./pages/SearchPage'))
 const WishlistPage = lazy(() => import('./pages/WishlistPage'))
 const AdminPage = lazy(() => import('./pages/AdminPage'))
+const RegisterHotelPage = lazy(() => import('./pages/RegisterHotelPage'))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 
 /** Suspense fallback while a route's code chunk downloads. */
@@ -53,6 +54,14 @@ export default function App() {
         element={
           <Suspense fallback={<RouteFallback />}>
             <AdminPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/admin/register"
+        element={
+          <Suspense fallback={<RouteFallback />}>
+            <RegisterHotelPage />
           </Suspense>
         }
       />

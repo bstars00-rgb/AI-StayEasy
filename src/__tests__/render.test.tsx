@@ -4,10 +4,10 @@ import { render, screen, waitFor, fireEvent, cleanup } from '@testing-library/re
 import { MemoryRouter } from 'react-router-dom'
 import App from '../App'
 import VietnamPage from '../pages/VietnamPage'
-import AdminPage from '../pages/AdminPage'
 import { VoucherCard } from '../components/VoucherCard'
 import { I18nProvider } from '../i18n'
 import { getHotel } from '../data/hotels'
+import { partnerDrafts } from '../lib/partnerDrafts'
 
 // jsdom is missing a few browser APIs the app touches. Polyfill them so the
 // real components render and interact exactly as in a browser.
@@ -40,7 +40,7 @@ describe('route render (lazy chunks resolve, no throw)', () => {
     '/', '/search', '/wishlist',
     '/destinations/vietnam', '/destinations/da-nang', '/destinations/hanoi',
     '/hotels/an-bang-beach-resort', '/guides/direct-booking',
-    '/partners', '/dashboard', '/admin', '/about', '/no-such-page',
+    '/partners', '/dashboard', '/admin', '/admin/register', '/about', '/no-such-page',
   ]
   for (const path of routes) {
     it(`renders ${path}`, async () => {
@@ -73,20 +73,34 @@ describe('interaction: Vietnam "see recommended cities" toggle', () => {
   })
 })
 
-describe('interaction: register a hotel in the unified Partners registry', () => {
-  it('adds a new partner row via the registration form', async () => {
-    render(
-      <MemoryRouter>
-        <AdminPage />
-      </MemoryRouter>,
-    )
-    // Go to the Partners section, then open the registration form.
-    fireEvent.click(screen.getByRole('button', { name: /^partners$/i }))
-    fireEvent.click(screen.getByRole('button', { name: /register hotel/i }))
-    fireEvent.change(screen.getByLabelText(/hotel name/i), { target: { value: 'Test Onboard Hotel' } })
-    fireEvent.click(screen.getByRole('button', { name: /register partner/i }))
-    // The newly registered hotel appears in the table.
-    expect(await screen.findByText('Test Onboard Hotel')).toBeTruthy()
+describe('interaction: hotel registration page', () => {
+  it('saves the full-schema registration into the drafts store on submit', async () => {
+    partnerDrafts.clear()
+    const { container } = wrap('/admin/register')
+    await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
+
+    const nameInput = await screen.findByPlaceholderText(/Riverside Pearl Hotel/i)
+    fireEvent.change(nameInput, { target: { value: 'Test Onboard Hotel' } })
+    fireEvent.submit(container.querySelector('form')!)
+
+    expect(partnerDrafts.getAll()).toHaveLength(1)
+    expect(partnerDrafts.getAll()[0].hotel.name).toBe('Test Onboard Hotel')
+    expect(partnerDrafts.getAll()[0].hotel.slug).toBe('test-onboard-hotel')
+  })
+
+  it('shows a registered draft in the unified Partners table', async () => {
+    partnerDrafts.clear()
+    const base = getHotel('an-bang-beach-resort')!
+    partnerDrafts.add({
+      hotel: { ...base, id: 'draft-x', slug: 'seeded-draft-hotel', name: 'Seeded Draft Hotel', isSponsored: false },
+      plan: 'Growth',
+      contactEmail: 'a@b.com',
+      createdAt: '2026-06-16',
+    })
+    wrap('/admin?tab=partners')
+    await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
+    expect(await screen.findByText('Seeded Draft Hotel')).toBeTruthy()
+    partnerDrafts.clear()
   })
 })
 
