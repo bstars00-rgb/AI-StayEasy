@@ -7,6 +7,8 @@ import { ja } from '../i18n/locales/ja'
 import { hotels, getHotel } from '../data/hotels'
 import { localizeHotel } from '../i18n'
 import { recommend } from '../lib/searchEngine'
+import { partners, campaigns, inquiries, overviewKpis, clicksByCity } from '../data/adminData'
+import { endpoints, API_BASE } from '../api/contract'
 
 /** Collects the sorted set of key-paths (leaves = strings/arrays) of an object. */
 function shapePaths(obj: unknown, prefix = ''): string[] {
@@ -106,6 +108,41 @@ describe('AI search engine', () => {
     const rec = recommend('hotel near Hoi An', hotels)
     expect(rec.detected).toContain('hoian')
     expect(rec.results.every((r) => r.hotel.priceTier)).toBe(true)
+  })
+})
+
+describe('back-office data', () => {
+  it('derives partners with valid plans and statuses', () => {
+    expect(partners.length).toBeGreaterThan(0)
+    for (const p of partners) {
+      expect(['Starter', 'Growth', 'Campaign']).toContain(p.plan)
+      expect(['Active', 'Pending', 'Paused']).toContain(p.status)
+    }
+  })
+
+  it('derives campaigns only from sponsored hotels', () => {
+    const sponsored = hotels.filter((h) => h.isSponsored).length
+    expect(sponsored).toBeGreaterThan(0)
+    expect(campaigns).toHaveLength(sponsored)
+  })
+
+  it('populates overview KPIs and clicks-by-city', () => {
+    expect(overviewKpis).toHaveLength(6)
+    for (const k of overviewKpis) expect(k.value.length).toBeGreaterThan(0)
+    expect(clicksByCity.length).toBeGreaterThan(0)
+  })
+
+  it('has inquiries with valid statuses', () => {
+    expect(inquiries.length).toBeGreaterThan(0)
+    for (const i of inquiries) expect(['New', 'Contacted', 'Won', 'Lost']).toContain(i.status)
+  })
+})
+
+describe('API contract', () => {
+  it('builds versioned endpoint paths', () => {
+    expect(API_BASE).toBe('/api/v1')
+    expect(endpoints.hotel('an-bang-beach-resort')).toBe('/api/v1/hotels/an-bang-beach-resort')
+    expect(endpoints.cityHotels('da-nang')).toBe('/api/v1/cities/da-nang/hotels')
   })
 })
 
