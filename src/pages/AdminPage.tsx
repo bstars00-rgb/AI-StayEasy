@@ -258,11 +258,9 @@ export default function AdminPage() {
                         <Td>{p.sponsored ? <span className="pill bg-accent-50 text-accent-700 ring-1 ring-accent-200">★</span> : <span className="text-ink-600/40">—</span>}</Td>
                         <Td><span className={`pill ${statusClass(p.status)}`}>{p.status}</span></Td>
                         <Td>
-                          {p.status === 'Pending' && p.id.startsWith('new-') ? (
-                            <span className="text-ink-600/50">Draft</span>
-                          ) : (
-                            <Link to={`/hotels/${p.slug}`} className="text-brand-700 hover:underline">View ↗</Link>
-                          )}
+                          <Link to={`/hotels/${p.slug}`} className="text-brand-700 hover:underline">
+                            {p.id.startsWith('draft-') ? 'Preview ↗' : 'View ↗'}
+                          </Link>
                         </Td>
                       </tr>
                     ))}

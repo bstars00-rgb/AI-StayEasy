@@ -103,6 +103,21 @@ describe('interaction: hotel registration page', () => {
     expect(await screen.findByText('Seeded Draft Hotel')).toBeTruthy()
     partnerDrafts.clear()
   })
+
+  it('shows a registered hotel on its public detail page (loop closed)', async () => {
+    partnerDrafts.clear()
+    const base = getHotel('an-bang-beach-resort')!
+    partnerDrafts.add({
+      hotel: { ...base, id: 'draft-pub', slug: 'my-registered-hotel', name: 'My Registered Hotel' },
+      plan: 'Growth',
+      contactEmail: 'a@b.com',
+      createdAt: '2026-06-16',
+    })
+    wrap('/hotels/my-registered-hotel')
+    await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
+    expect(await screen.findByRole('heading', { name: 'My Registered Hotel' }, { timeout: 5000 })).toBeTruthy()
+    partnerDrafts.clear()
+  })
 })
 
 describe('interaction: voucher code copy', () => {
