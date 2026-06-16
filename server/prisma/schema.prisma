@@ -1,0 +1,66 @@
+// StayEasy catalog schema.
+// SQLite for zero-setup local dev. To move to PostgreSQL (see docs/BACKEND_PLAN.md):
+//   1) provider = "postgresql"
+//   2) DATABASE_URL = your managed Postgres URL
+//   3) (optional) switch the *Json String columns to native String[]/Json types.
+// List/object fields are stored as JSON strings so the schema is portable.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model City {
+  id                  String  @id
+  slug                String  @unique
+  name                String
+  available           Boolean
+  heroColor           String
+  emoji               String
+  shortDescription    String
+  description         String
+  recommendedTraveler String
+  bestForJson         String // string[]
+  highlightsJson      String // string[]
+  hotelCount          Int
+  hotels              Hotel[]
+}
+
+model Hotel {
+  id                 String  @id
+  slug               String  @unique
+  name               String
+  area               String
+  hotelType          String
+  priceTier          String
+  isSponsored        Boolean
+  koreanFriendly     Boolean
+  officialWebsiteUrl String
+  imageUrl           String
+  heroColor          String
+  emoji              String
+
+  // canonical (English) content
+  shortDescription      String
+  positioningLine       String
+  mainReason            String
+  bestForJson           String // string[]
+  notIdealForJson       String // string[]
+  thingsToCheckJson     String // string[]
+  officialBenefitsJson  String // string[]
+  cancellationListJson  String // string[]
+  tagsJson              String // string[]
+  facilitiesJson        String // string[]
+  similarSlugsJson      String // string[]
+  roomGuideJson         String // { couples, families, longStay, checkBeforeBooking }
+  locationGuideJson     String // { nearby, airportDistance, gettingAround, nearbyFood }
+
+  cityId String
+  city   City   @relation(fields: [cityId], references: [id])
+
+  @@index([cityId])
+}
