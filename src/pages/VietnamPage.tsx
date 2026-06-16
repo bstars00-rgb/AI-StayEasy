@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import type { Destination } from '../types'
 import Button from '../components/Button'
 import { SectionHeading } from '../components/SectionHeading'
 import { HotelImage } from '../components/HotelImage'
@@ -14,6 +16,76 @@ export default function VietnamPage() {
   const { data: destinations = [], loading: destLoading } = useAsync(() => repo.listDestinations(), [])
   const destText = t.destText as unknown as Record<string, { short: string; bestFor: string[]; recommended: string; highlights: string[] }>
   const cityNames = t.enums.city as Record<string, string>
+  const [showMore, setShowMore] = useState(false)
+
+  // Keep the page short: feature the 4 flagship cities, then reveal the rest on
+  // demand — split into "available now" and "trending / coming soon".
+  const featured = destinations.slice(0, 4)
+  const rest = destinations.slice(4)
+  const moreAvailable = rest.filter((d) => d.available)
+  const trending = rest.filter((d) => !d.available)
+
+  // Full destination card (used for featured + the "available now" group).
+  const DestCard = (d: Destination) => {
+    const dt = destText[d.slug]
+    const short = dt?.short ?? d.shortDescription
+    const best = dt?.bestFor ?? d.bestFor
+    const rec = dt?.recommended ?? d.recommendedTraveler
+    return (
+      <div key={d.city} className="overflow-hidden rounded-3xl bg-white shadow-card ring-1 ring-black/5">
+        <div className="relative">
+          <HotelImage gradient={d.heroColor} emoji={d.emoji} rounded="" className="h-44 w-full" label={cityNames[d.city] ?? d.city} />
+          <div className="absolute right-4 top-4">
+            {d.available ? (
+              <span className="pill bg-brand-600 text-white">● {t.common.liveNow}</span>
+            ) : (
+              <span className="pill bg-white/90 text-ink-800">{t.common.comingSoon}</span>
+            )}
+          </div>
+        </div>
+        <div className="p-6">
+          <div className="flex items-baseline justify-between gap-3">
+            <h3 className="text-2xl font-extrabold text-ink-900">{cityNames[d.city] ?? d.city}</h3>
+            {d.available && <span className="text-sm font-semibold text-brand-700">{d.hotelCount} {t.common.hotels}</span>}
+          </div>
+          <p className="mt-2 text-sm text-ink-700/80">{short}</p>
+          <div className="mt-4 space-y-2 text-sm">
+            <p><span className="font-semibold text-ink-900">{t.vietnam.bestForLabel}</span> <span className="text-ink-700/80">{best.join(', ')}</span></p>
+            <p><span className="font-semibold text-ink-900">{t.vietnam.recommendedLabel}</span> <span className="text-ink-700/80">{rec}</span></p>
+          </div>
+          <div className="mt-5">
+            {d.available ? (
+              <Button to={`/destinations/${d.slug}`} size="md">{t.vietnam.exploreHotels} →</Button>
+            ) : (
+              <button disabled className="inline-flex cursor-not-allowed items-center gap-2 rounded-full bg-sand-100 px-5 py-2.5 text-sm font-semibold text-ink-700/50">
+                {t.vietnam.exploreSoon}
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Compact tile for trending / coming-soon cities.
+  const TrendingCard = (d: Destination) => {
+    const dt = destText[d.slug]
+    const short = dt?.short ?? d.shortDescription
+    return (
+      <div key={d.city} className="flex items-start gap-3 rounded-2xl bg-white p-4 shadow-card ring-1 ring-black/5">
+        <div className={`grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gradient-to-br ${d.heroColor} text-2xl`} aria-hidden>
+          {d.emoji}
+        </div>
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-2">
+            <h4 className="font-bold text-ink-900">{cityNames[d.city] ?? d.city}</h4>
+            <span className="pill bg-sand-100 text-[11px] text-ink-700/70">{t.common.comingSoon}</span>
+          </div>
+          <p className="mt-0.5 text-sm text-ink-700/70">{short}</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <>
@@ -32,57 +104,66 @@ export default function VietnamPage() {
         </div>
       </section>
 
-      {/* 2. Destination cards */}
+      {/* 2. Destination cards — featured 4, rest on demand */}
       <section className="container-page mt-12">
         <SectionHeading eyebrow={t.vietnam.destEyebrow} title={t.vietnam.destTitle} />
-        <div className="grid gap-6 lg:grid-cols-2">
-          {destLoading
-            ? Array.from({ length: 4 }).map((_, i) => <div key={i} className="h-72 animate-pulse rounded-3xl bg-sand-100" />)
-            : destinations.map((d) => {
-            // Use translated destination text when present; fall back to the
-            // destination's own (English) fields for newer "coming soon" cities.
-            const dt = destText[d.slug]
-            const short = dt?.short ?? d.shortDescription
-            const best = dt?.bestFor ?? d.bestFor
-            const rec = dt?.recommended ?? d.recommendedTraveler
-            return (
-            <div key={d.city} className="overflow-hidden rounded-3xl bg-white shadow-card ring-1 ring-black/5">
-              <div className="relative">
-                <HotelImage gradient={d.heroColor} emoji={d.emoji} rounded="" className="h-44 w-full" label={cityNames[d.city] ?? d.city} />
-                <div className="absolute right-4 top-4">
-                  {d.available ? (
-                    <span className="pill bg-brand-600 text-white">● {t.common.liveNow}</span>
-                  ) : (
-                    <span className="pill bg-white/90 text-ink-800">{t.common.comingSoon}</span>
-                  )}
-                </div>
-              </div>
-              <div className="p-6">
-                <div className="flex items-baseline justify-between gap-3">
-                  <h3 className="text-2xl font-extrabold text-ink-900">{cityNames[d.city] ?? d.city}</h3>
-                  {d.available && <span className="text-sm font-semibold text-brand-700">{d.hotelCount} {t.common.hotels}</span>}
-                </div>
-                <p className="mt-2 text-sm text-ink-700/80">{short}</p>
-
-                <div className="mt-4 space-y-2 text-sm">
-                  <p><span className="font-semibold text-ink-900">{t.vietnam.bestForLabel}</span> <span className="text-ink-700/80">{best.join(', ')}</span></p>
-                  <p><span className="font-semibold text-ink-900">{t.vietnam.recommendedLabel}</span> <span className="text-ink-700/80">{rec}</span></p>
-                </div>
-
-                <div className="mt-5">
-                  {d.available ? (
-                    <Button to={`/destinations/${d.slug}`} size="md">{t.vietnam.exploreHotels} →</Button>
-                  ) : (
-                    <button disabled className="inline-flex cursor-not-allowed items-center gap-2 rounded-full bg-sand-100 px-5 py-2.5 text-sm font-semibold text-ink-700/50">
-                      {t.vietnam.exploreSoon}
-                    </button>
-                  )}
-                </div>
-              </div>
+        {destLoading ? (
+          <div className="grid gap-6 lg:grid-cols-2">
+            {Array.from({ length: 4 }).map((_, i) => <div key={i} className="h-72 animate-pulse rounded-3xl bg-sand-100" />)}
+          </div>
+        ) : (
+          <>
+            <div className="grid gap-6 lg:grid-cols-2">
+              {featured.map((d) => DestCard(d))}
             </div>
-            )
-          })}
-        </div>
+
+            {!showMore && rest.length > 0 && (
+              <div className="mt-8 text-center">
+                <button
+                  type="button"
+                  onClick={() => setShowMore(true)}
+                  aria-expanded={false}
+                  className="inline-flex items-center gap-2 rounded-full bg-ink-900 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-ink-800"
+                >
+                  {t.vietnam.moreToggleOpen} <span className="text-white/70">({rest.length})</span> ↓
+                </button>
+              </div>
+            )}
+
+            {showMore && (
+              <>
+                {moreAvailable.length > 0 && (
+                  <div className="mt-12">
+                    <SectionHeading eyebrow={t.vietnam.moreAvailEyebrow} title={t.vietnam.moreAvailTitle} />
+                    <div className="grid gap-6 lg:grid-cols-2">
+                      {moreAvailable.map((d) => DestCard(d))}
+                    </div>
+                  </div>
+                )}
+
+                {trending.length > 0 && (
+                  <div className="mt-12">
+                    <SectionHeading eyebrow={t.vietnam.trendingEyebrow} title={t.vietnam.trendingTitle} />
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                      {trending.map((d) => TrendingCard(d))}
+                    </div>
+                  </div>
+                )}
+
+                <div className="mt-8 text-center">
+                  <button
+                    type="button"
+                    onClick={() => setShowMore(false)}
+                    aria-expanded
+                    className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-ink-800 ring-1 ring-black/10 transition-colors hover:bg-sand-50"
+                  >
+                    {t.vietnam.moreToggleClose} ↑
+                  </button>
+                </div>
+              </>
+            )}
+          </>
+        )}
       </section>
 
       {/* 3. Travel style guide */}
