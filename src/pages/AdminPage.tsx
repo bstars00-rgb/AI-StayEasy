@@ -4,6 +4,7 @@ import { partners, campaigns, inquiries, overviewKpis, clicksByCity, feeByPlan }
 import type { Partner } from '../data/adminData'
 import { usePartnerDrafts } from '../lib/partnerDrafts'
 import type { HotelDraft } from '../lib/partnerDrafts'
+import { countries, getCountry, liveMarkets, roadmapMarkets } from '../data/countries'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 
 type Section = 'overview' | 'partners' | 'campaigns' | 'inquiries'
@@ -34,6 +35,7 @@ function draftToPartner(d: HotelDraft, i: number): Partner {
     id: `draft-${i}-${d.hotel.slug}`,
     name: d.hotel.name,
     slug: d.hotel.slug,
+    country: d.hotel.country,
     city: d.hotel.city,
     hotelType: d.hotel.hotelType,
     tier: d.hotel.priceTier,
@@ -64,7 +66,8 @@ export default function AdminPage() {
         (p) =>
           !query ||
           p.name.toLowerCase().includes(query.toLowerCase()) ||
-          p.city.toLowerCase().includes(query.toLowerCase()),
+          p.city.toLowerCase().includes(query.toLowerCase()) ||
+          p.country.toLowerCase().includes(query.toLowerCase()),
       ),
     [allPartners, query],
   )
@@ -192,6 +195,25 @@ export default function AdminPage() {
                   </div>
                 </div>
               </div>
+
+              {/* Markets — Asia expansion roadmap */}
+              <div className="rounded-2xl bg-white p-5 shadow-card ring-1 ring-black/5">
+                <div className="flex items-baseline justify-between">
+                  <h2 className="font-bold text-ink-900">Markets — Asia roadmap</h2>
+                  <span className="text-sm text-ink-600/70">{liveMarkets.length} live · {roadmapMarkets.length} coming</span>
+                </div>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {countries.map((c) => (
+                    <span
+                      key={c.slug}
+                      title={`${c.name} — ${c.region}`}
+                      className={`pill ${c.available ? 'bg-brand-50 text-brand-700 ring-1 ring-brand-200' : 'bg-sand-100 text-ink-600'}`}
+                    >
+                      {c.flag} {c.name}{c.available ? ` · ${c.hotelCount}` : ''}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
           )}
 
@@ -219,14 +241,15 @@ export default function AdminPage() {
                 </div>
               </div>
               <div className="overflow-x-auto">
-                <table className="w-full min-w-[860px]">
+                <table className="w-full min-w-[940px]">
                   <thead className="bg-sand-50">
-                    <tr><Th>Hotel</Th><Th>City</Th><Th>Type</Th><Th>Plan</Th><Th>Monthly</Th><Th>Clicks (30d)</Th><Th>Sponsored</Th><Th>Status</Th><Th>Listing</Th></tr>
+                    <tr><Th>Hotel</Th><Th>Country</Th><Th>City</Th><Th>Type</Th><Th>Plan</Th><Th>Monthly</Th><Th>Clicks (30d)</Th><Th>Sponsored</Th><Th>Status</Th><Th>Listing</Th></tr>
                   </thead>
                   <tbody>
                     {filteredPartners.map((p) => (
                       <tr key={p.id} className="border-t border-black/5 hover:bg-sand-50/50">
                         <Td className="font-medium text-ink-900">{p.name}</Td>
+                        <Td>{getCountry(p.country)?.flag ?? '🏳️'} {p.country}</Td>
                         <Td>{p.city}</Td>
                         <Td className="text-ink-600">{p.hotelType}</Td>
                         <Td><span className="pill bg-brand-50 text-brand-700">{p.plan}</span></Td>

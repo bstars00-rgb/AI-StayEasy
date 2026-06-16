@@ -12,6 +12,7 @@ import { endpoints, API_BASE } from '../api/contract'
 import { repo } from '../data/repo'
 import { wishlist } from '../lib/wishlist'
 import { buildVoucherSvg } from '../lib/voucher'
+import { countries, liveMarkets, getCountry } from '../data/countries'
 
 /** Collects the sorted set of key-paths (leaves = strings/arrays) of an object. */
 function shapePaths(obj: unknown, prefix = ''): string[] {
@@ -52,6 +53,25 @@ describe('hotel data integrity', () => {
       for (const slug of h.similarHotelSlugs) {
         expect(getHotel(slug), `${h.slug} → ${slug}`).toBeDefined()
       }
+    }
+  })
+})
+
+describe('Asia market roadmap', () => {
+  it('has Vietnam live and other Asian markets on the roadmap', () => {
+    expect(countries.length).toBeGreaterThanOrEqual(10)
+    expect(liveMarkets.map((c) => c.name)).toEqual(['Vietnam'])
+    expect(new Set(countries.map((c) => c.slug)).size).toBe(countries.length)
+    for (const c of countries) {
+      expect(['Southeast Asia', 'East Asia', 'South Asia']).toContain(c.region)
+      expect(c.cities.length).toBeGreaterThan(0)
+    }
+  })
+
+  it('every hotel and destination carries a country (Vietnam at launch)', () => {
+    for (const h of hotels) {
+      expect(getCountry(h.country), h.slug).toBeDefined()
+      expect(h.country).toBe('Vietnam')
     }
   })
 })

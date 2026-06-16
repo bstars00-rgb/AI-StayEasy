@@ -2,7 +2,8 @@ import { useState } from 'react'
 import type { ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { hotels } from '../data/hotels'
-import type { Hotel, City, Area, HotelType, PriceTier, TravelStyle } from '../types'
+import { countries, getCountry } from '../data/countries'
+import type { Hotel, Country, City, Area, HotelType, PriceTier, TravelStyle } from '../types'
 import { feeByPlan, PLANS } from '../data/adminData'
 import type { Plan } from '../data/adminData'
 import { partnerDrafts } from '../lib/partnerDrafts'
@@ -25,6 +26,7 @@ const lines = (s: string): string[] => s.split('\n').map((l) => l.trim()).filter
 const initialForm = {
   // basics
   name: '',
+  country: 'Vietnam' as Country,
   city: 'Da Nang',
   area: '',
   hotelType: 'City hotel',
@@ -104,8 +106,14 @@ export default function RegisterHotelPage() {
   const [f, setF] = useState<Form>(initialForm)
   const [error, setError] = useState('')
 
-  const cityOptions = [...new Set(hotels.map((h) => h.city))]
   const typeOptions = [...new Set(hotels.map((h) => h.hotelType))]
+  const cityOptions = getCountry(f.country)?.cities ?? []
+
+  // Country → City cascade: switching country resets the city to that market's first.
+  const onCountry = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const country = e.target.value as Country
+    setF((prev) => ({ ...prev, country, city: getCountry(country)?.cities[0] ?? '' }))
+  }
 
   const set =
     <K extends keyof Form>(k: K) =>
@@ -130,6 +138,7 @@ export default function RegisterHotelPage() {
       id: `draft-${slug}`,
       slug,
       name: f.name.trim(),
+      country: f.country,
       city: f.city as City,
       area: (f.area.trim() || 'City Center') as Area,
       hotelType: f.hotelType as HotelType,
@@ -202,6 +211,13 @@ export default function RegisterHotelPage() {
             <input value={f.name} onChange={set('name')} required placeholder="Riverside Pearl Hotel" className={inputCls} />
           </Field>
           <div className="grid gap-4 sm:grid-cols-2">
+            <Field label="Country" hint="market">
+              <select value={f.country} onChange={onCountry} className={inputCls}>
+                {countries.map((c) => (
+                  <option key={c.slug} value={c.name}>{c.flag} {c.name}{c.available ? '' : ' — coming soon'}</option>
+                ))}
+              </select>
+            </Field>
             <Field label="City">
               <select value={f.city} onChange={set('city')} className={inputCls}>
                 {cityOptions.map((c) => <option key={c} value={c}>{c}</option>)}

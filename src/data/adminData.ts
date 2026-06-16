@@ -1,5 +1,5 @@
 import { hotels } from './hotels'
-import type { PriceTier } from '../types'
+import type { PriceTier, Country } from '../types'
 
 /**
  * Mock data for the operator back-office. Derived deterministically from the
@@ -27,6 +27,7 @@ export interface Partner {
   id: string
   name: string
   slug: string
+  country: Country
   city: string
   hotelType: string
   tier: PriceTier
@@ -55,6 +56,7 @@ export const partners: Partner[] = hotels.map((h) => {
     id: h.id,
     name: cleanName(h.name),
     slug: h.slug,
+    country: h.country,
     city: h.city,
     hotelType: h.hotelType,
     tier: h.priceTier,

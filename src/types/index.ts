@@ -1,3 +1,23 @@
+/** Target markets across Asia. Vietnam is the launch market; the rest are the
+ *  expansion roadmap (onboarding next). */
+export type Country =
+  | 'Vietnam'
+  | 'Thailand'
+  | 'Japan'
+  | 'South Korea'
+  | 'Indonesia'
+  | 'Singapore'
+  | 'Malaysia'
+  | 'Philippines'
+  | 'Cambodia'
+  | 'Laos'
+  | 'Taiwan'
+  | 'Hong Kong'
+  | 'China'
+  | 'India'
+  | 'Sri Lanka'
+  | 'Maldives'
+
 export type City =
   // Live (hotels available)
   | 'Da Nang'
@@ -87,6 +107,7 @@ export interface Hotel {
   id: string
   slug: string
   name: string
+  country: Country
   city: City
   area: Area
   hotelType: HotelType
@@ -123,6 +144,7 @@ export interface Hotel {
 }
 
 export interface Destination {
+  country: Country
   city: City
   slug: string
   available: boolean

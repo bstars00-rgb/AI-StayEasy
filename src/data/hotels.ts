@@ -26,7 +26,9 @@ const realPhotos: Record<string, string> = {
 
 const img = (slug: string) => realPhotos[slug] ?? `https://picsum.photos/seed/stayeasy-${slug}/800/600`
 
-export const hotels: Hotel[] = [
+// All launch-market hotels are in Vietnam; `country` is injected below so the
+// 32 records don't each repeat it. New markets set their own country.
+const rawHotels: Omit<Hotel, 'country'>[] = [
   {
     id: 'h01',
     priceTier: 'premium',
@@ -1300,6 +1302,8 @@ export const hotels: Hotel[] = [
     koreanFriendly: false,
   },
 ]
+
+export const hotels: Hotel[] = rawHotels.map((h) => ({ country: 'Vietnam', ...h }))
 
 export const getHotel = (slug: string) => hotels.find((h) => h.slug === slug)
 

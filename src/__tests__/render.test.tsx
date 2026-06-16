@@ -86,6 +86,7 @@ describe('interaction: hotel registration page', () => {
     expect(partnerDrafts.getAll()).toHaveLength(1)
     expect(partnerDrafts.getAll()[0].hotel.name).toBe('Test Onboard Hotel')
     expect(partnerDrafts.getAll()[0].hotel.slug).toBe('test-onboard-hotel')
+    expect(partnerDrafts.getAll()[0].hotel.country).toBe('Vietnam') // country-first default
   })
 
   it('shows a registered draft in the unified Partners table', async () => {

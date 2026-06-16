@@ -7,11 +7,15 @@ import { HotelImage } from '../components/HotelImage'
 import { repo } from '../data/repo'
 import { useAsync } from '../lib/useAsync'
 import { travelStyles } from '../data/travelStyles'
-import { useT } from '../i18n'
+import { countriesByRegion } from '../data/countries'
+import { asiaStrings } from '../lib/asiaI18n'
+import { useT, useLang } from '../i18n'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 
 export default function VietnamPage() {
   const t = useT()
+  const { lang } = useLang()
+  const asia = asiaStrings[lang]
   useDocumentMeta(t.vietnam.metaTitle, t.vietnam.metaDesc)
   const { data: destinations = [], loading: destLoading } = useAsync(() => repo.listDestinations(), [])
   const destText = t.destText as unknown as Record<string, { short: string; bestFor: string[]; recommended: string; highlights: string[] }>
@@ -220,6 +224,34 @@ export default function VietnamPage() {
             <p className="mt-4 rounded-xl bg-sand-50 px-4 py-3 text-xs text-ink-700/70 ring-1 ring-black/5">
               {t.vietnam.neutralNote}
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* 4.5 Asia expansion roadmap */}
+      <section className="container-page mt-16">
+        <div className="rounded-3xl bg-gradient-to-br from-ink-900 to-brand-800 p-8 text-white sm:p-10">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand-300">{asia.eyebrow}</p>
+          <h2 className="mt-2 text-2xl font-extrabold sm:text-3xl">{asia.title}</h2>
+          <p className="mt-2 max-w-2xl text-white/80">{asia.subtitle}</p>
+          <div className="mt-6 space-y-5">
+            {countriesByRegion.map(({ region, markets }) => (
+              <div key={region}>
+                <p className="text-sm font-semibold text-brand-200">{asia.regions[region]}</p>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {markets.map((c) => (
+                    <span
+                      key={c.slug}
+                      className={`pill ${c.available ? 'bg-brand-500 text-white' : 'bg-white/10 text-white/75'}`}
+                      title={c.available ? asia.live : asia.coming}
+                    >
+                      {c.flag} {c.name}
+                      {c.available && <span className="ml-1 text-white/80">· {asia.live}</span>}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>

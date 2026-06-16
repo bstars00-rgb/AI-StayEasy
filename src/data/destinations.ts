@@ -1,6 +1,7 @@
 import type { Destination } from '../types'
 
-export const destinations: Destination[] = [
+// Launch-market destinations are all in Vietnam; `country` is injected below.
+const rawDestinations: Omit<Destination, 'country'>[] = [
   {
     city: 'Da Nang',
     slug: 'da-nang',
@@ -240,6 +241,8 @@ export const destinations: Destination[] = [
     hotelCount: 0,
   },
 ]
+
+export const destinations: Destination[] = rawDestinations.map((d) => ({ country: 'Vietnam', ...d }))
 
 export const getDestination = (slug: string) =>
   destinations.find((d) => d.slug === slug || d.city.toLowerCase() === slug.toLowerCase())
