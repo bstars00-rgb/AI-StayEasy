@@ -16,6 +16,7 @@ import { partners, campaigns, inquiries, overviewKpis, clicksByCity } from '../d
 import { endpoints, API_BASE } from '../api/contract'
 import { repo } from '../data/repo'
 import { wishlist } from '../lib/wishlist'
+import { buildVoucherSvg } from '../lib/voucher'
 
 /** Collects the sorted set of key-paths (leaves = strings/arrays) of an object. */
 function shapePaths(obj: unknown, prefix = ''): string[] {
@@ -57,6 +58,34 @@ describe('hotel data integrity', () => {
         expect(getHotel(slug), `${h.slug} → ${slug}`).toBeDefined()
       }
     }
+  })
+})
+
+describe('direct-booking vouchers', () => {
+  const withVouchers = hotels.filter((h) => h.voucher)
+
+  it('only sponsored hotels carry vouchers and codes are unique', () => {
+    expect(withVouchers).toHaveLength(8)
+    for (const h of withVouchers) {
+      expect(h.isSponsored, `${h.slug} has a voucher but is not sponsored`).toBe(true)
+      expect(h.voucher!.code).toMatch(/^[A-Z0-9]+$/)
+      expect(h.voucher!.discountLabel.length).toBeGreaterThan(0)
+      expect(h.voucher!.validUntil).toMatch(/^\d{4}-\d{2}-\d{2}$/)
+    }
+    expect(new Set(withVouchers.map((h) => h.voucher!.code)).size).toBe(withVouchers.length)
+  })
+
+  it('renders a self-contained SVG coupon carrying the code', () => {
+    const h = getHotel('an-bang-beach-resort')!
+    const svg = buildVoucherSvg(h, { heading: 'Voucher', validUntilLabel: 'Valid until', footer: 'Use on official site' })
+    expect(svg.startsWith('<svg')).toBe(true)
+    expect(svg).toContain(h.voucher!.code)
+    expect(svg).toContain('STAYEASY VIETNAM')
+  })
+
+  it('returns an empty string for a hotel without a voucher', () => {
+    const h = hotels.find((x) => !x.voucher)!
+    expect(buildVoucherSvg(h, { heading: '', validUntilLabel: '', footer: '' })).toBe('')
   })
 })
 

@@ -58,6 +58,17 @@ export type TravelStyle = 'Family' | 'Couple' | 'Business' | 'Beach' | 'Long Sta
 /** Relative price band — used by AI search only; never shown as a price. */
 export type PriceTier = 'budget' | 'mid' | 'premium'
 
+/** A direct-booking discount voucher the hotel provides — redeemed on the
+ *  hotel's official website (StayEasy never processes the booking). */
+export interface Voucher {
+  code: string
+  /** Short discount headline, e.g. "10% off your direct booking". */
+  discountLabel: string
+  terms: string
+  /** ISO date the voucher is valid until. */
+  validUntil: string
+}
+
 export interface RoomGuide {
   couples: string
   families: string
@@ -100,6 +111,8 @@ export interface Hotel {
   imageUrl: string
   officialWebsiteUrl: string
   isSponsored: boolean
+  /** Optional downloadable direct-booking discount voucher from the hotel. */
+  voucher?: Voucher
   similarHotelSlugs: string[]
   // ---- UI helpers (not part of the core hotel record) ----
   heroColor: string

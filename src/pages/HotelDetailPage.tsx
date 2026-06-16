@@ -5,6 +5,7 @@ import { HotelImage } from '../components/HotelImage'
 import { SponsoredBadge } from '../components/SponsoredBadge'
 import { FacilityGrid, TagChips } from '../components/Facilities'
 import { WishlistButton } from '../components/WishlistButton'
+import { VoucherCard } from '../components/VoucherCard'
 import { HotelCard } from '../components/HotelCard'
 import { repo } from '../data/repo'
 import { useAsync } from '../lib/useAsync'
@@ -223,7 +224,8 @@ export default function HotelDetailPage() {
         </div>
 
         {/* Sticky rail */}
-        <aside className="lg:sticky lg:top-20 lg:h-fit">
+        <aside className="lg:sticky lg:top-20 lg:h-fit space-y-3">
+          {hotel.voucher && <VoucherCard hotel={hotel} />}
           <div className="rounded-2xl bg-white p-5 shadow-card ring-1 ring-black/5">
             <p className="text-sm font-bold text-ink-900">{t.detail.railTitle}</p>
             <p className="mt-1 text-sm text-ink-700/70">{t.detail.railText}</p>

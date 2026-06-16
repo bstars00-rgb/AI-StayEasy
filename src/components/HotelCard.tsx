@@ -5,6 +5,7 @@ import { SponsoredBadge } from './SponsoredBadge'
 import { FacilityChips } from './Facilities'
 import { WishlistButton } from './WishlistButton'
 import { useLang, useT, localizeHotel } from '../i18n'
+import { voucherStrings } from '../lib/voucherI18n'
 
 /**
  * Suitability-first hotel card. Leads with *who it's for* and the official
@@ -33,6 +34,9 @@ export function HotelCard({ hotel: raw }: { hotel: Hotel }) {
         />
         <div className="absolute left-3 top-3 flex flex-wrap gap-2">
           {hotel.isSponsored && <SponsoredBadge />}
+          {raw.voucher && (
+            <span className="pill bg-brand-600 text-white">🎟️ {voucherStrings[lang].badge}</span>
+          )}
         </div>
         <div className="absolute bottom-3 right-3">
           <span className="pill bg-white/90 text-ink-900 backdrop-blur">{type}</span>
