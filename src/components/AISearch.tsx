@@ -12,16 +12,16 @@ export function AISearch({ autoFocus = false }: { autoFocus?: boolean }) {
   const [rec, setRec] = useState<Recommendation | null>(null)
   const [loading, setLoading] = useState(false)
 
-  const run = (q: string) => {
+  const run = async (q: string) => {
     const text = q.trim()
     if (!text) return
     setLoading(true)
     setRec(null)
-    // Brief delay for an "AI thinking" feel; the work itself is synchronous.
-    window.setTimeout(() => {
-      setRec(repo.recommend(text))
+    try {
+      setRec(await repo.recommend(text))
+    } finally {
       setLoading(false)
-    }, 450)
+    }
   }
 
   return (

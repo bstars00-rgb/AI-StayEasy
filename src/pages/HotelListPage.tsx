@@ -2,7 +2,9 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link, Navigate, useParams, useSearchParams } from 'react-router-dom'
 import Button from '../components/Button'
 import { HotelCard } from '../components/HotelCard'
+import { CardGridSkeleton, Spinner } from '../components/Loading'
 import { repo } from '../data/repo'
+import { useAsync } from '../lib/useAsync'
 import type { Hotel } from '../types'
 import { useT } from '../i18n'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
@@ -24,15 +26,17 @@ const matchers: Record<GroupKey, (h: Hotel, value: string) => boolean> = {
 export default function HotelListPage() {
   const t = useT()
   const { citySlug } = useParams()
-  const dest = repo.getDestination(citySlug ?? 'da-nang')
-
   useDocumentMeta(t.list.metaTitle, t.list.metaDesc)
+
+  const destQ = useAsync(() => repo.getDestination(citySlug ?? 'da-nang'), [citySlug])
+  const dest = destQ.data
+  const hotelsQ = useAsync(() => (dest ? repo.listHotelsByCity(dest.city) : Promise.resolve([])), [dest?.city])
 
   const [searchParams, setSearchParams] = useSearchParams()
   const [selected, setSelected] = useState<Record<GroupKey, string[]>>({ area: [], travel: [], features: [], benefits: [] })
 
   // City's hotels + the areas that actually exist for this city.
-  const all = useMemo(() => (dest ? repo.listHotelsByCity(dest.city) : []), [dest])
+  const all = hotelsQ.data ?? []
   const areaOptions = useMemo(() => Array.from(new Set(all.map((h) => h.area))), [all])
 
   // Reset filters when the city changes.
@@ -47,6 +51,14 @@ export default function HotelListPage() {
       setSelected((s) => (s.travel.includes(style) ? s : { ...s, travel: [...s.travel, style] }))
     }
   }, [searchParams])
+
+  if (destQ.loading) {
+    return (
+      <div className="container-page">
+        <Spinner />
+      </div>
+    )
+  }
 
   // Unknown city slug → back to the destinations overview.
   if (!dest) return <Navigate to="/destinations/vietnam" replace />
@@ -176,13 +188,19 @@ export default function HotelListPage() {
           <p className="hidden text-xs text-ink-700/50 sm:block">{t.list.curatedNote}</p>
         </div>
 
-        <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {results.map((h) => (
-            <HotelCard key={h.id} hotel={h} />
-          ))}
-        </div>
+        {hotelsQ.loading ? (
+          <div className="mt-4">
+            <CardGridSkeleton count={6} />
+          </div>
+        ) : (
+          <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {results.map((h) => (
+              <HotelCard key={h.id} hotel={h} />
+            ))}
+          </div>
+        )}
 
-        {results.length === 0 && (
+        {!hotelsQ.loading && results.length === 0 && (
           <div className="rounded-2xl bg-white p-10 text-center shadow-card ring-1 ring-black/5">
             <div className="text-3xl">🔍</div>
             <h3 className="mt-2 font-bold text-ink-900">{t.list.noneTitle}</h3>

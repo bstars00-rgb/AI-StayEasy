@@ -1,41 +1,16 @@
-import type { Hotel, Destination } from '../types'
-import { hotels, getHotel, hotelsByCity, getSimilarHotels } from './hotels'
-import { destinations, getDestination } from './destinations'
-import { recommend as recommendEngine, type Recommendation } from '../lib/searchEngine'
+import type { CatalogRepo } from './catalog'
+import { mockRepo } from './mockRepo'
+import { createApiRepo } from './apiRepo'
 
 /**
- * Catalog data access — the single seam between the UI and the data source.
+ * The active catalog data source.
  *
- * Today this is backed by bundled mock data. When the backend lands, swap each
- * method body for a `fetch()` against the endpoints in `src/api/contract.ts`
- * (e.g. `repo.getHotel(slug)` → `GET /api/v1/hotels/:slug`). The method
- * signatures are intentionally promise-friendly: callers can be migrated to
- * `await repo.x()` without changing call sites elsewhere.
- *
- * UI code should import from here rather than from `./hotels` / `./destinations`
- * directly, so the mock → API migration touches only this file.
+ * Defaults to bundled mock data. Set `VITE_API_URL` (e.g. in `.env`) to point
+ * the whole app at a real backend implementing src/api/contract.ts — no other
+ * code changes needed. UI imports `repo` from here only.
  */
-export const repo = {
-  listDestinations(): Destination[] {
-    return destinations
-  },
-  getDestination(slug: string): Destination | undefined {
-    return getDestination(slug)
-  },
-  allHotels(): Hotel[] {
-    return hotels
-  },
-  listHotelsByCity(city: string): Hotel[] {
-    return hotelsByCity(city)
-  },
-  getHotel(slug: string): Hotel | undefined {
-    return getHotel(slug)
-  },
-  getSimilarHotels(hotel: Hotel): Hotel[] {
-    return getSimilarHotels(hotel)
-  },
-  /** Natural-language recommendation over the full catalogue. */
-  recommend(query: string, limit?: number): Recommendation {
-    return recommendEngine(query, hotels, limit)
-  },
-}
+const apiUrl = import.meta.env.VITE_API_URL as string | undefined
+
+export const repo: CatalogRepo = apiUrl ? createApiRepo(apiUrl) : mockRepo
+
+export type { CatalogRepo }

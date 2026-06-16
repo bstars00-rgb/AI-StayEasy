@@ -3,6 +3,7 @@ import Button from '../components/Button'
 import { SectionHeading } from '../components/SectionHeading'
 import { HotelImage } from '../components/HotelImage'
 import { repo } from '../data/repo'
+import { useAsync } from '../lib/useAsync'
 import { travelStyles } from '../data/travelStyles'
 import { useT } from '../i18n'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
@@ -10,7 +11,7 @@ import { useDocumentMeta } from '../lib/useDocumentMeta'
 export default function VietnamPage() {
   const t = useT()
   useDocumentMeta(t.vietnam.metaTitle, t.vietnam.metaDesc)
-  const destinations = repo.listDestinations()
+  const { data: destinations = [], loading: destLoading } = useAsync(() => repo.listDestinations(), [])
   const destText = t.destText as unknown as Record<string, { short: string; bestFor: string[]; recommended: string; highlights: string[] }>
   const cityNames = t.enums.city as Record<string, string>
 
@@ -35,7 +36,9 @@ export default function VietnamPage() {
       <section className="container-page mt-12">
         <SectionHeading eyebrow={t.vietnam.destEyebrow} title={t.vietnam.destTitle} />
         <div className="grid gap-6 lg:grid-cols-2">
-          {destinations.map((d) => {
+          {destLoading
+            ? Array.from({ length: 4 }).map((_, i) => <div key={i} className="h-72 animate-pulse rounded-3xl bg-sand-100" />)
+            : destinations.map((d) => {
             // Use translated destination text when present; fall back to the
             // destination's own (English) fields for newer "coming soon" cities.
             const dt = destText[d.slug]

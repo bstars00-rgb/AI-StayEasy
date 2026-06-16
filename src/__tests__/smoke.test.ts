@@ -1,4 +1,9 @@
 import { describe, it, expect } from 'vitest'
+import { createElement as h } from 'react'
+import { renderToString } from 'react-dom/server'
+import { MemoryRouter } from 'react-router-dom'
+import App from '../App'
+import { I18nProvider } from '../i18n'
 import { en } from '../i18n/locales/en'
 import { ko } from '../i18n/locales/ko'
 import { vi } from '../i18n/locales/vi'
@@ -9,6 +14,7 @@ import { localizeHotel } from '../i18n'
 import { recommend } from '../lib/searchEngine'
 import { partners, campaigns, inquiries, overviewKpis, clicksByCity } from '../data/adminData'
 import { endpoints, API_BASE } from '../api/contract'
+import { repo } from '../data/repo'
 
 /** Collects the sorted set of key-paths (leaves = strings/arrays) of an object. */
 function shapePaths(obj: unknown, prefix = ''): string[] {
@@ -135,6 +141,38 @@ describe('back-office data', () => {
   it('has inquiries with valid statuses', () => {
     expect(inquiries.length).toBeGreaterThan(0)
     for (const i of inquiries) expect(['New', 'Contacted', 'Won', 'Lost']).toContain(i.status)
+  })
+})
+
+describe('page render smoke (initial render, no throw)', () => {
+  const renderAt = (path: string) =>
+    renderToString(h(I18nProvider, null, h(MemoryRouter, { initialEntries: [path] }, h(App))))
+
+  const routes = [
+    '/', '/search', '/destinations/vietnam', '/destinations/da-nang',
+    '/destinations/hanoi', '/hotels/an-bang-beach-resort', '/guides/direct-booking',
+    '/partners', '/dashboard', '/admin', '/about', '/no-such-page',
+  ]
+  for (const path of routes) {
+    it(`renders ${path}`, () => {
+      expect(() => renderAt(path)).not.toThrow()
+    })
+  }
+})
+
+describe('async data repo (mock-backed)', () => {
+  it('resolves the full catalogue and a single hotel', async () => {
+    const all = await repo.allHotels()
+    expect(all).toHaveLength(24)
+    const h = await repo.getHotel('an-bang-beach-resort')
+    expect(h?.slug).toBe('an-bang-beach-resort')
+  })
+
+  it('resolves destinations, city hotels, and recommendations', async () => {
+    expect((await repo.listDestinations()).length).toBeGreaterThan(12)
+    expect((await repo.listHotelsByCity('Da Nang'))).toHaveLength(12)
+    const rec = await repo.recommend('family beach hotel with a pool')
+    expect(rec.results.length).toBeGreaterThan(0)
   })
 })
 

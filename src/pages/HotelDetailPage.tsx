@@ -6,6 +6,8 @@ import { SponsoredBadge } from '../components/SponsoredBadge'
 import { FacilityGrid, TagChips } from '../components/Facilities'
 import { HotelCard } from '../components/HotelCard'
 import { repo } from '../data/repo'
+import { useAsync } from '../lib/useAsync'
+import { Spinner } from '../components/Loading'
 import { useT, useLang, localizeHotel } from '../i18n'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 
@@ -39,16 +41,31 @@ export default function HotelDetailPage() {
   const { slug } = useParams()
   const t = useT()
   const { lang } = useLang()
-  const rawHotel = slug ? repo.getHotel(slug) : undefined
+  const { data: rawHotel, loading } = useAsync(
+    () => (slug ? repo.getHotel(slug) : Promise.resolve(undefined)),
+    [slug],
+  )
+  const { data: similar = [] } = useAsync(
+    () => (rawHotel ? repo.getSimilarHotels(rawHotel) : Promise.resolve([])),
+    [rawHotel?.id],
+  )
 
   // Document meta: built from the (localized) hotel when present, else a
   // generic fallback. useDocumentMeta is called unconditionally before any
   // early return to keep hook order stable.
   const metaHotel = rawHotel ? localizeHotel(rawHotel, lang) : undefined
   useDocumentMeta(
-    metaHotel ? `${metaHotel.name} — StayEasy` : t.detail.notFound,
+    metaHotel ? `${metaHotel.name} — StayEasy` : 'StayEasy Vietnam',
     metaHotel ? metaHotel.positioningLine : t.detail.notFoundText,
   )
+
+  if (loading) {
+    return (
+      <div className="container-page">
+        <Spinner />
+      </div>
+    )
+  }
 
   if (!rawHotel) {
     return (
@@ -61,7 +78,6 @@ export default function HotelDetailPage() {
   }
 
   const hotel = localizeHotel(rawHotel, lang)
-  const similar = repo.getSimilarHotels(rawHotel)
   const area = (t.enums.area as Record<string, string>)[hotel.area] ?? hotel.area
   const city = (t.enums.city as Record<string, string>)[hotel.city] ?? hotel.city
   const hotelType = (t.enums.hotelType as Record<string, string>)[hotel.hotelType] ?? hotel.hotelType

@@ -6,15 +6,19 @@ import { SectionHeading } from '../components/SectionHeading'
 import { HotelCard } from '../components/HotelCard'
 import { HotelImage } from '../components/HotelImage'
 import { repo } from '../data/repo'
+import { useAsync } from '../lib/useAsync'
+import { CardGridSkeleton } from '../components/Loading'
 import { useT } from '../i18n'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 
 export default function HomePage() {
   const t = useT()
   useDocumentMeta(t.home.metaTitle, t.home.metaDesc)
-  const hotels = repo.allHotels()
-  const destinations = repo.listDestinations()
-  // 3 sample Da Nang hotels, leading with a sponsored one.
+  const hot = useAsync(() => repo.allHotels(), [])
+  const dest = useAsync(() => repo.listDestinations(), [])
+  const hotels = hot.data ?? []
+  const destinations = (dest.data ?? []).filter((d) => d.available)
+  // 3 sample hotels, leading with a sponsored one.
   const featured = [
     ...hotels.filter((h) => h.isSponsored),
     ...hotels.filter((h) => !h.isSponsored),
@@ -72,7 +76,9 @@ export default function HomePage() {
       <section className="container-page mt-16">
         <SectionHeading eyebrow={t.home.featuredDestEyebrow} title={t.home.featuredDestTitle} subtitle={t.home.featuredDestSubtitle} />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {destinations.filter((d) => d.available).map((d) => (
+          {dest.loading
+            ? Array.from({ length: 4 }).map((_, i) => <div key={i} className="h-40 animate-pulse rounded-2xl bg-sand-100" />)
+            : destinations.map((d) => (
             <Link
               key={d.city}
               to={`/destinations/${d.slug}`}
@@ -99,11 +105,15 @@ export default function HomePage() {
             {t.home.seeAll} →
           </Link>
         </SectionHeading>
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {featured.map((h) => (
-            <HotelCard key={h.id} hotel={h} />
-          ))}
-        </div>
+        {hot.loading ? (
+          <CardGridSkeleton count={3} />
+        ) : (
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {featured.map((h) => (
+              <HotelCard key={h.id} hotel={h} />
+            ))}
+          </div>
+        )}
         <p className="mt-4 text-xs text-ink-700/60">
           {t.home.sponsoredNote}
         </p>
