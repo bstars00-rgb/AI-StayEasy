@@ -22,6 +22,12 @@ export const ko: Locale = {
       'North Nha Trang': '나트랑 북부',
       'Long Beach': '롱비치',
       'Sao Beach': '사오 비치',
+      'Ancient Town': '올드타운',
+      'An Bang Beach': '안방 비치',
+      'Cam Thanh': '깜탄',
+      'Old Quarter': '구시가지',
+      'West Lake': '서호',
+      'French Quarter': '프렌치 쿼터',
     },
     hotelType: {
       'Beach resort': '비치 리조트',

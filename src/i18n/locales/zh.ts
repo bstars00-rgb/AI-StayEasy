@@ -22,6 +22,12 @@ export const zh: Locale = {
       'North Nha Trang': '芽庄北部',
       'Long Beach': '长滩',
       'Sao Beach': '星星海滩',
+      'Ancient Town': '古城',
+      'An Bang Beach': '安邦海滩',
+      'Cam Thanh': '锦清',
+      'Old Quarter': '老城区',
+      'West Lake': '西湖',
+      'French Quarter': '法国区',
     },
     hotelType: {
       'Beach resort': '海滨度假村',

@@ -17,6 +17,7 @@ export type City =
   | 'Vung Tau'
   | 'Quy Nhon'
   | 'Con Dao'
+  | 'Phu Yen'
 
 export type Area =
   // Da Nang
@@ -34,6 +35,14 @@ export type Area =
   // Phu Quoc
   | 'Long Beach'
   | 'Sao Beach'
+  // Hoi An
+  | 'Ancient Town'
+  | 'An Bang Beach'
+  | 'Cam Thanh'
+  // Hanoi
+  | 'Old Quarter'
+  | 'West Lake'
+  | 'French Quarter'
 
 export type HotelType =
   | 'Beach resort'

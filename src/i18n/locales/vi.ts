@@ -22,6 +22,12 @@ export const vi: Locale = {
       'North Nha Trang': 'Bắc Nha Trang',
       'Long Beach': 'Bãi Dài',
       'Sao Beach': 'Bãi Sao',
+      'Ancient Town': 'Phố cổ',
+      'An Bang Beach': 'Biển An Bàng',
+      'Cam Thanh': 'Cẩm Thanh',
+      'Old Quarter': 'Khu phố cổ',
+      'West Lake': 'Hồ Tây',
+      'French Quarter': 'Khu phố Pháp',
     },
     hotelType: {
       'Beach resort': 'Resort biển',

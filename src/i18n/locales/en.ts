@@ -22,6 +22,12 @@ export const en = {
       'North Nha Trang': 'North Nha Trang',
       'Long Beach': 'Long Beach',
       'Sao Beach': 'Sao Beach',
+      'Ancient Town': 'Ancient Town',
+      'An Bang Beach': 'An Bang Beach',
+      'Cam Thanh': 'Cam Thanh',
+      'Old Quarter': 'Old Quarter',
+      'West Lake': 'West Lake',
+      'French Quarter': 'French Quarter',
     },
     hotelType: {
       'Beach resort': 'Beach resort',

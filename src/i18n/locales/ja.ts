@@ -22,6 +22,12 @@ export const ja: Locale = {
       'North Nha Trang': 'ニャチャン北部',
       'Long Beach': 'ロングビーチ',
       'Sao Beach': 'サオビーチ',
+      'Ancient Town': '旧市街',
+      'An Bang Beach': 'アンバンビーチ',
+      'Cam Thanh': 'カムタイン',
+      'Old Quarter': 'オールドクォーター',
+      'West Lake': 'タイ湖',
+      'French Quarter': 'フレンチクォーター',
     },
     hotelType: {
       'Beach resort': 'ビーチリゾート',

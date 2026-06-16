@@ -60,7 +60,7 @@ export const destinations: Destination[] = [
   {
     city: 'Hanoi',
     slug: 'hanoi',
-    available: false,
+    available: true,
     shortDescription: 'The 1,000-year-old capital — Old Quarter lanes, lakes, street food, and French-colonial grandeur.',
     description:
       'Vietnam’s capital blends a buzzing Old Quarter, serene lakes, world-class street food, and colonial architecture. The gateway to the north (Ha Long, Sapa, Ninh Binh).',
@@ -69,7 +69,7 @@ export const destinations: Destination[] = [
     heroColor: 'from-rose-500 to-red-600',
     emoji: '🏛️',
     highlights: ['Old Quarter', 'Hoan Kiem Lake', 'Train Street', 'Egg coffee'],
-    hotelCount: 0,
+    hotelCount: 4,
   },
   {
     city: 'Ha Long Bay',
@@ -130,7 +130,7 @@ export const destinations: Destination[] = [
   {
     city: 'Hoi An',
     slug: 'hoi-an',
-    available: false,
+    available: true,
     shortDescription: 'A lantern-lit UNESCO old town — tailors, riverside cafés, and a nearby beach.',
     description:
       'Hoi An’s preserved Ancient Town glows with lanterns at night. Famous for tailoring, food tours, and An Bang Beach — 30 minutes from Da Nang.',
@@ -139,7 +139,7 @@ export const destinations: Destination[] = [
     heroColor: 'from-orange-500 to-amber-500',
     emoji: '🏮',
     highlights: ['Ancient Town', 'Lantern night', 'Tailor shops', 'An Bang Beach'],
-    hotelCount: 0,
+    hotelCount: 4,
   },
   {
     city: 'Da Lat',
@@ -223,6 +223,20 @@ export const destinations: Destination[] = [
     heroColor: 'from-teal-600 to-cyan-700',
     emoji: '🐢',
     highlights: ['Empty beaches', 'Diving & reefs', 'Turtle nesting', 'National park'],
+    hotelCount: 0,
+  },
+  {
+    city: 'Phu Yen',
+    slug: 'phu-yen',
+    available: false,
+    shortDescription: 'An unspoiled central-coast gem (Tuy Hoa) — wild beaches, the “Eye of God,” and great-value seafood.',
+    description:
+      'Just south of Quy Nhon, Phu Yen (Tuy Hoa) offers dramatic coastline, untouched beaches, the famous Bai Xep and Ganh Da Dia, and authentic local life — “the real Vietnam” away from the crowds.',
+    bestFor: ['Off the beaten path', 'Photography', 'Local food & value'],
+    recommendedTraveler: 'Return travelers and those seeking quiet, authentic coast.',
+    heroColor: 'from-cyan-600 to-teal-600',
+    emoji: '🌅',
+    highlights: ['Ganh Da Dia', 'Bai Xep', 'Tuy Hoa beach', 'Local seafood'],
     hotelCount: 0,
   },
 ]

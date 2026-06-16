@@ -28,14 +28,16 @@ function shapePaths(obj: unknown, prefix = ''): string[] {
 }
 
 describe('hotel data integrity', () => {
-  it('has 24 hotels across 4 cities with unique ids and slugs', () => {
-    expect(hotels).toHaveLength(24)
-    expect(new Set(hotels.map((h) => h.id)).size).toBe(24)
-    expect(new Set(hotels.map((h) => h.slug)).size).toBe(24)
+  it('has 32 hotels across 6 cities with unique ids and slugs', () => {
+    expect(hotels).toHaveLength(32)
+    expect(new Set(hotels.map((h) => h.id)).size).toBe(32)
+    expect(new Set(hotels.map((h) => h.slug)).size).toBe(32)
     expect(hotels.filter((h) => h.city === 'Da Nang')).toHaveLength(12)
     expect(hotels.filter((h) => h.city === 'Ho Chi Minh City')).toHaveLength(4)
     expect(hotels.filter((h) => h.city === 'Nha Trang')).toHaveLength(4)
     expect(hotels.filter((h) => h.city === 'Phu Quoc')).toHaveLength(4)
+    expect(hotels.filter((h) => h.city === 'Hoi An')).toHaveLength(4)
+    expect(hotels.filter((h) => h.city === 'Hanoi')).toHaveLength(4)
   })
 
   it('every required field is populated', () => {
@@ -165,7 +167,7 @@ describe('page render smoke (initial render, no throw)', () => {
 describe('async data repo (mock-backed)', () => {
   it('resolves the full catalogue and a single hotel', async () => {
     const all = await repo.allHotels()
-    expect(all).toHaveLength(24)
+    expect(all).toHaveLength(32)
     const h = await repo.getHotel('an-bang-beach-resort')
     expect(h?.slug).toBe('an-bang-beach-resort')
   })
