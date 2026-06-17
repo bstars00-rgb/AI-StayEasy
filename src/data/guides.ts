@@ -414,6 +414,286 @@ export const guides: Guide[] = [
       },
     ],
   },
+  {
+    slug: 'ho-chi-minh-city-guide',
+    category: 'City guide',
+    title: 'Ho Chi Minh City travel guide: energy, history, and street food',
+    excerpt:
+      'Vietnam’s largest city blends French-colonial landmarks, rooftop bars, war history, and legendary street food — the gateway to the south and the Mekong Delta.',
+    readMins: 6,
+    updated: '2026-06-13',
+    emoji: '🌆',
+    heroColor: 'from-amber-500 to-orange-500',
+    heroImage: u('1555921015-5532091f6026'),
+    intro:
+      'Ho Chi Minh City (still widely called Saigon) is fast, hot, and full of energy. District 1 packs the landmarks, markets, and rooftops; leafy Thao Dien draws expats and brunch spots; and the city is the natural base for a Mekong Delta day trip. It rewards travelers who lean into the pace — and the food.',
+    sections: [
+      {
+        heading: 'Where to stay',
+        body: ['Choose between the central buzz and quieter riverside calm.'],
+        bullets: [
+          'District 1 — central, walkable to landmarks, markets, and rooftop bars',
+          'Thao Dien (District 2) — leafy, relaxed, café and brunch culture',
+          'Airport Area — convenient for early flights and short layovers',
+        ],
+      },
+      {
+        heading: 'What to do',
+        body: ['Mix history, markets, and food, then escape to the delta.'],
+        bullets: [
+          'Visit the War Remnants Museum and the Reunification Palace',
+          'See Notre-Dame Cathedral and the Central Post Office',
+          'Shop and snack at Ben Thanh Market',
+          'Take a sunset rooftop drink over the skyline',
+          'Day-trip to the Mekong Delta or the Cu Chi Tunnels',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: 'How many days do you need in Ho Chi Minh City?',
+        a: 'Two to three days covers the main sights and food, plus a Mekong Delta or Cu Chi Tunnels day trip.',
+      },
+    ],
+  },
+  {
+    slug: 'da-lat-travel-guide',
+    category: 'City guide',
+    title: 'Da Lat travel guide: cool highlands, pine forests, and coffee',
+    excerpt:
+      'A cool-climate mountain town of pine forests, flower farms, waterfalls, and Vietnam’s coffee heartland — a romantic break from the coastal heat.',
+    readMins: 5,
+    updated: '2026-06-13',
+    emoji: '🌲',
+    heroColor: 'from-emerald-600 to-green-700',
+    heroImage: u('1504457047772-27faf1c00561'),
+    intro:
+      'Da Lat sits in the Central Highlands at around 1,500 m, giving it a spring-like climate year-round. It is a change of pace from Vietnam’s beaches: French-era villas, flower gardens, lakes, waterfalls, and coffee plantations, with cooler evenings that call for a light jacket.',
+    sections: [
+      {
+        heading: 'What to do',
+        body: ['Da Lat suits slow, scenic days and a bit of adventure.'],
+        bullets: [
+          'Stroll the flower gardens and around Xuan Huong Lake',
+          'Visit a coffee farm — this is Vietnam’s coffee country',
+          'Chase waterfalls like Datanla (with a fun alpine coaster)',
+          'Try canyoning for an adrenaline day out',
+        ],
+      },
+      {
+        heading: 'Good to know',
+        body: [
+          'Evenings are genuinely cool, so pack a layer even in summer. Da Lat is a popular weekend escape for Vietnamese travelers, so book ahead around holidays and weekends.',
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'sapa-travel-guide',
+    category: 'City guide',
+    title: 'Sapa travel guide: rice terraces, hill tribes, and Fansipan',
+    excerpt:
+      'Misty northern highlands of dramatic rice terraces, ethnic-minority villages, and Mount Fansipan — Indochina’s highest peak — best explored on foot.',
+    readMins: 5,
+    updated: '2026-06-13',
+    emoji: '🏔️',
+    heroColor: 'from-green-600 to-lime-600',
+    heroImage: u('1573790387438-4da905039392'),
+    intro:
+      'Sapa, in Vietnam’s far north, is famous for its sculpted rice terraces and the culture of the Hmong, Dao, and other ethnic-minority communities. It is a trekking and homestay destination, with a cable car and railway running up Fansipan, the highest mountain in Indochina.',
+    sections: [
+      {
+        heading: 'What to do',
+        body: ['Sapa is best on foot, valley to valley.'],
+        bullets: [
+          'Trek between terraced villages like Cat Cat, Lao Chai, and Ta Van',
+          'Stay in a local homestay for the views and the welcome',
+          'Take the cable car up Fansipan for the summit panorama',
+          'Time a visit around a colorful local market day',
+        ],
+      },
+      {
+        heading: 'When to go',
+        body: [
+          'September to November brings golden, ready-to-harvest terraces and clearer skies; spring is green and mild. Winter can be cold and misty — atmospheric, but pack warm layers.',
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'ha-long-bay-travel-guide',
+    category: 'City guide',
+    title: 'Ha Long Bay travel guide: cruising a UNESCO seascape',
+    excerpt:
+      'Thousands of limestone karsts rising from emerald water — Ha Long Bay is best experienced on an overnight cruise, with kayaking, caves, and sunrise on deck.',
+    readMins: 5,
+    updated: '2026-06-13',
+    emoji: '⛰️',
+    heroColor: 'from-emerald-500 to-teal-600',
+    heroImage: u('1559592413-7cec4d0cae2b'),
+    intro:
+      'Ha Long Bay is one of Vietnam’s signature sights: a vast seascape of forested limestone islands and quiet lagoons. The classic way to see it is an overnight cruise from the Hanoi area, trading day-trip crowds for a calm night anchored among the karsts.',
+    sections: [
+      {
+        heading: 'Choosing a cruise',
+        body: ['The cruise makes or breaks the trip — choose deliberately.'],
+        bullets: [
+          'One night suits most travelers; two nights reaches quieter areas like Lan Ha Bay',
+          'Compare exactly what is included: meals, kayaking, cave visits, transfers',
+          'Read recent reviews — boat quality and routes vary widely',
+        ],
+      },
+      {
+        heading: 'What to do on board',
+        body: [
+          'Expect kayaking or bamboo-boat rides through lagoons, a visit to a cave such as Sung Sot, swimming stops in warmer months, and an early start for sunrise and tai chi on deck.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: 'Is Ha Long Bay a day trip or an overnight?',
+        a: 'Both exist, but an overnight cruise is far more rewarding — you see the bay at its calmest, after the day boats leave.',
+      },
+    ],
+  },
+  {
+    slug: 'first-time-vietnam',
+    category: 'Planning',
+    title: 'First time in Vietnam? Start here',
+    excerpt:
+      'A practical orientation for a first trip: how to split your time between north, center, and south, plus the basics of money, transport, and getting around.',
+    readMins: 6,
+    updated: '2026-06-14',
+    emoji: '🧭',
+    heroColor: 'from-sky-500 to-brand-500',
+    heroImage: u('1488646953014-85cb44e25828'),
+    intro:
+      'Vietnam is long and varied, so a first trip is really about choosing a route. Most first-timers pick two or three regions rather than trying to see everything. Here is how to think about it, plus the practical basics that make the trip smoother.',
+    sections: [
+      {
+        heading: 'Pick a route, not a checklist',
+        body: ['A classic first itinerary links a few anchors:'],
+        bullets: [
+          'North: Hanoi + Ha Long Bay (and optionally Sapa or Ninh Binh)',
+          'Center: Da Nang + Hoi An (easy beaches and old-town charm)',
+          'South: Ho Chi Minh City + the Mekong Delta (and Phu Quoc to relax)',
+          'Ten days comfortably covers two regions; two weeks covers all three',
+        ],
+      },
+      {
+        heading: 'Practical basics',
+        body: ['A few things smooth out a first visit.'],
+        bullets: [
+          'Domestic flights save long overland hauls between regions',
+          'Use Grab (ride-hailing) in cities for fair, cashless fares',
+          'Carry some cash; cards work in hotels and bigger venues',
+          'Check current visa/e-visa rules for your nationality before you fly',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: 'How long should a first trip to Vietnam be?',
+        a: 'Ten days lets you do two regions well; two weeks is ideal for north, center, and south without rushing.',
+      },
+    ],
+  },
+  {
+    slug: 'family-travel-vietnam',
+    category: 'Planning',
+    title: 'Family travel in Vietnam: where to go with kids',
+    excerpt:
+      'Vietnam is a rewarding family destination — calm beaches, easy day trips, and family-friendly resorts. Here’s how to plan a trip that works for all ages.',
+    readMins: 5,
+    updated: '2026-06-14',
+    emoji: '👨‍👩‍👧',
+    heroColor: 'from-cyan-500 to-blue-500',
+    heroImage: u('1528181304800-259b08848526'),
+    intro:
+      'With calm beaches, short flights between regions, and warm hospitality, Vietnam suits families well. The key is pacing: pair a resort base with a couple of easy excursions, rather than constant moving.',
+    sections: [
+      {
+        heading: 'Best bases for families',
+        body: ['Choose a relaxed base with pools and space to roam.'],
+        bullets: [
+          'Da Nang — wide beaches, family resorts, and a short hop to Hoi An',
+          'Phu Quoc — quiet island beaches and resort pools',
+          'Nha Trang — beach promenade plus island boat trips',
+        ],
+      },
+      {
+        heading: 'Tips that help',
+        body: [
+          'Book rooms with a pool and confirm the child and extra-bed policy before you pay. Plan activities for the cooler morning and late afternoon, and keep midday for the pool. Direct booking can make it easier to request connecting rooms or a crib.',
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'honeymoon-vietnam',
+    category: 'Planning',
+    title: 'A Vietnam honeymoon: quiet beaches and romantic escapes',
+    excerpt:
+      'From lantern-lit Hoi An to the quiet islands of Phu Quoc and Con Dao, Vietnam offers romantic, good-value honeymoons. Here’s how to plan one.',
+    readMins: 5,
+    updated: '2026-06-14',
+    emoji: '💑',
+    heroColor: 'from-rose-500 to-red-600',
+    heroImage: u('1540611025311-01df3cef54b5'),
+    intro:
+      'Vietnam is an underrated honeymoon destination: atmospheric old towns, quiet island resorts, and excellent value for the level of comfort. A good honeymoon route balances a romantic town with a slow beach finish.',
+    sections: [
+      {
+        heading: 'Romantic anchors',
+        body: ['Pair charm with calm.'],
+        bullets: [
+          'Hoi An — lantern-lit evenings, tailoring, and riverside dinners',
+          'Phu Quoc — sunset coasts, spas, and quiet beaches',
+          'Con Dao — remote, pristine, and wonderfully secluded',
+          'Da Lat — a cool-climate, pine-scented mountain detour',
+        ],
+      },
+      {
+        heading: 'Make it special',
+        body: [
+          'Booking direct is often the best way to flag that it’s a honeymoon — hotels can sometimes arrange a room upgrade, late checkout, or a small in-room surprise for direct guests. Always confirm any promised perk on your reservation before arrival.',
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'vietnam-on-a-budget',
+    category: 'Planning',
+    title: 'Vietnam on a budget: how to travel well for less',
+    excerpt:
+      'Vietnam is already affordable — and a few habits stretch your money further without cutting the experience. Food, transport, and booking tips that add up.',
+    readMins: 5,
+    updated: '2026-06-14',
+    emoji: '💸',
+    heroColor: 'from-lime-500 to-green-600',
+    heroImage: u('1517824806704-9040b037703b'),
+    intro:
+      'Vietnam offers some of the best value in Southeast Asia. You do not need to rough it to travel cheaply here — a few smart choices around food, transport, and booking keep costs low while keeping the trip comfortable.',
+    sections: [
+      {
+        heading: 'Where the savings are',
+        body: ['Small habits add up over a trip.'],
+        bullets: [
+          'Eat where locals eat — street food and small eateries are cheap and excellent',
+          'Use Grab and shared transport instead of private cars',
+          'Travel between regions by overnight train or budget flights booked early',
+          'Shoulder season brings lower room rates and thinner crowds',
+        ],
+      },
+      {
+        heading: 'Booking smart',
+        body: [
+          'Compare the total price including taxes on the hotel’s official site and OTAs before you commit. Direct rates sometimes include breakfast or flexible cancellation that a slightly cheaper non-refundable OTA rate does not — which can be the better deal overall.',
+        ],
+      },
+    ],
+  },
 ]
 
 export const getGuide = (slug: string) => guides.find((g) => g.slug === slug)

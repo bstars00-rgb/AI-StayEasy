@@ -14,6 +14,7 @@ import { wishlist } from '../lib/wishlist'
 import { buildVoucherSvg } from '../lib/voucher'
 import { countries, liveMarkets, getCountry } from '../data/countries'
 import { guides, getGuide } from '../data/guides'
+import { officialLink, isPlaceholderUrl } from '../lib/officialLink'
 
 /** Collects the sorted set of key-paths (leaves = strings/arrays) of an object. */
 function shapePaths(obj: unknown, prefix = ''): string[] {
@@ -42,6 +43,7 @@ describe('hotel data integrity', () => {
     for (const h of hotels) {
       expect(h.name.length).toBeGreaterThan(0)
       expect(h.officialWebsiteUrl).toMatch(/^https?:\/\//)
+      expect(h.imageUrl).toContain('images.unsplash.com') // real photography, no placeholders
       expect(h.facilities.length).toBeGreaterThan(0)
       expect(h.bestFor.length).toBeGreaterThan(0)
       expect(h.officialBenefits.length).toBeGreaterThan(0)
@@ -53,6 +55,23 @@ describe('hotel data integrity', () => {
     for (const h of hotels) {
       for (const slug of h.similarHotelSlugs) {
         expect(getHotel(slug), `${h.slug} → ${slug}`).toBeDefined()
+      }
+    }
+  })
+})
+
+describe('outbound official links', () => {
+  it('never resolves to a dead placeholder (.example) link', () => {
+    for (const h of hotels) {
+      const link = officialLink(h)
+      expect(link).not.toContain('.example')
+      expect(link).toMatch(/^https?:\/\//)
+      // Placeholder catalogue URLs fall back to a real web search.
+      if (isPlaceholderUrl(h.officialWebsiteUrl)) {
+        expect(link).toContain('google.com/search')
+        expect(link).toContain(encodeURIComponent(h.name))
+      } else {
+        expect(link).toBe(h.officialWebsiteUrl)
       }
     }
   })

@@ -3,6 +3,7 @@ import type { Hotel } from '../types'
 import { useLang } from '../i18n'
 import { voucherStrings } from '../lib/voucherI18n'
 import { downloadVoucher } from '../lib/voucher'
+import { officialLink } from '../lib/officialLink'
 
 /**
  * Direct-booking discount voucher. The customer copies the code or downloads a
@@ -80,7 +81,7 @@ export function VoucherCard({ hotel }: { hotel: Hotel }) {
             ⬇ {s.download}
           </button>
           <a
-            href={hotel.officialWebsiteUrl}
+            href={officialLink(hotel)}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-600 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-700"

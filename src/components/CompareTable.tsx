@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import type { Hotel } from '../types'
 import { useLang, useT, localizeHotel } from '../i18n'
 import { facilityIcon } from '../lib/facilities'
+import { officialLink } from '../lib/officialLink'
 import { HotelImage } from './HotelImage'
 import { WishlistButton } from './WishlistButton'
 
@@ -78,7 +79,7 @@ export function CompareTable({ hotels: raws }: { hotels: Hotel[] }) {
             {hotels.map((h) => (
               <td key={h.id} className="p-3">
                 <a
-                  href={h.officialWebsiteUrl}
+                  href={officialLink(h)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block rounded-full bg-brand-600 px-3 py-2 text-center text-xs font-bold text-white hover:bg-brand-700"

@@ -12,6 +12,7 @@ import { useAsync } from '../lib/useAsync'
 import { Spinner } from '../components/Loading'
 import { useT, useLang, localizeHotel } from '../i18n'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
+import { officialLink } from '../lib/officialLink'
 
 function Card({ title, icon, children, className = '' }: { title: string; icon: string; children: ReactNode; className?: string }) {
   return (
@@ -125,7 +126,7 @@ export default function HotelDetailPage() {
           </div>
           <div className="shrink-0">
             <div className="flex flex-col gap-2 sm:flex-row lg:flex-col lg:items-end">
-              <BookOfficialButton href={hotel.officialWebsiteUrl} hotelName={hotel.name} label={t.common.bookOfficial} className="w-full lg:w-auto" />
+              <BookOfficialButton href={officialLink(hotel)} hotelName={hotel.name} label={t.common.bookOfficial} className="w-full lg:w-auto" />
               <WishlistButton hotelId={hotel.slug} variant="pill" className="w-full justify-center sm:w-auto lg:w-auto" />
             </div>
             <p className="mt-2 text-center text-xs text-ink-700/60 lg:text-right">{t.detail.noCommission}</p>
@@ -238,7 +239,7 @@ export default function HotelDetailPage() {
           <div className="rounded-2xl bg-white p-5 shadow-card ring-1 ring-black/5">
             <p className="text-sm font-bold text-ink-900">{t.detail.railTitle}</p>
             <p className="mt-1 text-sm text-ink-700/70">{t.detail.railText}</p>
-            <BookOfficialButton href={hotel.officialWebsiteUrl} hotelName={hotel.name} label={t.common.bookOfficial} className="mt-4 w-full" />
+            <BookOfficialButton href={officialLink(hotel)} hotelName={hotel.name} label={t.common.bookOfficial} className="mt-4 w-full" />
             <div className="mt-4 space-y-2 border-t border-black/5 pt-4 text-sm text-ink-700/80">
               <p className="flex items-center gap-2">🔒 {t.detail.rail1}</p>
               <p className="flex items-center gap-2">🏷️ {t.detail.rail2}</p>
@@ -258,7 +259,7 @@ export default function HotelDetailPage() {
           <h2 className="text-2xl font-extrabold sm:text-3xl">{t.detail.ctaTitle}</h2>
           <p className="mx-auto mt-2 max-w-lg text-white/85">{t.detail.ctaText}</p>
           <a
-            href={hotel.officialWebsiteUrl}
+            href={officialLink(hotel)}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-base font-bold text-brand-700 shadow-sm transition-transform hover:scale-[1.02]"
@@ -288,7 +289,7 @@ export default function HotelDetailPage() {
       {/* Mobile sticky CTA */}
       <div className="sticky bottom-0 z-30 border-t border-black/10 bg-white/95 p-3 backdrop-blur lg:hidden">
         <div className="container-page">
-          <BookOfficialButton href={hotel.officialWebsiteUrl} hotelName={hotel.name} label={t.common.bookOfficial} className="w-full" />
+          <BookOfficialButton href={officialLink(hotel)} hotelName={hotel.name} label={t.common.bookOfficial} className="w-full" />
         </div>
       </div>
     </>

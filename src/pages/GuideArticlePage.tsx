@@ -3,10 +3,14 @@ import { getGuide, guides } from '../data/guides'
 import { HotelImage } from '../components/HotelImage'
 import { AdSlot } from '../components/AdSlot'
 import Button from '../components/Button'
+import { useLang } from '../i18n'
+import { guideStrings } from '../lib/guideI18n'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 
 export default function GuideArticlePage() {
   const { slug } = useParams()
+  const { lang } = useLang()
+  const s = guideStrings[lang]
   const guide = slug ? getGuide(slug) : undefined
 
   useDocumentMeta(
@@ -17,9 +21,9 @@ export default function GuideArticlePage() {
   if (!guide) {
     return (
       <div className="container-page py-24 text-center">
-        <h1 className="text-2xl font-bold text-ink-900">Guide not found</h1>
-        <p className="mt-2 text-ink-700/70">We couldn’t find that guide.</p>
-        <Button to="/guides" className="mt-6">Back to guides</Button>
+        <h1 className="text-2xl font-bold text-ink-900">{s.notFound}</h1>
+        <p className="mt-2 text-ink-700/70">{s.notFoundText}</p>
+        <Button to="/guides" className="mt-6">{s.allGuides}</Button>
       </div>
     )
   }
@@ -31,12 +35,13 @@ export default function GuideArticlePage() {
       <section className="container-page pt-6">
         <nav className="mb-4 text-sm text-ink-700/60">
           <Link to="/" className="hover:text-brand-700">Home</Link> <span className="px-1">/</span>
-          <Link to="/guides" className="hover:text-brand-700"> Guides</Link> <span className="px-1">/</span>
-          <span className="text-ink-800"> {guide.category}</span>
+          <Link to="/guides" className="hover:text-brand-700"> {s.nav}</Link> <span className="px-1">/</span>
+          <span className="text-ink-800"> {s.category[guide.category]}</span>
         </nav>
-        <p className="text-xs font-semibold uppercase tracking-wide text-brand-700">{guide.category} · {guide.readMins} min read · Updated {guide.updated}</p>
+        <p className="text-xs font-semibold uppercase tracking-wide text-brand-700">{s.category[guide.category]} · {guide.readMins} {s.minRead} · {s.updated} {guide.updated}</p>
         <h1 className="mt-2 max-w-3xl text-3xl font-extrabold tracking-tight text-ink-900 sm:text-4xl">{guide.title}</h1>
         <p className="mt-3 max-w-3xl text-lg text-ink-700/85">{guide.excerpt}</p>
+        {s.englishNote && <p className="mt-2 text-xs text-ink-600/60">🌐 {s.englishNote}</p>}
       </section>
 
       <section className="container-page mt-6">
@@ -69,7 +74,7 @@ export default function GuideArticlePage() {
 
           {guide.faqs && guide.faqs.length > 0 && (
             <div className="mt-10">
-              <h2 className="text-2xl font-extrabold text-ink-900">Frequently asked</h2>
+              <h2 className="text-2xl font-extrabold text-ink-900">{s.faqTitle}</h2>
               <div className="mt-4 space-y-3">
                 {guide.faqs.map((f) => (
                   <div key={f.q} className="rounded-xl bg-sand-50 p-4 ring-1 ring-black/5">
@@ -82,9 +87,9 @@ export default function GuideArticlePage() {
           )}
 
           <div className="mt-10 rounded-2xl bg-brand-50 p-6 ring-1 ring-brand-100">
-            <p className="font-bold text-ink-900">Ready to book?</p>
-            <p className="mt-1 text-sm text-ink-700/80">StayEasy helps you choose, then you book directly on the hotel’s official website — no commission, no markup.</p>
-            <Button to="/destinations/da-nang" className="mt-4">Browse hotels →</Button>
+            <p className="font-bold text-ink-900">{s.readyTitle}</p>
+            <p className="mt-1 text-sm text-ink-700/80">{s.readySubtitle}</p>
+            <Button to="/destinations/da-nang" className="mt-4">{s.browseBtn} →</Button>
           </div>
         </div>
 
@@ -93,7 +98,7 @@ export default function GuideArticlePage() {
           <AdSlot slot="guide-sidebar" className="my-0" />
           {related.length > 0 && (
             <div className="mt-6 rounded-2xl bg-white p-5 shadow-card ring-1 ring-black/5">
-              <p className="text-sm font-bold text-ink-900">Related guides</p>
+              <p className="text-sm font-bold text-ink-900">{s.related}</p>
               <ul className="mt-3 space-y-3">
                 {related.map((g) => (
                   <li key={g.slug}>
@@ -105,7 +110,7 @@ export default function GuideArticlePage() {
               </ul>
             </div>
           )}
-          <Link to="/guides" className="mt-4 block text-sm font-semibold text-brand-700 hover:underline">← All guides</Link>
+          <Link to="/guides" className="mt-4 block text-sm font-semibold text-brand-700 hover:underline">← {s.allGuides}</Link>
         </aside>
       </section>
     </article>

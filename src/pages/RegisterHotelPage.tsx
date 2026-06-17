@@ -167,7 +167,7 @@ export default function RegisterHotelPage() {
       cancellationChecklist: lines(f.cancellationChecklist),
       imageUrl: f.imageUrl.trim() || `https://picsum.photos/seed/stayeasy-${slug}/800/600`,
       gallery: lines(f.gallery).length ? lines(f.gallery) : undefined,
-      officialWebsiteUrl: f.officialWebsiteUrl.trim() || 'https://example.com',
+      officialWebsiteUrl: f.officialWebsiteUrl.trim(),
       isSponsored: f.isSponsored,
       voucher: f.voucherCode.trim()
         ? {

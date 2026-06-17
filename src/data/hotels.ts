@@ -23,7 +23,20 @@ const realPhotos: Record<string, string> = {
   'old-quarter-boutique-hanoi': u('1566073771259-6a8506099945'),
 }
 
-const img = (slug: string) => realPhotos[slug] ?? `https://picsum.photos/seed/stayeasy-${slug}/800/600`
+// Verified hotel/resort/room photos used as a deterministic fallback so every
+// listing shows real photography (no placeholder look) — not just the sponsored ones.
+const PHOTO_POOL = [
+  '1455587734955-081b22074882', '1566073771259-6a8506099945', '1582719478250-c89cae4dc85b',
+  '1520250497591-112f2f40a3f4', '1571896349842-33c89424de2d', '1551882547-ff40c63fe5fa',
+  '1578683010236-d716f9a3f461', '1611892440504-42a792e24d32', '1540541338287-41700207dee6',
+  '1517824806704-9040b037703b', '1555921015-5532091f6026', '1540611025311-01df3cef54b5',
+]
+const hashSlug = (s: string) => {
+  let h = 0
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0
+  return h
+}
+const img = (slug: string) => realPhotos[slug] ?? u(PHOTO_POOL[hashSlug(slug) % PHOTO_POOL.length])
 
 // All launch-market hotels are in Vietnam; `country` is injected below so the
 // 32 records don't each repeat it. New markets set their own country.

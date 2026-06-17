@@ -6,6 +6,7 @@ import { FacilityChips } from './Facilities'
 import { WishlistButton } from './WishlistButton'
 import { useLang, useT, localizeHotel } from '../i18n'
 import { voucherStrings } from '../lib/voucherI18n'
+import { officialLink } from '../lib/officialLink'
 
 /**
  * Suitability-first hotel card. Leads with *who it's for* and the official
@@ -75,7 +76,7 @@ export function HotelCard({ hotel: raw }: { hotel: Hotel }) {
             {t.common.viewGuide}
           </Link>
           <a
-            href={hotel.officialWebsiteUrl}
+            href={officialLink(hotel)}
             target="_blank"
             rel="noopener noreferrer"
             className="rounded-full bg-brand-600 px-3 py-2.5 text-center text-sm font-semibold text-white hover:bg-brand-700"
