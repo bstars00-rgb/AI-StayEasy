@@ -52,7 +52,11 @@ const DEMO_ACCOUNT: PartnerAccount = {
 }
 
 let accounts: PartnerAccount[] = read()
-if (accounts.length === 0) accounts = [DEMO_ACCOUNT]
+// Always ensure the demo account exists, even if the browser already has other
+// accounts from earlier testing — so demo@stayeasy.com always works.
+if (!accounts.some((a) => a.email.toLowerCase() === DEMO_ACCOUNT.email)) {
+  accounts = [DEMO_ACCOUNT, ...accounts]
+}
 const listeners = new Set<() => void>()
 
 function commit(next: PartnerAccount[]) {
