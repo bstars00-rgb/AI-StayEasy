@@ -11,18 +11,18 @@ import { useDocumentMeta } from '../lib/useDocumentMeta'
 import { filterStrings, CONDITION_OPTS } from '../lib/filterI18n'
 import type { ConditionKey } from '../lib/filterI18n'
 
-type GroupKey = 'area' | 'travel' | 'stars' | 'guest' | 'conditions'
+type GroupKey = 'area' | 'travel' | 'stars' | 'conditions'
 
 const TRAVEL_OPTS = ['Family', 'Couple', 'Business', 'Beach', 'Long Stay']
 const STAR_OPTS = ['5', '4', '3']
-const GUEST_OPTS = ['9', '8.5']
+// Single-select groups (radio-like): picking a value replaces the previous one.
+const SINGLE: GroupKey[] = ['area', 'travel']
 
 // How each filter group tests a hotel against a selected value.
 const matchers: Record<GroupKey, (h: Hotel, value: string) => boolean> = {
   area: (h, v) => h.area === v,
   travel: (h, v) => h.tags.includes(v as Hotel['tags'][number]),
   stars: (h, v) => h.conditions.starRating === Number(v),
-  guest: (h, v) => h.conditions.guestRating >= Number(v),
   conditions: (h, v) => h.conditions[v as ConditionKey] === true,
 }
 
@@ -38,7 +38,7 @@ export default function HotelListPage() {
   const hotelsQ = useAsync(() => (dest ? repo.listHotelsByCity(dest.city) : Promise.resolve([])), [dest?.city])
 
   const [searchParams, setSearchParams] = useSearchParams()
-  const [selected, setSelected] = useState<Record<GroupKey, string[]>>({ area: [], travel: [], stars: [], guest: [], conditions: [] })
+  const [selected, setSelected] = useState<Record<GroupKey, string[]>>({ area: [], travel: [], stars: [], conditions: [] })
 
   // City's hotels + the areas that actually exist for this city.
   const all = hotelsQ.data ?? []
@@ -46,14 +46,14 @@ export default function HotelListPage() {
 
   // Reset filters when the city changes.
   useEffect(() => {
-    setSelected({ area: [], travel: [], stars: [], guest: [], conditions: [] })
+    setSelected({ area: [], travel: [], stars: [], conditions: [] })
   }, [citySlug])
 
   // Preselect a travel-style from the home discovery block (?style=Family).
   useEffect(() => {
     const style = searchParams.get('style')
     if (style && TRAVEL_OPTS.includes(style)) {
-      setSelected((s) => (s.travel.includes(style) ? s : { ...s, travel: [...s.travel, style] }))
+      setSelected((s) => (s.travel.includes(style) ? s : { ...s, travel: [style] }))
     }
   }, [searchParams])
 
@@ -91,18 +91,25 @@ export default function HotelListPage() {
     area: areaOptions,
     travel: TRAVEL_OPTS,
     stars: STAR_OPTS,
-    guest: GUEST_OPTS,
     conditions: CONDITION_OPTS,
   }
 
   const toggle = (group: GroupKey, value: string) =>
-    setSelected((s) => ({
-      ...s,
-      [group]: s[group].includes(value) ? s[group].filter((v) => v !== value) : [...s[group], value],
-    }))
+    setSelected((s) => {
+      const has = s[group].includes(value)
+      // Single-select groups replace the value; multi-select groups toggle it.
+      const next = SINGLE.includes(group)
+        ? has
+          ? []
+          : [value]
+        : has
+          ? s[group].filter((v) => v !== value)
+          : [...s[group], value]
+      return { ...s, [group]: next }
+    })
 
   const clearAll = () => {
-    setSelected({ area: [], travel: [], stars: [], guest: [], conditions: [] })
+    setSelected({ area: [], travel: [], stars: [], conditions: [] })
     setSearchParams({})
   }
 
@@ -112,7 +119,6 @@ export default function HotelListPage() {
     area: t.list.groupArea,
     travel: t.list.groupTravel,
     stars: fs.groupStars,
-    guest: fs.groupGuest,
     conditions: fs.groupConditions,
   }
 
@@ -120,7 +126,6 @@ export default function HotelListPage() {
     if (g === 'area') return (t.enums.area as Record<string, string>)[opt] ?? opt
     if (g === 'travel') return (t.enums.travelStyle as Record<string, string>)[opt] ?? opt
     if (g === 'stars') return `${opt}★`
-    if (g === 'guest') return opt === '9' ? fs.guest9 : fs.guest85
     return fs.cond[opt as ConditionKey] ?? opt
   }
 
@@ -137,7 +142,7 @@ export default function HotelListPage() {
   const closest = selected.area.length
     ? all.filter((h) => selected.area.some((v) => matchers.area(h, v)))
     : all.filter((h) =>
-        (['travel', 'stars', 'guest'] as GroupKey[]).every((g) => {
+        (['travel', 'stars'] as GroupKey[]).every((g) => {
           const vals = selected[g]
           return vals.length === 0 || vals.some((v) => matchers[g](h, v))
         }),
