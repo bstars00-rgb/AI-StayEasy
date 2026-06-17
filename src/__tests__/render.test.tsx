@@ -153,7 +153,7 @@ describe('interaction: hotel partner self-service portal', () => {
     partnerAuth.logout()
     wrap('/partner')
     await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
-    expect(await screen.findByRole('button', { name: /sign in to your listing/i })).toBeTruthy()
+    expect(await screen.findByRole('button', { name: /create account/i })).toBeTruthy()
   })
 })
 

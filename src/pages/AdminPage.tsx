@@ -7,12 +7,14 @@ import type { HotelDraft } from '../lib/partnerDrafts'
 import { countries, getCountry, liveMarkets, roadmapMarkets } from '../data/countries'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 import { LogoMark } from '../components/Logo'
+import { partnerAccounts, usePartnerAccounts } from '../lib/partnerAccounts'
 
-type Section = 'overview' | 'partners' | 'campaigns' | 'inquiries'
+type Section = 'overview' | 'partners' | 'approvals' | 'campaigns' | 'inquiries'
 
 const NAV: { key: Section; label: string; icon: string }[] = [
   { key: 'overview', label: 'Overview', icon: '📊' },
   { key: 'partners', label: 'Partners', icon: '🤝' },
+  { key: 'approvals', label: 'Approvals', icon: '✅' },
   { key: 'campaigns', label: 'Campaigns', icon: '📣' },
   { key: 'inquiries', label: 'Inquiries', icon: '📨' },
 ]
@@ -60,6 +62,8 @@ export default function AdminPage() {
 
   // Hotels registered through the onboarding page (persisted in localStorage).
   const drafts = usePartnerDrafts()
+  const accounts = usePartnerAccounts()
+  const pendingCount = accounts.filter((a) => a.status === 'Pending').length
   const allPartners = useMemo(() => [...drafts.map(draftToPartner), ...partners], [drafts])
   const filteredPartners = useMemo(
     () =>
@@ -106,6 +110,9 @@ export default function AdminPage() {
               }`}
             >
               <span aria-hidden>{n.icon}</span> {n.label}
+              {n.key === 'approvals' && pendingCount > 0 && (
+                <span className="ml-auto grid h-5 min-w-5 place-items-center rounded-full bg-accent-500 px-1.5 text-[11px] font-bold text-white">{pendingCount}</span>
+              )}
             </button>
           ))}
         </nav>
@@ -268,6 +275,50 @@ export default function AdminPage() {
                   </tbody>
                 </table>
               </div>
+            </div>
+          )}
+
+          {/* ---- Approvals (partner account requests) ---- */}
+          {section === 'approvals' && (
+            <div className="rounded-2xl bg-white shadow-card ring-1 ring-black/5">
+              <div className="border-b border-black/5 p-4">
+                <h2 className="font-bold text-ink-900">{accounts.length} partner account{accounts.length === 1 ? '' : 's'}</h2>
+                <p className="text-xs text-ink-600/70">Hotels that signed up with email + password. Approve to grant portal access and create their listing.</p>
+              </div>
+              {accounts.length === 0 ? (
+                <div className="p-10 text-center text-sm text-ink-600/70">No account requests yet.</div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full min-w-[760px]">
+                    <thead className="bg-sand-50">
+                      <tr><Th>Hotel</Th><Th>Email</Th><Th>City</Th><Th>Requested</Th><Th>Status</Th><Th>Action</Th></tr>
+                    </thead>
+                    <tbody>
+                      {accounts.map((a) => (
+                        <tr key={a.id} className="border-t border-black/5 hover:bg-sand-50/50">
+                          <Td className="font-medium text-ink-900">{a.hotelName}</Td>
+                          <Td className="text-ink-600">{a.email}</Td>
+                          <Td>{a.city || '—'}</Td>
+                          <Td className="text-ink-600">{a.createdAt}</Td>
+                          <Td><span className={`pill ${statusClass(a.status === 'Approved' ? 'Active' : a.status === 'Pending' ? 'Pending' : 'Lost')}`}>{a.status}</span></Td>
+                          <Td>
+                            {a.status === 'Pending' ? (
+                              <div className="flex gap-2">
+                                <button onClick={() => partnerAccounts.approve(a.id)} className="rounded-lg bg-brand-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-brand-700">Approve</button>
+                                <button onClick={() => partnerAccounts.reject(a.id)} className="rounded-lg bg-white px-3 py-1.5 text-xs font-semibold text-ink-700 ring-1 ring-black/10 hover:bg-sand-50">Reject</button>
+                              </div>
+                            ) : a.status === 'Approved' && a.hotelSlug ? (
+                              <Link to={`/hotels/${a.hotelSlug}`} className="text-brand-700 hover:underline">View listing ↗</Link>
+                            ) : (
+                              <span className="text-ink-600/40">—</span>
+                            )}
+                          </Td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
           )}
 

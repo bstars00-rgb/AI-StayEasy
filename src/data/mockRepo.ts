@@ -14,6 +14,10 @@ const later = <T>(value: T, ms = 120): Promise<T> =>
 // in this session appears immediately on navigation, without a refresh.
 const catalogue = () => [...partnerDrafts.getAll().map((d) => d.hotel), ...hotels].map(applyEdits)
 
+/** Synchronous catalogue lookup (drafts + static + self-service edits applied).
+ *  Used by the partner portal, which scopes to a single signed-in property. */
+export const findInCatalogue = (slug: string) => catalogue().find((h) => h.slug === slug)
+
 /** Bundled-data implementation of the catalog — the default in this prototype. */
 export const mockRepo: CatalogRepo = {
   listDestinations: () => later(destinations),

@@ -15,6 +15,8 @@ import { buildVoucherSvg } from '../lib/voucher'
 import { countries, liveMarkets, getCountry } from '../data/countries'
 import { guides, getGuide } from '../data/guides'
 import { officialLink, isPlaceholderUrl } from '../lib/officialLink'
+import { partnerAccounts } from '../lib/partnerAccounts'
+import { partnerDrafts } from '../lib/partnerDrafts'
 
 /** Collects the sorted set of key-paths (leaves = strings/arrays) of an object. */
 function shapePaths(obj: unknown, prefix = ''): string[] {
@@ -89,6 +91,37 @@ describe('filterable travel conditions', () => {
     expect(top.length).toBeGreaterThan(0)
     // Beachfront hotels are at/near the beach.
     for (const h of beach) expect(h.conditions.walkToBeachMin).toBeLessThanOrEqual(3)
+  })
+})
+
+describe('partner account approval workflow', () => {
+  it('registers as pending, blocks sign-in until approved, then grants a listing', () => {
+    partnerAccounts.clear()
+    partnerDrafts.clear()
+    const acc = partnerAccounts.register({ email: 'gm@hotel.example', password: 'secret1', hotelName: 'Test Harbor Hotel', city: 'Da Nang', createdAt: '2026-06-17' })
+    expect(acc).not.toBeNull()
+
+    // Pending → sign-in blocked
+    expect(partnerAccounts.authenticate('gm@hotel.example', 'secret1')).toMatchObject({ ok: false, reason: 'pending' })
+    // Wrong password → invalid
+    expect(partnerAccounts.authenticate('gm@hotel.example', 'nope')).toMatchObject({ ok: false, reason: 'invalid' })
+
+    // Approve → creates a listing and grants access
+    partnerAccounts.approve(acc!.id)
+    const res = partnerAccounts.authenticate('gm@hotel.example', 'secret1')
+    expect(res.ok).toBe(true)
+    if (res.ok) {
+      expect(res.account.status).toBe('Approved')
+      expect(res.account.hotelSlug).toBeTruthy()
+    }
+    // Listing was created as a draft
+    expect(partnerDrafts.getAll().some((d) => d.hotel.name === 'Test Harbor Hotel')).toBe(true)
+
+    // Duplicate email is rejected
+    expect(partnerAccounts.register({ email: 'gm@hotel.example', password: 'x', hotelName: 'Dup', city: '', createdAt: '2026-06-17' })).toBeNull()
+
+    partnerAccounts.clear()
+    partnerDrafts.clear()
   })
 })
 

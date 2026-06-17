@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import type { ReactNode } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
-import { getHotel } from '../data/hotels'
+import { findInCatalogue } from '../data/mockRepo'
 import { Logo } from '../components/Logo'
 import { usePartnerSession } from '../lib/partnerAuth'
-import { hotelEdits, applyEdits } from '../lib/hotelEdits'
+import { hotelEdits } from '../lib/hotelEdits'
 import type { HotelPatch } from '../lib/hotelEdits'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 
@@ -25,8 +25,7 @@ export default function PartnerEditPage() {
   useDocumentMeta('Edit listing — StayEasy partners', 'Update your StayEasy listing content.')
   const navigate = useNavigate()
   const session = usePartnerSession()
-  const raw = session ? getHotel(session.slug) : undefined
-  const hotel = raw ? applyEdits(raw) : undefined
+  const hotel = session ? findInCatalogue(session.slug) : undefined
 
   const [f, setF] = useState(() => ({
     shortDescription: hotel?.shortDescription ?? '',

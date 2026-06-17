@@ -18,8 +18,12 @@
 
 ## What shipped (v1, demo)
 
-- `/partner/login` — demo sign-in (pick property + email + access code). Stores a
-  session in localStorage (`partnerAuth`).
+- `/partner/login` — **email + password** sign-in, plus a **Create account** tab
+  (hotel name, city, email, password). New accounts are `Pending` and cannot sign
+  in until an admin approves them. Stores accounts in `partnerAccounts` and the
+  active session in `partnerAuth` (localStorage; demo only — plaintext password).
+- **Admin → Approvals**: pending account requests with Approve / Reject. Approving
+  grants portal access and creates a starter listing the partner then fills in.
 - `/partner` — portal home: plan, status, 30-day clicks, listing summary, links
   to edit and to the public page.
 - `/partner/edit` — self-service editor for the content fields. Saves a patch to

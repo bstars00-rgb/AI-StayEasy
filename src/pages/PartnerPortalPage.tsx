@@ -1,9 +1,9 @@
 import { Link, Navigate, useNavigate } from 'react-router-dom'
-import { getHotel } from '../data/hotels'
+import { findInCatalogue } from '../data/mockRepo'
 import { partners } from '../data/adminData'
 import { Logo } from '../components/Logo'
 import { partnerAuth, usePartnerSession } from '../lib/partnerAuth'
-import { applyEdits, useHotelEdits } from '../lib/hotelEdits'
+import { useHotelEdits } from '../lib/hotelEdits'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 
 function Stat({ label, value }: { label: string; value: string }) {
@@ -23,8 +23,7 @@ export default function PartnerPortalPage() {
 
   if (!session) return <Navigate to="/partner/login" replace />
 
-  const raw = getHotel(session.slug)
-  const hotel = raw ? applyEdits(raw) : undefined
+  const hotel = findInCatalogue(session.slug)
   const partner = partners.find((p) => p.slug === session.slug)
 
   return (
