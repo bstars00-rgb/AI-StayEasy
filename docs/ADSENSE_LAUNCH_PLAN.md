@@ -116,6 +116,23 @@
 
 ---
 
+## 5b. 환경변수 (Vercel/호스팅에서 설정)
+
+코드는 아래 env가 없어도 깨끗하게 동작(기능 비활성). 값을 넣으면 자동 활성화된다.
+
+| 변수 | 용도 | 예시 | 시점 |
+|---|---|---|---|
+| `SITE_URL` | sitemap/robots 절대 URL | `https://stayeasy.asia` | 빌드 |
+| `VITE_ADSENSE_CLIENT` | AdSense 광고 + `ads.txt` 활성화 | `ca-pub-XXXXXXXXXXXX` | 승인 후 |
+| `VITE_GA_ID` | Google Analytics 4 | `G-XXXXXXXXXX` | 언제든 |
+| `VITE_CONTACT_EMAIL` | 문의 메일 주소 | `hello@stayeasy.asia` | 도메인 후 |
+| `VITE_API_URL` | 백엔드 API 연결(선택) | `https://api.stayeasy.asia` | 백엔드 배포 후 |
+
+- 광고는 `VITE_ADSENSE_CLIENT` 설정 전엔 렌더되지 않음(정책 안전). 설정 시 `<AdSlot>`가
+  스크립트를 로드하고 `ads.txt`도 빌드시 올바른 라인으로 생성된다.
+- 분석은 `VITE_GA_ID` 설정 시 SPA 라우트 변경마다 page_view 전송.
+- 구조화 데이터(JSON-LD: Article/Hotel/FAQ)는 항상 출력 — SEO·품질 신호.
+
 ## 6. 리스크 & 솔직한 한계
 
 - **가짜 호텔로는 절대 통과 못 함** — 핵심 콘텐츠를 "오리지널 가이드"로 전환하는 게

@@ -52,4 +52,15 @@ Sitemap: ${SITE_URL}/sitemap.xml
 
 writeFileSync('dist/sitemap.xml', sitemap)
 writeFileSync('dist/robots.txt', robots)
-console.log(`sitemap.xml: ${unique.length} URLs · robots.txt written · SITE_URL=${SITE_URL}`)
+
+// ads.txt — required by AdSense once approved. Set VITE_ADSENSE_CLIENT (or
+// ADSENSE_CLIENT) to "ca-pub-XXXX" and the correct line is emitted; otherwise a
+// harmless placeholder comment is written.
+const adsClient = process.env.VITE_ADSENSE_CLIENT || process.env.ADSENSE_CLIENT || ''
+const pub = adsClient.replace(/^ca-/, '')
+const adsTxt = pub
+  ? `google.com, ${pub}, DIRECT, f08c47fec0942fa0\n`
+  : '# Add your AdSense line after approval, e.g.:\n# google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0\n'
+writeFileSync('dist/ads.txt', adsTxt)
+
+console.log(`sitemap.xml: ${unique.length} URLs · robots.txt + ads.txt written · SITE_URL=${SITE_URL}`)

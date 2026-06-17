@@ -1,7 +1,8 @@
-import { lazy, Suspense } from 'react'
-import { Routes, Route, Navigate, Outlet, useParams } from 'react-router-dom'
+import { lazy, Suspense, useEffect } from 'react'
+import { Routes, Route, Navigate, Outlet, useParams, useLocation } from 'react-router-dom'
 import { Layout } from './components/Layout'
 import { Spinner } from './components/Loading'
+import { initAnalytics, trackPageview } from './lib/analytics'
 import HomePage from './pages/HomePage'
 
 // The landing page loads eagerly (fast first paint); every other route is
@@ -51,6 +52,12 @@ function PublicLayout() {
 }
 
 export default function App() {
+  const location = useLocation()
+  useEffect(() => {
+    initAnalytics()
+    trackPageview(location.pathname + location.search)
+  }, [location.pathname, location.search])
+
   return (
     <Routes>
       {/* Back-office uses its own full-screen shell — no public navbar/footer. */}

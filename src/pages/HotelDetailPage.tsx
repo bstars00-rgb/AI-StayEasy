@@ -6,6 +6,7 @@ import { SponsoredBadge } from '../components/SponsoredBadge'
 import { FacilityGrid, TagChips } from '../components/Facilities'
 import { WishlistButton } from '../components/WishlistButton'
 import { VoucherCard } from '../components/VoucherCard'
+import { JsonLd } from '../components/JsonLd'
 import { HotelCard } from '../components/HotelCard'
 import { repo } from '../data/repo'
 import { useAsync } from '../lib/useAsync'
@@ -87,6 +88,17 @@ export default function HotelDetailPage() {
 
   return (
     <>
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'Hotel',
+          name: hotel.name,
+          description: hotel.positioningLine,
+          image: hotel.imageUrl,
+          address: { '@type': 'PostalAddress', addressLocality: city, addressCountry: hotel.country },
+          amenityFeature: hotel.facilities.slice(0, 8).map((f) => ({ '@type': 'LocationFeatureSpecification', name: f })),
+        }}
+      />
       {/* Gallery */}
       <section className="container-page pt-6">
         <nav className="mb-4 text-sm text-ink-700/60">

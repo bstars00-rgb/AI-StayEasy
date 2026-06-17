@@ -2,6 +2,7 @@ import { Link, useParams } from 'react-router-dom'
 import { getGuide, guides } from '../data/guides'
 import { HotelImage } from '../components/HotelImage'
 import { AdSlot } from '../components/AdSlot'
+import { JsonLd } from '../components/JsonLd'
 import Button from '../components/Button'
 import { useLang } from '../i18n'
 import { guideStrings } from '../lib/guideI18n'
@@ -32,6 +33,28 @@ export default function GuideArticlePage() {
 
   return (
     <article>
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'Article',
+          headline: guide.title,
+          description: guide.excerpt,
+          image: guide.heroImage,
+          datePublished: guide.updated,
+          dateModified: guide.updated,
+          author: { '@type': 'Organization', name: 'StayEasy' },
+          publisher: { '@type': 'Organization', name: 'StayEasy' },
+          ...(guide.faqs && guide.faqs.length
+            ? {
+                mainEntity: guide.faqs.map((f) => ({
+                  '@type': 'Question',
+                  name: f.q,
+                  acceptedAnswer: { '@type': 'Answer', text: f.a },
+                })),
+              }
+            : {}),
+        }}
+      />
       <section className="container-page pt-6">
         <nav className="mb-4 text-sm text-ink-700/60">
           <Link to="/" className="hover:text-brand-700">Home</Link> <span className="px-1">/</span>
