@@ -1,11 +1,14 @@
 import { Link } from 'react-router-dom'
 import Button from '../components/Button'
 import { SectionHeading } from '../components/SectionHeading'
-import { useT } from '../i18n'
+import { useT, useLang } from '../i18n'
+import { scoreStrings } from '../lib/scoreI18n'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 
 export default function AboutPage() {
   const t = useT()
+  const { lang } = useLang()
+  const sc = scoreStrings[lang]
   useDocumentMeta(t.about.metaTitle, t.about.metaDesc)
   return (
     <>
@@ -43,6 +46,20 @@ export default function AboutPage() {
               ))}
             </ul>
           </div>
+        </div>
+      </section>
+
+      {/* The StayEasy Score — our guide-style rating */}
+      <section className="container-page mt-12">
+        <div className="rounded-3xl bg-gradient-to-br from-brand-50 to-sand-50 p-8 ring-1 ring-brand-100 sm:p-10">
+          <div className="flex items-center gap-3">
+            <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-brand-600 text-2xl text-white">✦</span>
+            <h2 className="text-2xl font-extrabold text-ink-900">{sc.explainerTitle}</h2>
+          </div>
+          <p className="mt-4 max-w-3xl text-ink-700/85">{sc.explainerText}</p>
+          <p className="mt-3 inline-flex rounded-full bg-white px-4 py-2 text-sm font-semibold text-brand-700 ring-1 ring-brand-200">
+            🏨 {sc.localFocus}
+          </p>
         </div>
       </section>
 

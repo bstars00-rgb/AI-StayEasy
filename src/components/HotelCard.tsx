@@ -7,6 +7,7 @@ import { WishlistButton } from './WishlistButton'
 import { useLang, useT, localizeHotel } from '../i18n'
 import { voucherStrings } from '../lib/voucherI18n'
 import { officialLink } from '../lib/officialLink'
+import { scoreStrings } from '../lib/scoreI18n'
 
 /**
  * Suitability-first hotel card. Leads with *who it's for* and the official
@@ -52,10 +53,15 @@ export function HotelCard({ hotel: raw }: { hotel: Hotel }) {
           <p className="mt-0.5 text-sm text-ink-700/70">
             <span aria-hidden>📍</span> {area}, {city}
           </p>
-          <div className="mt-1 flex items-center gap-2 text-xs">
+          <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs">
             <span className="rounded bg-amber-50 px-1.5 py-0.5 font-bold text-amber-700">{'★'.repeat(raw.conditions.starRating)}</span>
-            <span className="font-bold text-ink-800">{raw.conditions.guestRating.toFixed(1)}</span>
-            <span className="text-ink-700/50">/ 10</span>
+            <span
+              className="inline-flex items-center gap-1 rounded bg-brand-600 px-1.5 py-0.5 font-bold text-white"
+              title={scoreStrings[lang].tagline}
+            >
+              <span aria-hidden>✦</span> {raw.conditions.stayEasyScore.toFixed(1)}
+            </span>
+            <span className="text-ink-700/50">{scoreStrings[lang].label}</span>
           </div>
         </div>
 

@@ -94,8 +94,10 @@ export interface Voucher {
 export interface HotelConditions {
   /** Official star rating (3–5). */
   starRating: 3 | 4 | 5
-  /** Guest review score out of 10 (e.g. 8.9). */
-  guestRating: number
+  /** StayEasy Score out of 10 — our own independent, editorial rating (not an
+   *  aggregate of user reviews). Like a guide rating, it favors standout local
+   *  hotels over big global chains. */
+  stayEasyScore: number
   freeCancellation: boolean
   breakfastIncluded: boolean
   freeAirportShuttle: boolean

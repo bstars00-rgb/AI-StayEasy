@@ -14,6 +14,7 @@ import { Spinner } from '../components/Loading'
 import { useT, useLang, localizeHotel } from '../i18n'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 import { officialLink } from '../lib/officialLink'
+import { scoreStrings } from '../lib/scoreI18n'
 
 function Card({ title, icon, children, className = '' }: { title: string; icon: string; children: ReactNode; className?: string }) {
   return (
@@ -134,6 +135,12 @@ export default function HotelDetailPage() {
             <h1 className="text-3xl font-extrabold tracking-tight text-ink-900 sm:text-4xl">{hotel.name}</h1>
             <p className="mt-1 text-ink-700/80">📍 {area}, {city}</p>
             <p className="mt-2 max-w-2xl text-lg font-medium text-ink-800">{hotel.positioningLine}</p>
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-600 px-3 py-1.5 text-sm font-extrabold text-white">
+                <span aria-hidden>✦</span> {hotel.conditions.stayEasyScore.toFixed(1)} · {scoreStrings[lang].label}
+              </span>
+              <span className="text-xs text-ink-700/60">{scoreStrings[lang].localFocus}</span>
+            </div>
             <div className="mt-3"><TagChips items={hotel.tags} /></div>
           </div>
           <div className="shrink-0">

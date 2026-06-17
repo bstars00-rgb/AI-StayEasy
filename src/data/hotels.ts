@@ -1326,10 +1326,16 @@ export function deriveConditions(h: Omit<Hotel, 'country' | 'conditions'>): Hote
   const seed = hashSlug(h.slug)
   const beachfront = fac('Beachfront') || /beach/i.test(h.area)
   const star: 3 | 4 | 5 = h.priceTier === 'premium' ? 5 : h.priceTier === 'mid' ? 4 : 3
-  const guestRating = Math.min(9.6, Math.round((8.0 + (seed % 16) / 10 + (star - 3) * 0.15) * 10) / 10)
+  // StayEasy Score — our own editorial rating. Like a guide, it rewards standout
+  // independent/local hotels (boutiques, lodges, retreats) over generic chains.
+  const localCharacter = /boutique|lodge|house|retreat|residences|eco|hillside|villa/i.test(`${h.name} ${h.hotelType}`)
+  const stayEasyScore = Math.min(
+    9.7,
+    Math.round((8.0 + (seed % 14) / 10 + (star - 3) * 0.1 + (localCharacter ? 0.3 : 0)) * 10) / 10,
+  )
   return {
     starRating: star,
-    guestRating,
+    stayEasyScore,
     freeCancellation: benefit(/cancel|flexible/i) || seed % 4 !== 0, // ~75%
     breakfastIncluded: fac('Breakfast') || benefit(/breakfast/i),
     freeAirportShuttle: fac('Airport transfer'),

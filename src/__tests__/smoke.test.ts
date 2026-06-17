@@ -65,8 +65,8 @@ describe('filterable travel conditions', () => {
     for (const h of hotels) {
       const c = h.conditions
       expect([3, 4, 5]).toContain(c.starRating)
-      expect(c.guestRating).toBeGreaterThanOrEqual(7.5)
-      expect(c.guestRating).toBeLessThanOrEqual(9.6)
+      expect(c.stayEasyScore).toBeGreaterThanOrEqual(7.5)
+      expect(c.stayEasyScore).toBeLessThanOrEqual(9.7)
       expect(typeof c.freeCancellation).toBe('boolean')
       expect(typeof c.beachfront).toBe('boolean')
       expect(c.walkToBeachMin).toBeGreaterThanOrEqual(0)
@@ -82,7 +82,7 @@ describe('filterable travel conditions', () => {
   it('conditions are deterministic and discriminating (filters return subsets)', () => {
     const pools = hotels.filter((h) => h.conditions.pool)
     const beach = hotels.filter((h) => h.conditions.beachfront)
-    const top = hotels.filter((h) => h.conditions.guestRating >= 9)
+    const top = hotels.filter((h) => h.conditions.stayEasyScore >= 9)
     expect(pools.length).toBeGreaterThan(0)
     expect(pools.length).toBeLessThan(hotels.length)
     expect(beach.length).toBeGreaterThan(0)
