@@ -1,4 +1,4 @@
-import type { Hotel } from '../types'
+import type { Hotel, HotelConditions } from '../types'
 
 /**
  * StayEasy Vietnam hotel catalogue.
@@ -38,9 +38,11 @@ const hashSlug = (s: string) => {
 }
 const img = (slug: string) => realPhotos[slug] ?? u(PHOTO_POOL[hashSlug(slug) % PHOTO_POOL.length])
 
-// All launch-market hotels are in Vietnam; `country` is injected below so the
-// 32 records don't each repeat it. New markets set their own country.
-const rawHotels: Omit<Hotel, 'country'>[] = [
+// All launch-market hotels are in Vietnam; `country` and the normalized
+// `conditions` are injected below so the 32 records don't each repeat them.
+type RawHotel = Omit<Hotel, 'country' | 'conditions'>
+
+const rawHotels: RawHotel[] = [
   {
     id: 'h01',
     priceTier: 'premium',
@@ -1315,7 +1317,42 @@ const rawHotels: Omit<Hotel, 'country'>[] = [
   },
 ]
 
-export const hotels: Hotel[] = rawHotels.map((h) => ({ country: 'Vietnam', ...h }))
+/** Derives normalized, filterable conditions from a hotel's existing profile.
+ *  Deterministic (seeded by slug) so values are stable across builds/tests.
+ *  Exported so newly registered hotels get conditions the same way. */
+export function deriveConditions(h: Omit<Hotel, 'country' | 'conditions'>): HotelConditions {
+  const fac = (n: string) => h.facilities.some((f) => f.toLowerCase().includes(n.toLowerCase()))
+  const benefit = (re: RegExp) => h.officialBenefits.some((b) => re.test(b))
+  const seed = hashSlug(h.slug)
+  const beachfront = fac('Beachfront') || /beach/i.test(h.area)
+  const star: 3 | 4 | 5 = h.priceTier === 'premium' ? 5 : h.priceTier === 'mid' ? 4 : 3
+  const guestRating = Math.min(9.6, Math.round((8.0 + (seed % 16) / 10 + (star - 3) * 0.15) * 10) / 10)
+  return {
+    starRating: star,
+    guestRating,
+    freeCancellation: benefit(/cancel|flexible/i) || seed % 4 !== 0, // ~75%
+    breakfastIncluded: fac('Breakfast') || benefit(/breakfast/i),
+    freeAirportShuttle: fac('Airport transfer'),
+    freeParking: fac('Parking'),
+    freeWifi: fac('Wi-Fi') || true,
+    pool: fac('Pool'),
+    beachfront,
+    familyFriendly: h.tags.includes('Family') || fac('Kids'),
+    petFriendly: seed % 10 < 3, // ~30%
+    spa: fac('Spa'),
+    gym: fac('Gym'),
+    twentyFourHourFrontDesk: seed % 7 !== 0, // ~85%
+    nonSmoking: true,
+    accessible: seed % 2 === 0, // ~50%
+    walkToBeachMin: beachfront ? seed % 3 : 5 + (seed % 25),
+  }
+}
+
+export const hotels: Hotel[] = rawHotels.map((h) => ({
+  country: 'Vietnam',
+  ...h,
+  conditions: deriveConditions(h),
+}))
 
 export const getHotel = (slug: string) => hotels.find((h) => h.slug === slug)
 

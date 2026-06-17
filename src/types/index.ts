@@ -89,6 +89,33 @@ export interface Voucher {
   validUntil: string
 }
 
+/** Normalized, filterable travel conditions — the attributes travelers actually
+ *  filter by. Derived deterministically from each hotel's profile. */
+export interface HotelConditions {
+  /** Official star rating (3–5). */
+  starRating: 3 | 4 | 5
+  /** Guest review score out of 10 (e.g. 8.9). */
+  guestRating: number
+  freeCancellation: boolean
+  breakfastIncluded: boolean
+  freeAirportShuttle: boolean
+  freeParking: boolean
+  freeWifi: boolean
+  pool: boolean
+  /** Directly on, or a short walk from, the beach. */
+  beachfront: boolean
+  familyFriendly: boolean
+  petFriendly: boolean
+  spa: boolean
+  gym: boolean
+  twentyFourHourFrontDesk: boolean
+  nonSmoking: boolean
+  /** Step-free / wheelchair-accessible. */
+  accessible: boolean
+  /** Walking minutes to the nearest beach. */
+  walkToBeachMin: number
+}
+
 export interface RoomGuide {
   couples: string
   families: string
@@ -128,6 +155,8 @@ export interface Hotel {
   roomGuide: RoomGuide
   locationGuide: LocationGuide
   cancellationChecklist: string[]
+  /** Normalized travel conditions used by the listing filters. */
+  conditions: HotelConditions
   /** Placeholder image URL. Falls back to a branded gradient if it fails to load. */
   imageUrl: string
   /** Optional extra gallery photos (showcase hotels). Falls back to placeholders. */

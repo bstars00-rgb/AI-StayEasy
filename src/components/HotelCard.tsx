@@ -52,6 +52,11 @@ export function HotelCard({ hotel: raw }: { hotel: Hotel }) {
           <p className="mt-0.5 text-sm text-ink-700/70">
             <span aria-hidden>📍</span> {area}, {city}
           </p>
+          <div className="mt-1 flex items-center gap-2 text-xs">
+            <span className="rounded bg-amber-50 px-1.5 py-0.5 font-bold text-amber-700">{'★'.repeat(raw.conditions.starRating)}</span>
+            <span className="font-bold text-ink-800">{raw.conditions.guestRating.toFixed(1)}</span>
+            <span className="text-ink-700/50">/ 10</span>
+          </div>
         </div>
 
         <p className="text-sm text-ink-700/90">{hotel.shortDescription}</p>

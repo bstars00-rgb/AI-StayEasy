@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import type { ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { hotels } from '../data/hotels'
+import { hotels, deriveConditions } from '../data/hotels'
 import { countries, getCountry } from '../data/countries'
 import type { Hotel, Country, City, Area, HotelType, PriceTier, TravelStyle } from '../types'
 import { feeByPlan, PLANS } from '../data/adminData'
@@ -134,7 +134,7 @@ export default function RegisterHotelPage() {
       return
     }
     const slug = slugify(f.name)
-    const hotel: Hotel = {
+    const base: Omit<Hotel, 'conditions'> = {
       id: `draft-${slug}`,
       slug,
       name: f.name.trim(),
@@ -182,6 +182,7 @@ export default function RegisterHotelPage() {
       emoji: f.emoji.trim() || '🏨',
       koreanFriendly: f.koreanFriendly,
     }
+    const hotel: Hotel = { ...base, conditions: deriveConditions(base) }
     partnerDrafts.add({
       hotel,
       plan: f.plan,

@@ -60,6 +60,32 @@ describe('hotel data integrity', () => {
   })
 })
 
+describe('filterable travel conditions', () => {
+  it('every hotel has normalized conditions with sane values', () => {
+    for (const h of hotels) {
+      const c = h.conditions
+      expect([3, 4, 5]).toContain(c.starRating)
+      expect(c.guestRating).toBeGreaterThanOrEqual(7.5)
+      expect(c.guestRating).toBeLessThanOrEqual(9.6)
+      expect(typeof c.freeCancellation).toBe('boolean')
+      expect(typeof c.beachfront).toBe('boolean')
+      expect(c.walkToBeachMin).toBeGreaterThanOrEqual(0)
+    }
+  })
+
+  it('conditions are deterministic and discriminating (filters return subsets)', () => {
+    const pools = hotels.filter((h) => h.conditions.pool)
+    const beach = hotels.filter((h) => h.conditions.beachfront)
+    const top = hotels.filter((h) => h.conditions.guestRating >= 9)
+    expect(pools.length).toBeGreaterThan(0)
+    expect(pools.length).toBeLessThan(hotels.length)
+    expect(beach.length).toBeGreaterThan(0)
+    expect(top.length).toBeGreaterThan(0)
+    // Beachfront hotels are at/near the beach.
+    for (const h of beach) expect(h.conditions.walkToBeachMin).toBeLessThanOrEqual(3)
+  })
+})
+
 describe('outbound official links', () => {
   it('never resolves to a dead placeholder (.example) link', () => {
     for (const h of hotels) {

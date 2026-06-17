@@ -6,25 +6,30 @@ import { CardGridSkeleton, Spinner } from '../components/Loading'
 import { repo } from '../data/repo'
 import { useAsync } from '../lib/useAsync'
 import type { Hotel } from '../types'
-import { useT } from '../i18n'
+import { useT, useLang } from '../i18n'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
+import { filterStrings, CONDITION_OPTS } from '../lib/filterI18n'
+import type { ConditionKey } from '../lib/filterI18n'
 
-type GroupKey = 'area' | 'travel' | 'features' | 'benefits'
+type GroupKey = 'area' | 'travel' | 'stars' | 'guest' | 'conditions'
 
 const TRAVEL_OPTS = ['Family', 'Couple', 'Business', 'Beach', 'Long Stay']
-const FEATURE_OPTS = ['Pool', 'Breakfast', 'Kids-friendly', 'Korean-friendly', 'Airport transfer']
-const BENEFIT_OPTS = ['Free breakfast', 'Flexible cancellation', 'Room upgrade', 'Late checkout']
+const STAR_OPTS = ['5', '4', '3']
+const GUEST_OPTS = ['9', '8.5']
 
-// How each filter group tests a hotel.
+// How each filter group tests a hotel against a selected value.
 const matchers: Record<GroupKey, (h: Hotel, value: string) => boolean> = {
   area: (h, v) => h.area === v,
   travel: (h, v) => h.tags.includes(v as Hotel['tags'][number]),
-  features: (h, v) => h.facilities.some((f) => f.toLowerCase() === v.toLowerCase()),
-  benefits: (h, v) => h.officialBenefits.some((b) => b.toLowerCase().includes(v.toLowerCase().replace('free breakfast', 'breakfast'))),
+  stars: (h, v) => h.conditions.starRating === Number(v),
+  guest: (h, v) => h.conditions.guestRating >= Number(v),
+  conditions: (h, v) => h.conditions[v as ConditionKey] === true,
 }
 
 export default function HotelListPage() {
   const t = useT()
+  const { lang } = useLang()
+  const fs = filterStrings[lang]
   const { citySlug } = useParams()
   useDocumentMeta(t.list.metaTitle, t.list.metaDesc)
 
@@ -33,7 +38,7 @@ export default function HotelListPage() {
   const hotelsQ = useAsync(() => (dest ? repo.listHotelsByCity(dest.city) : Promise.resolve([])), [dest?.city])
 
   const [searchParams, setSearchParams] = useSearchParams()
-  const [selected, setSelected] = useState<Record<GroupKey, string[]>>({ area: [], travel: [], features: [], benefits: [] })
+  const [selected, setSelected] = useState<Record<GroupKey, string[]>>({ area: [], travel: [], stars: [], guest: [], conditions: [] })
 
   // City's hotels + the areas that actually exist for this city.
   const all = hotelsQ.data ?? []
@@ -41,7 +46,7 @@ export default function HotelListPage() {
 
   // Reset filters when the city changes.
   useEffect(() => {
-    setSelected({ area: [], travel: [], features: [], benefits: [] })
+    setSelected({ area: [], travel: [], stars: [], guest: [], conditions: [] })
   }, [citySlug])
 
   // Preselect a travel-style from the home discovery block (?style=Family).
@@ -85,8 +90,9 @@ export default function HotelListPage() {
   const filters: Record<GroupKey, string[]> = {
     area: areaOptions,
     travel: TRAVEL_OPTS,
-    features: FEATURE_OPTS,
-    benefits: BENEFIT_OPTS,
+    stars: STAR_OPTS,
+    guest: GUEST_OPTS,
+    conditions: CONDITION_OPTS,
   }
 
   const toggle = (group: GroupKey, value: string) =>
@@ -96,7 +102,7 @@ export default function HotelListPage() {
     }))
 
   const clearAll = () => {
-    setSelected({ area: [], travel: [], features: [], benefits: [] })
+    setSelected({ area: [], travel: [], stars: [], guest: [], conditions: [] })
     setSearchParams({})
   }
 
@@ -105,21 +111,17 @@ export default function HotelListPage() {
   const groupLabel: Record<GroupKey, string> = {
     area: t.list.groupArea,
     travel: t.list.groupTravel,
-    features: t.list.groupFeatures,
-    benefits: t.list.groupBenefits,
+    stars: fs.groupStars,
+    guest: fs.groupGuest,
+    conditions: fs.groupConditions,
   }
 
-  const benefitLabel: Record<string, string> = {
-    'Free breakfast': t.list.benefitFreeBreakfast,
-    'Flexible cancellation': t.list.benefitFlexCancel,
-    'Room upgrade': t.list.benefitUpgrade,
-    'Late checkout': t.list.benefitLateCheckout,
-  }
   const optionLabel = (g: GroupKey, opt: string): string => {
     if (g === 'area') return (t.enums.area as Record<string, string>)[opt] ?? opt
     if (g === 'travel') return (t.enums.travelStyle as Record<string, string>)[opt] ?? opt
-    if (g === 'features') return (t.enums.facility as Record<string, string>)[opt] ?? opt
-    return benefitLabel[opt] ?? opt
+    if (g === 'stars') return `${opt}★`
+    if (g === 'guest') return opt === '9' ? fs.guest9 : fs.guest85
+    return fs.cond[opt as ConditionKey] ?? opt
   }
 
   const results = all.filter((h) =>
