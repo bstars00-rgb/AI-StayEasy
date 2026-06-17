@@ -38,7 +38,21 @@ function read(): PartnerAccount[] {
   }
 }
 
+/** A ready-to-use, pre-approved demo account so the portal can be tried without
+ *  going through sign-up + approval first. Seeded only when no accounts exist. */
+const DEMO_ACCOUNT: PartnerAccount = {
+  id: 'demo',
+  email: 'demo@stayeasy.com',
+  password: 'demo1234',
+  hotelName: 'An Bang Beach Resort & Spa',
+  city: 'Da Nang',
+  status: 'Approved',
+  hotelSlug: 'an-bang-beach-resort',
+  createdAt: '2026-06-17',
+}
+
 let accounts: PartnerAccount[] = read()
+if (accounts.length === 0) accounts = [DEMO_ACCOUNT]
 const listeners = new Set<() => void>()
 
 function commit(next: PartnerAccount[]) {
