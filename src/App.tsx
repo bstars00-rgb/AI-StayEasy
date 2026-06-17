@@ -23,6 +23,9 @@ const SearchPage = lazy(() => import('./pages/SearchPage'))
 const WishlistPage = lazy(() => import('./pages/WishlistPage'))
 const AdminPage = lazy(() => import('./pages/AdminPage'))
 const RegisterHotelPage = lazy(() => import('./pages/RegisterHotelPage'))
+const PartnerLoginPage = lazy(() => import('./pages/PartnerLoginPage'))
+const PartnerPortalPage = lazy(() => import('./pages/PartnerPortalPage'))
+const PartnerEditPage = lazy(() => import('./pages/PartnerEditPage'))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 
 /** Suspense fallback while a route's code chunk downloads. */
@@ -77,6 +80,11 @@ export default function App() {
           </Suspense>
         }
       />
+
+      {/* Partner portal (hotel self-service) — its own shell, noindex'd. */}
+      <Route path="/partner/login" element={<Suspense fallback={<RouteFallback />}><PartnerLoginPage /></Suspense>} />
+      <Route path="/partner" element={<Suspense fallback={<RouteFallback />}><PartnerPortalPage /></Suspense>} />
+      <Route path="/partner/edit" element={<Suspense fallback={<RouteFallback />}><PartnerEditPage /></Suspense>} />
 
       <Route element={<PublicLayout />}>
         <Route path="/" element={<HomePage />} />

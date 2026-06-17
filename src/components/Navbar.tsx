@@ -59,7 +59,7 @@ export function Navbar() {
             )}
           </NavLink>
           <Link
-            to="/dashboard"
+            to="/partner/login"
             className="ml-1 rounded-full bg-ink-900 px-4 py-2 text-sm font-semibold text-white hover:bg-ink-800"
           >
             {t.nav.hotelLogin}
@@ -118,7 +118,7 @@ export function Navbar() {
               ♥ {ws.nav}{count > 0 ? ` (${count})` : ''}
             </NavLink>
             <Link
-              to="/dashboard"
+              to="/partner/login"
               onClick={() => setOpen(false)}
               className="mt-1 rounded-lg bg-ink-900 px-3 py-2.5 text-center text-sm font-semibold text-white"
             >

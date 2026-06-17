@@ -8,6 +8,8 @@ import { VoucherCard } from '../components/VoucherCard'
 import { I18nProvider } from '../i18n'
 import { getHotel } from '../data/hotels'
 import { partnerDrafts } from '../lib/partnerDrafts'
+import { partnerAuth } from '../lib/partnerAuth'
+import { hotelEdits } from '../lib/hotelEdits'
 
 // jsdom is missing a few browser APIs the app touches. Polyfill them so the
 // real components render and interact exactly as in a browser.
@@ -42,7 +44,7 @@ describe('route render (lazy chunks resolve, no throw)', () => {
     '/hotels/an-bang-beach-resort', '/guides/direct-booking',
     '/guides', '/guides/why-book-hotels-direct', '/guides/da-nang-travel-guide',
     '/privacy', '/terms', '/contact',
-    '/partners', '/dashboard', '/admin', '/admin/register', '/about', '/no-such-page',
+    '/partners', '/dashboard', '/admin', '/admin/register', '/partner/login', '/about', '/no-such-page',
   ]
   for (const path of routes) {
     it(`renders ${path}`, async () => {
@@ -119,6 +121,39 @@ describe('interaction: hotel registration page', () => {
     await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
     expect(await screen.findByRole('heading', { name: 'My Registered Hotel' }, { timeout: 5000 })).toBeTruthy()
     partnerDrafts.clear()
+  })
+})
+
+describe('interaction: hotel partner self-service portal', () => {
+  it('lets a signed-in hotel edit its listing, and the edit shows on the public page', async () => {
+    hotelEdits.clear()
+    partnerAuth.login({ slug: 'an-bang-beach-resort', propertyName: 'An Bang Beach Resort & Spa', email: 'gm@hotel.example' })
+
+    wrap('/partner/edit')
+    await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
+
+    const posInput = await screen.findByDisplayValue(/biggest kids pool/i)
+    fireEvent.change(posInput, { target: { value: 'A calm beachfront escape for couples.' } })
+    fireEvent.click(screen.getByRole('button', { name: /save changes/i }))
+
+    // Persisted to the edits store…
+    expect(hotelEdits.get('an-bang-beach-resort').positioningLine).toBe('A calm beachfront escape for couples.')
+
+    // …and visible on the public hotel page.
+    cleanup()
+    wrap('/hotels/an-bang-beach-resort')
+    await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
+    expect(await screen.findByText('A calm beachfront escape for couples.')).toBeTruthy()
+
+    hotelEdits.clear()
+    partnerAuth.logout()
+  })
+
+  it('redirects to login when no partner session exists', async () => {
+    partnerAuth.logout()
+    wrap('/partner')
+    await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
+    expect(await screen.findByRole('button', { name: /sign in to your listing/i })).toBeTruthy()
   })
 })
 

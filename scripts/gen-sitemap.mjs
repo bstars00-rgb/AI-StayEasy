@@ -46,6 +46,7 @@ const robots = `User-agent: *
 Allow: /
 Disallow: ${pathPrefix}/admin
 Disallow: ${pathPrefix}/dashboard
+Disallow: ${pathPrefix}/partner
 
 Sitemap: ${SITE_URL}/sitemap.xml
 `
