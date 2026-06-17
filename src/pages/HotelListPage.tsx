@@ -131,6 +131,20 @@ export default function HotelListPage() {
     }),
   )
 
+  // Graceful fallback: if nothing matches every filter, show the closest hotels
+  // — keep the area (most intentional) when chosen, otherwise drop only the
+  // narrowest "conditions" group. Avoids a dead-end "no results" screen.
+  const closest = selected.area.length
+    ? all.filter((h) => selected.area.some((v) => matchers.area(h, v)))
+    : all.filter((h) =>
+        (['travel', 'stars', 'guest'] as GroupKey[]).every((g) => {
+          const vals = selected[g]
+          return vals.length === 0 || vals.some((v) => matchers[g](h, v))
+        }),
+      )
+  const relaxed = results.length === 0 && activeCount > 0 && closest.length > 0
+  const shown = results.length > 0 ? results : relaxed ? closest : []
+
   return (
     <>
       {/* 1. Hero */}
@@ -185,25 +199,29 @@ export default function HotelListPage() {
         {/* 3. Hotel cards */}
         <div className="mt-5 flex items-center justify-between">
           <p className="text-sm text-ink-700/70">
-            <span className="font-semibold text-ink-900">{results.length}</span> {t.common.hotels} {t.list.resultsMatch}
+            <span className="font-semibold text-ink-900">{shown.length}</span> {t.common.hotels} {t.list.resultsMatch}
           </p>
           <p className="hidden text-xs text-ink-700/50 sm:block">{t.list.curatedNote}</p>
         </div>
+
+        {relaxed && (
+          <div className="mt-3 rounded-xl bg-amber-50 px-4 py-2.5 text-sm text-amber-800 ring-1 ring-amber-200">
+            ⚡ {fs.relaxedNote}
+          </div>
+        )}
 
         {hotelsQ.loading ? (
           <div className="mt-4">
             <CardGridSkeleton count={6} />
           </div>
-        ) : (
+        ) : shown.length > 0 ? (
           <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {results.map((h) => (
+            {shown.map((h) => (
               <HotelCard key={h.id} hotel={h} />
             ))}
           </div>
-        )}
-
-        {!hotelsQ.loading && results.length === 0 && (
-          <div className="rounded-2xl bg-white p-10 text-center shadow-card ring-1 ring-black/5">
+        ) : (
+          <div className="mt-4 rounded-2xl bg-white p-10 text-center shadow-card ring-1 ring-black/5">
             <div className="text-3xl">🔍</div>
             <h3 className="mt-2 font-bold text-ink-900">{t.list.noneTitle}</h3>
             <p className="mt-1 text-sm text-ink-700/70">{t.list.noneText}</p>

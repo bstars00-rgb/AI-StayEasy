@@ -261,7 +261,7 @@ const rawHotels: RawHotel[] = [
     notIdealFor: ['Travelers seeking a small, quiet property', 'Tight budgets'],
     mainReason: 'A complete beachfront resort where kids eat free and the kids club runs daily on direct bookings.',
     thingsToCheck: ['It can be busy in peak season', 'Kids-eat-free age limit', 'Ocean-view vs city-view room'],
-    tags: ['Family', 'Beach'],
+    tags: ['Family', 'Beach', 'Couple'],
     facilities: ['Pool', 'Breakfast', 'Kids club', 'Kids-friendly', 'Spa', 'Gym', 'Restaurant', 'Bar', 'Airport transfer', 'Parking', 'Korean-friendly', 'Free Wi-Fi'],
     officialBenefits: ['Kids eat free', 'Free spa access for two', 'Instant member rate', 'Late checkout'],
     roomGuide: {

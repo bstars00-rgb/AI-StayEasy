@@ -73,6 +73,12 @@ describe('filterable travel conditions', () => {
     }
   })
 
+  it('common area + travel-style combos return at least one hotel', () => {
+    // Regression: "My Khe Beach + Couple" used to be empty.
+    const myKheCouple = hotels.filter((h) => h.area === 'My Khe Beach' && h.tags.includes('Couple'))
+    expect(myKheCouple.length).toBeGreaterThan(0)
+  })
+
   it('conditions are deterministic and discriminating (filters return subsets)', () => {
     const pools = hotels.filter((h) => h.conditions.pool)
     const beach = hotels.filter((h) => h.conditions.beachfront)
