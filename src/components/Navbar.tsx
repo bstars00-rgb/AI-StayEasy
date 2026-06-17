@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { useLang, useT } from '../i18n'
 import { LanguageSwitcher } from './LanguageSwitcher'
+import { Logo } from './Logo'
 import { useWishlist } from '../lib/wishlist'
 import { wishlistStrings } from '../lib/wishlistI18n'
 
@@ -22,11 +23,8 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-40 border-b border-black/5 bg-sand-50/85 backdrop-blur">
       <nav className="container-page flex h-16 items-center justify-between gap-4">
-        <Link to="/" className="flex items-center gap-2" onClick={() => setOpen(false)}>
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-brand-600 text-lg text-white">🏨</span>
-          <span className="text-lg font-extrabold tracking-tight text-ink-900">
-            StayEasy <span className="text-brand-600">Vietnam</span>
-          </span>
+        <Link to="/" aria-label="StayEasy home" onClick={() => setOpen(false)}>
+          <Logo size={36} />
         </Link>
 
         <div className="hidden items-center gap-1 md:flex">

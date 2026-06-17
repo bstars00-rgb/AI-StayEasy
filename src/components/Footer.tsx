@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { Logo } from './Logo'
 import { useT } from '../i18n'
 
 export function Footer() {
@@ -7,10 +8,7 @@ export function Footer() {
     <footer className="mt-16 border-t border-black/5 bg-white">
       <div className="container-page grid gap-8 py-12 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="grid h-9 w-9 place-items-center rounded-xl bg-brand-600 text-lg text-white">🏨</span>
-            <span className="text-lg font-extrabold text-ink-900">StayEasy Vietnam</span>
-          </div>
+          <Logo size={36} />
           <p className="mt-3 max-w-xs text-sm text-ink-700/80">{t.footer.tagline}</p>
         </div>
 

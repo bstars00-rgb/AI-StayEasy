@@ -6,6 +6,7 @@ import { usePartnerDrafts } from '../lib/partnerDrafts'
 import type { HotelDraft } from '../lib/partnerDrafts'
 import { countries, getCountry, liveMarkets, roadmapMarkets } from '../data/countries'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
+import { LogoMark } from '../components/Logo'
 
 type Section = 'overview' | 'partners' | 'campaigns' | 'inquiries'
 
@@ -86,7 +87,7 @@ export default function AdminPage() {
         }`}
       >
         <div className="flex h-16 items-center gap-2 px-5">
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-brand-500 to-accent-500 text-lg">🏨</span>
+          <LogoMark size={36} />
           <div className="leading-tight">
             <div className="font-display font-extrabold">StayEasy</div>
             <div className="text-[11px] uppercase tracking-wider text-brand-300">Back-office</div>
