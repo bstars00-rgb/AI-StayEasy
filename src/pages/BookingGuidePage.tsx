@@ -61,28 +61,15 @@ export default function BookingGuidePage() {
         <p className="mt-3 text-xs text-ink-700/60">{t.guide.cmpNote}</p>
       </section>
 
-      {/* 3 & 4. When each is better */}
+      {/* 3. When direct booking is better */}
       <section className="container-page mt-16">
-        <div className="grid gap-5 lg:grid-cols-2">
-          <div className="rounded-3xl bg-brand-50 p-8 ring-1 ring-brand-100">
-            <h2 className="text-2xl font-extrabold text-ink-900">{t.guide.whenDirectTitle}</h2>
-            <ul className="mt-4 space-y-2 text-sm text-ink-700/90">
-              {t.guide.whenDirect.map((x) => (
-                <li key={x} className="flex items-start gap-2"><span className="mt-0.5 text-brand-600">✓</span> {x}</li>
-              ))}
-            </ul>
-          </div>
-          <div className="rounded-3xl bg-white p-8 shadow-card ring-1 ring-black/5">
-            <h2 className="text-2xl font-extrabold text-ink-900">{t.guide.whenOtaTitle}</h2>
-            <ul className="mt-4 space-y-2 text-sm text-ink-700/90">
-              {t.guide.whenOta.map((x) => (
-                <li key={x} className="flex items-start gap-2"><span className="mt-0.5 text-ink-700/50">•</span> {x}</li>
-              ))}
-            </ul>
-            <p className="mt-4 rounded-xl bg-sand-50 px-4 py-3 text-xs text-ink-700/70 ring-1 ring-black/5">
-              {t.guide.otaNote}
-            </p>
-          </div>
+        <div className="rounded-3xl bg-brand-50 p-8 ring-1 ring-brand-100">
+          <h2 className="text-2xl font-extrabold text-ink-900">{t.guide.whenDirectTitle}</h2>
+          <ul className="mt-4 grid gap-2 text-sm text-ink-700/90 sm:grid-cols-2">
+            {t.guide.whenDirect.map((x) => (
+              <li key={x} className="flex items-start gap-2"><span className="mt-0.5 text-brand-600">✓</span> {x}</li>
+            ))}
+          </ul>
         </div>
       </section>
 
