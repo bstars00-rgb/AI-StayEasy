@@ -175,21 +175,31 @@ describe('interaction: guest sign-in unlocks a member voucher', () => {
   })
 })
 
-describe('interaction: voucher code copy', () => {
-  it('copies the code and shows confirmation', async () => {
+describe('interaction: member-gated hotel voucher', () => {
+  it('hides the code until the guest signs in, then copies it', async () => {
     const writeText = vi.fn().mockResolvedValue(undefined)
     Object.defineProperty(navigator, 'clipboard', { value: { writeText }, configurable: true })
-
     const hotel = getHotel('an-bang-beach-resort')!
-    render(
+
+    // Signed out → code is gated behind sign-in.
+    guestAuth.signOut()
+    const { rerender } = render(
       <I18nProvider>
         <VoucherCard hotel={hotel} />
       </I18nProvider>,
     )
+    expect(screen.queryByRole('button', { name: /copy code/i })).toBeNull()
+    expect(screen.getByRole('button', { name: /sign in to unlock/i })).toBeTruthy()
 
-    fireEvent.click(screen.getByRole('button', { name: /copy code/i }))
-
+    // Member → code is revealed and copyable.
+    guestAuth.signIn({ email: 'member@gmail.com' })
+    rerender(
+      <I18nProvider>
+        <VoucherCard hotel={hotel} />
+      </I18nProvider>,
+    )
+    fireEvent.click(await screen.findByRole('button', { name: /copy code/i }))
     expect(writeText).toHaveBeenCalledWith(hotel.voucher!.code)
-    expect(await screen.findByText(/copied/i)).toBeTruthy()
+    guestAuth.signOut()
   })
 })

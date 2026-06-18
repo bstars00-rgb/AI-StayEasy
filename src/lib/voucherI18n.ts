@@ -20,6 +20,10 @@ export interface VoucherStrings {
   badge: string
   /** Coupon footer printed on the downloaded SVG. */
   couponFooter: string
+  /** Member-gate strings. */
+  memberBadge: string
+  unlock: string
+  unlockNote: string
 }
 
 export const voucherStrings: Record<Lang, VoucherStrings> = {
@@ -36,6 +40,9 @@ export const voucherStrings: Record<Lang, VoucherStrings> = {
     note: 'Apply this code when booking direct — StayEasy never processes the payment.',
     badge: 'Voucher',
     couponFooter: 'Present this code when booking on the official website.',
+    memberBadge: 'Members',
+    unlock: 'Sign in to unlock',
+    unlockNote: 'StayEasy members unlock this hotel’s discount voucher.',
   },
   ko: {
     title: '직접 예약 할인권',
@@ -50,6 +57,9 @@ export const voucherStrings: Record<Lang, VoucherStrings> = {
     note: '공식 사이트에서 직접 예약할 때 이 코드를 입력하세요 — StayEasy는 결제를 처리하지 않습니다.',
     badge: '할인권',
     couponFooter: '공식 사이트에서 예약할 때 이 코드를 제시하세요.',
+    memberBadge: '회원',
+    unlock: '로그인하고 받기',
+    unlockNote: 'StayEasy 회원은 이 호텔의 할인권을 받을 수 있어요.',
   },
   vi: {
     title: 'Voucher đặt phòng trực tiếp',
@@ -64,6 +74,9 @@ export const voucherStrings: Record<Lang, VoucherStrings> = {
     note: 'Nhập mã này khi đặt trực tiếp — StayEasy không xử lý thanh toán.',
     badge: 'Voucher',
     couponFooter: 'Xuất trình mã này khi đặt trên website chính thức.',
+    memberBadge: 'Thành viên',
+    unlock: 'Đăng nhập để mở',
+    unlockNote: 'Thành viên StayEasy mở được voucher giảm giá của khách sạn này.',
   },
   zh: {
     title: '官网直订优惠券',
@@ -78,6 +91,9 @@ export const voucherStrings: Record<Lang, VoucherStrings> = {
     note: '官网直订时输入此优惠码——StayEasy 不处理任何付款。',
     badge: '优惠券',
     couponFooter: '在官网预订时出示此优惠码。',
+    memberBadge: '会员',
+    unlock: '登录解锁',
+    unlockNote: 'StayEasy 会员可解锁该酒店的优惠券。',
   },
   ja: {
     title: '公式直予約クーポン',
@@ -92,5 +108,8 @@ export const voucherStrings: Record<Lang, VoucherStrings> = {
     note: '公式サイトで直接予約する際にこのコードを入力してください — StayEasy は決済を行いません。',
     badge: 'クーポン',
     couponFooter: '公式サイトで予約する際にこのコードをご提示ください。',
+    memberBadge: '会員',
+    unlock: 'ログインして取得',
+    unlockNote: 'StayEasy 会員はこのホテルのクーポンを取得できます。',
   },
 }
