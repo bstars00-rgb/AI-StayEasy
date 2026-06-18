@@ -151,13 +151,13 @@ export function VoucherCard({ hotel }: { hotel: Hotel }) {
                 : `🎟️ ${v.fieldLabel ? s.howToUseNamed.replace('{field}', v.fieldLabel) : s.howToUse}`}
             </p>
 
-            <div className="grid gap-2 sm:grid-cols-2">
-              <button type="button" onClick={download} className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-4 py-3 text-sm font-semibold text-ink-900 ring-1 ring-black/10 transition-colors hover:bg-sand-50">
-                ⬇ {s.download}
-              </button>
-              <a href={officialLink(hotel)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-600 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-700">
-                {s.useOnSite} ↗
+            <div className="grid gap-2">
+              <a href={officialLink(hotel)} target="_blank" rel="noopener noreferrer" className="inline-flex w-full items-center justify-center gap-1.5 whitespace-nowrap rounded-full bg-brand-600 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-700">
+                <span className="truncate">{s.useOnSite}</span> ↗
               </a>
+              <button type="button" onClick={download} className="inline-flex w-full items-center justify-center gap-1.5 whitespace-nowrap rounded-full bg-white px-4 py-3 text-sm font-semibold text-ink-900 ring-1 ring-black/10 transition-colors hover:bg-sand-50">
+                ⬇ <span className="truncate">{s.download}</span>
+              </button>
             </div>
 
             <p className="text-xs text-ink-700/55">{s.note}</p>
