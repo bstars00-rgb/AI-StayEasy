@@ -38,3 +38,28 @@ export function trackPageview(path: string): void {
   if (!GA_ID || typeof window === 'undefined' || !window.gtag) return
   window.gtag('event', 'page_view', { page_path: path })
 }
+
+/**
+ * Semantic intent events — the signals hotels actually care about: which
+ * properties travelers view, who unlocks a voucher, who clicks through to the
+ * official site (booking intent), who reaches out, and what people search for.
+ * Each event carries a hotel/city/type dimension so GA4 can answer "what are
+ * travelers looking for?" and "what converts?" per hotel. No-op until GA_ID is
+ * set, so instrumentation is always safe to leave in.
+ */
+export type StayEvent =
+  | 'hotel_view'
+  | 'voucher_unlock'
+  | 'voucher_download'
+  | 'official_site_click'
+  | 'contact_click'
+  | 'search'
+  | 'wishlist_add'
+
+export function trackEvent(name: StayEvent, params: Record<string, string | number | undefined> = {}): void {
+  if (!GA_ID || typeof window === 'undefined' || !window.gtag) return
+  // Drop undefined params so GA4 reports stay clean.
+  const clean: Record<string, string | number> = {}
+  for (const [k, v] of Object.entries(params)) if (v !== undefined) clean[k] = v
+  window.gtag('event', name, clean)
+}

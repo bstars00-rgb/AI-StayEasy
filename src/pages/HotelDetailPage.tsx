@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom'
-import { useState, type ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import Button from '../components/Button'
 import { HotelImage } from '../components/HotelImage'
 import { SponsoredBadge } from '../components/SponsoredBadge'
@@ -14,6 +14,7 @@ import { Spinner } from '../components/Loading'
 import { useT, useLang, localizeHotel } from '../i18n'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 import { officialLink } from '../lib/officialLink'
+import { trackEvent } from '../lib/analytics'
 import { scoreStrings } from '../lib/scoreI18n'
 import { contactStrings } from '../lib/contactI18n'
 import { ContactHotelDialog } from '../components/ContactHotelDialog'
@@ -57,6 +58,13 @@ export default function HotelDetailPage() {
     () => (rawHotel ? repo.getSimilarHotels(rawHotel) : Promise.resolve([])),
     [rawHotel?.id],
   )
+
+  // Record the hotel view (canonical, un-localized dimensions) for partner insights.
+  useEffect(() => {
+    if (rawHotel) {
+      trackEvent('hotel_view', { hotel_slug: rawHotel.slug, city: rawHotel.city, hotel_type: rawHotel.hotelType, lang })
+    }
+  }, [rawHotel?.slug, lang])
 
   // Document meta: built from the (localized) hotel when present, else a
   // generic fallback. useDocumentMeta is called unconditionally before any

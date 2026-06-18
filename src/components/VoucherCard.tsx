@@ -6,6 +6,7 @@ import { downloadVoucher } from '../lib/voucher'
 import { officialLink } from '../lib/officialLink'
 import { guestAuth, useGuest } from '../lib/guestAuth'
 import { promptGoogle, googleEnabled } from '../lib/googleAuth'
+import { trackEvent } from '../lib/analytics'
 
 /** Sparkle directions for the little burst when the lock springs open. */
 const SPARKS = [
@@ -66,9 +67,14 @@ export function VoucherCard({ hotel }: { hotel: Hotel }) {
 
   // Unlock in place — no page change, no popup. The lock springs open and the
   // voucher rises like a chest lid. Real Google sign-in is used when configured;
+  // Hotel/market dimensions attached to every voucher event, so GA4 can answer
+  // "which hotels convert?" and "what do these travelers want?".
+  const dims = { hotel_slug: hotel.slug, city: hotel.city, hotel_type: hotel.hotelType, lang }
+
   // otherwise a demo identity unlocks instantly.
   const unlock = () => {
     if (unlocking || guest) return
+    trackEvent('voucher_unlock', dims)
     setUnlocking(true)
     setCelebrate(true)
     if (googleEnabled && promptGoogle((p) => guestAuth.signIn(p))) {
@@ -99,12 +105,14 @@ export function VoucherCard({ hotel }: { hotel: Hotel }) {
     setTimeout(() => setCopied(false), 1600)
   }
 
-  const download = () =>
-    downloadVoucher(hotel, {
+  const download = () => {
+    trackEvent('voucher_download', dims)
+    return downloadVoucher(hotel, {
       heading: s.title,
       validUntilLabel: s.validUntil,
       footer: s.couponFooter,
     })
+  }
 
   return (
     <div className="overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-brand-200">
@@ -152,7 +160,7 @@ export function VoucherCard({ hotel }: { hotel: Hotel }) {
             </p>
 
             <div className="grid gap-2">
-              <a href={officialLink(hotel)} target="_blank" rel="noopener noreferrer" className="inline-flex w-full items-center justify-center gap-1.5 whitespace-nowrap rounded-full bg-brand-600 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-700">
+              <a href={officialLink(hotel)} target="_blank" rel="noopener noreferrer" onClick={() => trackEvent('official_site_click', dims)} className="inline-flex w-full items-center justify-center gap-1.5 whitespace-nowrap rounded-full bg-brand-600 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-700">
                 <span className="truncate">{s.useOnSite}</span> ↗
               </a>
               <button type="button" onClick={download} className="inline-flex w-full items-center justify-center gap-1.5 whitespace-nowrap rounded-full bg-white px-4 py-3 text-sm font-semibold text-ink-900 ring-1 ring-black/10 transition-colors hover:bg-sand-50">

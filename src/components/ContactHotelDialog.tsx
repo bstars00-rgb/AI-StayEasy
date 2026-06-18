@@ -5,6 +5,7 @@ import { conciergeStrings, REQUEST_KEYS } from '../lib/conciergeI18n'
 import type { RequestKey } from '../lib/conciergeI18n'
 import { contactStrings } from '../lib/contactI18n'
 import { composeMessage, resolveChannels } from '../lib/contact'
+import { trackEvent } from '../lib/analytics'
 
 const inputCls = 'w-full rounded-xl border border-black/10 bg-sand-50 px-3 py-2.5 text-sm outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100'
 
@@ -77,6 +78,7 @@ export function ContactHotelDialog({ hotel, onClose }: { hotel: Hotel; onClose: 
               href={ch.href}
               target={ch.key === 'phone' ? undefined : '_blank'}
               rel="noopener noreferrer"
+              onClick={() => trackEvent('contact_click', { hotel_slug: hotel.slug, city: hotel.city, hotel_type: hotel.hotelType, channel: ch.key, lang })}
               className={`flex items-center justify-between gap-2 rounded-xl px-4 py-3 text-sm font-semibold ring-1 transition-colors ${
                 ch.chat ? 'bg-brand-50 text-brand-800 ring-brand-200 hover:bg-brand-100' : 'bg-white text-ink-800 ring-black/10 hover:bg-sand-50'
               }`}
