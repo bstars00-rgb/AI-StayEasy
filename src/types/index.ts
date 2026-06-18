@@ -38,10 +38,6 @@ export type City =
   | 'Quy Nhon'
   | 'Con Dao'
   | 'Phu Yen'
-  // Thailand (2nd market)
-  | 'Bangkok'
-  | 'Phuket'
-  | 'Chiang Mai'
 
 export type Area =
   // Da Nang
@@ -67,11 +63,6 @@ export type Area =
   | 'Old Quarter'
   | 'West Lake'
   | 'French Quarter'
-  // Thailand
-  | 'Riverside'
-  | 'Sukhumvit'
-  | 'Patong Beach'
-  | 'Old City'
 
 export type HotelType =
   | 'Beach resort'

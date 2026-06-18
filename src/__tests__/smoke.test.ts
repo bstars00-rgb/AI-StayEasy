@@ -29,14 +29,16 @@ function shapePaths(obj: unknown, prefix = ''): string[] {
 }
 
 describe('hotel data integrity', () => {
-  it('has 36 hotels (Vietnam + Thailand) with unique ids and slugs', () => {
-    expect(hotels).toHaveLength(36)
-    expect(new Set(hotels.map((h) => h.id)).size).toBe(36)
-    expect(new Set(hotels.map((h) => h.slug)).size).toBe(36)
-    expect(hotels.filter((h) => h.country === 'Vietnam')).toHaveLength(32)
-    expect(hotels.filter((h) => h.country === 'Thailand')).toHaveLength(4)
+  it('has 32 hotels across 6 cities with unique ids and slugs', () => {
+    expect(hotels).toHaveLength(32)
+    expect(new Set(hotels.map((h) => h.id)).size).toBe(32)
+    expect(new Set(hotels.map((h) => h.slug)).size).toBe(32)
     expect(hotels.filter((h) => h.city === 'Da Nang')).toHaveLength(12)
-    expect(hotels.filter((h) => h.city === 'Bangkok')).toHaveLength(2)
+    expect(hotels.filter((h) => h.city === 'Ho Chi Minh City')).toHaveLength(4)
+    expect(hotels.filter((h) => h.city === 'Nha Trang')).toHaveLength(4)
+    expect(hotels.filter((h) => h.city === 'Phu Quoc')).toHaveLength(4)
+    expect(hotels.filter((h) => h.city === 'Hoi An')).toHaveLength(4)
+    expect(hotels.filter((h) => h.city === 'Hanoi')).toHaveLength(4)
   })
 
   it('every required field is populated', () => {
@@ -161,9 +163,9 @@ describe('editorial guides', () => {
 })
 
 describe('Asia market roadmap', () => {
-  it('has Vietnam + Thailand live and other Asian markets on the roadmap', () => {
+  it('has Vietnam live and other Asian markets on the roadmap', () => {
     expect(countries.length).toBeGreaterThanOrEqual(10)
-    expect(liveMarkets.map((c) => c.name)).toEqual(['Vietnam', 'Thailand'])
+    expect(liveMarkets.map((c) => c.name)).toEqual(['Vietnam'])
     expect(new Set(countries.map((c) => c.slug)).size).toBe(countries.length)
     for (const c of countries) {
       expect(['Southeast Asia', 'East Asia', 'South Asia']).toContain(c.region)
@@ -171,10 +173,10 @@ describe('Asia market roadmap', () => {
     }
   })
 
-  it('every hotel carries a known country', () => {
+  it('every hotel and destination carries a country (Vietnam at launch)', () => {
     for (const h of hotels) {
       expect(getCountry(h.country), h.slug).toBeDefined()
-      expect(['Vietnam', 'Thailand']).toContain(h.country)
+      expect(h.country).toBe('Vietnam')
     }
   })
 })
@@ -302,7 +304,7 @@ describe('back-office data', () => {
 describe('async data repo (mock-backed)', () => {
   it('resolves the full catalogue and a single hotel', async () => {
     const all = await repo.allHotels()
-    expect(all).toHaveLength(36)
+    expect(all).toHaveLength(32)
     const h = await repo.getHotel('an-bang-beach-resort')
     expect(h?.slug).toBe('an-bang-beach-resort')
   })
