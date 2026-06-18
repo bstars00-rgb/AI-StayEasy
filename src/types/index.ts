@@ -87,6 +87,10 @@ export interface Voucher {
   terms: string
   /** ISO date the voucher is valid until. */
   validUntil: string
+  /** How the guest redeems it:
+   *  - 'online' (default): enter the code in the hotel booking form's Voucher field.
+   *  - 'onsite': download to mobile and show it at check-in for the perk. */
+  redeem?: 'online' | 'onsite'
 }
 
 /** Normalized, filterable travel conditions — the attributes travelers actually

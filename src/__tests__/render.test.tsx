@@ -209,4 +209,32 @@ describe('interaction: member-gated hotel voucher', () => {
     expect(writeText).toHaveBeenCalledWith(hotel.voucher!.code)
     guestAuth.signOut()
   })
+
+  it('shows a no-voucher notice for hotels without a voucher', () => {
+    const hotel = getHotel('an-bang-beach-resort')!
+    const noVoucher = { ...hotel, voucher: undefined }
+    render(
+      <I18nProvider>
+        <MemoryRouter>
+          <VoucherCard hotel={noVoucher} />
+        </MemoryRouter>
+      </I18nProvider>,
+    )
+    expect(screen.getByText(/no voucher from this hotel yet/i)).toBeTruthy()
+  })
+
+  it('shows on-site redemption instructions for onsite vouchers', () => {
+    const hotel = getHotel('an-bang-beach-resort')!
+    const onsite = { ...hotel, voucher: { ...hotel.voucher!, redeem: 'onsite' as const } }
+    guestAuth.signIn({ email: 'member@gmail.com' })
+    render(
+      <I18nProvider>
+        <MemoryRouter>
+          <VoucherCard hotel={onsite} />
+        </MemoryRouter>
+      </I18nProvider>,
+    )
+    expect(screen.getByText(/show it at the front desk/i)).toBeTruthy()
+    guestAuth.signOut()
+  })
 })

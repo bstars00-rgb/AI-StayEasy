@@ -26,6 +26,11 @@ export interface VoucherStrings {
   unlockNote: string
   /** How to redeem — points at the hotel booking form's Voucher field. */
   howToUse: string
+  /** Redeem instructions for show-at-check-in vouchers. */
+  howToUseOnsite: string
+  /** Shown when a hotel offers no voucher. */
+  noVoucherTitle: string
+  noVoucherText: string
 }
 
 export const voucherStrings: Record<Lang, VoucherStrings> = {
@@ -46,6 +51,9 @@ export const voucherStrings: Record<Lang, VoucherStrings> = {
     unlock: 'Sign in to unlock',
     unlockNote: 'StayEasy members unlock this hotel’s discount voucher.',
     howToUse: 'Enter this code in the “Voucher” field on the hotel’s booking form.',
+    howToUseOnsite: 'Download it to your phone and show it at the front desk on arrival to get the perk.',
+    noVoucherTitle: 'No voucher from this hotel yet',
+    noVoucherText: 'This hotel doesn’t offer a StayEasy voucher right now — but you still book direct for its official-website benefits.',
   },
   ko: {
     title: '직접 예약 할인권',
@@ -64,6 +72,9 @@ export const voucherStrings: Record<Lang, VoucherStrings> = {
     unlock: '로그인하고 받기',
     unlockNote: 'StayEasy 회원은 이 호텔의 할인권을 받을 수 있어요.',
     howToUse: '호텔 예약 폼의 “Voucher” 칸에 이 코드를 입력하세요.',
+    howToUseOnsite: '휴대폰에 다운로드해서 체크인 시 프런트에 보여주면 혜택을 받을 수 있어요.',
+    noVoucherTitle: '아직 이 호텔의 바우처가 없어요',
+    noVoucherText: '이 호텔은 현재 StayEasy 바우처를 제공하지 않아요 — 그래도 공식 사이트 혜택을 위해 직접 예약할 수 있어요.',
   },
   vi: {
     title: 'Voucher đặt phòng trực tiếp',
@@ -82,6 +93,9 @@ export const voucherStrings: Record<Lang, VoucherStrings> = {
     unlock: 'Đăng nhập để mở',
     unlockNote: 'Thành viên StayEasy mở được voucher giảm giá của khách sạn này.',
     howToUse: 'Nhập mã này vào ô “Voucher” trên biểu mẫu đặt phòng của khách sạn.',
+    howToUseOnsite: 'Tải về điện thoại và xuất trình tại quầy lễ tân khi nhận phòng để nhận ưu đãi.',
+    noVoucherTitle: 'Khách sạn này chưa có voucher',
+    noVoucherText: 'Khách sạn này hiện chưa có voucher StayEasy — nhưng bạn vẫn đặt trực tiếp để nhận ưu đãi từ website chính thức.',
   },
   zh: {
     title: '官网直订优惠券',
@@ -100,6 +114,9 @@ export const voucherStrings: Record<Lang, VoucherStrings> = {
     unlock: '登录解锁',
     unlockNote: 'StayEasy 会员可解锁该酒店的优惠券。',
     howToUse: '在酒店预订表单的“Voucher”栏中输入此优惠码。',
+    howToUseOnsite: '下载到手机，入住时在前台出示即可获得礼遇。',
+    noVoucherTitle: '该酒店暂无优惠券',
+    noVoucherText: '该酒店目前未提供 StayEasy 优惠券——但您仍可官网直订以享受其官方权益。',
   },
   ja: {
     title: '公式直予約クーポン',
@@ -118,5 +135,8 @@ export const voucherStrings: Record<Lang, VoucherStrings> = {
     unlock: 'ログインして取得',
     unlockNote: 'StayEasy 会員はこのホテルのクーポンを取得できます。',
     howToUse: 'ホテルの予約フォームの「Voucher」欄にこのコードを入力してください。',
+    howToUseOnsite: 'スマホにダウンロードし、チェックイン時にフロントで提示すると特典が受けられます。',
+    noVoucherTitle: 'このホテルのクーポンはまだありません',
+    noVoucherText: 'このホテルは現在 StayEasy クーポンを提供していません — それでも公式サイトの特典のために直接予約できます。',
   },
 }

@@ -19,7 +19,16 @@ export function VoucherCard({ hotel }: { hotel: Hotel }) {
   const location = useLocation()
   const [copied, setCopied] = useState(false)
   const v = hotel.voucher
-  if (!v) return null
+
+  // Hotel offers no voucher → an honest notice (not nothing).
+  if (!v) {
+    return (
+      <div className="rounded-2xl bg-white p-5 shadow-card ring-1 ring-black/5">
+        <p className="flex items-center gap-2 font-bold text-ink-900">🎟️ {s.noVoucherTitle}</p>
+        <p className="mt-1 text-sm text-ink-700/75">{s.noVoucherText}</p>
+      </div>
+    )
+  }
 
   const copy = async () => {
     try {
@@ -76,7 +85,9 @@ export function VoucherCard({ hotel }: { hotel: Hotel }) {
               </div>
             </dl>
 
-            <p className="rounded-xl bg-brand-50 px-3 py-2.5 text-xs font-medium text-brand-800 ring-1 ring-brand-100">🎟️ {s.howToUse}</p>
+            <p className="rounded-xl bg-brand-50 px-3 py-2.5 text-xs font-medium text-brand-800 ring-1 ring-brand-100">
+              {v.redeem === 'onsite' ? `📲 ${s.howToUseOnsite}` : `🎟️ ${s.howToUse}`}
+            </p>
 
             <div className="grid gap-2 sm:grid-cols-2">
               <button type="button" onClick={download} className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-4 py-3 text-sm font-semibold text-ink-900 ring-1 ring-black/10 transition-colors hover:bg-sand-50">
