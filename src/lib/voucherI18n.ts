@@ -24,6 +24,8 @@ export interface VoucherStrings {
   memberBadge: string
   unlock: string
   unlockNote: string
+  /** How to redeem — points at the hotel booking form's Voucher field. */
+  howToUse: string
 }
 
 export const voucherStrings: Record<Lang, VoucherStrings> = {
@@ -43,6 +45,7 @@ export const voucherStrings: Record<Lang, VoucherStrings> = {
     memberBadge: 'Members',
     unlock: 'Sign in to unlock',
     unlockNote: 'StayEasy members unlock this hotel’s discount voucher.',
+    howToUse: 'Enter this code in the “Voucher” field on the hotel’s booking form.',
   },
   ko: {
     title: '직접 예약 할인권',
@@ -60,6 +63,7 @@ export const voucherStrings: Record<Lang, VoucherStrings> = {
     memberBadge: '회원',
     unlock: '로그인하고 받기',
     unlockNote: 'StayEasy 회원은 이 호텔의 할인권을 받을 수 있어요.',
+    howToUse: '호텔 예약 폼의 “Voucher” 칸에 이 코드를 입력하세요.',
   },
   vi: {
     title: 'Voucher đặt phòng trực tiếp',
@@ -77,6 +81,7 @@ export const voucherStrings: Record<Lang, VoucherStrings> = {
     memberBadge: 'Thành viên',
     unlock: 'Đăng nhập để mở',
     unlockNote: 'Thành viên StayEasy mở được voucher giảm giá của khách sạn này.',
+    howToUse: 'Nhập mã này vào ô “Voucher” trên biểu mẫu đặt phòng của khách sạn.',
   },
   zh: {
     title: '官网直订优惠券',
@@ -94,6 +99,7 @@ export const voucherStrings: Record<Lang, VoucherStrings> = {
     memberBadge: '会员',
     unlock: '登录解锁',
     unlockNote: 'StayEasy 会员可解锁该酒店的优惠券。',
+    howToUse: '在酒店预订表单的“Voucher”栏中输入此优惠码。',
   },
   ja: {
     title: '公式直予約クーポン',
@@ -111,5 +117,6 @@ export const voucherStrings: Record<Lang, VoucherStrings> = {
     memberBadge: '会員',
     unlock: 'ログインして取得',
     unlockNote: 'StayEasy 会員はこのホテルのクーポンを取得できます。',
+    howToUse: 'ホテルの予約フォームの「Voucher」欄にこのコードを入力してください。',
   },
 }

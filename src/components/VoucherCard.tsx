@@ -76,6 +76,8 @@ export function VoucherCard({ hotel }: { hotel: Hotel }) {
               </div>
             </dl>
 
+            <p className="rounded-xl bg-brand-50 px-3 py-2.5 text-xs font-medium text-brand-800 ring-1 ring-brand-100">🎟️ {s.howToUse}</p>
+
             <div className="grid gap-2 sm:grid-cols-2">
               <button type="button" onClick={download} className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-4 py-3 text-sm font-semibold text-ink-900 ring-1 ring-black/10 transition-colors hover:bg-sand-50">
                 ⬇ {s.download}

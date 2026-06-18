@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useLang } from '../i18n'
 import { accountStrings } from '../lib/accountI18n'
+import { voucherStrings } from '../lib/voucherI18n'
 import { guestAuth, useGuest } from '../lib/guestAuth'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 
@@ -61,6 +62,7 @@ export default function AccountPage() {
                 </div>
               </div>
               <p className="text-sm text-ink-700/70">{s.validUntil}: <b>{guest.validUntil}</b></p>
+              <p className="rounded-xl bg-brand-50 px-3 py-2.5 text-xs font-medium text-brand-800 ring-1 ring-brand-100">🎟️ {voucherStrings[lang].howToUse}</p>
               <p className="text-xs text-ink-700/55">{s.useNote}</p>
             </div>
           </div>
