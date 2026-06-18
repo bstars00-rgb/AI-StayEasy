@@ -193,8 +193,8 @@ describe('interaction: member-gated hotel voucher', () => {
       </I18nProvider>,
     )
     expect(screen.queryByRole('button', { name: /copy code/i })).toBeNull()
-    // The unlock action is now a link to the sign-in page.
-    expect(screen.getByRole('link', { name: /sign in to unlock/i })).toBeTruthy()
+    // The unlock action is an in-place button (no navigation, no popup).
+    expect(screen.getByRole('button', { name: /sign in to unlock/i })).toBeTruthy()
 
     // Member → code is revealed and copyable.
     guestAuth.signIn({ email: 'member@gmail.com' })
@@ -207,6 +207,24 @@ describe('interaction: member-gated hotel voucher', () => {
     )
     fireEvent.click(await screen.findByRole('button', { name: /copy code/i }))
     expect(writeText).toHaveBeenCalledWith(hotel.voucher!.code)
+    guestAuth.signOut()
+  })
+
+  it('unlocks in place when the lock is clicked — no navigation', async () => {
+    const hotel = getHotel('an-bang-beach-resort')!
+    guestAuth.signOut()
+    render(
+      <I18nProvider>
+        <MemoryRouter>
+          <VoucherCard hotel={hotel} />
+        </MemoryRouter>
+      </I18nProvider>,
+    )
+    // Click the in-place unlock — demo sign-in resolves without leaving the page.
+    fireEvent.click(screen.getByRole('button', { name: /sign in to unlock/i }))
+    // The code is revealed right here once the lock springs open.
+    expect(await screen.findByRole('button', { name: /copy code/i })).toBeTruthy()
+    expect(screen.getByText(hotel.voucher!.code)).toBeTruthy()
     guestAuth.signOut()
   })
 

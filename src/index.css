@@ -32,3 +32,61 @@
     @apply bg-gradient-to-r from-brand-500 to-accent-500 bg-clip-text text-transparent;
   }
 }
+
+/* ── Voucher unlock: the padlock springs open like a treasure chest ── */
+@keyframes lock-pop {
+  0%   { transform: rotate(0) scale(1); }
+  15%  { transform: rotate(-8deg) scale(1.05); }
+  30%  { transform: rotate(7deg) scale(1.08); }
+  45%  { transform: rotate(-5deg) scale(1.06); }
+  60%  { transform: rotate(0) scale(1.18); }
+  100% { transform: rotate(0) scale(1); }
+}
+.animate-lock-pop { animation: lock-pop 0.62s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+
+/* The lock shackle lifts off the body as it opens (pivots on its right leg). */
+@keyframes shackle-lift {
+  0%   { transform: translateY(0) rotate(0); }
+  55%  { transform: translateY(-5px) rotate(0); }
+  100% { transform: translateY(-5px) rotate(34deg); }
+}
+.animate-shackle-lift {
+  transform-origin: 32px 22px;
+  animation: shackle-lift 0.62s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+/* The revealed voucher rises and settles, chest-lid style. */
+@keyframes chest-reveal {
+  0%   { opacity: 0; transform: translateY(14px) scale(0.94); }
+  60%  { opacity: 1; transform: translateY(-4px) scale(1.015); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.animate-chest-reveal { animation: chest-reveal 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both; }
+
+/* A light sweep across the freshly revealed code. */
+@keyframes code-shimmer {
+  0%   { background-position: -150% 0; }
+  100% { background-position: 250% 0; }
+}
+.animate-code-shimmer {
+  background-image: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.75) 50%, transparent 65%);
+  background-size: 220% 100%;
+  background-repeat: no-repeat;
+  animation: code-shimmer 0.9s ease-out 0.35s 1;
+}
+
+/* Sparkles bursting out of the opening lock. */
+@keyframes spark-fly {
+  0%   { opacity: 0; transform: translate(0, 0) scale(0.3); }
+  20%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--sx), var(--sy)) scale(1); }
+}
+.animate-spark { animation: spark-fly 0.7s ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-lock-pop,
+  .animate-shackle-lift,
+  .animate-chest-reveal,
+  .animate-code-shimmer,
+  .animate-spark { animation: none; }
+}
