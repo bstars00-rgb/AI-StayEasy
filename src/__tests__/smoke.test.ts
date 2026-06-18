@@ -20,6 +20,7 @@ import { partnerDrafts } from '../lib/partnerDrafts'
 import { conciergeStrings, REQUEST_KEYS } from '../lib/conciergeI18n'
 import { translatePhrase } from '../lib/translate'
 import { composeMessage, resolveChannels } from '../lib/contact'
+import { guestAuth } from '../lib/guestAuth'
 
 /** Collects the sorted set of key-paths (leaves = strings/arrays) of an object. */
 function shapePaths(obj: unknown, prefix = ''): string[] {
@@ -125,6 +126,23 @@ describe('partner account approval workflow', () => {
 
     partnerAccounts.clear()
     partnerDrafts.clear()
+  })
+})
+
+describe('guest sign-in + member voucher', () => {
+  it('issues a deterministic member voucher on sign-in', () => {
+    guestAuth.signOut()
+    guestAuth.signIn({ email: 'Traveler@Gmail.com', name: 'Traveler' })
+    const g = guestAuth.get()!
+    expect(g.email).toBe('traveler@gmail.com') // normalized
+    expect(g.welcomeCode).toMatch(/^STAY-[A-Z0-9]{6}$/)
+    expect(g.discountLabel.length).toBeGreaterThan(0)
+    expect(g.validUntil).toMatch(/^\d{4}-\d{2}-\d{2}$/)
+    const code = g.welcomeCode
+    guestAuth.signOut()
+    guestAuth.signIn({ email: 'traveler@gmail.com' })
+    expect(guestAuth.get()!.welcomeCode).toBe(code) // same guest → same code
+    guestAuth.signOut()
   })
 })
 

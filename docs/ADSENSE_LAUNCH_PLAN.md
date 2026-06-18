@@ -127,6 +127,7 @@
 | `VITE_GA_ID` | Google Analytics 4 | `G-XXXXXXXXXX` | 언제든 |
 | `VITE_CONTACT_EMAIL` | 문의 메일 주소 | `hello@stayeasy.asia` | 도메인 후 |
 | `VITE_API_URL` | 백엔드 API 연결(선택) | `https://api.stayeasy.asia` | 백엔드 배포 후 |
+| `VITE_GOOGLE_CLIENT_ID` | 고객 Google 로그인 활성화 | `xxxx.apps.googleusercontent.com` | Google Cloud에서 발급 후 |
 
 - 광고는 `VITE_ADSENSE_CLIENT` 설정 전엔 렌더되지 않음(정책 안전). 설정 시 `<AdSlot>`가
   스크립트를 로드하고 `ads.txt`도 빌드시 올바른 라인으로 생성된다.

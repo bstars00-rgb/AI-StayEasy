@@ -5,12 +5,18 @@ import { LanguageSwitcher } from './LanguageSwitcher'
 import { Logo } from './Logo'
 import { useWishlist } from '../lib/wishlist'
 import { wishlistStrings } from '../lib/wishlistI18n'
+import { useGuest } from '../lib/guestAuth'
+import { accountStrings } from '../lib/accountI18n'
+import { GuestSignInDialog } from './GuestSignInDialog'
 
 export function Navbar() {
   const [open, setOpen] = useState(false)
+  const [showSignIn, setShowSignIn] = useState(false)
   const t = useT()
   const { lang } = useLang()
   const ws = wishlistStrings[lang]
+  const as = accountStrings[lang]
+  const guest = useGuest()
   const { count } = useWishlist()
 
   const links = [
@@ -58,6 +64,15 @@ export function Navbar() {
               </span>
             )}
           </NavLink>
+          {guest ? (
+            <Link to="/account" aria-label={as.accountTitle} title={guest.email} className="ml-1 grid h-9 w-9 place-items-center rounded-full bg-brand-600 text-sm font-bold text-white hover:bg-brand-700">
+              {guest.name.charAt(0).toUpperCase()}
+            </Link>
+          ) : (
+            <button onClick={() => setShowSignIn(true)} className="ml-1 rounded-full px-3.5 py-2 text-sm font-medium text-ink-700 hover:bg-sand-100">
+              {as.signIn}
+            </button>
+          )}
           <Link
             to="/partner/login"
             className="ml-1 rounded-full bg-ink-900 px-4 py-2 text-sm font-semibold text-white hover:bg-ink-800"
@@ -117,6 +132,11 @@ export function Navbar() {
             >
               ♥ {ws.nav}{count > 0 ? ` (${count})` : ''}
             </NavLink>
+            {guest ? (
+              <Link to="/account" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2.5 text-sm font-medium text-ink-800 hover:bg-sand-100">👤 {guest.name} · {as.member}</Link>
+            ) : (
+              <button onClick={() => { setShowSignIn(true); setOpen(false) }} className="rounded-lg px-3 py-2.5 text-left text-sm font-medium text-ink-800 hover:bg-sand-100">{as.signIn}</button>
+            )}
             <Link
               to="/partner/login"
               onClick={() => setOpen(false)}
@@ -130,6 +150,8 @@ export function Navbar() {
           </div>
         </div>
       )}
+
+      {showSignIn && <GuestSignInDialog onClose={() => setShowSignIn(false)} />}
     </header>
   )
 }
