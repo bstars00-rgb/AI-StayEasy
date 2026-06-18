@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { useLang } from '../i18n'
 import { accountStrings } from '../lib/accountI18n'
 import { guestAuth, useGuest } from '../lib/guestAuth'
-import { GuestSignInDialog } from '../components/GuestSignInDialog'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 
 export default function AccountPage() {
@@ -11,7 +10,6 @@ export default function AccountPage() {
   const s = accountStrings[lang]
   useDocumentMeta('My account — StayEasy', 'Your StayEasy member account and voucher.')
   const guest = useGuest()
-  const [showSignIn, setShowSignIn] = useState(false)
   const [copied, setCopied] = useState(false)
 
   const copy = async () => {
@@ -32,7 +30,7 @@ export default function AccountPage() {
           <div className="text-4xl">🎟️</div>
           <h1 className="mt-3 text-2xl font-extrabold text-ink-900">{s.perkTitle}</h1>
           <p className="mt-2 text-ink-700/80">{s.perkText}</p>
-          <button onClick={() => setShowSignIn(true)} className="mt-5 rounded-full bg-brand-600 px-6 py-3 text-sm font-semibold text-white hover:bg-brand-700">{s.signIn}</button>
+          <Link to="/signin?next=/account" className="mt-5 inline-block rounded-full bg-brand-600 px-6 py-3 text-sm font-semibold text-white hover:bg-brand-700">{s.signIn}</Link>
         </div>
       ) : (
         <>
@@ -73,8 +71,6 @@ export default function AccountPage() {
           </div>
         </>
       )}
-
-      {showSignIn && <GuestSignInDialog onClose={() => setShowSignIn(false)} />}
     </div>
   )
 }

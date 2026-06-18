@@ -5,7 +5,7 @@ import { voucherStrings } from '../lib/voucherI18n'
 import { downloadVoucher } from '../lib/voucher'
 import { officialLink } from '../lib/officialLink'
 import { useGuest } from '../lib/guestAuth'
-import { GuestSignInDialog } from './GuestSignInDialog'
+import { Link, useLocation } from 'react-router-dom'
 
 /**
  * Direct-booking discount voucher. The customer copies the code or downloads a
@@ -16,8 +16,8 @@ export function VoucherCard({ hotel }: { hotel: Hotel }) {
   const { lang } = useLang()
   const s = voucherStrings[lang]
   const guest = useGuest()
+  const location = useLocation()
   const [copied, setCopied] = useState(false)
-  const [showSignIn, setShowSignIn] = useState(false)
   const v = hotel.voucher
   if (!v) return null
 
@@ -91,14 +91,15 @@ export function VoucherCard({ hotel }: { hotel: Hotel }) {
           <div className="rounded-xl bg-sand-50 p-4 text-center ring-1 ring-black/5">
             <div className="text-2xl" aria-hidden>🔒</div>
             <p className="mt-1 text-sm text-ink-700/80">{s.unlockNote}</p>
-            <button type="button" onClick={() => setShowSignIn(true)} className="mt-3 rounded-full bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-700">
+            <Link
+              to={`/signin?next=${encodeURIComponent(location.pathname + location.search)}`}
+              className="mt-3 inline-block rounded-full bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-700"
+            >
               {s.unlock} →
-            </button>
+            </Link>
           </div>
         )}
       </div>
-
-      {showSignIn && <GuestSignInDialog onClose={() => setShowSignIn(false)} />}
     </div>
   )
 }

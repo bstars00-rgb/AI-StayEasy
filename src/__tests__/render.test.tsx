@@ -11,7 +11,7 @@ import { partnerDrafts } from '../lib/partnerDrafts'
 import { partnerAuth } from '../lib/partnerAuth'
 import { hotelEdits } from '../lib/hotelEdits'
 import { guestAuth } from '../lib/guestAuth'
-import { GuestSignInDialog } from '../components/GuestSignInDialog'
+import SignInPage from '../pages/SignInPage'
 
 // jsdom is missing a few browser APIs the app touches. Polyfill them so the
 // real components render and interact exactly as in a browser.
@@ -41,7 +41,7 @@ const wrap = (path: string) =>
 
 describe('route render (lazy chunks resolve, no throw)', () => {
   const routes = [
-    '/', '/search', '/wishlist', '/account',
+    '/', '/search', '/wishlist', '/account', '/signin',
     '/destinations/vietnam', '/destinations/da-nang', '/destinations/hanoi',
     '/hotels/an-bang-beach-resort', '/guides/direct-booking',
     '/guides', '/guides/why-book-hotels-direct', '/guides/da-nang-travel-guide',
@@ -159,12 +159,14 @@ describe('interaction: hotel partner self-service portal', () => {
   })
 })
 
-describe('interaction: guest sign-in unlocks a member voucher', () => {
+describe('interaction: sign-in page issues a member voucher', () => {
   it('signs in with email and stores a member voucher', async () => {
     guestAuth.signOut()
     render(
       <I18nProvider>
-        <GuestSignInDialog onClose={() => {}} />
+        <MemoryRouter initialEntries={['/signin']}>
+          <SignInPage />
+        </MemoryRouter>
       </I18nProvider>,
     )
     fireEvent.change(screen.getByPlaceholderText(/you@gmail.com/i), { target: { value: 'me@gmail.com' } })
@@ -185,17 +187,22 @@ describe('interaction: member-gated hotel voucher', () => {
     guestAuth.signOut()
     const { rerender } = render(
       <I18nProvider>
-        <VoucherCard hotel={hotel} />
+        <MemoryRouter>
+          <VoucherCard hotel={hotel} />
+        </MemoryRouter>
       </I18nProvider>,
     )
     expect(screen.queryByRole('button', { name: /copy code/i })).toBeNull()
-    expect(screen.getByRole('button', { name: /sign in to unlock/i })).toBeTruthy()
+    // The unlock action is now a link to the sign-in page.
+    expect(screen.getByRole('link', { name: /sign in to unlock/i })).toBeTruthy()
 
     // Member → code is revealed and copyable.
     guestAuth.signIn({ email: 'member@gmail.com' })
     rerender(
       <I18nProvider>
-        <VoucherCard hotel={hotel} />
+        <MemoryRouter>
+          <VoucherCard hotel={hotel} />
+        </MemoryRouter>
       </I18nProvider>,
     )
     fireEvent.click(await screen.findByRole('button', { name: /copy code/i }))
