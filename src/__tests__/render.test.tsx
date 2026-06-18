@@ -10,6 +10,7 @@ import { getHotel } from '../data/hotels'
 import { partnerDrafts } from '../lib/partnerDrafts'
 import { partnerAuth } from '../lib/partnerAuth'
 import { hotelEdits } from '../lib/hotelEdits'
+import { concierge } from '../lib/messages'
 
 // jsdom is missing a few browser APIs the app touches. Polyfill them so the
 // real components render and interact exactly as in a browser.
@@ -44,7 +45,7 @@ describe('route render (lazy chunks resolve, no throw)', () => {
     '/hotels/an-bang-beach-resort', '/guides/direct-booking',
     '/guides', '/guides/why-book-hotels-direct', '/guides/da-nang-travel-guide',
     '/privacy', '/terms', '/contact',
-    '/partners', '/dashboard', '/admin', '/admin/register', '/partner/login', '/partner/reset', '/about', '/no-such-page',
+    '/partners', '/dashboard', '/admin', '/admin/register', '/partner/login', '/partner/reset', '/partner/messages', '/about', '/no-such-page',
   ]
   for (const path of routes) {
     it(`renders ${path}`, async () => {
@@ -154,6 +155,32 @@ describe('interaction: hotel partner self-service portal', () => {
     wrap('/partner')
     await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
     expect(await screen.findByRole('button', { name: /create account/i })).toBeTruthy()
+  })
+})
+
+describe('interaction: direct-stay inbox (concierge)', () => {
+  it('shows a guest message in the hotel inbox, translated to the hotel’s language', async () => {
+    concierge.clear()
+    concierge.open({
+      hotelSlug: 'an-bang-beach-resort',
+      guestName: 'Test Guest',
+      bookingRef: 'BK-9',
+      guestLang: 'ko',
+      requests: ['earlyCheckIn'],
+      note: '안녕하세요',
+      createdAt: '2026-06-18T00:00:00Z',
+    })
+    partnerAuth.login({ slug: 'an-bang-beach-resort', propertyName: 'An Bang', email: 'a@b.com' })
+
+    wrap('/partner/messages')
+    await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
+
+    expect(await screen.findByText('Test Guest')).toBeTruthy()
+    // The Korean-picked request renders in the hotel's UI language (English here).
+    expect(await screen.findByText('Early check-in')).toBeTruthy()
+
+    concierge.clear()
+    partnerAuth.logout()
   })
 })
 

@@ -27,6 +27,7 @@ const PartnerLoginPage = lazy(() => import('./pages/PartnerLoginPage'))
 const PartnerResetPage = lazy(() => import('./pages/PartnerResetPage'))
 const PartnerPortalPage = lazy(() => import('./pages/PartnerPortalPage'))
 const PartnerEditPage = lazy(() => import('./pages/PartnerEditPage'))
+const PartnerMessagesPage = lazy(() => import('./pages/PartnerMessagesPage'))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 
 /** Suspense fallback while a route's code chunk downloads. */
@@ -87,6 +88,7 @@ export default function App() {
       <Route path="/partner/reset" element={<Suspense fallback={<RouteFallback />}><PartnerResetPage /></Suspense>} />
       <Route path="/partner" element={<Suspense fallback={<RouteFallback />}><PartnerPortalPage /></Suspense>} />
       <Route path="/partner/edit" element={<Suspense fallback={<RouteFallback />}><PartnerEditPage /></Suspense>} />
+      <Route path="/partner/messages" element={<Suspense fallback={<RouteFallback />}><PartnerMessagesPage /></Suspense>} />
 
       <Route element={<PublicLayout />}>
         <Route path="/" element={<HomePage />} />

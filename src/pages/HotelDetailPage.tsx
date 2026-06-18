@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom'
-import type { ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
 import Button from '../components/Button'
 import { HotelImage } from '../components/HotelImage'
 import { SponsoredBadge } from '../components/SponsoredBadge'
@@ -15,6 +15,8 @@ import { useT, useLang, localizeHotel } from '../i18n'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 import { officialLink } from '../lib/officialLink'
 import { scoreStrings } from '../lib/scoreI18n'
+import { conciergeStrings } from '../lib/conciergeI18n'
+import { GuestMessageDialog } from '../components/GuestMessageDialog'
 
 function Card({ title, icon, children, className = '' }: { title: string; icon: string; children: ReactNode; className?: string }) {
   return (
@@ -46,6 +48,7 @@ export default function HotelDetailPage() {
   const { slug } = useParams()
   const t = useT()
   const { lang } = useLang()
+  const [showMsg, setShowMsg] = useState(false)
   const { data: rawHotel, loading } = useAsync(
     () => (slug ? repo.getHotel(slug) : Promise.resolve(undefined)),
     [slug],
@@ -147,6 +150,13 @@ export default function HotelDetailPage() {
             <div className="flex flex-col gap-2 sm:flex-row lg:flex-col lg:items-end">
               <BookOfficialButton href={officialLink(hotel)} hotelName={hotel.name} label={t.common.bookOfficial} className="w-full lg:w-auto" />
               <WishlistButton hotelId={hotel.slug} variant="pill" className="w-full justify-center sm:w-auto lg:w-auto" />
+              <button
+                type="button"
+                onClick={() => setShowMsg(true)}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-ink-800 ring-1 ring-black/10 hover:bg-sand-50 sm:w-auto lg:w-auto"
+              >
+                💬 {conciergeStrings[lang].messageBtn}
+              </button>
             </div>
             <p className="mt-2 text-center text-xs text-ink-700/60 lg:text-right">{t.detail.noCommission}</p>
           </div>
@@ -311,6 +321,8 @@ export default function HotelDetailPage() {
           <BookOfficialButton href={officialLink(hotel)} hotelName={hotel.name} label={t.common.bookOfficial} className="w-full" />
         </div>
       </div>
+
+      {showMsg && <GuestMessageDialog hotelSlug={hotel.slug} hotelName={hotel.name} onClose={() => setShowMsg(false)} />}
     </>
   )
 }

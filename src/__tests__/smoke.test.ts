@@ -17,6 +17,8 @@ import { guides, getGuide } from '../data/guides'
 import { officialLink, isPlaceholderUrl } from '../lib/officialLink'
 import { partnerAccounts } from '../lib/partnerAccounts'
 import { partnerDrafts } from '../lib/partnerDrafts'
+import { concierge } from '../lib/messages'
+import { conciergeStrings, REQUEST_KEYS } from '../lib/conciergeI18n'
 
 /** Collects the sorted set of key-paths (leaves = strings/arrays) of an object. */
 function shapePaths(obj: unknown, prefix = ''): string[] {
@@ -122,6 +124,31 @@ describe('partner account approval workflow', () => {
 
     partnerAccounts.clear()
     partnerDrafts.clear()
+  })
+})
+
+describe('concierge / direct-stay inbox', () => {
+  it('translates structured requests across languages by key', () => {
+    for (const k of REQUEST_KEYS) {
+      for (const loc of [conciergeStrings.en, conciergeStrings.ko, conciergeStrings.vi, conciergeStrings.zh, conciergeStrings.ja]) {
+        expect(loc.request[k].length).toBeGreaterThan(0)
+      }
+    }
+    // Same key, different language = a real translation.
+    expect(conciergeStrings.ko.request.airportPickup).not.toBe(conciergeStrings.en.request.airportPickup)
+  })
+
+  it('opens a guest thread and accepts a hotel reply', () => {
+    concierge.clear()
+    const th = concierge.open({
+      hotelSlug: 'an-bang-beach-resort', guestName: 'Min', bookingRef: 'ABC123',
+      guestLang: 'ko', requests: ['airportPickup', 'lateCheckout'], note: '늦게 도착해요', createdAt: '2026-06-18T00:00:00Z',
+    })
+    expect(concierge.forHotel('an-bang-beach-resort')).toHaveLength(1)
+    expect(th.messages).toHaveLength(1)
+    concierge.reply(th.id, 'See you then', 'en', '2026-06-18T01:00:00Z')
+    expect(concierge.forHotel('an-bang-beach-resort')[0].messages).toHaveLength(2)
+    concierge.clear()
   })
 })
 
