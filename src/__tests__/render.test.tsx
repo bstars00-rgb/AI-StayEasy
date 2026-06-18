@@ -237,4 +237,19 @@ describe('interaction: member-gated hotel voucher', () => {
     expect(screen.getByText(/show it at the front desk/i)).toBeTruthy()
     guestAuth.signOut()
   })
+
+  it('names the exact code field when the hotel specifies one', () => {
+    const hotel = getHotel('an-bang-beach-resort')!
+    const named = { ...hotel, voucher: { ...hotel.voucher!, redeem: 'online' as const, fieldLabel: 'Gift code' } }
+    guestAuth.signIn({ email: 'member@gmail.com' })
+    render(
+      <I18nProvider>
+        <MemoryRouter>
+          <VoucherCard hotel={named} />
+        </MemoryRouter>
+      </I18nProvider>,
+    )
+    expect(screen.getByText(/“Gift code” field/i)).toBeTruthy()
+    guestAuth.signOut()
+  })
 })

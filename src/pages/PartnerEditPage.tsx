@@ -41,6 +41,7 @@ export default function PartnerEditPage() {
     voucherTerms: hotel?.voucher?.terms ?? '',
     voucherValidUntil: hotel?.voucher?.validUntil ?? '',
     voucherRedeem: (hotel?.voucher?.redeem ?? 'online') as 'online' | 'onsite',
+    voucherFieldLabel: hotel?.voucher?.fieldLabel ?? '',
     contactLang: hotel?.contact?.lang ?? 'vi',
     cEmail: hotel?.contact?.email ?? '',
     cPhone: hotel?.contact?.phone ?? '',
@@ -95,6 +96,7 @@ export default function PartnerEditPage() {
             terms: f.voucherTerms.trim(),
             validUntil: f.voucherValidUntil.trim() || '2026-12-31',
             redeem: f.voucherRedeem,
+            fieldLabel: f.voucherRedeem === 'online' && f.voucherFieldLabel.trim() ? f.voucherFieldLabel.trim() : undefined,
           }
         : undefined,
       contact: {
@@ -187,10 +189,15 @@ export default function PartnerEditPage() {
             <Field label="Terms"><input value={f.voucherTerms} onChange={set('voucherTerms')} className={inputCls} /></Field>
             <Field label="How guests redeem">
               <select value={f.voucherRedeem} onChange={set('voucherRedeem')} className={inputCls}>
-                <option value="online">Online — enter the code in your booking form's Voucher field</option>
+                <option value="online">Online — enter the code in your booking form's discount field</option>
                 <option value="onsite">On-site — guest shows it at the front desk on arrival</option>
               </select>
             </Field>
+            {f.voucherRedeem === 'online' && (
+              <Field label="Code field name (as it appears in your booking widget)">
+                <input value={f.voucherFieldLabel} onChange={set('voucherFieldLabel')} placeholder="Promo code / Voucher / Gift code" className={inputCls} />
+              </Field>
+            )}
           </div>
         </section>
 

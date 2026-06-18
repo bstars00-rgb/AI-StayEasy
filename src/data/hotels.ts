@@ -96,7 +96,7 @@ const rawHotels: RawHotel[] = [
       u('1566073771259-6a8506099945', 1200), // resort grounds
     ],
     officialWebsiteUrl: 'https://www.anbangbeachresort.example/booking?ref=stayeasy',
-    voucher: { code: 'ANBANG10', discountLabel: '10% off your direct booking + free breakfast for two', terms: 'Show this voucher when you book on the official website. Min 2 nights; subject to availability; not combinable with other promotions.', validUntil: '2026-12-31' },
+    voucher: { code: 'ANBANG10', discountLabel: '10% off your direct booking + free breakfast for two', terms: 'Show this voucher when you book on the official website. Min 2 nights; subject to availability; not combinable with other promotions.', validUntil: '2026-12-31', redeem: 'online', fieldLabel: 'Promo code' },
     isSponsored: true,
     similarHotelSlugs: ['da-nang-bay-resort', 'seoul-stay-da-nang', 'non-nuoc-golf-resort'],
     heroColor: 'from-sky-500 to-brand-500',
@@ -569,7 +569,7 @@ const rawHotels: RawHotel[] = [
     cancellationChecklist: ['Check the cancellation deadline', 'Confirm prepayment/deposit', 'Confirm child policy', 'Confirm breakfast inclusion', 'Check taxes & city fees'],
     imageUrl: img('saigon-central-boutique'),
     officialWebsiteUrl: 'https://www.saigoncentralboutique.example/book?ref=stayeasy',
-    voucher: { code: 'SAIGON12', discountLabel: '12% off your direct booking + free rooftop welcome drink', terms: 'Show this voucher when you book on the official website. Subject to availability; not combinable with other promotions.', validUntil: '2026-12-31' },
+    voucher: { code: 'SAIGON12', discountLabel: '12% off your direct booking + free rooftop welcome drink', terms: 'Show this voucher when you book on the official website. Subject to availability; not combinable with other promotions.', validUntil: '2026-12-31', redeem: 'online', fieldLabel: 'Gift code' },
     isSponsored: true,
     similarHotelSlugs: ['ben-thanh-riverside-hotel', 'thao-dien-garden-residences', 'saigon-airport-express'],
     heroColor: 'from-amber-500 to-orange-500',

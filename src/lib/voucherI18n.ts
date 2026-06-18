@@ -24,8 +24,10 @@ export interface VoucherStrings {
   memberBadge: string
   unlock: string
   unlockNote: string
-  /** How to redeem — points at the hotel booking form's Voucher field. */
+  /** How to redeem — generic, since the discount field is named differently per hotel. */
   howToUse: string
+  /** How to redeem when the exact field name is known. Contains a `{field}` placeholder. */
+  howToUseNamed: string
   /** Redeem instructions for show-at-check-in vouchers. */
   howToUseOnsite: string
   /** Shown when a hotel offers no voucher. */
@@ -50,7 +52,8 @@ export const voucherStrings: Record<Lang, VoucherStrings> = {
     memberBadge: 'Members',
     unlock: 'Sign in to unlock',
     unlockNote: 'StayEasy members unlock this hotel’s discount voucher.',
-    howToUse: 'Enter this code in the “Voucher” field on the hotel’s booking form.',
+    howToUse: 'Enter this code in the discount field on the hotel’s booking form — it may be labeled “Promo code”, “Voucher”, or “Gift code”.',
+    howToUseNamed: 'Enter this code in the “{field}” field on the hotel’s booking form.',
     howToUseOnsite: 'Download it to your phone and show it at the front desk on arrival to get the perk.',
     noVoucherTitle: 'No voucher from this hotel yet',
     noVoucherText: 'This hotel doesn’t offer a StayEasy voucher right now — but you still book direct for its official-website benefits.',
@@ -71,7 +74,8 @@ export const voucherStrings: Record<Lang, VoucherStrings> = {
     memberBadge: '회원',
     unlock: '로그인하고 받기',
     unlockNote: 'StayEasy 회원은 이 호텔의 할인권을 받을 수 있어요.',
-    howToUse: '호텔 예약 폼의 “Voucher” 칸에 이 코드를 입력하세요.',
+    howToUse: '호텔 예약 폼의 할인 코드 칸에 이 코드를 입력하세요 — “Promo code”, “Voucher”, “Gift code” 등으로 표시될 수 있어요.',
+    howToUseNamed: '호텔 예약 폼의 “{field}” 칸에 이 코드를 입력하세요.',
     howToUseOnsite: '휴대폰에 다운로드해서 체크인 시 프런트에 보여주면 혜택을 받을 수 있어요.',
     noVoucherTitle: '아직 이 호텔의 바우처가 없어요',
     noVoucherText: '이 호텔은 현재 StayEasy 바우처를 제공하지 않아요 — 그래도 공식 사이트 혜택을 위해 직접 예약할 수 있어요.',
@@ -92,7 +96,8 @@ export const voucherStrings: Record<Lang, VoucherStrings> = {
     memberBadge: 'Thành viên',
     unlock: 'Đăng nhập để mở',
     unlockNote: 'Thành viên StayEasy mở được voucher giảm giá của khách sạn này.',
-    howToUse: 'Nhập mã này vào ô “Voucher” trên biểu mẫu đặt phòng của khách sạn.',
+    howToUse: 'Nhập mã này vào ô mã giảm giá trên biểu mẫu đặt phòng của khách sạn — có thể được ghi là “Promo code”, “Voucher” hoặc “Gift code”.',
+    howToUseNamed: 'Nhập mã này vào ô “{field}” trên biểu mẫu đặt phòng của khách sạn.',
     howToUseOnsite: 'Tải về điện thoại và xuất trình tại quầy lễ tân khi nhận phòng để nhận ưu đãi.',
     noVoucherTitle: 'Khách sạn này chưa có voucher',
     noVoucherText: 'Khách sạn này hiện chưa có voucher StayEasy — nhưng bạn vẫn đặt trực tiếp để nhận ưu đãi từ website chính thức.',
@@ -113,7 +118,8 @@ export const voucherStrings: Record<Lang, VoucherStrings> = {
     memberBadge: '会员',
     unlock: '登录解锁',
     unlockNote: 'StayEasy 会员可解锁该酒店的优惠券。',
-    howToUse: '在酒店预订表单的“Voucher”栏中输入此优惠码。',
+    howToUse: '在酒店预订表单的优惠码栏中输入此优惠码 — 该栏可能标注为“Promo code”“Voucher”或“Gift code”。',
+    howToUseNamed: '在酒店预订表单的“{field}”栏中输入此优惠码。',
     howToUseOnsite: '下载到手机，入住时在前台出示即可获得礼遇。',
     noVoucherTitle: '该酒店暂无优惠券',
     noVoucherText: '该酒店目前未提供 StayEasy 优惠券——但您仍可官网直订以享受其官方权益。',
@@ -134,7 +140,8 @@ export const voucherStrings: Record<Lang, VoucherStrings> = {
     memberBadge: '会員',
     unlock: 'ログインして取得',
     unlockNote: 'StayEasy 会員はこのホテルのクーポンを取得できます。',
-    howToUse: 'ホテルの予約フォームの「Voucher」欄にこのコードを入力してください。',
+    howToUse: 'ホテルの予約フォームの割引コード欄にこのコードを入力してください — 「Promo code」「Voucher」「Gift code」などと表示される場合があります。',
+    howToUseNamed: 'ホテルの予約フォームの「{field}」欄にこのコードを入力してください。',
     howToUseOnsite: 'スマホにダウンロードし、チェックイン時にフロントで提示すると特典が受けられます。',
     noVoucherTitle: 'このホテルのクーポンはまだありません',
     noVoucherText: 'このホテルは現在 StayEasy クーポンを提供していません — それでも公式サイトの特典のために直接予約できます。',

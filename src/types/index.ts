@@ -88,9 +88,13 @@ export interface Voucher {
   /** ISO date the voucher is valid until. */
   validUntil: string
   /** How the guest redeems it:
-   *  - 'online' (default): enter the code in the hotel booking form's Voucher field.
+   *  - 'online' (default): enter the code in the hotel booking form's discount field.
    *  - 'onsite': download to mobile and show it at check-in for the perk. */
   redeem?: 'online' | 'onsite'
+  /** Exact label of the code field in this hotel's booking widget, e.g.
+   *  'Promo code', 'Voucher', 'Gift code'. Set by StayEasy sales per hotel
+   *  (the field name varies). When set, redeem instructions name it exactly. */
+  fieldLabel?: string
 }
 
 /** Normalized, filterable travel conditions — the attributes travelers actually
