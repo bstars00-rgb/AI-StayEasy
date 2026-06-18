@@ -39,8 +39,17 @@ export const countries: CountryMarket[] = [
       'Vung Tau', 'Quy Nhon', 'Con Dao', 'Phu Yen',
     ],
   },
+  {
+    name: 'Thailand',
+    slug: 'thailand',
+    code: 'TH',
+    flag: '🇹🇭',
+    region: 'Southeast Asia',
+    available: true,
+    hotelCount: 4,
+    cities: ['Bangkok', 'Phuket', 'Chiang Mai', 'Pattaya', 'Krabi', 'Koh Samui'],
+  },
   // ---- Expansion roadmap (onboarding next) ----
-  { name: 'Thailand', slug: 'thailand', code: 'TH', flag: '🇹🇭', region: 'Southeast Asia', available: false, hotelCount: 0, cities: ['Bangkok', 'Phuket', 'Chiang Mai', 'Pattaya', 'Krabi', 'Koh Samui'] },
   { name: 'Japan', slug: 'japan', code: 'JP', flag: '🇯🇵', region: 'East Asia', available: false, hotelCount: 0, cities: ['Tokyo', 'Osaka', 'Kyoto', 'Fukuoka', 'Sapporo', 'Okinawa'] },
   { name: 'South Korea', slug: 'south-korea', code: 'KR', flag: '🇰🇷', region: 'East Asia', available: false, hotelCount: 0, cities: ['Seoul', 'Busan', 'Jeju', 'Incheon', 'Gangneung'] },
   { name: 'Indonesia', slug: 'indonesia', code: 'ID', flag: '🇮🇩', region: 'Southeast Asia', available: false, hotelCount: 0, cities: ['Bali', 'Jakarta', 'Yogyakarta', 'Lombok', 'Bandung'] },

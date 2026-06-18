@@ -41,6 +41,7 @@ describe('route render (lazy chunks resolve, no throw)', () => {
   const routes = [
     '/', '/search', '/wishlist',
     '/destinations/vietnam', '/destinations/da-nang', '/destinations/hanoi',
+    '/destinations/bangkok', '/hotels/patong-beach-resort',
     '/hotels/an-bang-beach-resort', '/guides/direct-booking',
     '/guides', '/guides/why-book-hotels-direct', '/guides/da-nang-travel-guide',
     '/privacy', '/terms', '/contact',

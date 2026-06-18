@@ -242,7 +242,59 @@ const rawDestinations: Omit<Destination, 'country'>[] = [
   },
 ]
 
-export const destinations: Destination[] = rawDestinations.map((d) => ({ country: 'Vietnam', ...d }))
+// Thailand — StayEasy's second market.
+const thaiDestinations: Destination[] = [
+  {
+    country: 'Thailand',
+    city: 'Bangkok',
+    slug: 'bangkok',
+    available: true,
+    shortDescription: 'Thailand’s electric capital — temples and palaces, riverside grandeur, rooftop bars, and legendary street food.',
+    description:
+      'Bangkok blends gilded temples and the Grand Palace with a buzzing river, world-class food, and a famous nightlife and shopping scene. It is the gateway to Thailand and StayEasy’s first Thai city.',
+    bestFor: ['City breaks', 'Food lovers', 'First-time Thailand'],
+    recommendedTraveler: 'City explorers, foodies, and first-time Thailand travelers.',
+    heroColor: 'from-amber-500 to-orange-600',
+    emoji: '🛕',
+    highlights: ['Grand Palace & Wat Pho', 'Chao Phraya river', 'Rooftop bars', 'Street food'],
+    hotelCount: 2,
+  },
+  {
+    country: 'Thailand',
+    city: 'Phuket',
+    slug: 'phuket',
+    available: true,
+    shortDescription: 'Thailand’s largest island — beaches, island-hopping to Phi Phi, and resort comfort on the Andaman coast.',
+    description:
+      'Phuket pairs long west-coast beaches with easy island-hopping, a lively old town, and resorts for every style. The Andaman Sea’s limestone islands are a short boat ride away.',
+    bestFor: ['Beach holidays', 'Island hopping', 'Couples & families'],
+    recommendedTraveler: 'Beach-and-island travelers, couples, and families.',
+    heroColor: 'from-teal-500 to-cyan-600',
+    emoji: '🏝️',
+    highlights: ['Patong & west-coast beaches', 'Phi Phi islands', 'Old Town', 'Big Buddha'],
+    hotelCount: 1,
+  },
+  {
+    country: 'Thailand',
+    city: 'Chiang Mai',
+    slug: 'chiang-mai',
+    available: true,
+    shortDescription: 'The cultural north — moated old city, hundreds of temples, mountain views, and an easy, walkable pace.',
+    description:
+      'Chiang Mai is Thailand’s laid-back northern capital: a temple-filled walled old city, night markets, cooking classes, and mountains on the doorstep. A favorite for a slower, cultural stay.',
+    bestFor: ['Culture & temples', 'Slow travel', 'Cafés & crafts'],
+    recommendedTraveler: 'Culture seekers and travelers who like a calm, walkable base.',
+    heroColor: 'from-emerald-600 to-green-700',
+    emoji: '🏯',
+    highlights: ['Old City temples', 'Doi Suthep', 'Night bazaar', 'Cooking classes'],
+    hotelCount: 1,
+  },
+]
+
+export const destinations: Destination[] = [
+  ...rawDestinations.map((d) => ({ country: 'Vietnam' as const, ...d })),
+  ...thaiDestinations,
+]
 
 export const getDestination = (slug: string) =>
   destinations.find((d) => d.slug === slug || d.city.toLowerCase() === slug.toLowerCase())

@@ -104,7 +104,7 @@ export default function HotelDetailPage() {
       <section className="container-page pt-6">
         <nav className="mb-4 text-sm text-ink-700/60">
           <Link to="/" className="hover:text-brand-700">Home</Link> <span className="px-1">/</span>
-          <Link to="/destinations/da-nang" className="hover:text-brand-700"> {t.enums.city['Da Nang']}</Link> <span className="px-1">/</span>
+          <Link to={`/destinations/${hotel.city.toLowerCase().replace(/\s+/g, '-')}`} className="hover:text-brand-700"> {city}</Link> <span className="px-1">/</span>
           <span className="text-ink-800"> {hotel.name}</span>
         </nav>
         <div className="grid gap-3 sm:grid-cols-3 sm:grid-rows-2">

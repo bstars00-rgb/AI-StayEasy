@@ -24,8 +24,9 @@ export default function VietnamPage() {
 
   // Keep the page short: feature the 4 flagship cities, then reveal the rest on
   // demand — split into "available now" and "trending / coming soon".
-  const featured = destinations.slice(0, 4)
-  const rest = destinations.slice(4)
+  const vnDestinations = destinations.filter((d) => d.country === 'Vietnam')
+  const featured = vnDestinations.slice(0, 4)
+  const rest = vnDestinations.slice(4)
   const moreAvailable = rest.filter((d) => d.available)
   const trending = rest.filter((d) => !d.available)
 
@@ -239,16 +240,22 @@ export default function VietnamPage() {
               <div key={region}>
                 <p className="text-sm font-semibold text-brand-200">{asia.regions[region]}</p>
                 <div className="mt-2 flex flex-wrap gap-2">
-                  {markets.map((c) => (
-                    <span
-                      key={c.slug}
-                      className={`pill ${c.available ? 'bg-brand-500 text-white' : 'bg-white/10 text-white/75'}`}
-                      title={c.available ? asia.live : asia.coming}
-                    >
-                      {c.flag} {c.name}
-                      {c.available && <span className="ml-1 text-white/80">· {asia.live}</span>}
-                    </span>
-                  ))}
+                  {markets.map((c) =>
+                    c.available ? (
+                      <Link
+                        key={c.slug}
+                        to={`/destinations/${c.name === 'Vietnam' ? 'vietnam' : c.cities[0].toLowerCase().replace(/\s+/g, '-')}`}
+                        className="pill bg-brand-500 text-white hover:bg-brand-400"
+                        title={asia.live}
+                      >
+                        {c.flag} {c.name} <span className="text-white/80">· {asia.live}</span>
+                      </Link>
+                    ) : (
+                      <span key={c.slug} className="pill bg-white/10 text-white/75" title={asia.coming}>
+                        {c.flag} {c.name}
+                      </span>
+                    ),
+                  )}
                 </div>
               </div>
             ))}
