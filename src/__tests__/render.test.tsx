@@ -11,6 +11,7 @@ import { partnerDrafts } from '../lib/partnerDrafts'
 import { partnerAuth } from '../lib/partnerAuth'
 import { hotelEdits } from '../lib/hotelEdits'
 import { guestAuth } from '../lib/guestAuth'
+import * as analytics from '../lib/analytics'
 import SignInPage from '../pages/SignInPage'
 
 // jsdom is missing a few browser APIs the app touches. Polyfill them so the
@@ -225,6 +226,28 @@ describe('interaction: member-gated hotel voucher', () => {
     // The code is revealed right here once the lock springs open.
     expect(await screen.findByRole('button', { name: /copy code/i })).toBeTruthy()
     expect(screen.getByText(hotel.voucher!.code)).toBeTruthy()
+    guestAuth.signOut()
+  })
+
+  it('fires GA4 intent events on unlock and official-site click', async () => {
+    const spy = vi.spyOn(analytics, 'trackEvent')
+    const hotel = getHotel('an-bang-beach-resort')!
+    guestAuth.signOut()
+    render(
+      <I18nProvider>
+        <MemoryRouter>
+          <VoucherCard hotel={hotel} />
+        </MemoryRouter>
+      </I18nProvider>,
+    )
+    fireEvent.click(screen.getByRole('button', { name: /sign in to unlock/i }))
+    expect(spy).toHaveBeenCalledWith('voucher_unlock', expect.objectContaining({ hotel_slug: hotel.slug }))
+
+    // Once unlocked, clicking through to the official site fires the money event.
+    const link = await screen.findByRole('link', { name: /official website/i })
+    fireEvent.click(link)
+    expect(spy).toHaveBeenCalledWith('official_site_click', expect.objectContaining({ hotel_slug: hotel.slug }))
+    spy.mockRestore()
     guestAuth.signOut()
   })
 
