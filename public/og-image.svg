@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#F3EEE3"/>
+  <rect x="0" y="0" width="1200" height="14" fill="#15564A"/>
+  <rect x="0" y="616" width="1200" height="14" fill="#46B1A2"/>
+
+  <g transform="translate(348,196)">
+    <rect width="150" height="150" rx="40" fill="#15564A"/>
+    <g transform="translate(75,72) scale(1.05) translate(-50,-52)">
+      <path d="M28 40 A22 22 0 0 1 72 40 L72 66 Q72 80 50 92 Q28 80 28 66 Z" fill="#FFFFFF"/>
+      <path d="M37 41 A14 14 0 0 1 63 41" fill="none" stroke="#15564A" stroke-width="2.4" stroke-linecap="round" opacity="0.18"/>
+      <path d="M59 35 C45 39 45 50 52 55 C59 60 59 70 45 74" fill="none" stroke="#46B1A2" stroke-width="7" stroke-linecap="round"/>
+    </g>
+  </g>
+
+  <text x="528" y="296" font-family="'Poppins','Nunito Sans',system-ui,-apple-system,sans-serif" font-size="104" font-weight="700" letter-spacing="-3"><tspan fill="#163A33">Stay</tspan><tspan fill="#2E9A8C">Easy</tspan></text>
+  <text x="532" y="356" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="30" fill="#6E624C">AI hotel &amp; travel guide — book direct with hotels</text>
+
+  <text x="600" y="470" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="24" letter-spacing="1" fill="#9A8C72">Calm · trusted · book on the hotel’s official website</text>
+</svg>

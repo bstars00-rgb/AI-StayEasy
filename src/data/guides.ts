@@ -694,6 +694,166 @@ export const guides: Guide[] = [
       },
     ],
   },
+  {
+    slug: 'hue-travel-guide',
+    category: 'City guide',
+    title: 'Hue travel guide: Vietnam’s imperial heritage city',
+    excerpt:
+      'The former imperial capital — a riverside Citadel, royal tombs along the Perfume River, and a refined court cuisine. An easy heritage add-on to Da Nang and Hoi An.',
+    readMins: 5,
+    updated: '2026-06-15',
+    emoji: '👑',
+    heroColor: 'from-amber-600 to-yellow-600',
+    heroImage: u('1526481280693-3bfa7568e0f3'),
+    intro:
+      'Hue was the seat of the Nguyen dynasty, and it still feels stately: a walled Imperial Citadel on the Perfume River, royal tombs set in gardens outside town, and a distinctive court cuisine. It pairs naturally with central Vietnam — about 2.5 hours north of Da Nang over the scenic Hai Van Pass.',
+    sections: [
+      {
+        heading: 'What to see',
+        body: ['Hue rewards a slow day or two of history and food.'],
+        bullets: [
+          'Explore the Imperial Citadel and the Forbidden Purple City',
+          'Visit the royal tombs (Minh Mang, Tu Duc, Khai Dinh) by car or boat',
+          'Take a dragon-boat trip on the Perfume River to Thien Mu Pagoda',
+          'Try Hue specialties — bun bo Hue, banh khoai, and royal-style dishes',
+        ],
+      },
+      {
+        heading: 'Getting there',
+        body: [
+          'The drive from Da Nang over the Hai Van Pass is one of Vietnam’s great coastal roads — consider a private car or the train for the views. Many travelers do Hue as an overnight from Da Nang or Hoi An rather than a base.',
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'quy-nhon-travel-guide',
+    category: 'City guide',
+    title: 'Quy Nhon travel guide: quiet beaches off the trail',
+    excerpt:
+      'An up-and-coming central-coast city with clean beaches, scenic Ky Co and Eo Gio, ancient Cham towers, and superb-value seafood — far less crowded than its neighbors.',
+    readMins: 4,
+    updated: '2026-06-15',
+    emoji: '🐟',
+    heroColor: 'from-cyan-500 to-teal-600',
+    heroImage: u('1540541338287-41700207dee6'),
+    intro:
+      'Quy Nhon is what Nha Trang was twenty years ago: a relaxed coastal city with long beaches, dramatic coves, and excellent seafood, but without the crowds. It suits travelers who want the beach without the resort strip.',
+    sections: [
+      {
+        heading: 'What to do',
+        body: ['Beach days plus a couple of scenic half-day trips.'],
+        bullets: [
+          'Swim and relax along the city beach and promenade',
+          'Boat to Ky Co beach and the cliffs of Eo Gio',
+          'See the ancient Cham towers (Banh It) above town',
+          'Eat your way through some of Vietnam’s best-value seafood',
+        ],
+      },
+      {
+        heading: 'Good to know',
+        body: [
+          'Quy Nhon is spread along the coast, so a base near the city beach keeps you close to restaurants while the best coves are a short boat or car ride away. It’s quietest mid-week and outside Vietnamese holidays.',
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'mui-ne-travel-guide',
+    category: 'City guide',
+    title: 'Mui Ne travel guide: sand dunes and kitesurfing',
+    excerpt:
+      'A breezy beach town with red-and-white sand dunes, the Fairy Stream, and some of Asia’s best kitesurfing — an easy escape from Ho Chi Minh City.',
+    readMins: 4,
+    updated: '2026-06-15',
+    emoji: '🏜️',
+    heroColor: 'from-orange-500 to-rose-500',
+    heroImage: u('1503764654157-72d979d9af2f'),
+    intro:
+      'Mui Ne pairs a long, windswept beach with surreal sand dunes and a strong watersports scene. It’s the closest dunes-and-kite destination to Ho Chi Minh City, and a favorite for an active beach break.',
+    sections: [
+      {
+        heading: 'What to do',
+        body: ['Wind and sand define the days here.'],
+        bullets: [
+          'Catch sunrise over the white sand dunes; slide the red dunes at sunset',
+          'Walk the Fairy Stream through orange canyons',
+          'Try kitesurfing or windsurfing — Mui Ne is a regional hub',
+          'Visit the fishing village and harbor at dawn',
+        ],
+      },
+      {
+        heading: 'When to go',
+        body: [
+          'The kitesurfing season runs roughly November to April, when the wind is reliable and the skies are dry. It’s about a 4–5 hour drive or a short flight-plus-transfer from Ho Chi Minh City, so most travelers come for two or three nights.',
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'vietnam-street-food',
+    category: 'Planning',
+    title: 'A traveler’s guide to Vietnamese street food',
+    excerpt:
+      'Pho, banh mi, bun cha, and the rest — what to order, how to eat safely, and how regional dishes differ from north to south.',
+    readMins: 5,
+    updated: '2026-06-16',
+    emoji: '🍜',
+    heroColor: 'from-amber-500 to-orange-500',
+    heroImage: u('1559314809-0d155014e29e'),
+    intro:
+      'Street food is one of the best reasons to visit Vietnam — fresh, cheap, and deeply regional. A little orientation goes a long way toward eating well and eating safely.',
+    sections: [
+      {
+        heading: 'Dishes to seek out',
+        body: ['Start with the classics, then follow the regional specialties.'],
+        bullets: [
+          'Pho — the iconic noodle soup, best at breakfast',
+          'Banh mi — a French-Vietnamese baguette sandwich',
+          'Bun cha — grilled pork with noodles, a Hanoi favorite',
+          'Cao lau and white-rose dumplings — Hoi An specialties',
+          'Vietnamese coffee — try it iced with condensed milk, or egg coffee in Hanoi',
+        ],
+      },
+      {
+        heading: 'Eat well, eat safely',
+        body: [
+          'Busy stalls with high turnover are your friend — fresh food and a local crowd are good signs. Eat food that’s cooked to order and served hot, be a little cautious with ice and raw herbs if your stomach is sensitive, and carry small cash. When in doubt, follow the queue.',
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'getting-around-vietnam',
+    category: 'Planning',
+    title: 'Getting around Vietnam: flights, trains, and ride-hailing',
+    excerpt:
+      'How to move between regions and around cities — when to fly, when to take the train, and how to use Grab without the hassle.',
+    readMins: 5,
+    updated: '2026-06-16',
+    emoji: '🚆',
+    heroColor: 'from-sky-500 to-brand-500',
+    heroImage: u('1512058564366-18510be2db19'),
+    intro:
+      'Vietnam is long, so getting around is mostly about choosing between flights, trains, and road transport for the big hops — and ride-hailing for the cities. Here’s how the options compare.',
+    sections: [
+      {
+        heading: 'Between regions',
+        body: ['Match the mode to the distance and the experience you want.'],
+        bullets: [
+          'Domestic flights — fastest for north↔south (e.g. Hanoi↔HCMC); book early',
+          'Trains — scenic and comfortable for shorter legs like Da Nang↔Hue',
+          'Sleeper buses — cheapest, but slower and less comfortable',
+        ],
+      },
+      {
+        heading: 'Around cities',
+        body: [
+          'Use Grab (ride-hailing) for cars and motorbike taxis — fares are set in-app, so there’s no haggling and no language barrier. In old quarters, walking is often faster than driving. Cross busy streets at a slow, steady, predictable pace and let the motorbikes flow around you.',
+        ],
+      },
+    ],
+  },
 ]
 
 export const getGuide = (slug: string) => guides.find((g) => g.slug === slug)

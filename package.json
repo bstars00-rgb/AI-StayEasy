@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build && node scripts/gen-sitemap.mjs",
+    "build": "tsc -b && vite build && node scripts/gen-sitemap.mjs && node scripts/gen-og.mjs",
     "preview": "vite preview",
     "lint": "tsc --noEmit",
     "test": "vitest run"
@@ -16,6 +16,7 @@
     "react-router-dom": "^6.26.2"
   },
   "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/react": "^16.3.2",
     "@types/node": "^20.16.10",
