@@ -24,6 +24,7 @@ const WishlistPage = lazy(() => import('./pages/WishlistPage'))
 const AdminPage = lazy(() => import('./pages/AdminPage'))
 const RegisterHotelPage = lazy(() => import('./pages/RegisterHotelPage'))
 const PartnerLoginPage = lazy(() => import('./pages/PartnerLoginPage'))
+const PartnerResetPage = lazy(() => import('./pages/PartnerResetPage'))
 const PartnerPortalPage = lazy(() => import('./pages/PartnerPortalPage'))
 const PartnerEditPage = lazy(() => import('./pages/PartnerEditPage'))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
@@ -83,6 +84,7 @@ export default function App() {
 
       {/* Partner portal (hotel self-service) — its own shell, noindex'd. */}
       <Route path="/partner/login" element={<Suspense fallback={<RouteFallback />}><PartnerLoginPage /></Suspense>} />
+      <Route path="/partner/reset" element={<Suspense fallback={<RouteFallback />}><PartnerResetPage /></Suspense>} />
       <Route path="/partner" element={<Suspense fallback={<RouteFallback />}><PartnerPortalPage /></Suspense>} />
       <Route path="/partner/edit" element={<Suspense fallback={<RouteFallback />}><PartnerEditPage /></Suspense>} />
 

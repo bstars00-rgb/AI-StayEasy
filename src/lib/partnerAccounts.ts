@@ -143,6 +143,15 @@ export const partnerAccounts = {
     commit(accounts.map((a) => (a.id === id ? { ...a, status: 'Rejected' } : a)))
   },
 
+  /** Sets a new password for an existing account (demo password reset).
+   *  Returns false if no account has that email. */
+  resetPassword(email: string, newPassword: string): boolean {
+    const exists = accounts.some((a) => a.email.toLowerCase() === email.toLowerCase())
+    if (!exists) return false
+    commit(accounts.map((a) => (a.email.toLowerCase() === email.toLowerCase() ? { ...a, password: newPassword } : a)))
+    return true
+  },
+
   /** Returns 'ok' with the account, or a reason string. */
   authenticate(email: string, password: string): { ok: true; account: PartnerAccount } | { ok: false; reason: 'invalid' | 'pending' | 'rejected' } {
     const account = accounts.find((a) => a.email.toLowerCase() === email.toLowerCase())

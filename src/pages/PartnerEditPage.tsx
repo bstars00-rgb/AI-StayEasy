@@ -41,6 +41,20 @@ export default function PartnerEditPage() {
     voucherTerms: hotel?.voucher?.terms ?? '',
     voucherValidUntil: hotel?.voucher?.validUntil ?? '',
   }))
+  const [gallery, setGallery] = useState<string[]>(() => hotel?.gallery ?? [])
+
+  const setPhoto = (i: number, v: string) => setGallery((g) => g.map((x, idx) => (idx === i ? v : x)))
+  const addPhoto = () => setGallery((g) => [...g, ''])
+  const removePhoto = (i: number) => setGallery((g) => g.filter((_, idx) => idx !== i))
+  const uploadPhotos = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files ?? [])
+    files.forEach((file) => {
+      const reader = new FileReader()
+      reader.onload = () => setGallery((g) => [...g, String(reader.result)])
+      reader.readAsDataURL(file)
+    })
+    e.target.value = ''
+  }
 
   if (!session) return <Navigate to="/partner/login" replace />
   if (!hotel) return <Navigate to="/partner" replace />
@@ -64,6 +78,7 @@ export default function PartnerEditPage() {
       officialWebsiteUrl: f.officialWebsiteUrl.trim(),
       imageUrl: f.imageUrl.trim(),
       koreanFriendly: f.koreanFriendly,
+      gallery: gallery.map((g) => g.trim()).filter(Boolean),
       voucher: f.voucherCode.trim()
         ? {
             code: f.voucherCode.trim().toUpperCase(),
@@ -103,6 +118,41 @@ export default function PartnerEditPage() {
             <Field label="Main photo URL"><input value={f.imageUrl} onChange={set('imageUrl')} className={inputCls} /></Field>
           </div>
           <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={f.koreanFriendly} onChange={set('koreanFriendly')} /> 🇰🇷 Korean-friendly</label>
+        </section>
+
+        <section className="space-y-4 rounded-2xl bg-white p-5 shadow-card ring-1 ring-black/5 sm:p-6">
+          <div>
+            <h2 className="font-bold text-ink-900">Room &amp; property photos</h2>
+            <p className="text-xs text-ink-600/70">Add photo URLs, or upload images. The first photos appear in your gallery.</p>
+          </div>
+
+          {gallery.length > 0 && (
+            <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
+              {gallery.map((url, i) => (
+                <div key={i} className="group relative aspect-[4/3] overflow-hidden rounded-xl bg-sand-100 ring-1 ring-black/5">
+                  {url ? <img src={url} alt="" className="h-full w-full object-cover" /> : <div className="grid h-full place-items-center text-xl text-ink-400">🏨</div>}
+                  <button type="button" onClick={() => removePhoto(i)} aria-label="Remove photo" className="absolute right-1 top-1 grid h-6 w-6 place-items-center rounded-full bg-black/55 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100">✕</button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div className="space-y-2">
+            {gallery.map((url, i) => (
+              <div key={i} className="flex gap-2">
+                <input value={url} onChange={(e) => setPhoto(i, e.target.value)} placeholder="https://…/room.jpg" className={inputCls} />
+                <button type="button" onClick={() => removePhoto(i)} className="shrink-0 rounded-xl bg-white px-3 text-sm font-semibold text-ink-700 ring-1 ring-black/10 hover:bg-sand-50">Remove</button>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            <button type="button" onClick={addPhoto} className="rounded-xl bg-sand-100 px-4 py-2 text-sm font-semibold text-ink-800 hover:bg-sand-200">+ Add photo URL</button>
+            <label className="cursor-pointer rounded-xl bg-sand-100 px-4 py-2 text-sm font-semibold text-ink-800 hover:bg-sand-200">
+              ⬆ Upload photos
+              <input type="file" accept="image/*" multiple onChange={uploadPhotos} className="hidden" />
+            </label>
+          </div>
         </section>
 
         <section className="space-y-4 rounded-2xl bg-white p-5 shadow-card ring-1 ring-black/5 sm:p-6">

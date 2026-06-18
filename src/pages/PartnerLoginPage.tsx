@@ -96,6 +96,9 @@ export default function PartnerLoginPage() {
                 <span className={labelCls}>Password</span>
                 <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required className={`mt-1 ${inputCls}`} />
               </label>
+              <div className="text-right">
+                <Link to="/partner/reset" className="text-xs font-semibold text-brand-700 hover:underline">Forgot password?</Link>
+              </div>
               <button type="submit" className="w-full rounded-xl bg-brand-600 px-4 py-3 text-sm font-semibold text-white hover:bg-brand-700">Sign in</button>
             </form>
           ) : (

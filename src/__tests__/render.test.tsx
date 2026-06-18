@@ -44,7 +44,7 @@ describe('route render (lazy chunks resolve, no throw)', () => {
     '/hotels/an-bang-beach-resort', '/guides/direct-booking',
     '/guides', '/guides/why-book-hotels-direct', '/guides/da-nang-travel-guide',
     '/privacy', '/terms', '/contact',
-    '/partners', '/dashboard', '/admin', '/admin/register', '/partner/login', '/about', '/no-such-page',
+    '/partners', '/dashboard', '/admin', '/admin/register', '/partner/login', '/partner/reset', '/about', '/no-such-page',
   ]
   for (const path of routes) {
     it(`renders ${path}`, async () => {

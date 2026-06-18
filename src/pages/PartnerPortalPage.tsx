@@ -2,6 +2,7 @@ import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { findInCatalogue } from '../data/mockRepo'
 import { partners } from '../data/adminData'
 import { Logo } from '../components/Logo'
+import { ClicksTrend } from '../components/ClicksTrend'
 import { partnerAuth, usePartnerSession } from '../lib/partnerAuth'
 import { useHotelEdits } from '../lib/hotelEdits'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
@@ -52,7 +53,11 @@ export default function PartnerPortalPage() {
           <Stat label="Clicks (30d)" value={(partner?.clicks30d ?? 0).toLocaleString()} />
         </div>
 
-        <div className="mt-6 rounded-2xl bg-white p-6 shadow-card ring-1 ring-black/5">
+        <div className="mt-4 rounded-2xl bg-white p-6 shadow-card ring-1 ring-black/5">
+          <ClicksTrend slug={session.slug} total={partner?.clicks30d ?? 0} />
+        </div>
+
+        <div className="mt-4 rounded-2xl bg-white p-6 shadow-card ring-1 ring-black/5">
           <h2 className="font-bold text-ink-900">Your listing</h2>
           <p className="mt-1 text-sm text-ink-700/75">Keep your description, official benefits, photo, and voucher up to date — changes appear on your public page right away.</p>
           <div className="mt-4 flex flex-wrap gap-2">

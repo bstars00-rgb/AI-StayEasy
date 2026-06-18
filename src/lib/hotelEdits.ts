@@ -17,6 +17,7 @@ export type HotelPatch = Partial<
     | 'officialBenefits'
     | 'officialWebsiteUrl'
     | 'imageUrl'
+    | 'gallery'
     | 'koreanFriendly'
     | 'voucher'
   >
