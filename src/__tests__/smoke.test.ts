@@ -19,6 +19,7 @@ import { partnerAccounts } from '../lib/partnerAccounts'
 import { partnerDrafts } from '../lib/partnerDrafts'
 import { concierge } from '../lib/messages'
 import { conciergeStrings, REQUEST_KEYS } from '../lib/conciergeI18n'
+import { translatePhrase } from '../lib/translate'
 
 /** Collects the sorted set of key-paths (leaves = strings/arrays) of an object. */
 function shapePaths(obj: unknown, prefix = ''): string[] {
@@ -146,9 +147,17 @@ describe('concierge / direct-stay inbox', () => {
     })
     expect(concierge.forHotel('an-bang-beach-resort')).toHaveLength(1)
     expect(th.messages).toHaveLength(1)
-    concierge.reply(th.id, 'See you then', 'en', '2026-06-18T01:00:00Z')
+    concierge.addMessage(th.id, 'hotel', 'See you then', 'en', '2026-06-18T01:00:00Z')
     expect(concierge.forHotel('an-bang-beach-resort')[0].messages).toHaveLength(2)
     concierge.clear()
+  })
+
+  it('translates known free-text phrases across languages (demo dictionary)', () => {
+    const t = translatePhrase('늦게 도착해요.', 'ko', 'en')
+    expect(t.translated).toBe(true)
+    expect(t.text).toBe('We will arrive late.')
+    // Unknown text is returned unchanged.
+    expect(translatePhrase('xyzzy', 'ko', 'en')).toEqual({ text: 'xyzzy', translated: false })
   })
 })
 

@@ -17,6 +17,7 @@ export function Footer() {
           <ul className="mt-3 space-y-2 text-sm text-ink-700/80">
             <li><Link className="hover:text-brand-700" to="/about">{t.footer.about}</Link></li>
             <li><Link className="hover:text-brand-700" to="/guides">Guides</Link></li>
+            <li><Link className="hover:text-brand-700" to="/my-messages">My messages</Link></li>
             <li><Link className="hover:text-brand-700" to="/partners">{t.footer.partner}</Link></li>
             <li><Link className="hover:text-brand-700" to="/contact">{t.footer.contact}</Link></li>
           </ul>

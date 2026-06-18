@@ -6,6 +6,7 @@ import type { Lang } from '../i18n'
 import { usePartnerSession } from '../lib/partnerAuth'
 import { conciergeStrings } from '../lib/conciergeI18n'
 import { concierge, useHotelThreads } from '../lib/messages'
+import { translatePhrase } from '../lib/translate'
 import type { ConciergeThread } from '../lib/messages'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 
@@ -18,7 +19,7 @@ function ThreadCard({ thread, lang }: { thread: ConciergeThread; lang: Lang }) {
   const send = (e: React.FormEvent) => {
     e.preventDefault()
     if (!reply.trim()) return
-    concierge.reply(thread.id, reply.trim(), lang, new Date().toISOString())
+    concierge.addMessage(thread.id, 'hotel', reply.trim(), lang, new Date().toISOString())
     setReply('')
   }
 
@@ -45,12 +46,19 @@ function ThreadCard({ thread, lang }: { thread: ConciergeThread; lang: Lang }) {
 
       {thread.messages.length > 0 && (
         <div className="mt-3 space-y-2">
-          {thread.messages.map((m) => (
-            <div key={m.id} className={`max-w-[85%] rounded-2xl px-3 py-2 text-sm ${m.from === 'guest' ? 'bg-sand-50 text-ink-800 ring-1 ring-black/5' : 'ml-auto bg-brand-600 text-white'}`}>
-              {m.text}
-              {m.from === 'guest' && m.lang !== lang && <span className="mt-0.5 block text-[11px] text-ink-600/50">🌐 {s.translated} · {LANG_NAMES[m.lang]}</span>}
-            </div>
-          ))}
+          {thread.messages.map((m) => {
+            const tr = m.from === 'guest' ? translatePhrase(m.text, m.lang, lang) : { text: m.text, translated: false }
+            return (
+              <div key={m.id} className={`max-w-[85%] rounded-2xl px-3 py-2 text-sm ${m.from === 'guest' ? 'bg-sand-50 text-ink-800 ring-1 ring-black/5' : 'ml-auto bg-brand-600 text-white'}`}>
+                {tr.text}
+                {m.from === 'guest' && (tr.translated || m.lang !== lang) && (
+                  <span className="mt-0.5 block text-[11px] text-ink-600/50">
+                    🌐 {s.translated} · {LANG_NAMES[m.lang]}{tr.translated ? ` · “${m.text}”` : ''}
+                  </span>
+                )}
+              </div>
+            )
+          })}
         </div>
       )}
 

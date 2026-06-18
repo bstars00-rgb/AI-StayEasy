@@ -86,15 +86,19 @@ export const concierge = {
     return thread
   },
 
-  reply(threadId: string, text: string, lang: Lang, createdAt: string) {
+  /** Appends a message from either side to a thread. */
+  addMessage(threadId: string, from: 'guest' | 'hotel', text: string, lang: Lang, createdAt: string) {
     commit(
       threads.map((t) =>
         t.id === threadId
-          ? { ...t, messages: [...t.messages, { id: `${threadId}-m${t.messages.length + 1}`, from: 'hotel', text, lang, createdAt }] }
+          ? { ...t, messages: [...t.messages, { id: `${threadId}-m${t.messages.length + 1}`, from, text, lang, createdAt }] }
           : t,
       ),
     )
   },
+
+  /** Latest thread a guest opened for a hotel (this browser). */
+  latestForHotel: (slug: string) => threads.find((t) => t.hotelSlug === slug),
 
   clear: () => commit([]),
   subscribe: (l: () => void) => {
@@ -108,4 +112,8 @@ export const concierge = {
 export function useHotelThreads(slug: string): ConciergeThread[] {
   const all = useSyncExternalStore(concierge.subscribe, concierge.all, () => EMPTY)
   return all.filter((t) => t.hotelSlug === slug)
+}
+
+export function useAllThreads(): ConciergeThread[] {
+  return useSyncExternalStore(concierge.subscribe, concierge.all, () => EMPTY)
 }

@@ -40,7 +40,7 @@ const wrap = (path: string) =>
 
 describe('route render (lazy chunks resolve, no throw)', () => {
   const routes = [
-    '/', '/search', '/wishlist',
+    '/', '/search', '/wishlist', '/my-messages',
     '/destinations/vietnam', '/destinations/da-nang', '/destinations/hanoi',
     '/hotels/an-bang-beach-resort', '/guides/direct-booking',
     '/guides', '/guides/why-book-hotels-direct', '/guides/da-nang-travel-guide',
