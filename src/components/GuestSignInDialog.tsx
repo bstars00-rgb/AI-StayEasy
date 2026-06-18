@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useLang } from '../i18n'
 import { accountStrings } from '../lib/accountI18n'
 import { guestAuth } from '../lib/guestAuth'
@@ -42,7 +43,9 @@ export function GuestSignInDialog({ onClose, onSignedIn }: { onClose: () => void
     finish({ email })
   }
 
-  return (
+  if (typeof document === 'undefined') return null
+
+  return createPortal(
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 p-0 sm:items-center sm:p-4" onClick={onClose}>
       <div onClick={(e) => e.stopPropagation()} className="w-full max-w-sm rounded-t-3xl bg-white p-7 shadow-card sm:rounded-3xl">
         <div className="flex items-start justify-between">
@@ -79,6 +82,7 @@ export function GuestSignInDialog({ onClose, onSignedIn }: { onClose: () => void
 
         <p className="mt-3 text-center text-xs text-ink-600/55">🧪 {s.demoNote}</p>
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }
