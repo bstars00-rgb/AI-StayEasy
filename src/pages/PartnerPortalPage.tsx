@@ -5,7 +5,6 @@ import { Logo } from '../components/Logo'
 import { ClicksTrend } from '../components/ClicksTrend'
 import { partnerAuth, usePartnerSession } from '../lib/partnerAuth'
 import { useHotelEdits } from '../lib/hotelEdits'
-import { useHotelThreads } from '../lib/messages'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 
 function Stat({ label, value }: { label: string; value: string }) {
@@ -27,7 +26,6 @@ export default function PartnerPortalPage() {
 
   const hotel = findInCatalogue(session.slug)
   const partner = partners.find((p) => p.slug === session.slug)
-  const threads = useHotelThreads(session.slug)
 
   return (
     <div className="min-h-screen bg-sand-50">
@@ -54,17 +52,6 @@ export default function PartnerPortalPage() {
           <Stat label="Status" value={partner?.status ?? 'Listed'} />
           <Stat label="Clicks (30d)" value={(partner?.clicks30d ?? 0).toLocaleString()} />
         </div>
-
-        <Link to="/partner/messages" className="mt-4 flex items-center justify-between rounded-2xl bg-white p-6 shadow-card ring-1 ring-black/5 transition-colors hover:bg-sand-50">
-          <div>
-            <p className="font-bold text-ink-900">💬 Guest messages</p>
-            <p className="mt-0.5 text-sm text-ink-700/75">Translated requests from guests who booked direct.</p>
-          </div>
-          <div className="flex items-center gap-2">
-            {threads.length > 0 && <span className="grid h-6 min-w-6 place-items-center rounded-full bg-accent-500 px-2 text-xs font-bold text-white">{threads.length}</span>}
-            <span className="text-brand-700">→</span>
-          </div>
-        </Link>
 
         <div className="mt-4 rounded-2xl bg-white p-6 shadow-card ring-1 ring-black/5">
           <ClicksTrend slug={session.slug} total={partner?.clicks30d ?? 0} />

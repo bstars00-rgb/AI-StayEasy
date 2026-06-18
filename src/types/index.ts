@@ -118,6 +118,25 @@ export interface HotelConditions {
   walkToBeachMin: number
 }
 
+/** The hotel's own contact channels. StayEasy doesn't host the conversation —
+ *  it routes the guest straight to the channel the hotel prefers (no extra
+ *  system for the hotel to log into). */
+export interface ContactChannels {
+  /** Hotel's working language — guest requests are translated into this. */
+  lang?: 'en' | 'ko' | 'vi' | 'zh' | 'ja'
+  email?: string
+  /** E.164-style number for tel: / wa.me / zalo.me. */
+  phone?: string
+  whatsapp?: string
+  zalo?: string
+  /** KakaoTalk open-chat URL. */
+  kakao?: string
+  /** LINE id. */
+  line?: string
+  /** Facebook Messenger username (m.me/<id>). */
+  messenger?: string
+}
+
 export interface RoomGuide {
   couples: string
   families: string
@@ -164,6 +183,8 @@ export interface Hotel {
   /** Optional extra gallery photos (showcase hotels). Falls back to placeholders. */
   gallery?: string[]
   officialWebsiteUrl: string
+  /** The hotel's preferred direct contact channels (optional). */
+  contact?: ContactChannels
   isSponsored: boolean
   /** Optional downloadable direct-booking discount voucher from the hotel. */
   voucher?: Voucher

@@ -40,6 +40,14 @@ export default function PartnerEditPage() {
     voucherLabel: hotel?.voucher?.discountLabel ?? '',
     voucherTerms: hotel?.voucher?.terms ?? '',
     voucherValidUntil: hotel?.voucher?.validUntil ?? '',
+    contactLang: hotel?.contact?.lang ?? 'vi',
+    cEmail: hotel?.contact?.email ?? '',
+    cPhone: hotel?.contact?.phone ?? '',
+    cWhatsapp: hotel?.contact?.whatsapp ?? '',
+    cZalo: hotel?.contact?.zalo ?? '',
+    cKakao: hotel?.contact?.kakao ?? '',
+    cLine: hotel?.contact?.line ?? '',
+    cMessenger: hotel?.contact?.messenger ?? '',
   }))
   const [gallery, setGallery] = useState<string[]>(() => hotel?.gallery ?? [])
 
@@ -61,7 +69,7 @@ export default function PartnerEditPage() {
 
   const set =
     <K extends keyof typeof f>(k: K) =>
-    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
       const t = e.target
       const v = t instanceof HTMLInputElement && t.type === 'checkbox' ? t.checked : t.value
       setF((prev) => ({ ...prev, [k]: v }))
@@ -87,6 +95,16 @@ export default function PartnerEditPage() {
             validUntil: f.voucherValidUntil.trim() || '2026-12-31',
           }
         : undefined,
+      contact: {
+        lang: f.contactLang as 'en' | 'ko' | 'vi' | 'zh' | 'ja',
+        email: f.cEmail.trim() || undefined,
+        phone: f.cPhone.trim() || undefined,
+        whatsapp: f.cWhatsapp.trim() || undefined,
+        zalo: f.cZalo.trim() || undefined,
+        kakao: f.cKakao.trim() || undefined,
+        line: f.cLine.trim() || undefined,
+        messenger: f.cMessenger.trim() || undefined,
+      },
     }
     hotelEdits.set(session.slug, patch)
     navigate('/partner')
@@ -165,6 +183,27 @@ export default function PartnerEditPage() {
             <Field label="Valid until"><input value={f.voucherValidUntil} onChange={set('voucherValidUntil')} placeholder="2026-12-31" className={inputCls} /></Field>
             <Field label="Discount label"><input value={f.voucherLabel} onChange={set('voucherLabel')} placeholder="10% off your direct booking" className={inputCls} /></Field>
             <Field label="Terms"><input value={f.voucherTerms} onChange={set('voucherTerms')} className={inputCls} /></Field>
+          </div>
+        </section>
+
+        <section className="space-y-4 rounded-2xl bg-white p-5 shadow-card ring-1 ring-black/5 sm:p-6">
+          <div>
+            <h2 className="font-bold text-ink-900">Direct contact channels</h2>
+            <p className="text-xs text-ink-600/70">Guests reach you directly on these — StayEasy doesn’t host the chat. Fill only the ones you use; chat apps are easiest across languages.</p>
+          </div>
+          <Field label="Your language" hint="guest requests are translated into this">
+            <select value={f.contactLang} onChange={set('contactLang')} className={inputCls}>
+              {(['vi', 'en', 'ko', 'zh', 'ja'] as const).map((l) => <option key={l} value={l}>{l}</option>)}
+            </select>
+          </Field>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field label="Email"><input value={f.cEmail} onChange={set('cEmail')} placeholder="frontdesk@hotel.example" className={inputCls} /></Field>
+            <Field label="Phone" hint="+country code"><input value={f.cPhone} onChange={set('cPhone')} placeholder="+84905123456" className={inputCls} /></Field>
+            <Field label="WhatsApp" hint="number"><input value={f.cWhatsapp} onChange={set('cWhatsapp')} placeholder="+84905123456" className={inputCls} /></Field>
+            <Field label="Zalo" hint="number"><input value={f.cZalo} onChange={set('cZalo')} placeholder="+84905123456" className={inputCls} /></Field>
+            <Field label="KakaoTalk" hint="open-chat URL"><input value={f.cKakao} onChange={set('cKakao')} placeholder="https://open.kakao.com/o/…" className={inputCls} /></Field>
+            <Field label="LINE" hint="id"><input value={f.cLine} onChange={set('cLine')} placeholder="@hotelid" className={inputCls} /></Field>
+            <Field label="Messenger" hint="m.me username"><input value={f.cMessenger} onChange={set('cMessenger')} placeholder="hotelpage" className={inputCls} /></Field>
           </div>
         </section>
 

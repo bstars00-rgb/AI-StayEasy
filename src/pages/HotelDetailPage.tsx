@@ -15,8 +15,8 @@ import { useT, useLang, localizeHotel } from '../i18n'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 import { officialLink } from '../lib/officialLink'
 import { scoreStrings } from '../lib/scoreI18n'
-import { conciergeStrings } from '../lib/conciergeI18n'
-import { GuestMessageDialog } from '../components/GuestMessageDialog'
+import { contactStrings } from '../lib/contactI18n'
+import { ContactHotelDialog } from '../components/ContactHotelDialog'
 
 function Card({ title, icon, children, className = '' }: { title: string; icon: string; children: ReactNode; className?: string }) {
   return (
@@ -155,7 +155,7 @@ export default function HotelDetailPage() {
                 onClick={() => setShowMsg(true)}
                 className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-ink-800 ring-1 ring-black/10 hover:bg-sand-50 sm:w-auto lg:w-auto"
               >
-                💬 {conciergeStrings[lang].messageBtn}
+                💬 {contactStrings[lang].button}
               </button>
             </div>
             <p className="mt-2 text-center text-xs text-ink-700/60 lg:text-right">{t.detail.noCommission}</p>
@@ -322,7 +322,7 @@ export default function HotelDetailPage() {
         </div>
       </div>
 
-      {showMsg && <GuestMessageDialog hotelSlug={hotel.slug} hotelName={hotel.name} onClose={() => setShowMsg(false)} />}
+      {showMsg && <ContactHotelDialog hotel={hotel} onClose={() => setShowMsg(false)} />}
     </>
   )
 }

@@ -20,6 +20,7 @@ export type HotelPatch = Partial<
     | 'gallery'
     | 'koreanFriendly'
     | 'voucher'
+    | 'contact'
   >
 >
 

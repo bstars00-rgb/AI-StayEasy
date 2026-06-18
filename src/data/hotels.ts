@@ -38,6 +38,20 @@ const hashSlug = (s: string) => {
 }
 const img = (slug: string) => realPhotos[slug] ?? u(PHOTO_POOL[hashSlug(slug) % PHOTO_POOL.length])
 
+// Sample direct-contact channels the hotel prefers. StayEasy just routes the
+// guest to these — it doesn't host the conversation. (Vietnam hotels speak
+// Vietnamese, so guest requests are translated into 'vi'.)
+const contactBySlug: Record<string, Hotel['contact']> = {
+  'an-bang-beach-resort': { lang: 'vi', email: 'frontdesk@anbangbeachresort.example', phone: '+84905123456', whatsapp: '+84905123456', zalo: '+84905123456' },
+  'han-river-grand-hotel': { lang: 'vi', email: 'reservations@hanrivergrand.example', phone: '+84905222333', zalo: '+84905222333' },
+  'saigon-central-boutique': { lang: 'vi', email: 'stay@saigoncentral.example', phone: '+84908765432', whatsapp: '+84908765432' },
+  'seoul-stay-da-nang': { lang: 'ko', email: 'hello@seoulstaydanang.example', phone: '+84905777888', kakao: 'https://open.kakao.com/o/seoulstay', zalo: '+84905777888' },
+  'nha-trang-bay-resort': { lang: 'vi', email: 'booking@nhatrangbay.example', phone: '+84258123123', whatsapp: '+84905334455' },
+  'long-beach-grand-resort': { lang: 'vi', email: 'resort@longbeachgrand.example', phone: '+84297888999', zalo: '+84905998877' },
+  'hoi-an-lantern-boutique': { lang: 'vi', email: 'lantern@hoianboutique.example', phone: '+84235998877', whatsapp: '+84905112233', zalo: '+84905112233' },
+  'old-quarter-boutique-hanoi': { lang: 'vi', email: 'oldquarter@hanoiboutique.example', phone: '+84243111222', messenger: 'oldquarterhanoi' },
+}
+
 // All launch-market hotels are in Vietnam; `country` and the normalized
 // `conditions` are injected below so the 32 records don't each repeat them.
 type RawHotel = Omit<Hotel, 'country' | 'conditions'>
@@ -1357,6 +1371,7 @@ export function deriveConditions(h: Omit<Hotel, 'country' | 'conditions'>): Hote
 export const hotels: Hotel[] = rawHotels.map((h) => ({
   country: 'Vietnam',
   ...h,
+  contact: contactBySlug[h.slug],
   conditions: deriveConditions(h),
 }))
 

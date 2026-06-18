@@ -21,14 +21,12 @@ const DashboardPage = lazy(() => import('./pages/DashboardPage'))
 const AboutPage = lazy(() => import('./pages/AboutPage'))
 const SearchPage = lazy(() => import('./pages/SearchPage'))
 const WishlistPage = lazy(() => import('./pages/WishlistPage'))
-const MyMessagesPage = lazy(() => import('./pages/MyMessagesPage'))
 const AdminPage = lazy(() => import('./pages/AdminPage'))
 const RegisterHotelPage = lazy(() => import('./pages/RegisterHotelPage'))
 const PartnerLoginPage = lazy(() => import('./pages/PartnerLoginPage'))
 const PartnerResetPage = lazy(() => import('./pages/PartnerResetPage'))
 const PartnerPortalPage = lazy(() => import('./pages/PartnerPortalPage'))
 const PartnerEditPage = lazy(() => import('./pages/PartnerEditPage'))
-const PartnerMessagesPage = lazy(() => import('./pages/PartnerMessagesPage'))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 
 /** Suspense fallback while a route's code chunk downloads. */
@@ -89,13 +87,11 @@ export default function App() {
       <Route path="/partner/reset" element={<Suspense fallback={<RouteFallback />}><PartnerResetPage /></Suspense>} />
       <Route path="/partner" element={<Suspense fallback={<RouteFallback />}><PartnerPortalPage /></Suspense>} />
       <Route path="/partner/edit" element={<Suspense fallback={<RouteFallback />}><PartnerEditPage /></Suspense>} />
-      <Route path="/partner/messages" element={<Suspense fallback={<RouteFallback />}><PartnerMessagesPage /></Suspense>} />
 
       <Route element={<PublicLayout />}>
         <Route path="/" element={<HomePage />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/wishlist" element={<WishlistPage />} />
-        <Route path="/my-messages" element={<MyMessagesPage />} />
         <Route path="/destinations/vietnam" element={<VietnamPage />} />
         <Route path="/destinations/:citySlug" element={<HotelListPage />} />
         <Route path="/hotels/:slug" element={<HotelDetailPage />} />

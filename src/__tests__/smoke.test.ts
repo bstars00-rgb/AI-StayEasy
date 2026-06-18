@@ -17,9 +17,9 @@ import { guides, getGuide } from '../data/guides'
 import { officialLink, isPlaceholderUrl } from '../lib/officialLink'
 import { partnerAccounts } from '../lib/partnerAccounts'
 import { partnerDrafts } from '../lib/partnerDrafts'
-import { concierge } from '../lib/messages'
 import { conciergeStrings, REQUEST_KEYS } from '../lib/conciergeI18n'
 import { translatePhrase } from '../lib/translate'
+import { composeMessage, resolveChannels } from '../lib/contact'
 
 /** Collects the sorted set of key-paths (leaves = strings/arrays) of an object. */
 function shapePaths(obj: unknown, prefix = ''): string[] {
@@ -128,36 +128,33 @@ describe('partner account approval workflow', () => {
   })
 })
 
-describe('concierge / direct-stay inbox', () => {
-  it('translates structured requests across languages by key', () => {
+describe('contact-channel routing (no hosted inbox)', () => {
+  it('composes the guest request in the hotel’s language', () => {
+    // Korean guest, Vietnamese hotel → request rendered in Vietnamese.
+    const msg = composeMessage(['airportPickup', 'lateCheckout'], '늦게 도착해요.', 'ko', 'vi')
+    expect(msg).toContain(conciergeStrings.vi.request.airportPickup)
+    expect(msg).toContain('Chúng tôi sẽ đến muộn.') // free-text translated via dictionary
+  })
+
+  it('builds deep links to the hotel’s own channels (StayEasy hosts nothing)', () => {
+    const labels = { website: 'Official website', email: 'Email', phone: 'Call' }
+    const hotel = { contact: { whatsapp: '+84 905 123 456', email: 'a@h.example', phone: '+84905123456' }, officialWebsiteUrl: 'https://h.example', name: 'H', city: 'Da Nang' }
+    const ch = resolveChannels(hotel, 'hello', labels)
+    const wa = ch.find((c) => c.key === 'whatsapp')!
+    expect(wa.href).toBe('https://wa.me/84905123456?text=hello')
+    expect(ch.find((c) => c.key === 'email')!.href).toContain('mailto:a@h.example')
+    expect(ch.find((c) => c.key === 'phone')!.href).toBe('tel:+84905123456')
+    // Website is always present as a fallback.
+    expect(ch.some((c) => c.key === 'website')).toBe(true)
+  })
+
+  it('keeps the structured-request dictionary translating across languages', () => {
     for (const k of REQUEST_KEYS) {
       for (const loc of [conciergeStrings.en, conciergeStrings.ko, conciergeStrings.vi, conciergeStrings.zh, conciergeStrings.ja]) {
         expect(loc.request[k].length).toBeGreaterThan(0)
       }
     }
-    // Same key, different language = a real translation.
-    expect(conciergeStrings.ko.request.airportPickup).not.toBe(conciergeStrings.en.request.airportPickup)
-  })
-
-  it('opens a guest thread and accepts a hotel reply', () => {
-    concierge.clear()
-    const th = concierge.open({
-      hotelSlug: 'an-bang-beach-resort', guestName: 'Min', bookingRef: 'ABC123',
-      guestLang: 'ko', requests: ['airportPickup', 'lateCheckout'], note: '늦게 도착해요', createdAt: '2026-06-18T00:00:00Z',
-    })
-    expect(concierge.forHotel('an-bang-beach-resort')).toHaveLength(1)
-    expect(th.messages).toHaveLength(1)
-    concierge.addMessage(th.id, 'hotel', 'See you then', 'en', '2026-06-18T01:00:00Z')
-    expect(concierge.forHotel('an-bang-beach-resort')[0].messages).toHaveLength(2)
-    concierge.clear()
-  })
-
-  it('translates known free-text phrases across languages (demo dictionary)', () => {
-    const t = translatePhrase('늦게 도착해요.', 'ko', 'en')
-    expect(t.translated).toBe(true)
-    expect(t.text).toBe('We will arrive late.')
-    // Unknown text is returned unchanged.
-    expect(translatePhrase('xyzzy', 'ko', 'en')).toEqual({ text: 'xyzzy', translated: false })
+    expect(translatePhrase('늦게 도착해요.', 'ko', 'en')).toEqual({ text: 'We will arrive late.', translated: true })
   })
 })
 
