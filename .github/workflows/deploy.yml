@@ -36,6 +36,9 @@ jobs:
         run: npm run build
         env:
           GITHUB_PAGES: 'true'
+          # GA4 measurement ID — public (client-side) value, safe to keep here.
+          # Override later via repo Variable if preferred: ${{ vars.VITE_GA_ID }}
+          VITE_GA_ID: G-S37KPRNVX4
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
