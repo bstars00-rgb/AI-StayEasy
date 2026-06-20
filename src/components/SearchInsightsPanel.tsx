@@ -43,8 +43,8 @@ export function SearchInsightsPanel({ hotel }: { hotel: Hotel }) {
           </div>
 
           <p className="mt-5 text-xs font-semibold uppercase tracking-wide text-ink-600/60">Top search terms</p>
-          <div className="mt-2 overflow-hidden rounded-xl ring-1 ring-black/5">
-            <table className="w-full text-left text-sm">
+          <div className="mt-2 overflow-x-auto rounded-xl ring-1 ring-black/5">
+            <table className="w-full min-w-[20rem] text-left text-sm">
               <thead className="bg-sand-50 text-[11px] uppercase tracking-wide text-ink-600/60">
                 <tr>
                   <th className="px-3 py-2 font-semibold">Query</th>

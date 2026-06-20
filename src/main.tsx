@@ -21,3 +21,12 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     </ErrorBoundary>
   </React.StrictMode>,
 )
+
+// Register the PWA service worker (production only) so StayEasy installs as a
+// mobile app and works offline. Scoped to BASE_URL for the GitHub Pages sub-path.
+if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    const base = import.meta.env.BASE_URL
+    navigator.serviceWorker.register(`${base}sw.js`, { scope: base }).catch(() => {})
+  })
+}
