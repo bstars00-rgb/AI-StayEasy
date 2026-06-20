@@ -57,7 +57,11 @@ for (const route of unique) {
     .replace(titleRe, `<title>${title}</title>`)
     .replace('</head>', `  <link rel="canonical" href="${canonical}" />\n  </head>`)
 
-  const outPath = `dist${route}/index.html`
+  // Write a flat `<route>.html` (not `<route>/index.html`): GitHub Pages serves
+  // the extension-less URL with a 200 directly, so the no-trailing-slash URL —
+  // the one in the sitemap, the canonical tag, and the router — matches exactly.
+  // A directory/index.html would 301-redirect /foo to /foo/ and break that match.
+  const outPath = `dist${route}.html`
   mkdirSync(dirname(outPath), { recursive: true })
   writeFileSync(outPath, html)
   written++
