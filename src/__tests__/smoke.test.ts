@@ -391,6 +391,27 @@ describe('API contract', () => {
   })
 })
 
+describe('search insights (mock)', () => {
+  it('returns deterministic, internally-consistent Search Console data per hotel', async () => {
+    const { getSearchInsights } = await import('../lib/searchInsights')
+    const hotel = getHotel('an-bang-beach-resort')!
+    const a = await getSearchInsights(hotel.slug, hotel)
+    const b = await getSearchInsights(hotel.slug, hotel)
+
+    expect(a.source).toBe('mock')
+    expect(a.slug).toBe(hotel.slug)
+    expect(a.topQueries.length).toBeGreaterThan(0)
+    // Deterministic across calls.
+    expect(b.topQueries.map((q) => q.query)).toEqual(a.topQueries.map((q) => q.query))
+    // Sorted by clicks, desc.
+    const clicks = a.topQueries.map((q) => q.clicks)
+    expect([...clicks].sort((x, y) => y - x)).toEqual(clicks)
+    // Totals sum the rows.
+    expect(a.totals.clicks).toBe(a.topQueries.reduce((n, q) => n + q.clicks, 0))
+    expect(a.totals.impressions).toBe(a.topQueries.reduce((n, q) => n + q.impressions, 0))
+  })
+})
+
 describe('hotel localization', () => {
   it('returns the canonical record for English', () => {
     expect(localizeHotel(hotels[0], 'en')).toBe(hotels[0])

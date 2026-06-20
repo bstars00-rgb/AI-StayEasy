@@ -29,6 +29,8 @@ export const endpoints = {
   partnerMe: () => `${API_BASE}/partner/me`,
   partnerMetrics: () => `${API_BASE}/partner/metrics`,
   partnerHotel: () => `${API_BASE}/partner/hotel`,
+  /** Google Search Console — how this hotel is found on Google. */
+  partnerSearchInsights: (slug: string) => `${API_BASE}/partner/search-insights/${slug}`,
   // admin
   adminOverview: () => `${API_BASE}/admin/overview`,
   adminHotels: () => `${API_BASE}/admin/hotels`,
@@ -123,6 +125,29 @@ export interface PartnerMetricsResponse {
   topMarket: string
   topTravelerType: string
   bySource: { source: string; pct: number }[]
+}
+
+/** One Google search term that surfaced this hotel's StayEasy page. */
+export interface SearchQueryRow {
+  query: string
+  clicks: number
+  impressions: number
+  /** Click-through rate, 0..1. */
+  ctr: number
+  /** Average position in Google results (1 = top). */
+  position: number
+}
+/** Google Search Console insights for a single hotel page — "how travelers
+ *  find you on Google". Backed by the Search Console Search Analytics API in
+ *  production; mock data until the backend + service account are wired. */
+export interface PartnerSearchInsightsResponse {
+  slug: string
+  /** Trailing window the figures cover, in days (e.g. 28). */
+  rangeDays: number
+  totals: { clicks: number; impressions: number; ctr: number; position: number }
+  topQueries: SearchQueryRow[]
+  /** Where the numbers came from — so the UI can label demo vs live. */
+  source: 'mock' | 'search-console'
 }
 
 // ---- Admin / back-office (RBAC: operator | admin) ----

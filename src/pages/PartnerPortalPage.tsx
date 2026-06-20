@@ -3,6 +3,7 @@ import { findInCatalogue } from '../data/mockRepo'
 import { partners } from '../data/adminData'
 import { Logo } from '../components/Logo'
 import { ClicksTrend } from '../components/ClicksTrend'
+import { SearchInsightsPanel } from '../components/SearchInsightsPanel'
 import { partnerAuth, usePartnerSession } from '../lib/partnerAuth'
 import { useHotelEdits } from '../lib/hotelEdits'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
@@ -124,6 +125,12 @@ export default function PartnerPortalPage() {
             </div>
           )
         })()}
+
+        {hotel && (
+          <div className="mt-4">
+            <SearchInsightsPanel hotel={hotel} />
+          </div>
+        )}
 
         <div className="mt-4 rounded-2xl bg-white p-6 shadow-card ring-1 ring-black/5">
           <h2 className="font-bold text-ink-900">Your listing</h2>
