@@ -84,6 +84,35 @@ export interface PartnerStrings {
     today: string
   }
 
+  report: {
+    overview: string
+    periodLabel: string // "Last {n} days"
+    vsPrev: string
+    print: string
+    demoBanner: string
+    contactClicks: string
+    contactClicksHint: string
+    convRate: string
+    convRateHint: string
+    viewsHint: string
+    unlocksHint: string
+    officialClicksHint: string
+    trendTitle: string
+    legendViews: string
+    legendClicks: string
+    audienceTitle: string
+    audienceSub: string
+    sourcesTitle: string
+    devicesTitle: string
+    srcOrganic: string
+    srcDirect: string
+    srcReferral: string
+    srcSocial: string
+    devMobile: string
+    devDesktop: string
+    devTablet: string
+  }
+
   search: {
     title: string
     badgeLive: string
@@ -222,6 +251,34 @@ export const partnerStrings: Record<Lang, PartnerStrings> = {
       daysAgo: '14 days ago',
       today: 'Today',
     },
+    report: {
+      overview: 'Performance overview',
+      periodLabel: 'Last {n} days',
+      vsPrev: 'vs previous period',
+      print: 'Print / Save PDF',
+      demoBanner: 'Demo estimates — live GA4 figures appear here once reporting is connected.',
+      contactClicks: 'Contact clicks',
+      contactClicksHint: 'reached out to you',
+      convRate: 'Conversion rate',
+      convRateHint: 'official-site clicks ÷ views',
+      viewsHint: 'opened your page',
+      unlocksHint: 'unlocked your voucher',
+      officialClicksHint: 'went to your booking site',
+      trendTitle: 'Views & official-site clicks · 14 days',
+      legendViews: 'Views',
+      legendClicks: 'Official-site clicks',
+      audienceTitle: 'Audience by language',
+      audienceSub: 'Which travelers your page attracts',
+      sourcesTitle: 'How travelers arrive',
+      devicesTitle: 'Devices',
+      srcOrganic: 'Organic search',
+      srcDirect: 'Direct',
+      srcReferral: 'Referral',
+      srcSocial: 'Social',
+      devMobile: 'Mobile',
+      devDesktop: 'Desktop',
+      devTablet: 'Tablet',
+    },
     search: {
       title: 'How travelers find you on Google',
       badgeLive: 'Search Console',
@@ -357,6 +414,34 @@ export const partnerStrings: Record<Lang, PartnerStrings> = {
       title: '공식 사이트 클릭 · 최근 14일',
       daysAgo: '14일 전',
       today: '오늘',
+    },
+    report: {
+      overview: '성과 개요',
+      periodLabel: '최근 {n}일',
+      vsPrev: '이전 기간 대비',
+      print: '인쇄 / PDF 저장',
+      demoBanner: '데모 추정치입니다 — GA4 리포팅이 연결되면 실시간 수치가 여기에 표시됩니다.',
+      contactClicks: '연락 클릭',
+      contactClicksHint: '문의해 온 횟수',
+      convRate: '전환율',
+      convRateHint: '공식 사이트 클릭 ÷ 조회',
+      viewsHint: '페이지를 연 횟수',
+      unlocksHint: '바우처를 받은 횟수',
+      officialClicksHint: '예약 사이트로 이동',
+      trendTitle: '조회 & 공식 사이트 클릭 · 14일',
+      legendViews: '조회',
+      legendClicks: '공식 사이트 클릭',
+      audienceTitle: '언어별 관심도',
+      audienceSub: '내 페이지가 끌어들이는 여행자',
+      sourcesTitle: '여행자 유입 경로',
+      devicesTitle: '기기',
+      srcOrganic: '자연 검색',
+      srcDirect: '직접 유입',
+      srcReferral: '추천 유입',
+      srcSocial: '소셜',
+      devMobile: '모바일',
+      devDesktop: '데스크톱',
+      devTablet: '태블릿',
     },
     search: {
       title: '여행자가 구글에서 나를 찾는 방법',
@@ -494,6 +579,34 @@ export const partnerStrings: Record<Lang, PartnerStrings> = {
       daysAgo: '14 ngày trước',
       today: 'Hôm nay',
     },
+    report: {
+      overview: 'Tổng quan hiệu suất',
+      periodLabel: '{n} ngày qua',
+      vsPrev: 'so với kỳ trước',
+      print: 'In / Lưu PDF',
+      demoBanner: 'Số liệu demo — dữ liệu GA4 thực sẽ hiển thị khi báo cáo được kết nối.',
+      contactClicks: 'Lượt liên hệ',
+      contactClicksHint: 'đã liên hệ với bạn',
+      convRate: 'Tỷ lệ chuyển đổi',
+      convRateHint: 'nhấp website ÷ lượt xem',
+      viewsHint: 'đã mở trang của bạn',
+      unlocksHint: 'đã mở khóa voucher',
+      officialClicksHint: 'đến trang đặt phòng',
+      trendTitle: 'Lượt xem & nhấp website chính thức · 14 ngày',
+      legendViews: 'Lượt xem',
+      legendClicks: 'Nhấp website chính thức',
+      audienceTitle: 'Khán giả theo ngôn ngữ',
+      audienceSub: 'Trang của bạn thu hút du khách nào',
+      sourcesTitle: 'Du khách đến từ đâu',
+      devicesTitle: 'Thiết bị',
+      srcOrganic: 'Tìm kiếm tự nhiên',
+      srcDirect: 'Trực tiếp',
+      srcReferral: 'Giới thiệu',
+      srcSocial: 'Mạng xã hội',
+      devMobile: 'Di động',
+      devDesktop: 'Máy tính',
+      devTablet: 'Máy tính bảng',
+    },
     search: {
       title: 'Du khách tìm thấy bạn trên Google như thế nào',
       badgeLive: 'Search Console',
@@ -630,6 +743,34 @@ export const partnerStrings: Record<Lang, PartnerStrings> = {
       daysAgo: '14 天前',
       today: '今天',
     },
+    report: {
+      overview: '业绩概览',
+      periodLabel: '近 {n} 天',
+      vsPrev: '较上一周期',
+      print: '打印 / 保存 PDF',
+      demoBanner: '演示估算数据 — 连接 GA4 报告后此处显示实时数据。',
+      contactClicks: '联系点击',
+      contactClicksHint: '主动联系您的次数',
+      convRate: '转化率',
+      convRateHint: '官网点击 ÷ 浏览',
+      viewsHint: '打开了您的页面',
+      unlocksHint: '解锁了优惠券',
+      officialClicksHint: '前往预订网站',
+      trendTitle: '浏览 & 官网点击 · 14 天',
+      legendViews: '浏览',
+      legendClicks: '官网点击',
+      audienceTitle: '按语言划分的受众',
+      audienceSub: '您的页面吸引哪些旅客',
+      sourcesTitle: '旅客来源',
+      devicesTitle: '设备',
+      srcOrganic: '自然搜索',
+      srcDirect: '直接访问',
+      srcReferral: '引荐',
+      srcSocial: '社交媒体',
+      devMobile: '手机',
+      devDesktop: '电脑',
+      devTablet: '平板',
+    },
     search: {
       title: '旅客如何在 Google 上找到您',
       badgeLive: 'Search Console',
@@ -765,6 +906,34 @@ export const partnerStrings: Record<Lang, PartnerStrings> = {
       title: '公式サイトクリック · 直近14日',
       daysAgo: '14日前',
       today: '今日',
+    },
+    report: {
+      overview: 'パフォーマンス概要',
+      periodLabel: '直近{n}日',
+      vsPrev: '前期比',
+      print: '印刷 / PDF 保存',
+      demoBanner: 'デモ推定値です — GA4 レポートを接続すると実数値がここに表示されます。',
+      contactClicks: '連絡クリック',
+      contactClicksHint: '問い合わせのあった回数',
+      convRate: 'コンバージョン率',
+      convRateHint: '公式サイトクリック ÷ 閲覧',
+      viewsHint: 'ページを開いた回数',
+      unlocksHint: 'クーポンを解錠',
+      officialClicksHint: '予約サイトへ移動',
+      trendTitle: '閲覧 & 公式サイトクリック · 14日',
+      legendViews: '閲覧',
+      legendClicks: '公式サイトクリック',
+      audienceTitle: '言語別オーディエンス',
+      audienceSub: 'あなたのページが惹きつける旅行者',
+      sourcesTitle: '旅行者の流入元',
+      devicesTitle: 'デバイス',
+      srcOrganic: '自然検索',
+      srcDirect: '直接',
+      srcReferral: '参照',
+      srcSocial: 'ソーシャル',
+      devMobile: 'モバイル',
+      devDesktop: 'デスクトップ',
+      devTablet: 'タブレット',
     },
     search: {
       title: '旅行者が Google であなたを見つける方法',
