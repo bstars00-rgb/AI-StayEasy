@@ -3,6 +3,9 @@ import type { ReactNode } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { findInCatalogue } from '../data/mockRepo'
 import { Logo } from '../components/Logo'
+import { LanguageSwitcher } from '../components/LanguageSwitcher'
+import { useLang } from '../i18n'
+import { partnerStrings } from '../lib/partnerI18n'
 import { usePartnerSession } from '../lib/partnerAuth'
 import { hotelEdits } from '../lib/hotelEdits'
 import type { HotelPatch } from '../lib/hotelEdits'
@@ -23,6 +26,9 @@ function Field({ label, hint, children }: { label: string; hint?: string; childr
 
 export default function PartnerEditPage() {
   useDocumentMeta('Edit listing — StayEasy partners', 'Update your StayEasy listing content.')
+  const { lang } = useLang()
+  const t = partnerStrings[lang]
+  const te = t.edit
   const navigate = useNavigate()
   const session = usePartnerSession()
   const hotel = session ? findInCatalogue(session.slug) : undefined
@@ -117,35 +123,38 @@ export default function PartnerEditPage() {
   return (
     <div className="min-h-screen bg-sand-50">
       <header className="sticky top-0 z-20 flex h-16 items-center justify-between gap-3 border-b border-black/5 bg-white/90 px-4 backdrop-blur sm:px-6">
-        <Link to="/partner" className="flex items-center gap-2 text-sm font-medium text-ink-700 hover:text-ink-900">← Back to portal</Link>
-        <Logo size={30} textClass="text-base" />
+        <Link to="/partner" className="flex items-center gap-2 text-sm font-medium text-ink-700 hover:text-ink-900">{t.backToPortal}</Link>
+        <div className="flex items-center gap-3">
+          <LanguageSwitcher />
+          <Logo size={30} textClass="text-base" />
+        </div>
       </header>
 
       <form onSubmit={save} className="mx-auto max-w-2xl space-y-5 p-4 sm:p-6">
         <div>
-          <h1 className="text-2xl font-extrabold text-ink-900">Edit your listing</h1>
-          <p className="mt-1 text-sm text-ink-700/70">{session.propertyName} — changes appear on your public page immediately. List items go one per line.</p>
+          <h1 className="text-2xl font-extrabold text-ink-900">{te.title}</h1>
+          <p className="mt-1 text-sm text-ink-700/70">{te.subtitle.replace('{name}', session.propertyName)}</p>
         </div>
 
         <section className="space-y-4 rounded-2xl bg-white p-5 shadow-card ring-1 ring-black/5 sm:p-6">
-          <Field label="Positioning line" hint="one-line pitch"><input value={f.positioningLine} onChange={set('positioningLine')} className={inputCls} /></Field>
-          <Field label="Short description"><textarea value={f.shortDescription} onChange={set('shortDescription')} rows={3} className={inputCls} /></Field>
-          <Field label="Main reason to choose"><textarea value={f.mainReason} onChange={set('mainReason')} rows={2} className={inputCls} /></Field>
+          <Field label={te.positioning} hint={te.positioningHint}><input value={f.positioningLine} onChange={set('positioningLine')} className={inputCls} /></Field>
+          <Field label={te.shortDesc}><textarea value={f.shortDescription} onChange={set('shortDescription')} rows={3} className={inputCls} /></Field>
+          <Field label={te.mainReason}><textarea value={f.mainReason} onChange={set('mainReason')} rows={2} className={inputCls} /></Field>
           <div className="grid gap-4 sm:grid-cols-2">
-            <Field label="Facilities"><textarea value={f.facilities} onChange={set('facilities')} rows={5} className={inputCls} /></Field>
-            <Field label="Official booking benefits"><textarea value={f.officialBenefits} onChange={set('officialBenefits')} rows={5} className={inputCls} /></Field>
+            <Field label={te.facilities}><textarea value={f.facilities} onChange={set('facilities')} rows={5} className={inputCls} /></Field>
+            <Field label={te.officialBenefits}><textarea value={f.officialBenefits} onChange={set('officialBenefits')} rows={5} className={inputCls} /></Field>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
-            <Field label="Official website URL"><input value={f.officialWebsiteUrl} onChange={set('officialWebsiteUrl')} placeholder="https://hotel.example/booking" className={inputCls} /></Field>
-            <Field label="Main photo URL"><input value={f.imageUrl} onChange={set('imageUrl')} className={inputCls} /></Field>
+            <Field label={te.officialUrl}><input value={f.officialWebsiteUrl} onChange={set('officialWebsiteUrl')} placeholder="https://hotel.example/booking" className={inputCls} /></Field>
+            <Field label={te.mainPhoto}><input value={f.imageUrl} onChange={set('imageUrl')} className={inputCls} /></Field>
           </div>
-          <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={f.koreanFriendly} onChange={set('koreanFriendly')} /> 🇰🇷 Korean-friendly</label>
+          <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={f.koreanFriendly} onChange={set('koreanFriendly')} /> {te.koreanFriendly}</label>
         </section>
 
         <section className="space-y-4 rounded-2xl bg-white p-5 shadow-card ring-1 ring-black/5 sm:p-6">
           <div>
-            <h2 className="font-bold text-ink-900">Room &amp; property photos</h2>
-            <p className="text-xs text-ink-600/70">Add photo URLs, or upload images. The first photos appear in your gallery.</p>
+            <h2 className="font-bold text-ink-900">{te.photosTitle}</h2>
+            <p className="text-xs text-ink-600/70">{te.photosSub}</p>
           </div>
 
           {gallery.length > 0 && (
@@ -153,7 +162,7 @@ export default function PartnerEditPage() {
               {gallery.map((url, i) => (
                 <div key={i} className="group relative aspect-[4/3] overflow-hidden rounded-xl bg-sand-100 ring-1 ring-black/5">
                   {url ? <img src={url} alt="" className="h-full w-full object-cover" /> : <div className="grid h-full place-items-center text-xl text-ink-400">🏨</div>}
-                  <button type="button" onClick={() => removePhoto(i)} aria-label="Remove photo" className="absolute right-1 top-1 grid h-6 w-6 place-items-center rounded-full bg-black/55 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100">✕</button>
+                  <button type="button" onClick={() => removePhoto(i)} aria-label={t.remove} className="absolute right-1 top-1 grid h-6 w-6 place-items-center rounded-full bg-black/55 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100">✕</button>
                 </div>
               ))}
             </div>
@@ -163,15 +172,15 @@ export default function PartnerEditPage() {
             {gallery.map((url, i) => (
               <div key={i} className="flex gap-2">
                 <input value={url} onChange={(e) => setPhoto(i, e.target.value)} placeholder="https://…/room.jpg" className={inputCls} />
-                <button type="button" onClick={() => removePhoto(i)} className="shrink-0 rounded-xl bg-white px-3 text-sm font-semibold text-ink-700 ring-1 ring-black/10 hover:bg-sand-50">Remove</button>
+                <button type="button" onClick={() => removePhoto(i)} className="shrink-0 rounded-xl bg-white px-3 text-sm font-semibold text-ink-700 ring-1 ring-black/10 hover:bg-sand-50">{t.remove}</button>
               </div>
             ))}
           </div>
 
           <div className="flex flex-wrap gap-2">
-            <button type="button" onClick={addPhoto} className="rounded-xl bg-sand-100 px-4 py-2 text-sm font-semibold text-ink-800 hover:bg-sand-200">+ Add photo URL</button>
+            <button type="button" onClick={addPhoto} className="rounded-xl bg-sand-100 px-4 py-2 text-sm font-semibold text-ink-800 hover:bg-sand-200">{te.addPhotoUrl}</button>
             <label className="cursor-pointer rounded-xl bg-sand-100 px-4 py-2 text-sm font-semibold text-ink-800 hover:bg-sand-200">
-              ⬆ Upload photos
+              {te.uploadPhotos}
               <input type="file" accept="image/*" multiple onChange={uploadPhotos} className="hidden" />
             </label>
           </div>
@@ -179,22 +188,22 @@ export default function PartnerEditPage() {
 
         <section className="space-y-4 rounded-2xl bg-white p-5 shadow-card ring-1 ring-black/5 sm:p-6">
           <div>
-            <h2 className="font-bold text-ink-900">Direct-booking voucher</h2>
-            <p className="text-xs text-ink-600/70">Optional — leave the code blank to remove it.</p>
+            <h2 className="font-bold text-ink-900">{te.voucherTitle}</h2>
+            <p className="text-xs text-ink-600/70">{te.voucherSub}</p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
-            <Field label="Voucher code"><input value={f.voucherCode} onChange={set('voucherCode')} placeholder="STAY10" className={inputCls} /></Field>
-            <Field label="Valid until"><input value={f.voucherValidUntil} onChange={set('voucherValidUntil')} placeholder="2026-12-31" className={inputCls} /></Field>
-            <Field label="Discount label"><input value={f.voucherLabel} onChange={set('voucherLabel')} placeholder="10% off your direct booking" className={inputCls} /></Field>
-            <Field label="Terms"><input value={f.voucherTerms} onChange={set('voucherTerms')} className={inputCls} /></Field>
-            <Field label="How guests redeem">
+            <Field label={te.voucherCode}><input value={f.voucherCode} onChange={set('voucherCode')} placeholder="STAY10" className={inputCls} /></Field>
+            <Field label={te.validUntil}><input value={f.voucherValidUntil} onChange={set('voucherValidUntil')} placeholder="2026-12-31" className={inputCls} /></Field>
+            <Field label={te.discountLabel}><input value={f.voucherLabel} onChange={set('voucherLabel')} placeholder="10% off your direct booking" className={inputCls} /></Field>
+            <Field label={te.terms}><input value={f.voucherTerms} onChange={set('voucherTerms')} className={inputCls} /></Field>
+            <Field label={te.howRedeem}>
               <select value={f.voucherRedeem} onChange={set('voucherRedeem')} className={inputCls}>
-                <option value="online">Online — enter the code in your booking form's discount field</option>
-                <option value="onsite">On-site — guest shows it at the front desk on arrival</option>
+                <option value="online">{te.redeemOnline}</option>
+                <option value="onsite">{te.redeemOnsite}</option>
               </select>
             </Field>
             {f.voucherRedeem === 'online' && (
-              <Field label="Code field name (as it appears in your booking widget)">
+              <Field label={te.fieldName}>
                 <input value={f.voucherFieldLabel} onChange={set('voucherFieldLabel')} placeholder="Promo code / Voucher / Gift code" className={inputCls} />
               </Field>
             )}
@@ -203,28 +212,28 @@ export default function PartnerEditPage() {
 
         <section className="space-y-4 rounded-2xl bg-white p-5 shadow-card ring-1 ring-black/5 sm:p-6">
           <div>
-            <h2 className="font-bold text-ink-900">Direct contact channels</h2>
-            <p className="text-xs text-ink-600/70">Guests reach you directly on these — StayEasy doesn’t host the chat. Fill only the ones you use; chat apps are easiest across languages.</p>
+            <h2 className="font-bold text-ink-900">{te.contactTitle}</h2>
+            <p className="text-xs text-ink-600/70">{te.contactSub}</p>
           </div>
-          <Field label="Your language" hint="guest requests are translated into this">
+          <Field label={te.yourLang} hint={te.yourLangHint}>
             <select value={f.contactLang} onChange={set('contactLang')} className={inputCls}>
               {(['vi', 'en', 'ko', 'zh', 'ja'] as const).map((l) => <option key={l} value={l}>{l}</option>)}
             </select>
           </Field>
           <div className="grid gap-4 sm:grid-cols-2">
-            <Field label="Email"><input value={f.cEmail} onChange={set('cEmail')} placeholder="frontdesk@hotel.example" className={inputCls} /></Field>
-            <Field label="Phone" hint="+country code"><input value={f.cPhone} onChange={set('cPhone')} placeholder="+84905123456" className={inputCls} /></Field>
-            <Field label="WhatsApp" hint="number"><input value={f.cWhatsapp} onChange={set('cWhatsapp')} placeholder="+84905123456" className={inputCls} /></Field>
-            <Field label="Zalo" hint="number"><input value={f.cZalo} onChange={set('cZalo')} placeholder="+84905123456" className={inputCls} /></Field>
-            <Field label="KakaoTalk" hint="open-chat URL"><input value={f.cKakao} onChange={set('cKakao')} placeholder="https://open.kakao.com/o/…" className={inputCls} /></Field>
-            <Field label="LINE" hint="id"><input value={f.cLine} onChange={set('cLine')} placeholder="@hotelid" className={inputCls} /></Field>
-            <Field label="Messenger" hint="m.me username"><input value={f.cMessenger} onChange={set('cMessenger')} placeholder="hotelpage" className={inputCls} /></Field>
+            <Field label={t.email}><input value={f.cEmail} onChange={set('cEmail')} placeholder="frontdesk@hotel.example" className={inputCls} /></Field>
+            <Field label={te.phone} hint={te.phoneHint}><input value={f.cPhone} onChange={set('cPhone')} placeholder="+84905123456" className={inputCls} /></Field>
+            <Field label={te.whatsapp} hint={te.numberHint}><input value={f.cWhatsapp} onChange={set('cWhatsapp')} placeholder="+84905123456" className={inputCls} /></Field>
+            <Field label={te.zalo} hint={te.numberHint}><input value={f.cZalo} onChange={set('cZalo')} placeholder="+84905123456" className={inputCls} /></Field>
+            <Field label={te.kakao} hint={te.kakaoHint}><input value={f.cKakao} onChange={set('cKakao')} placeholder="https://open.kakao.com/o/…" className={inputCls} /></Field>
+            <Field label={te.line} hint={te.lineHint}><input value={f.cLine} onChange={set('cLine')} placeholder="@hotelid" className={inputCls} /></Field>
+            <Field label={te.messenger} hint={te.messengerHint}><input value={f.cMessenger} onChange={set('cMessenger')} placeholder="hotelpage" className={inputCls} /></Field>
           </div>
         </section>
 
         <div className="sticky bottom-0 flex gap-2 border-t border-black/5 bg-sand-50/95 py-3 backdrop-blur">
-          <Link to="/partner" className="flex-1 rounded-xl bg-white px-4 py-3 text-center text-sm font-semibold text-ink-800 ring-1 ring-black/10 hover:bg-sand-100">Cancel</Link>
-          <button type="submit" className="flex-1 rounded-xl bg-brand-600 px-4 py-3 text-sm font-semibold text-white hover:bg-brand-700">Save changes</button>
+          <Link to="/partner" className="flex-1 rounded-xl bg-white px-4 py-3 text-center text-sm font-semibold text-ink-800 ring-1 ring-black/10 hover:bg-sand-100">{t.cancel}</Link>
+          <button type="submit" className="flex-1 rounded-xl bg-brand-600 px-4 py-3 text-sm font-semibold text-white hover:bg-brand-700">{te.saveChanges}</button>
         </div>
       </form>
     </div>

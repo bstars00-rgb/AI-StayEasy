@@ -9,7 +9,15 @@ function hash(s: string): number {
   return h
 }
 
-export function ClicksTrend({ slug, total }: { slug: string; total: number }) {
+export function ClicksTrend({
+  slug,
+  total,
+  t,
+}: {
+  slug: string
+  total: number
+  t: { title: string; daysAgo: string; today: string }
+}) {
   const days = 14
   const base = Math.max(2, Math.round(total / days))
   const vals = Array.from({ length: days }, (_, i) => {
@@ -22,7 +30,7 @@ export function ClicksTrend({ slug, total }: { slug: string; total: number }) {
   return (
     <div>
       <div className="flex items-baseline justify-between">
-        <p className="text-xs font-semibold uppercase tracking-wide text-ink-600/60">Official-site clicks · last 14 days</p>
+        <p className="text-xs font-semibold uppercase tracking-wide text-ink-600/60">{t.title}</p>
         <p className="text-sm font-bold text-ink-900">{sum.toLocaleString()}</p>
       </div>
       <div className="mt-3 flex h-24 items-end gap-1" role="img" aria-label={`Clicks trend, ${sum} total over 14 days`}>
@@ -31,8 +39,8 @@ export function ClicksTrend({ slug, total }: { slug: string; total: number }) {
         ))}
       </div>
       <div className="mt-1 flex justify-between text-[11px] text-ink-600/50">
-        <span>14 days ago</span>
-        <span>Today</span>
+        <span>{t.daysAgo}</span>
+        <span>{t.today}</span>
       </div>
     </div>
   )

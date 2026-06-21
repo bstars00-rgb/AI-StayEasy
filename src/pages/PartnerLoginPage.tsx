@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Logo } from '../components/Logo'
+import { LanguageSwitcher } from '../components/LanguageSwitcher'
+import { useLang } from '../i18n'
+import { partnerStrings } from '../lib/partnerI18n'
 import { partnerAuth } from '../lib/partnerAuth'
 import { partnerAccounts } from '../lib/partnerAccounts'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
@@ -10,6 +13,8 @@ const labelCls = 'text-xs font-semibold uppercase tracking-wide text-ink-600/70'
 
 export default function PartnerLoginPage() {
   useDocumentMeta('Hotel login — StayEasy partners', 'Sign in or create a partner account to manage your StayEasy listing.')
+  const { lang } = useLang()
+  const t = partnerStrings[lang]
   const navigate = useNavigate()
   const [mode, setMode] = useState<'signin' | 'signup'>('signin')
   const [email, setEmail] = useState('')
@@ -24,10 +29,10 @@ export default function PartnerLoginPage() {
     if (!res.ok) {
       const text =
         res.reason === 'pending'
-          ? 'Your account is awaiting admin approval.'
+          ? t.login.errPending
           : res.reason === 'rejected'
-            ? 'This account was not approved. Please contact us.'
-            : 'Invalid email or password.'
+            ? t.login.errRejected
+            : t.login.errInvalid
       setMsg({ kind: 'error', text })
       return
     }
@@ -38,7 +43,7 @@ export default function PartnerLoginPage() {
   const signUp = (e: React.FormEvent) => {
     e.preventDefault()
     if (password.length < 6) {
-      setMsg({ kind: 'error', text: 'Password must be at least 6 characters.' })
+      setMsg({ kind: 'error', text: t.login.errPwShort })
       return
     }
     const account = partnerAccounts.register({
@@ -49,12 +54,12 @@ export default function PartnerLoginPage() {
       createdAt: new Date().toISOString().slice(0, 10),
     })
     if (!account) {
-      setMsg({ kind: 'error', text: 'An account with this email already exists.' })
+      setMsg({ kind: 'error', text: t.login.errEmailExists })
       return
     }
     setMode('signin')
     setPassword('')
-    setMsg({ kind: 'ok', text: 'Account created — it’s pending admin approval. We’ll email you once it’s approved.' })
+    setMsg({ kind: 'ok', text: t.login.okCreated })
   }
 
   const tab = (m: 'signin' | 'signup', label: string) => (
@@ -72,12 +77,13 @@ export default function PartnerLoginPage() {
   return (
     <div className="grid min-h-screen place-items-center bg-sand-50 px-4">
       <div className="w-full max-w-md">
+        <div className="mb-4 flex justify-end"><LanguageSwitcher /></div>
         <div className="mb-6 flex justify-center"><Logo size={40} /></div>
 
         <div className="rounded-3xl bg-white p-7 shadow-card ring-1 ring-black/5">
           <div className="mb-5 flex gap-1 rounded-xl bg-sand-100 p-1">
-            {tab('signin', 'Sign in')}
-            {tab('signup', 'Create account')}
+            {tab('signin', t.login.signIn)}
+            {tab('signup', t.login.createAccount)}
           </div>
 
           {msg && (
@@ -89,47 +95,47 @@ export default function PartnerLoginPage() {
           {mode === 'signin' ? (
             <form onSubmit={signIn} className="space-y-4">
               <label className="block">
-                <span className={labelCls}>Email</span>
+                <span className={labelCls}>{t.email}</span>
                 <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="manager@hotel.example" className={`mt-1 ${inputCls}`} />
               </label>
               <label className="block">
-                <span className={labelCls}>Password</span>
+                <span className={labelCls}>{t.password}</span>
                 <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required className={`mt-1 ${inputCls}`} />
               </label>
               <div className="text-right">
-                <Link to="/partner/reset" className="text-xs font-semibold text-brand-700 hover:underline">Forgot password?</Link>
+                <Link to="/partner/reset" className="text-xs font-semibold text-brand-700 hover:underline">{t.login.forgotPw}</Link>
               </div>
-              <button type="submit" className="w-full rounded-xl bg-brand-600 px-4 py-3 text-sm font-semibold text-white hover:bg-brand-700">Sign in</button>
+              <button type="submit" className="w-full rounded-xl bg-brand-600 px-4 py-3 text-sm font-semibold text-white hover:bg-brand-700">{t.login.signIn}</button>
             </form>
           ) : (
             <form onSubmit={signUp} className="space-y-4">
               <label className="block">
-                <span className={labelCls}>Hotel name</span>
+                <span className={labelCls}>{t.hotelName}</span>
                 <input value={hotelName} onChange={(e) => setHotelName(e.target.value)} required placeholder="Riverside Pearl Hotel" className={`mt-1 ${inputCls}`} />
               </label>
               <label className="block">
-                <span className={labelCls}>City</span>
+                <span className={labelCls}>{t.city}</span>
                 <input value={city} onChange={(e) => setCity(e.target.value)} placeholder="Da Nang" className={`mt-1 ${inputCls}`} />
               </label>
               <label className="block">
-                <span className={labelCls}>Email (your login ID)</span>
+                <span className={labelCls}>{t.login.emailLoginId}</span>
                 <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="manager@hotel.example" className={`mt-1 ${inputCls}`} />
               </label>
               <label className="block">
-                <span className={labelCls}>Password</span>
-                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required placeholder="At least 6 characters" className={`mt-1 ${inputCls}`} />
+                <span className={labelCls}>{t.password}</span>
+                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required placeholder={t.login.pwMinPh} className={`mt-1 ${inputCls}`} />
               </label>
-              <button type="submit" className="w-full rounded-xl bg-brand-600 px-4 py-3 text-sm font-semibold text-white hover:bg-brand-700">Create account</button>
-              <p className="text-center text-xs text-ink-600/60">New accounts are reviewed and approved by our team before sign-in.</p>
+              <button type="submit" className="w-full rounded-xl bg-brand-600 px-4 py-3 text-sm font-semibold text-white hover:bg-brand-700">{t.login.createAccount}</button>
+              <p className="text-center text-xs text-ink-600/60">{t.login.newAcctNote}</p>
             </form>
           )}
         </div>
 
         <div className="mt-4 flex justify-between text-sm">
-          <Link to="/" className="text-ink-700/70 hover:text-ink-900">← Back to site</Link>
-          <Link to="/partners" className="text-brand-700 hover:underline">Why partner with us?</Link>
+          <Link to="/" className="text-ink-700/70 hover:text-ink-900">{t.backToSite}</Link>
+          <Link to="/partners" className="text-brand-700 hover:underline">{t.login.whyPartner}</Link>
         </div>
-        <p className="mt-3 text-center text-xs text-ink-600/55">🧪 Demo — accounts and approval are stored in your browser.</p>
+        <p className="mt-3 text-center text-xs text-ink-600/55">{t.login.demoNote}</p>
       </div>
     </div>
   )
