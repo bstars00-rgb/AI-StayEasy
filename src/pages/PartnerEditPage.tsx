@@ -120,6 +120,17 @@ export default function PartnerEditPage() {
     navigate('/partner')
   }
 
+  // Live-preview derivations + a simple completeness score for the sidebar.
+  const facLines = lines(f.facilities)
+  const benLines = lines(f.officialBenefits)
+  const previewImg = f.imageUrl.trim() || gallery.find((g) => g.trim()) || ''
+  const checkFields = [
+    f.positioningLine, f.shortDescription, f.mainReason, f.facilities, f.officialBenefits,
+    f.officialWebsiteUrl, f.imageUrl, f.voucherCode,
+    [f.cEmail, f.cPhone, f.cWhatsapp, f.cZalo, f.cKakao, f.cLine, f.cMessenger].find((x) => x.trim()) ?? '',
+  ]
+  const completeness = Math.round((checkFields.filter((x) => x.trim()).length / checkFields.length) * 100)
+
   return (
     <div className="min-h-screen bg-sand-50">
       <header className="sticky top-0 z-20 flex h-16 items-center justify-between gap-3 border-b border-black/5 bg-white/90 px-4 backdrop-blur sm:px-6">
@@ -130,11 +141,14 @@ export default function PartnerEditPage() {
         </div>
       </header>
 
-      <form onSubmit={save} className="mx-auto max-w-2xl space-y-5 p-4 sm:p-6">
-        <div>
+      <form onSubmit={save} className="mx-auto max-w-6xl p-4 sm:p-6 lg:p-8">
+        <div className="mb-5">
           <h1 className="text-2xl font-extrabold text-ink-900">{te.title}</h1>
           <p className="mt-1 text-sm text-ink-700/70">{te.subtitle.replace('{name}', session.propertyName)}</p>
         </div>
+
+        <div className="grid gap-6 lg:grid-cols-[1fr_22rem] lg:items-start">
+          <div className="min-w-0 space-y-5">
 
         <section className="space-y-4 rounded-2xl bg-white p-5 shadow-card ring-1 ring-black/5 sm:p-6">
           <Field label={te.positioning} hint={te.positioningHint}><input value={f.positioningLine} onChange={set('positioningLine')} className={inputCls} /></Field>
@@ -231,7 +245,59 @@ export default function PartnerEditPage() {
           </div>
         </section>
 
-        <div className="sticky bottom-0 flex gap-2 border-t border-black/5 bg-sand-50/95 py-3 backdrop-blur">
+          </div>{/* /left column */}
+
+          <aside className="space-y-4 lg:sticky lg:top-20">
+            <div className="rounded-2xl bg-white p-4 shadow-card ring-1 ring-black/5">
+              <div className="flex items-baseline justify-between">
+                <p className="text-xs font-semibold uppercase tracking-wide text-ink-600/60">{te.completeness}</p>
+                <p className="text-sm font-extrabold text-ink-900">{completeness}%</p>
+              </div>
+              <div className="mt-2 h-2 overflow-hidden rounded-full bg-black/5">
+                <div className="h-full rounded-full bg-brand-500 transition-all" style={{ width: `${completeness}%` }} />
+              </div>
+            </div>
+
+            <div className="overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-black/5">
+              <div className="aspect-[16/10] bg-sand-100">
+                {previewImg ? (
+                  <img src={previewImg} alt="" className="h-full w-full object-cover" />
+                ) : (
+                  <div className="grid h-full place-items-center text-3xl text-ink-400">🏨</div>
+                )}
+              </div>
+              <div className="space-y-3 p-4">
+                <div>
+                  <p className="text-[11px] font-semibold uppercase tracking-wide text-ink-600/55">{te.previewTitle}</p>
+                  <h3 className="mt-0.5 font-extrabold text-ink-900">{session.propertyName}</h3>
+                  {f.positioningLine && <p className="text-sm text-brand-700">{f.positioningLine}</p>}
+                </div>
+                {f.shortDescription && <p className="text-xs text-ink-700/80">{f.shortDescription}</p>}
+                {f.koreanFriendly && <span className="inline-block rounded-full bg-sand-50 px-2 py-0.5 text-[11px] font-medium text-ink-700 ring-1 ring-black/5">{te.koreanFriendly}</span>}
+                {facLines.length > 0 && (
+                  <div className="flex flex-wrap gap-1">
+                    {facLines.slice(0, 6).map((x) => (
+                      <span key={x} className="rounded-full bg-sand-50 px-2 py-0.5 text-[11px] text-ink-700 ring-1 ring-black/5">{x}</span>
+                    ))}
+                  </div>
+                )}
+                {benLines.length > 0 && (
+                  <ul className="space-y-1">
+                    {benLines.slice(0, 4).map((b) => (
+                      <li key={b} className="flex items-start gap-1.5 text-[11px] text-ink-800"><span className="text-brand-600">✓</span> {b}</li>
+                    ))}
+                  </ul>
+                )}
+                {f.voucherCode && (
+                  <p className="rounded-lg bg-brand-50 px-2 py-1 text-[11px] font-semibold text-brand-700 ring-1 ring-brand-100">🎟️ {f.voucherLabel || f.voucherCode}</p>
+                )}
+                <p className="text-[11px] text-ink-600/55">{te.previewSub}</p>
+              </div>
+            </div>
+          </aside>
+        </div>{/* /grid */}
+
+        <div className="sticky bottom-0 mt-5 flex gap-2 border-t border-black/5 bg-sand-50/95 py-3 backdrop-blur">
           <Link to="/partner" className="flex-1 rounded-xl bg-white px-4 py-3 text-center text-sm font-semibold text-ink-800 ring-1 ring-black/10 hover:bg-sand-100">{t.cancel}</Link>
           <button type="submit" className="flex-1 rounded-xl bg-brand-600 px-4 py-3 text-sm font-semibold text-white hover:bg-brand-700">{te.saveChanges}</button>
         </div>

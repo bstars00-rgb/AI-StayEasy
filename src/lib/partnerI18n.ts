@@ -177,6 +177,9 @@ export interface PartnerStrings {
     messengerHint: string
     numberHint: string
     saveChanges: string
+    previewTitle: string
+    previewSub: string
+    completeness: string
   }
 }
 
@@ -342,6 +345,9 @@ export const partnerStrings: Record<Lang, PartnerStrings> = {
       messengerHint: 'm.me username',
       numberHint: 'number',
       saveChanges: 'Save changes',
+      previewTitle: 'Live preview',
+      previewSub: 'How guests see your listing',
+      completeness: 'Listing completeness',
     },
   },
 
@@ -506,6 +512,9 @@ export const partnerStrings: Record<Lang, PartnerStrings> = {
       messengerHint: 'm.me 사용자명',
       numberHint: '번호',
       saveChanges: '변경 저장',
+      previewTitle: '실시간 미리보기',
+      previewSub: '게스트에게 보이는 모습',
+      completeness: '리스팅 완성도',
     },
   },
 
@@ -670,6 +679,9 @@ export const partnerStrings: Record<Lang, PartnerStrings> = {
       messengerHint: 'tên m.me',
       numberHint: 'số',
       saveChanges: 'Lưu thay đổi',
+      previewTitle: 'Xem trước trực tiếp',
+      previewSub: 'Cách khách thấy trang của bạn',
+      completeness: 'Mức độ hoàn thiện',
     },
   },
 
@@ -834,6 +846,9 @@ export const partnerStrings: Record<Lang, PartnerStrings> = {
       messengerHint: 'm.me 用户名',
       numberHint: '号码',
       saveChanges: '保存更改',
+      previewTitle: '实时预览',
+      previewSub: '游客看到的样子',
+      completeness: '资料完整度',
     },
   },
 
@@ -998,6 +1013,9 @@ export const partnerStrings: Record<Lang, PartnerStrings> = {
       messengerHint: 'm.me ユーザー名',
       numberHint: '番号',
       saveChanges: '変更を保存',
+      previewTitle: 'ライブプレビュー',
+      previewSub: 'ゲストに見える表示',
+      completeness: '掲載の完成度',
     },
   },
 }
