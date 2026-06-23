@@ -44,7 +44,7 @@ describe('route render (lazy chunks resolve, no throw)', () => {
   const routes = [
     '/', '/search', '/wishlist', '/account', '/signin',
     '/destinations/vietnam', '/destinations/da-nang', '/destinations/hanoi',
-    '/hotels/an-bang-beach-resort', '/guides/direct-booking',
+    '/hotels/olalani-resort-condotel', '/guides/direct-booking',
     '/guides', '/guides/why-book-hotels-direct', '/guides/da-nang-travel-guide',
     '/privacy', '/terms', '/contact',
     '/partners', '/dashboard', '/admin', '/admin/register', '/partner/login', '/partner/reset', '/about', '/no-such-page',
@@ -98,7 +98,7 @@ describe('interaction: hotel registration page', () => {
 
   it('shows a registered draft in the unified Partners table', async () => {
     partnerDrafts.clear()
-    const base = getHotel('an-bang-beach-resort')!
+    const base = getHotel('olalani-resort-condotel')!
     partnerDrafts.add({
       hotel: { ...base, id: 'draft-x', slug: 'seeded-draft-hotel', name: 'Seeded Draft Hotel', isSponsored: false },
       plan: 'Growth',
@@ -113,7 +113,7 @@ describe('interaction: hotel registration page', () => {
 
   it('shows a registered hotel on its public detail page (loop closed)', async () => {
     partnerDrafts.clear()
-    const base = getHotel('an-bang-beach-resort')!
+    const base = getHotel('olalani-resort-condotel')!
     partnerDrafts.add({
       hotel: { ...base, id: 'draft-pub', slug: 'my-registered-hotel', name: 'My Registered Hotel' },
       plan: 'Growth',
@@ -130,21 +130,21 @@ describe('interaction: hotel registration page', () => {
 describe('interaction: hotel partner self-service portal', () => {
   it('lets a signed-in hotel edit its listing, and the edit shows on the public page', async () => {
     hotelEdits.clear()
-    partnerAuth.login({ slug: 'an-bang-beach-resort', propertyName: 'An Bang Beach Resort & Spa', email: 'gm@hotel.example' })
+    partnerAuth.login({ slug: 'olalani-resort-condotel', propertyName: 'Olalani Resort & Condotel', email: 'gm@hotel.example' })
 
     wrap('/partner/edit')
     await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
 
-    const posInput = await screen.findByDisplayValue(/biggest kids pool/i)
+    const posInput = await screen.findByDisplayValue(/lazy-river pool/i)
     fireEvent.change(posInput, { target: { value: 'A calm beachfront escape for couples.' } })
     fireEvent.click(screen.getByRole('button', { name: /save changes/i }))
 
     // Persisted to the edits store…
-    expect(hotelEdits.get('an-bang-beach-resort').positioningLine).toBe('A calm beachfront escape for couples.')
+    expect(hotelEdits.get('olalani-resort-condotel').positioningLine).toBe('A calm beachfront escape for couples.')
 
     // …and visible on the public hotel page.
     cleanup()
-    wrap('/hotels/an-bang-beach-resort')
+    wrap('/hotels/olalani-resort-condotel')
     await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
     expect(await screen.findByText('A calm beachfront escape for couples.')).toBeTruthy()
 
@@ -178,11 +178,23 @@ describe('interaction: sign-in page issues a member voucher', () => {
   })
 })
 
+// Real catalogue hotels no longer carry fabricated voucher codes, so the voucher
+// UI is exercised against a real hotel with a test voucher attached.
+const TEST_VOUCHER = {
+  code: 'STAY10',
+  discountLabel: '10% off your direct booking',
+  terms: 'Show this code when you book on the official website.',
+  validUntil: '2026-12-31',
+  redeem: 'online' as const,
+  fieldLabel: 'Promo code',
+}
+const withVoucher = () => ({ ...getHotel('olalani-resort-condotel')!, voucher: TEST_VOUCHER })
+
 describe('interaction: member-gated hotel voucher', () => {
   it('hides the code until the guest signs in, then copies it', async () => {
     const writeText = vi.fn().mockResolvedValue(undefined)
     Object.defineProperty(navigator, 'clipboard', { value: { writeText }, configurable: true })
-    const hotel = getHotel('an-bang-beach-resort')!
+    const hotel = withVoucher()
 
     // Signed out → code is gated behind sign-in.
     guestAuth.signOut()
@@ -212,7 +224,7 @@ describe('interaction: member-gated hotel voucher', () => {
   })
 
   it('unlocks in place when the lock is clicked — no navigation', async () => {
-    const hotel = getHotel('an-bang-beach-resort')!
+    const hotel = withVoucher()
     guestAuth.signOut()
     render(
       <I18nProvider>
@@ -231,7 +243,7 @@ describe('interaction: member-gated hotel voucher', () => {
 
   it('fires GA4 intent events on unlock and official-site click', async () => {
     const spy = vi.spyOn(analytics, 'trackEvent')
-    const hotel = getHotel('an-bang-beach-resort')!
+    const hotel = withVoucher()
     guestAuth.signOut()
     render(
       <I18nProvider>
@@ -252,7 +264,7 @@ describe('interaction: member-gated hotel voucher', () => {
   })
 
   it('shows a no-voucher notice for hotels without a voucher', () => {
-    const hotel = getHotel('an-bang-beach-resort')!
+    const hotel = withVoucher()
     const noVoucher = { ...hotel, voucher: undefined }
     render(
       <I18nProvider>
@@ -265,7 +277,7 @@ describe('interaction: member-gated hotel voucher', () => {
   })
 
   it('shows on-site redemption instructions for onsite vouchers', () => {
-    const hotel = getHotel('an-bang-beach-resort')!
+    const hotel = withVoucher()
     const onsite = { ...hotel, voucher: { ...hotel.voucher!, redeem: 'onsite' as const } }
     guestAuth.signIn({ email: 'member@gmail.com' })
     render(
@@ -280,7 +292,7 @@ describe('interaction: member-gated hotel voucher', () => {
   })
 
   it('names the exact code field when the hotel specifies one', () => {
-    const hotel = getHotel('an-bang-beach-resort')!
+    const hotel = withVoucher()
     const named = { ...hotel, voucher: { ...hotel.voucher!, redeem: 'online' as const, fieldLabel: 'Gift code' } }
     guestAuth.signIn({ email: 'member@gmail.com' })
     render(

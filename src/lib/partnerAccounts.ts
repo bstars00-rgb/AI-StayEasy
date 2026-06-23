@@ -44,10 +44,10 @@ const DEMO_ACCOUNT: PartnerAccount = {
   id: 'demo',
   email: 'demo@stayeasy.com',
   password: 'demo1234',
-  hotelName: 'An Bang Beach Resort & Spa',
+  hotelName: 'Olalani Resort & Condotel',
   city: 'Da Nang',
   status: 'Approved',
-  hotelSlug: 'an-bang-beach-resort',
+  hotelSlug: 'olalani-resort-condotel',
   createdAt: '2026-06-17',
 }
 

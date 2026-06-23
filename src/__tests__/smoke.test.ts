@@ -33,11 +33,11 @@ function shapePaths(obj: unknown, prefix = ''): string[] {
 }
 
 describe('hotel data integrity', () => {
-  it('has 32 hotels across 6 cities with unique ids and slugs', () => {
-    expect(hotels).toHaveLength(32)
-    expect(new Set(hotels.map((h) => h.id)).size).toBe(32)
-    expect(new Set(hotels.map((h) => h.slug)).size).toBe(32)
-    expect(hotels.filter((h) => h.city === 'Da Nang')).toHaveLength(12)
+  it('has 30 hotels across 6 cities with unique ids and slugs', () => {
+    expect(hotels).toHaveLength(30)
+    expect(new Set(hotels.map((h) => h.id)).size).toBe(30)
+    expect(new Set(hotels.map((h) => h.slug)).size).toBe(30)
+    expect(hotels.filter((h) => h.city === 'Da Nang')).toHaveLength(10)
     expect(hotels.filter((h) => h.city === 'Ho Chi Minh City')).toHaveLength(4)
     expect(hotels.filter((h) => h.city === 'Nha Trang')).toHaveLength(4)
     expect(hotels.filter((h) => h.city === 'Phu Quoc')).toHaveLength(4)
@@ -236,7 +236,7 @@ describe('direct-booking vouchers', () => {
   const withVouchers = hotels.filter((h) => h.voucher)
 
   it('only sponsored hotels carry vouchers and codes are unique', () => {
-    expect(withVouchers).toHaveLength(8)
+    expect(withVouchers).toHaveLength(5)
     for (const h of withVouchers) {
       expect(h.isSponsored, `${h.slug} has a voucher but is not sponsored`).toBe(true)
       expect(h.voucher!.code).toMatch(/^[A-Z0-9]+$/)
@@ -247,7 +247,7 @@ describe('direct-booking vouchers', () => {
   })
 
   it('renders a self-contained SVG coupon carrying the code', () => {
-    const h = getHotel('an-bang-beach-resort')!
+    const h = getHotel('saigon-central-boutique')!
     const svg = buildVoucherSvg(h, { heading: 'Voucher', validUntilLabel: 'Valid until', footer: 'Use on official site' })
     expect(svg.startsWith('<svg')).toBe(true)
     expect(svg).toContain(h.voucher!.code)
@@ -355,14 +355,14 @@ describe('back-office data', () => {
 describe('async data repo (mock-backed)', () => {
   it('resolves the full catalogue and a single hotel', async () => {
     const all = await repo.allHotels()
-    expect(all).toHaveLength(32)
-    const h = await repo.getHotel('an-bang-beach-resort')
-    expect(h?.slug).toBe('an-bang-beach-resort')
+    expect(all).toHaveLength(30)
+    const h = await repo.getHotel('olalani-resort-condotel')
+    expect(h?.slug).toBe('olalani-resort-condotel')
   })
 
   it('resolves destinations, city hotels, and recommendations', async () => {
     expect((await repo.listDestinations()).length).toBeGreaterThan(12)
-    expect((await repo.listHotelsByCity('Da Nang'))).toHaveLength(12)
+    expect((await repo.listHotelsByCity('Da Nang'))).toHaveLength(10)
     const rec = await repo.recommend('family beach hotel with a pool')
     expect(rec.results.length).toBeGreaterThan(0)
   })
@@ -372,12 +372,12 @@ describe('wishlist store', () => {
   it('toggles, dedupes, removes, and clears', () => {
     wishlist.clear()
     expect(wishlist.get()).toEqual([])
-    wishlist.toggle('an-bang-beach-resort')
+    wishlist.toggle('olalani-resort-condotel')
     wishlist.toggle('son-tra-hillside-retreat')
-    expect(wishlist.has('an-bang-beach-resort')).toBe(true)
+    expect(wishlist.has('olalani-resort-condotel')).toBe(true)
     expect(wishlist.get()).toHaveLength(2)
-    wishlist.toggle('an-bang-beach-resort') // toggle off
-    expect(wishlist.has('an-bang-beach-resort')).toBe(false)
+    wishlist.toggle('olalani-resort-condotel') // toggle off
+    expect(wishlist.has('olalani-resort-condotel')).toBe(false)
     wishlist.remove('son-tra-hillside-retreat')
     expect(wishlist.get()).toEqual([])
   })
@@ -386,7 +386,7 @@ describe('wishlist store', () => {
 describe('API contract', () => {
   it('builds versioned endpoint paths', () => {
     expect(API_BASE).toBe('/api/v1')
-    expect(endpoints.hotel('an-bang-beach-resort')).toBe('/api/v1/hotels/an-bang-beach-resort')
+    expect(endpoints.hotel('olalani-resort-condotel')).toBe('/api/v1/hotels/olalani-resort-condotel')
     expect(endpoints.cityHotels('da-nang')).toBe('/api/v1/cities/da-nang/hotels')
   })
 })
@@ -394,7 +394,7 @@ describe('API contract', () => {
 describe('search insights (mock)', () => {
   it('returns deterministic, internally-consistent Search Console data per hotel', async () => {
     const { getSearchInsights } = await import('../lib/searchInsights')
-    const hotel = getHotel('an-bang-beach-resort')!
+    const hotel = getHotel('olalani-resort-condotel')!
     const a = await getSearchInsights(hotel.slug, hotel)
     const b = await getSearchInsights(hotel.slug, hotel)
 
