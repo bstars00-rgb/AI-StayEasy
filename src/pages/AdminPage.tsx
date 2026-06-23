@@ -8,12 +8,14 @@ import { countries, getCountry, liveMarkets, roadmapMarkets } from '../data/coun
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 import { LogoMark } from '../components/Logo'
 import { partnerAccounts, usePartnerAccounts } from '../lib/partnerAccounts'
+import { MediaManager } from '../components/admin/MediaManager'
 
-type Section = 'overview' | 'partners' | 'approvals' | 'campaigns' | 'inquiries'
+type Section = 'overview' | 'partners' | 'approvals' | 'campaigns' | 'inquiries' | 'media'
 
 const NAV: { key: Section; label: string; icon: string }[] = [
   { key: 'overview', label: 'Overview', icon: '📊' },
   { key: 'partners', label: 'Partners', icon: '🤝' },
+  { key: 'media', label: 'Images', icon: '🖼️' },
   { key: 'approvals', label: 'Approvals', icon: '✅' },
   { key: 'campaigns', label: 'Campaigns', icon: '📣' },
   { key: 'inquiries', label: 'Inquiries', icon: '📨' },
@@ -226,6 +228,8 @@ export default function AdminPage() {
           )}
 
           {/* ---- Partners (unified hotel + partner registry) ---- */}
+          {section === 'media' && <MediaManager />}
+
           {section === 'partners' && (
             <div className="rounded-2xl bg-white shadow-card ring-1 ring-black/5">
               <div className="flex flex-col gap-3 border-b border-black/5 p-4 sm:flex-row sm:items-center sm:justify-between">

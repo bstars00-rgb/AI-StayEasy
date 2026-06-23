@@ -10,10 +10,21 @@ import { useAsync } from '../lib/useAsync'
 import { CardGridSkeleton } from '../components/Loading'
 import { useT } from '../i18n'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
+import { useSiteImages } from '../lib/siteImages'
+
+/** The four hero tiles — decorative emoji by default; an operator can swap in
+ *  real photos from the admin Images tab (siteImages.hero[i]). */
+const HERO_TILES = [
+  { gradient: 'from-sky-400 to-brand-500', emoji: '🏖️', label: 'Beach', mt: false },
+  { gradient: 'from-violet-400 to-indigo-500', emoji: '🌉', label: 'City', mt: true },
+  { gradient: 'from-emerald-500 to-teal-500', emoji: '⛰️', label: 'Hills', mt: false },
+  { gradient: 'from-orange-400 to-rose-400', emoji: '🏠', label: 'Family', mt: true },
+]
 
 export default function HomePage() {
   const t = useT()
   useDocumentMeta(t.home.metaTitle, t.home.metaDesc)
+  const heroImgs = useSiteImages().hero
   const hot = useAsync(() => repo.allHotels(), [])
   const dest = useAsync(() => repo.listDestinations(), [])
   const hotels = hot.data ?? []
@@ -53,10 +64,16 @@ export default function HomePage() {
 
           <div className="relative hidden lg:block">
             <div className="grid grid-cols-2 gap-4">
-              <HotelImage gradient="from-sky-400 to-brand-500" emoji="🏖️" className="h-44" label="Beach" />
-              <HotelImage gradient="from-violet-400 to-indigo-500" emoji="🌉" className="mt-8 h-44" label="City" />
-              <HotelImage gradient="from-emerald-500 to-teal-500" emoji="⛰️" className="h-44" label="Hills" />
-              <HotelImage gradient="from-orange-400 to-rose-400" emoji="🏠" className="mt-8 h-44" label="Family" />
+              {HERO_TILES.map((tile, i) => (
+                <HotelImage
+                  key={tile.label}
+                  gradient={tile.gradient}
+                  emoji={tile.emoji}
+                  src={heroImgs[i]}
+                  className={`h-44 ${tile.mt ? 'mt-8' : ''}`}
+                  label={tile.label}
+                />
+              ))}
             </div>
           </div>
         </div>
