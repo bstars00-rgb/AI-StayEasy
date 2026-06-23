@@ -46,8 +46,9 @@ export default {
         },
       },
       fontFamily: {
-        // Display for headings, Inter for body — modern, friendly, premium.
-        display: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
+        // Fraunces (soft modern serif) for headings, Inter for body — an
+        // editorial, premium travel feel.
+        display: ['Fraunces', 'Georgia', 'serif'],
         sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
       },
       letterSpacing: {
