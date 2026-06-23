@@ -46,10 +46,11 @@ export default {
         },
       },
       fontFamily: {
-        // Fraunces (soft modern serif) for headings, Inter for body — an
-        // editorial, premium travel feel.
-        display: ['Fraunces', 'Georgia', 'serif'],
-        sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
+        // Pretendard everywhere — one modern face that renders Korean, Latin and
+        // numbers consistently (the de-facto Korean web standard). Headings and
+        // body share it for a clean, unified look.
+        display: ['"Pretendard Variable"', 'Pretendard', 'system-ui', '"Apple SD Gothic Neo"', '"Noto Sans KR"', 'sans-serif'],
+        sans: ['"Pretendard Variable"', 'Pretendard', 'system-ui', '-apple-system', '"Segoe UI"', '"Apple SD Gothic Neo"', '"Noto Sans KR"', '"Malgun Gothic"', 'sans-serif'],
       },
       letterSpacing: {
         tightest: '-0.03em',
