@@ -5,9 +5,10 @@ import { recommend } from '../lib/searchEngine'
 import { partnerDrafts } from '../lib/partnerDrafts'
 import { applyEdits } from '../lib/hotelEdits'
 
-/** Resolves `value` after a small delay to mimic network latency. */
-const later = <T>(value: T, ms = 120): Promise<T> =>
-  new Promise((resolve) => setTimeout(() => resolve(value), ms))
+/** Resolves `value`. Catalogue reads are immediate (no artificial latency, so
+ *  navigation feels instant); pass `ms` only where a deliberate pause helps. */
+const later = <T>(value: T, ms = 0): Promise<T> =>
+  ms <= 0 ? Promise.resolve(value) : new Promise((resolve) => setTimeout(() => resolve(value), ms))
 
 // The live catalogue = hotels registered through the back-office (drafts, newest
 // first) + the bundled launch catalogue. Computed per-call so a hotel registered
@@ -27,6 +28,6 @@ export const mockRepo: CatalogRepo = {
     later(catalogue().filter((h) => h.city.toLowerCase() === city.toLowerCase())),
   getHotel: (slug) => later(catalogue().find((h) => h.slug === slug)),
   getSimilarHotels: (hotel) => later(getSimilarHotels(hotel)),
-  // Slightly longer to sell the "AI thinking" moment.
-  recommend: (query, limit) => later(recommend(query, catalogue(), limit), 400),
+  // A brief pause to sell the "AI thinking" moment (the one place latency helps UX).
+  recommend: (query, limit) => later(recommend(query, catalogue(), limit), 250),
 }
