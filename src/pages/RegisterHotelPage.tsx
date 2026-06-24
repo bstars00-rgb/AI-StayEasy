@@ -83,9 +83,9 @@ function Field({ label, hint, children }: { label: string; hint?: string; childr
   )
 }
 
-function Section({ step, title, desc, children }: { step: number; title: string; desc: string; children: ReactNode }) {
+function Section({ step, title, desc, children, wide = false }: { step: number; title: string; desc: string; children: ReactNode; wide?: boolean }) {
   return (
-    <section className="rounded-2xl bg-white p-5 shadow-card ring-1 ring-black/5 sm:p-6">
+    <section className={`rounded-2xl bg-white p-5 shadow-card ring-1 ring-black/5 sm:p-6 ${wide ? 'lg:col-span-2' : ''}`}>
       <div className="flex items-start gap-3">
         <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-brand-100 text-sm font-bold text-brand-700">{step}</span>
         <div>
@@ -201,7 +201,7 @@ export default function RegisterHotelPage() {
         <span className="ml-auto hidden rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700 ring-1 ring-amber-200 sm:inline">🧪 Demo · saved locally</span>
       </header>
 
-      <form onSubmit={submit} className="mx-auto max-w-3xl space-y-5 p-4 sm:p-6">
+      <form onSubmit={submit} className="mx-auto max-w-5xl space-y-5 p-4 sm:p-6 lg:p-8">
         <p className="text-sm text-ink-600/80">
           This captures everything that appears on the public hotel listing. Only the hotel name is required — fill in
           what you have; list items go one per line.
@@ -211,7 +211,7 @@ export default function RegisterHotelPage() {
           <Field label="Hotel name *">
             <input value={f.name} onChange={set('name')} required placeholder="Riverside Pearl Hotel" className={inputCls} />
           </Field>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <Field label="Country" hint="market">
               <select value={f.country} onChange={onCountry} className={inputCls}>
                 {countries.map((c) => (
@@ -287,7 +287,7 @@ export default function RegisterHotelPage() {
         </Section>
 
         <Section step={5} title="Room choice guide" desc="Guidance per traveller type.">
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <Field label="For couples"><input value={f.roomCouples} onChange={set('roomCouples')} className={inputCls} /></Field>
             <Field label="For families"><input value={f.roomFamilies} onChange={set('roomFamilies')} className={inputCls} /></Field>
             <Field label="For long stays"><input value={f.roomLongStay} onChange={set('roomLongStay')} className={inputCls} /></Field>
@@ -296,7 +296,7 @@ export default function RegisterHotelPage() {
         </Section>
 
         <Section step={6} title="Location guide" desc="Getting around and what's nearby.">
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <Field label="Nearby / setting"><input value={f.locNearby} onChange={set('locNearby')} className={inputCls} /></Field>
             <Field label="Airport distance"><input value={f.locAirport} onChange={set('locAirport')} className={inputCls} /></Field>
             <Field label="Getting around"><input value={f.locAround} onChange={set('locAround')} className={inputCls} /></Field>

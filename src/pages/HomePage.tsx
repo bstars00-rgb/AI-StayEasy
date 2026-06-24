@@ -24,7 +24,7 @@ const HERO_TILES = [
 export default function HomePage() {
   const t = useT()
   useDocumentMeta(t.home.metaTitle, t.home.metaDesc)
-  const heroImgs = useSiteImages().hero
+  const siteImgs = useSiteImages()
   const hot = useAsync(() => repo.allHotels(), [])
   const dest = useAsync(() => repo.listDestinations(), [])
   const hotels = hot.data ?? []
@@ -69,7 +69,7 @@ export default function HomePage() {
                   key={tile.label}
                   gradient={tile.gradient}
                   emoji={tile.emoji}
-                  src={heroImgs[i]}
+                  src={siteImgs[`hero-${i + 1}`]}
                   className={`h-44 ${tile.mt ? 'mt-8' : ''}`}
                   label={tile.label}
                 />
@@ -101,7 +101,7 @@ export default function HomePage() {
               to={`/destinations/${d.slug}`}
               className="group relative overflow-hidden rounded-2xl shadow-card ring-1 ring-black/5"
             >
-              <HotelImage gradient={d.heroColor} emoji={d.emoji} rounded="" className="h-40 w-full" label={d.city} />
+              <HotelImage gradient={d.heroColor} emoji={d.emoji} src={siteImgs[`dest-${d.slug}`]} rounded="" className="h-40 w-full" label={d.city} />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
               <div className="absolute bottom-0 left-0 p-4 text-white">
                 <div className="flex items-center gap-2">

@@ -1,35 +1,39 @@
 import { useSyncExternalStore } from 'react'
 
 /**
- * Editable site imagery (home hero tiles) — DEMO storage in localStorage, so an
- * operator can swap the placeholder emoji tiles for real photos without a code
- * change. A real build syncs these through the admin backend / object storage;
- * for now an uploaded file is kept as a data URL in this browser only.
+ * Editable site imagery — a flat map of slot-id → image source (URL or data URL)
+ * so an operator can replace the homepage's placeholder emoji tiles with real
+ * photos from the admin Images tab. Slot ids are stable strings (e.g.
+ * 'hero-1', 'dest-da-nang'); see ADMIN media manager for the labelled registry.
  *
- * `hero` holds up to 4 image sources (URL or data URL); an empty slot falls back
- * to the decorative emoji tile.
+ * DEMO storage: kept in localStorage (uploads become data URLs in this browser
+ * only). A real build syncs these to shared object storage.
  */
-export interface SiteImages {
-  hero: (string | undefined)[]
-}
+export type SiteImageMap = Record<string, string>
 
 const KEY = 'stayeasy-site-images'
-const EMPTY: SiteImages = { hero: [] }
+const EMPTY: SiteImageMap = {}
 
-function read(): SiteImages {
+function read(): SiteImageMap {
   if (typeof localStorage === 'undefined') return EMPTY
   try {
     const v = JSON.parse(localStorage.getItem(KEY) ?? 'null')
-    return v && Array.isArray(v.hero) ? { hero: v.hero } : EMPTY
+    // Back-compat: an earlier shape stored { hero: [...] }.
+    if (v && Array.isArray(v.hero)) {
+      const m: SiteImageMap = {}
+      v.hero.forEach((src: string | undefined, i: number) => { if (src) m[`hero-${i + 1}`] = src })
+      return m
+    }
+    return v && typeof v === 'object' ? (v as SiteImageMap) : EMPTY
   } catch {
     return EMPTY
   }
 }
 
-let state: SiteImages = read()
+let state: SiteImageMap = read()
 const listeners = new Set<() => void>()
 
-function commit(next: SiteImages) {
+function commit(next: SiteImageMap) {
   state = next
   if (typeof localStorage !== 'undefined') {
     try {
@@ -42,13 +46,17 @@ function commit(next: SiteImages) {
 }
 
 export const siteImages = {
-  get: () => state,
-  /** Set (or clear, with undefined) the hero image at slot `i` (0–3). */
-  setHero(i: number, src: string | undefined) {
-    const hero = [...state.hero]
-    while (hero.length < 4) hero.push(undefined)
-    hero[i] = src && src.trim() ? src.trim() : undefined
-    commit({ hero })
+  all: () => state,
+  get: (id: string): string | undefined => state[id],
+  /** Set (or clear, with falsy) the image for slot `id`. */
+  set(id: string, src: string | undefined) {
+    if (src && src.trim()) {
+      commit({ ...state, [id]: src.trim() })
+    } else {
+      const next = { ...state }
+      delete next[id]
+      commit(next)
+    }
   },
   subscribe(l: () => void) {
     listeners.add(l)
@@ -58,6 +66,6 @@ export const siteImages = {
   },
 }
 
-export function useSiteImages(): SiteImages {
-  return useSyncExternalStore(siteImages.subscribe, siteImages.get, () => EMPTY)
+export function useSiteImages(): SiteImageMap {
+  return useSyncExternalStore(siteImages.subscribe, siteImages.all, () => EMPTY)
 }

@@ -1,7 +1,9 @@
 import { useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { partners, campaigns, inquiries, overviewKpis, clicksByCity, feeByPlan } from '../data/adminData'
-import type { Partner } from '../data/adminData'
+import type { Partner, Campaign } from '../data/adminData'
+import { hotels } from '../data/hotels'
+import { campaignDrafts, useCampaignDrafts } from '../lib/campaignDrafts'
 import { usePartnerDrafts } from '../lib/partnerDrafts'
 import type { HotelDraft } from '../lib/partnerDrafts'
 import { countries, getCountry, liveMarkets, roadmapMarkets } from '../data/countries'
@@ -27,7 +29,7 @@ function statusClass(s: string): string {
   return 'bg-ink-900/5 text-ink-600 ring-1 ring-black/10'
 }
 
-function Th({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+function Th({ children, className = '' }: { children?: React.ReactNode; className?: string }) {
   return <th className={`p-3 text-left text-xs font-bold uppercase tracking-wide text-ink-600/70 ${className}`}>{children}</th>
 }
 function Td({ children, className = '' }: { children: React.ReactNode; className?: string }) {
@@ -61,9 +63,11 @@ export default function AdminPage() {
   const [navOpen, setNavOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [inqFilter, setInqFilter] = useState<'All' | 'New' | 'Contacted' | 'Won' | 'Lost'>('All')
+  const [camp, setCamp] = useState({ slug: hotels[0]?.slug ?? '', slot: 'Homepage hero', period: '', status: 'Scheduled' as Campaign['status'] })
 
   // Hotels registered through the onboarding page (persisted in localStorage).
   const drafts = usePartnerDrafts()
+  const draftCampaigns = useCampaignDrafts()
   const accounts = usePartnerAccounts()
   const pendingCount = accounts.filter((a) => a.status === 'Pending').length
   const allPartners = useMemo(() => [...drafts.map(draftToPartner), ...partners], [drafts])
@@ -327,31 +331,70 @@ export default function AdminPage() {
           )}
 
           {/* ---- Campaigns ---- */}
-          {section === 'campaigns' && (
-            <div className="rounded-2xl bg-white shadow-card ring-1 ring-black/5">
-              <div className="border-b border-black/5 p-4"><h2 className="font-bold text-ink-900">{campaigns.length} sponsored campaigns</h2></div>
-              <div className="overflow-x-auto">
-                <table className="w-full min-w-[760px]">
-                  <thead className="bg-sand-50">
-                    <tr><Th>Hotel</Th><Th>Slot</Th><Th>Period</Th><Th>Impressions</Th><Th>Clicks</Th><Th>CTR</Th><Th>Status</Th></tr>
-                  </thead>
-                  <tbody>
-                    {campaigns.map((c) => (
-                      <tr key={c.id} className="border-t border-black/5 hover:bg-sand-50/50">
-                        <Td className="font-medium text-ink-900">{c.hotel}</Td>
-                        <Td><span className="pill bg-accent-50 text-accent-700">{c.slot}</span></Td>
-                        <Td className="text-ink-600">{c.period}</Td>
-                        <Td>{c.impressions.toLocaleString()}</Td>
-                        <Td>{c.clicks.toLocaleString()}</Td>
-                        <Td className="font-semibold text-ink-900">{c.ctr}</Td>
-                        <Td><span className={`pill ${statusClass(c.status)}`}>{c.status}</span></Td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+          {section === 'campaigns' && (() => {
+            const allCampaigns = [...draftCampaigns, ...campaigns]
+            const createCampaign = (e: React.FormEvent) => {
+              e.preventDefault()
+              const h = hotels.find((x) => x.slug === camp.slug)
+              if (!h || !camp.period.trim()) return
+              campaignDrafts.add({ hotel: h.name, city: h.city, slot: camp.slot, period: camp.period.trim(), status: camp.status })
+              setCamp((c) => ({ ...c, period: '' }))
+            }
+            return (
+              <div className="space-y-4">
+                <form onSubmit={createCampaign} className="rounded-2xl bg-white p-4 shadow-card ring-1 ring-black/5 sm:p-5">
+                  <h2 className="font-bold text-ink-900">New campaign</h2>
+                  <p className="mt-0.5 text-xs text-ink-600/70">Book a sponsored placement for a hotel. Delivery (impressions/clicks) fills in once it runs.</p>
+                  <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+                    <label className="lg:col-span-2"><span className="text-xs font-semibold text-ink-600/70">Hotel</span>
+                      <select value={camp.slug} onChange={(e) => setCamp((c) => ({ ...c, slug: e.target.value }))} className="mt-1 w-full rounded-lg border border-black/10 bg-sand-50 px-3 py-2 text-sm outline-none focus:border-brand-400">
+                        {hotels.map((h) => <option key={h.slug} value={h.slug}>{h.name} · {h.city}</option>)}
+                      </select>
+                    </label>
+                    <label><span className="text-xs font-semibold text-ink-600/70">Slot</span>
+                      <select value={camp.slot} onChange={(e) => setCamp((c) => ({ ...c, slot: e.target.value }))} className="mt-1 w-full rounded-lg border border-black/10 bg-sand-50 px-3 py-2 text-sm outline-none focus:border-brand-400">
+                        {['Homepage hero', 'Homepage featured', 'City top', 'Search top', 'Detail sidebar'].map((s) => <option key={s} value={s}>{s}</option>)}
+                      </select>
+                    </label>
+                    <label><span className="text-xs font-semibold text-ink-600/70">Period</span>
+                      <input value={camp.period} onChange={(e) => setCamp((c) => ({ ...c, period: e.target.value }))} placeholder="Jul–Aug 2026" className="mt-1 w-full rounded-lg border border-black/10 bg-sand-50 px-3 py-2 text-sm outline-none focus:border-brand-400" />
+                    </label>
+                    <label><span className="text-xs font-semibold text-ink-600/70">Status</span>
+                      <select value={camp.status} onChange={(e) => setCamp((c) => ({ ...c, status: e.target.value as Campaign['status'] }))} className="mt-1 w-full rounded-lg border border-black/10 bg-sand-50 px-3 py-2 text-sm outline-none focus:border-brand-400">
+                        {(['Scheduled', 'Live', 'Ended'] as const).map((s) => <option key={s} value={s}>{s}</option>)}
+                      </select>
+                    </label>
+                  </div>
+                  <button type="submit" className="mt-3 rounded-full bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-700">+ Add campaign</button>
+                </form>
+
+                <div className="rounded-2xl bg-white shadow-card ring-1 ring-black/5">
+                  <div className="border-b border-black/5 p-4"><h2 className="font-bold text-ink-900">{allCampaigns.length} sponsored campaigns</h2></div>
+                  <div className="overflow-x-auto">
+                    <table className="w-full min-w-[820px]">
+                      <thead className="bg-sand-50">
+                        <tr><Th>Hotel</Th><Th>Slot</Th><Th>Period</Th><Th>Impressions</Th><Th>Clicks</Th><Th>CTR</Th><Th>Status</Th><Th></Th></tr>
+                      </thead>
+                      <tbody>
+                        {allCampaigns.map((c) => (
+                          <tr key={c.id} className="border-t border-black/5 hover:bg-sand-50/50">
+                            <Td className="font-medium text-ink-900">{c.hotel}</Td>
+                            <Td><span className="pill bg-accent-50 text-accent-700">{c.slot}</span></Td>
+                            <Td className="text-ink-600">{c.period}</Td>
+                            <Td>{c.impressions.toLocaleString()}</Td>
+                            <Td>{c.clicks.toLocaleString()}</Td>
+                            <Td className="font-semibold text-ink-900">{c.ctr}</Td>
+                            <Td><span className={`pill ${statusClass(c.status)}`}>{c.status}</span></Td>
+                            <Td>{c.id.startsWith('camp-draft-') && <button onClick={() => campaignDrafts.remove(c.id)} className="text-xs font-semibold text-rose-600 hover:underline">Remove</button>}</Td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
-            </div>
-          )}
+            )
+          })()}
 
           {/* ---- Inquiries ---- */}
           {section === 'inquiries' && (
