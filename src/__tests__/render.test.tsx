@@ -158,6 +158,18 @@ describe('interaction: hotel partner self-service portal', () => {
     await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
     expect(await screen.findByRole('button', { name: /create account/i })).toBeTruthy()
   })
+
+  it('lets admin edit any hotel without a partner login (/admin/hotels/:slug/edit)', async () => {
+    hotelEdits.clear()
+    partnerAuth.logout() // no partner session — admin route still opens the editor
+    wrap('/admin/hotels/dlg-hotel-danang/edit')
+    await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
+    const posInput = await screen.findByDisplayValue(/ocean-view rooms and two pools/i)
+    fireEvent.change(posInput, { target: { value: 'Edited by admin.' } })
+    fireEvent.click(screen.getByRole('button', { name: /save changes/i }))
+    expect(hotelEdits.get('dlg-hotel-danang').positioningLine).toBe('Edited by admin.')
+    hotelEdits.clear()
+  })
 })
 
 describe('interaction: sign-in page issues a member voucher', () => {

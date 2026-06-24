@@ -83,6 +83,15 @@ export default function App() {
           </Suspense>
         }
       />
+      {/* Admin edits any hotel's full content (reuses the listing editor). */}
+      <Route
+        path="/admin/hotels/:slug/edit"
+        element={
+          <Suspense fallback={<RouteFallback />}>
+            <PartnerEditPage />
+          </Suspense>
+        }
+      />
 
       {/* Partner portal (hotel self-service) — its own shell, noindex'd. */}
       <Route path="/partner/login" element={<Suspense fallback={<RouteFallback />}><PartnerLoginPage /></Suspense>} />

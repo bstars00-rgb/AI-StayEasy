@@ -257,9 +257,9 @@ export default function AdminPage() {
                 </div>
               </div>
               <div className="overflow-x-auto">
-                <table className="w-full min-w-[940px]">
+                <table className="w-full min-w-[1020px]">
                   <thead className="bg-sand-50">
-                    <tr><Th>Hotel</Th><Th>Country</Th><Th>City</Th><Th>Type</Th><Th>Plan</Th><Th>Monthly</Th><Th>Clicks (30d)</Th><Th>Sponsored</Th><Th>Status</Th><Th>Listing</Th></tr>
+                    <tr><Th>Hotel</Th><Th>Country</Th><Th>City</Th><Th>Type</Th><Th>Plan</Th><Th>Monthly</Th><Th>Clicks (30d)</Th><Th>Sponsored</Th><Th>Status</Th><Th>Content</Th><Th>Listing</Th></tr>
                   </thead>
                   <tbody>
                     {filteredPartners.map((p) => (
@@ -273,6 +273,9 @@ export default function AdminPage() {
                         <Td>{p.clicks30d.toLocaleString()}</Td>
                         <Td>{p.sponsored ? <span className="pill bg-accent-50 text-accent-700 ring-1 ring-accent-200">★</span> : <span className="text-ink-600/40">—</span>}</Td>
                         <Td><span className={`pill ${statusClass(p.status)}`}>{p.status}</span></Td>
+                        <Td>
+                          <Link to={`/admin/hotels/${p.slug}/edit`} className="font-semibold text-brand-700 hover:underline">Edit</Link>
+                        </Td>
                         <Td>
                           <Link to={`/hotels/${p.slug}`} className="text-brand-700 hover:underline">
                             {p.id.startsWith('draft-') ? 'Preview ↗' : 'View ↗'}

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { ReactNode } from 'react'
-import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import { findInCatalogue } from '../data/mockRepo'
 import { Logo } from '../components/Logo'
 import { LanguageSwitcher } from '../components/LanguageSwitcher'
@@ -30,8 +30,14 @@ export default function PartnerEditPage() {
   const t = partnerStrings[lang]
   const te = t.edit
   const navigate = useNavigate()
+  // Admin mode: edit any hotel via /admin/hotels/:slug/edit (no partner login).
+  // Partner mode: the signed-in hotel edits its own listing.
+  const { slug: adminSlug } = useParams()
+  const adminMode = !!adminSlug
   const session = usePartnerSession()
-  const hotel = session ? findInCatalogue(session.slug) : undefined
+  const slug = adminSlug ?? session?.slug
+  const hotel = slug ? findInCatalogue(slug) : undefined
+  const backTo = adminMode ? '/admin?tab=partners' : '/partner'
 
   const [f, setF] = useState(() => ({
     shortDescription: hotel?.shortDescription ?? '',
@@ -72,8 +78,8 @@ export default function PartnerEditPage() {
     e.target.value = ''
   }
 
-  if (!session) return <Navigate to="/partner/login" replace />
-  if (!hotel) return <Navigate to="/partner" replace />
+  if (!adminMode && !session) return <Navigate to="/partner/login" replace />
+  if (!hotel) return <Navigate to={backTo} replace />
 
   const set =
     <K extends keyof typeof f>(k: K) =>
@@ -116,8 +122,8 @@ export default function PartnerEditPage() {
         messenger: f.cMessenger.trim() || undefined,
       },
     }
-    hotelEdits.set(session.slug, patch)
-    navigate('/partner')
+    hotelEdits.set(hotel.slug, patch)
+    navigate(backTo)
   }
 
   // Live-preview derivations + a simple completeness score for the sidebar.
@@ -134,7 +140,7 @@ export default function PartnerEditPage() {
   return (
     <div className="min-h-screen bg-sand-50">
       <header className="sticky top-0 z-20 flex h-16 items-center justify-between gap-3 border-b border-black/5 bg-white/90 px-4 backdrop-blur sm:px-6">
-        <Link to="/partner" className="flex items-center gap-2 text-sm font-medium text-ink-700 hover:text-ink-900">{t.backToPortal}</Link>
+        <Link to={backTo} className="flex items-center gap-2 text-sm font-medium text-ink-700 hover:text-ink-900">{adminMode ? '← Back to admin' : t.backToPortal}</Link>
         <div className="flex items-center gap-3">
           <LanguageSwitcher />
           <Logo size={30} textClass="text-base" />
@@ -144,7 +150,7 @@ export default function PartnerEditPage() {
       <form onSubmit={save} className="mx-auto max-w-6xl p-4 sm:p-6 lg:p-8">
         <div className="mb-5">
           <h1 className="text-2xl font-extrabold text-ink-900">{te.title}</h1>
-          <p className="mt-1 text-sm text-ink-700/70">{te.subtitle.replace('{name}', session.propertyName)}</p>
+          <p className="mt-1 text-sm text-ink-700/70">{te.subtitle.replace('{name}', hotel.name)}</p>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-[1fr_22rem] lg:items-start">
@@ -269,7 +275,7 @@ export default function PartnerEditPage() {
               <div className="space-y-3 p-4">
                 <div>
                   <p className="text-[11px] font-semibold uppercase tracking-wide text-ink-600/55">{te.previewTitle}</p>
-                  <h3 className="mt-0.5 font-extrabold text-ink-900">{session.propertyName}</h3>
+                  <h3 className="mt-0.5 font-extrabold text-ink-900">{hotel.name}</h3>
                   {f.positioningLine && <p className="text-sm text-brand-700">{f.positioningLine}</p>}
                 </div>
                 {f.shortDescription && <p className="text-xs text-ink-700/80">{f.shortDescription}</p>}
@@ -298,7 +304,7 @@ export default function PartnerEditPage() {
         </div>{/* /grid */}
 
         <div className="sticky bottom-0 mt-5 flex gap-2 border-t border-black/5 bg-sand-50/95 py-3 backdrop-blur">
-          <Link to="/partner" className="flex-1 rounded-xl bg-white px-4 py-3 text-center text-sm font-semibold text-ink-800 ring-1 ring-black/10 hover:bg-sand-100">{t.cancel}</Link>
+          <Link to={backTo} className="flex-1 rounded-xl bg-white px-4 py-3 text-center text-sm font-semibold text-ink-800 ring-1 ring-black/10 hover:bg-sand-100">{t.cancel}</Link>
           <button type="submit" className="flex-1 rounded-xl bg-brand-600 px-4 py-3 text-sm font-semibold text-white hover:bg-brand-700">{te.saveChanges}</button>
         </div>
       </form>
