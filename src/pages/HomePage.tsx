@@ -28,7 +28,10 @@ export default function HomePage() {
   const hot = useAsync(() => repo.allHotels(), [])
   const dest = useAsync(() => repo.listDestinations(), [])
   const hotels = hot.data ?? []
-  const destinations = (dest.data ?? []).filter((d) => d.available)
+  // Show 8 featured destinations (a clean 4×2 grid): live markets first, then
+  // a couple of "coming soon" onboarding cities to fill the row.
+  const allDest = dest.data ?? []
+  const destinations = [...allDest.filter((d) => d.available), ...allDest.filter((d) => !d.available)].slice(0, 8)
   // 3 sample hotels, leading with a sponsored one.
   const featured = [
     ...hotels.filter((h) => h.isSponsored),
@@ -94,7 +97,7 @@ export default function HomePage() {
         <SectionHeading eyebrow={t.home.featuredDestEyebrow} title={t.home.featuredDestTitle} subtitle={t.home.featuredDestSubtitle} />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {dest.loading
-            ? Array.from({ length: 4 }).map((_, i) => <div key={i} className="h-40 animate-pulse rounded-2xl bg-sand-100" />)
+            ? Array.from({ length: 8 }).map((_, i) => <div key={i} className="h-40 animate-pulse rounded-2xl bg-sand-100" />)
             : destinations.map((d) => (
             <Link
               key={d.city}
