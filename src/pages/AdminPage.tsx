@@ -11,15 +11,17 @@ import { useDocumentMeta } from '../lib/useDocumentMeta'
 import { LogoMark } from '../components/Logo'
 import { partnerAccounts, usePartnerAccounts } from '../lib/partnerAccounts'
 import { MediaManager } from '../components/admin/MediaManager'
+import { MarketingEditor } from '../components/admin/MarketingEditor'
 
-type Section = 'overview' | 'partners' | 'approvals' | 'campaigns' | 'inquiries' | 'media'
+type Section = 'overview' | 'partners' | 'media' | 'marketing' | 'approvals' | 'campaigns' | 'inquiries'
 
 const NAV: { key: Section; label: string; icon: string }[] = [
   { key: 'overview', label: 'Overview', icon: '📊' },
   { key: 'partners', label: 'Partners', icon: '🤝' },
   { key: 'media', label: 'Images', icon: '🖼️' },
+  { key: 'marketing', label: 'Marketing', icon: '📣' },
   { key: 'approvals', label: 'Approvals', icon: '✅' },
-  { key: 'campaigns', label: 'Campaigns', icon: '📣' },
+  { key: 'campaigns', label: 'Campaigns', icon: '🎯' },
   { key: 'inquiries', label: 'Inquiries', icon: '📨' },
 ]
 
@@ -233,6 +235,8 @@ export default function AdminPage() {
 
           {/* ---- Partners (unified hotel + partner registry) ---- */}
           {section === 'media' && <MediaManager />}
+
+          {section === 'marketing' && <MarketingEditor />}
 
           {section === 'partners' && (
             <div className="rounded-2xl bg-white shadow-card ring-1 ring-black/5">

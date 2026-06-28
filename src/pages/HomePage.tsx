@@ -11,6 +11,7 @@ import { CardGridSkeleton } from '../components/Loading'
 import { useT } from '../i18n'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 import { useSiteImages } from '../lib/siteImages'
+import { MarketingBanner } from '../components/MarketingBanner'
 
 /** The four hero tiles — decorative emoji by default; an operator can swap in
  *  real photos from the admin Images tab (siteImages.hero[i]). */
@@ -138,6 +139,9 @@ export default function HomePage() {
           {t.home.sponsoredNote}
         </p>
       </section>
+
+      {/* Admin-controlled marketing banner */}
+      <MarketingBanner />
 
       {/* 5. Explanation — StayEasy is not an OTA */}
       <section className="container-page mt-16">
