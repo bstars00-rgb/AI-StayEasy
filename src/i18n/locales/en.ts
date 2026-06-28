@@ -67,6 +67,7 @@ export const en = {
     destinations: 'Destinations',
     daNangHotels: 'Da Nang hotels',
     hotels: 'Hotels',
+    tripLabel: 'Trips to {city}',
     guide: 'Direct booking guide',
     forHotels: 'For hotels',
     hotelLogin: 'Hotel login',

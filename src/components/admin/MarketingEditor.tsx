@@ -1,5 +1,7 @@
 import { marketingBanner, useMarketingBanner } from '../../lib/marketingBanner'
 import { MarketingBanner } from '../MarketingBanner'
+import { destinations } from '../../data/destinations'
+import { siteNav, useFeaturedCity } from '../../lib/siteNav'
 
 /**
  * Admin editor for the homepage marketing banner. Edits persist immediately
@@ -9,11 +11,26 @@ const inputCls = 'w-full rounded-lg border border-black/10 bg-sand-50 px-3 py-2 
 
 export function MarketingEditor() {
   const b = useMarketingBanner()
+  const featuredCity = useFeaturedCity()
+  const liveCities = destinations.filter((d) => d.available)
   const set = (k: 'eyebrow' | 'title' | 'body' | 'ctaLabel' | 'ctaHref') =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => marketingBanner.set({ [k]: e.target.value })
 
   return (
     <div className="space-y-5">
+      <section className="rounded-2xl bg-white p-5 shadow-card ring-1 ring-black/5 sm:p-6">
+        <h2 className="font-bold text-ink-900">Navbar featured destination</h2>
+        <p className="mt-1 text-xs text-ink-600/70">The highlighted link in the top nav (e.g. “Da Nang trip”). Pick the city — the label localizes and the link goes to that city’s page.</p>
+        <select
+          value={featuredCity}
+          onChange={(e) => siteNav.setFeaturedCity(e.target.value)}
+          className="mt-3 rounded-lg border border-black/10 bg-sand-50 px-3 py-2 text-sm outline-none focus:border-brand-400"
+        >
+          {liveCities.map((c) => (
+            <option key={c.slug} value={c.slug}>{c.city} (/destinations/{c.slug})</option>
+          ))}
+        </select>
+      </section>
       <p className="rounded-xl bg-amber-50 px-3 py-2 text-xs text-amber-800 ring-1 ring-amber-200">
         🧪 Demo storage — saved in this browser. A real build serves the banner from the CMS so every visitor sees it. Text is single-language (not auto-translated).
       </p>

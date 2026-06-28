@@ -67,6 +67,7 @@ export const zh: Locale = {
     destinations: '目的地',
     daNangHotels: '岘港酒店',
     hotels: '酒店',
+    tripLabel: '{city}旅行',
     guide: '官网直订指南',
     forHotels: '酒店合作',
     hotelLogin: '酒店登录',

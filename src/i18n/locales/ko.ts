@@ -67,6 +67,7 @@ export const ko: Locale = {
     destinations: '여행지',
     daNangHotels: '다낭 호텔',
     hotels: '호텔',
+    tripLabel: '{city} 여행',
     guide: '직접 예약 가이드',
     forHotels: '호텔 파트너',
     hotelLogin: '호텔 로그인',

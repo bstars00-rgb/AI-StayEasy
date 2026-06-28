@@ -67,6 +67,7 @@ export const ja: Locale = {
     destinations: '目的地',
     daNangHotels: 'ダナンのホテル',
     hotels: 'ホテル',
+    tripLabel: '{city}旅行',
     guide: '直接予約ガイド',
     forHotels: 'ホテル事業者の方へ',
     hotelLogin: 'ホテルログイン',

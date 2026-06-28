@@ -1,57 +1,14 @@
-import { Fragment, useEffect, useRef, useState } from 'react'
+import { Fragment, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { useLang, useT } from '../i18n'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { Logo } from './Logo'
 import { destinations } from '../data/destinations'
+import { useFeaturedCity } from '../lib/siteNav'
 import { useWishlist } from '../lib/wishlist'
 import { wishlistStrings } from '../lib/wishlistI18n'
 import { useGuest } from '../lib/guestAuth'
 import { accountStrings } from '../lib/accountI18n'
-
-/** Hotels-by-city dropdown — pick Da Nang, Phu Quoc, etc. (live markets only). */
-function CityMenu() {
-  const t = useT()
-  const cities = destinations.filter((d) => d.available)
-  const [open, setOpen] = useState(false)
-  const ref = useRef<HTMLDivElement>(null)
-  useEffect(() => {
-    const onDoc = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
-    }
-    document.addEventListener('mousedown', onDoc)
-    return () => document.removeEventListener('mousedown', onDoc)
-  }, [])
-  return (
-    <div className="relative" ref={ref}>
-      <button
-        type="button"
-        onClick={() => setOpen((o) => !o)}
-        aria-expanded={open}
-        aria-haspopup="menu"
-        className="flex items-center gap-1 rounded-full px-3.5 py-2 text-sm font-medium text-ink-700 transition-colors hover:bg-sand-100"
-      >
-        {t.nav.hotels}
-        <span aria-hidden className="text-ink-700/50">▾</span>
-      </button>
-      {open && (
-        <ul role="menu" className="absolute left-0 z-50 mt-2 min-w-[12rem] overflow-hidden rounded-xl bg-white py-1 shadow-card ring-1 ring-black/10">
-          {cities.map((c) => (
-            <li key={c.slug}>
-              <Link
-                to={`/destinations/${c.slug}`}
-                onClick={() => setOpen(false)}
-                className="block px-3.5 py-2 text-sm text-ink-800 hover:bg-sand-50"
-              >
-                {(t.enums.city as Record<string, string>)[c.city] ?? c.city}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  )
-}
 
 export function Navbar() {
   const [open, setOpen] = useState(false)
@@ -62,12 +19,17 @@ export function Navbar() {
   const guest = useGuest()
   const { count } = useWishlist()
 
+  // Admin-configurable featured-destination link (e.g. "Da Nang trip" → Phu Quoc).
+  const featuredCity = useFeaturedCity()
+  const fc = destinations.find((d) => d.slug === featuredCity) ?? destinations.find((d) => d.available)
+  const fcName = fc ? ((t.enums.city as Record<string, string>)[fc.city] ?? fc.city) : ''
+  const featured = fc ? { to: `/destinations/${fc.slug}`, label: t.nav.tripLabel.replace('{city}', fcName) } : null
+
   const links = [
     { to: '/destinations/vietnam', label: t.nav.destinations },
     { to: '/guides/direct-booking', label: t.nav.guide },
     { to: '/partners', label: t.nav.forHotels },
   ]
-  const cities = destinations.filter((d) => d.available)
 
   return (
     <header className="sticky top-0 z-40 border-b border-black/5 bg-sand-50/85 backdrop-blur">
@@ -89,7 +51,18 @@ export function Navbar() {
               >
                 {l.label}
               </NavLink>
-              {i === 0 && <CityMenu />}
+              {i === 0 && featured && (
+                <NavLink
+                  to={featured.to}
+                  className={({ isActive }) =>
+                    `rounded-full px-3.5 py-2 text-sm font-medium transition-colors ${
+                      isActive ? 'bg-brand-100 text-brand-800' : 'text-ink-700 hover:bg-sand-100'
+                    }`
+                  }
+                >
+                  {featured.label}
+                </NavLink>
+              )}
             </Fragment>
           ))}
           <NavLink
@@ -162,19 +135,17 @@ export function Navbar() {
               {links[0].label}
             </NavLink>
 
-            <p className="px-3 pb-1 pt-3 text-xs font-bold uppercase tracking-wide text-ink-700/40">{t.nav.hotels}</p>
-            {cities.map((c) => (
+            {featured && (
               <NavLink
-                key={c.slug}
-                to={`/destinations/${c.slug}`}
+                to={featured.to}
                 onClick={() => setOpen(false)}
                 className={({ isActive }) =>
-                  `rounded-lg px-3 py-2 text-sm ${isActive ? 'bg-brand-100 text-brand-800' : 'text-ink-700 hover:bg-sand-100'}`
+                  `rounded-lg px-3 py-2.5 text-sm font-medium ${isActive ? 'bg-brand-100 text-brand-800' : 'text-ink-800 hover:bg-sand-100'}`
                 }
               >
-                {(t.enums.city as Record<string, string>)[c.city] ?? c.city}
+                {featured.label}
               </NavLink>
-            ))}
+            )}
 
             {links.slice(1).map((l) => (
               <NavLink
@@ -182,7 +153,7 @@ export function Navbar() {
                 to={l.to}
                 onClick={() => setOpen(false)}
                 className={({ isActive }) =>
-                  `mt-1 rounded-lg px-3 py-2.5 text-sm font-medium ${
+                  `rounded-lg px-3 py-2.5 text-sm font-medium ${
                     isActive ? 'bg-brand-100 text-brand-800' : 'text-ink-800 hover:bg-sand-100'
                   }`
                 }
