@@ -171,7 +171,7 @@ export const zh: Locale = {
     metaTitle: '越南酒店——StayEasy',
     metaDesc:
       '为您的越南之行找到合适的酒店。在岘港及更多城市，按真实出行需求比较酒店。',
-    heroTitle: '为您的越南之行找到合适的酒店',
+    heroTitle: '为您的越南之行\n找到合适的酒店',
     heroSubtitle:
       '从岘港的海滨度假村到胡志明市的城市酒店，StayEasy 帮助您按真实出行需求挑选酒店。',
     destEyebrow: '目的地',
@@ -365,7 +365,7 @@ export const zh: Locale = {
     metaDesc:
       '通过值得信赖的内容、目的地指南与赞助位推广您的酒店官网权益——无需支付预订佣金。',
     heroBadge: '酒店合作伙伴计划',
-    heroTitle: '在越南增长您的官网直订流量',
+    heroTitle: '在越南\n增长您的官网直订流量',
     heroSubtitle:
       '通过值得信赖的内容、目的地指南与赞助位推广您的酒店官网权益——无需支付预订佣金。',
     heroCta1: '在 StayEasy 上登记您的酒店',

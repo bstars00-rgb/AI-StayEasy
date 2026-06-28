@@ -118,7 +118,7 @@ export const vi: Locale = {
     metaDesc:
       'StayEasy giúp bạn chọn đúng khách sạn tại Việt Nam thông qua nội dung rõ ràng và các ưu đãi đặt phòng chính thức, rồi đặt phòng trực tiếp trên website chính thức của mỗi khách sạn.',
     heroBadge: '🇻🇳 Khách sạn Việt Nam · Bắt đầu từ Đà Nẵng',
-    heroTitle: 'Đặt khách sạn Việt Nam trực tiếp một cách an tâm',
+    heroTitle: 'Đặt khách sạn Việt Nam\ntrực tiếp một cách an tâm',
     heroSubtitle:
       'StayEasy giúp bạn chọn đúng khách sạn thông qua nội dung rõ ràng, ưu đãi đặt phòng chính thức và những lời khuyên du lịch thiết thực.',
     ctaExplore: 'Khám phá khách sạn Đà Nẵng',
@@ -171,7 +171,7 @@ export const vi: Locale = {
     metaTitle: 'Khách sạn Việt Nam — StayEasy',
     metaDesc:
       'Tìm đúng khách sạn cho chuyến đi Việt Nam của bạn. So sánh khách sạn theo nhu cầu du lịch thực tế trên khắp Đà Nẵng và nhiều nơi khác.',
-    heroTitle: 'Tìm đúng khách sạn cho chuyến đi Việt Nam của bạn',
+    heroTitle: 'Tìm đúng khách sạn\ncho chuyến đi Việt Nam của bạn',
     heroSubtitle:
       'Từ các resort biển ở Đà Nẵng đến các khách sạn thành phố ở TP. Hồ Chí Minh, StayEasy giúp bạn chọn khách sạn dựa trên nhu cầu du lịch thực tế.',
     destEyebrow: 'Điểm đến',
@@ -365,7 +365,7 @@ export const vi: Locale = {
     metaDesc:
       'Quảng bá ưu đãi chính thức của khách sạn bạn qua nội dung đáng tin cậy, hướng dẫn điểm đến và các vị trí tài trợ — không mất hoa hồng đặt phòng.',
     heroBadge: 'Chương trình đối tác khách sạn',
-    heroTitle: 'Tăng lượng đặt phòng trực tiếp của bạn tại Việt Nam',
+    heroTitle: 'Tăng lượng đặt phòng trực tiếp\ncủa bạn tại Việt Nam',
     heroSubtitle:
       'Quảng bá ưu đãi chính thức của khách sạn bạn qua nội dung đáng tin cậy, hướng dẫn điểm đến và các vị trí tài trợ — không phải trả hoa hồng đặt phòng.',
     heroCta1: 'Đăng khách sạn của bạn lên StayEasy',

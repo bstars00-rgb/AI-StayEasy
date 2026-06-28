@@ -99,7 +99,7 @@ export default function VietnamPage() {
           <nav className="mb-4 text-sm text-white/60">
             <Link to="/" className="hover:text-white">Home</Link> <span className="px-1">/</span> Destinations / Vietnam
           </nav>
-          <h1 className="max-w-2xl text-4xl font-extrabold tracking-tight sm:text-5xl">
+          <h1 className="max-w-2xl whitespace-pre-line text-4xl font-extrabold tracking-tight sm:text-5xl">
             {t.vietnam.heroTitle}
           </h1>
           <p className="mt-4 max-w-2xl text-lg text-white/85">

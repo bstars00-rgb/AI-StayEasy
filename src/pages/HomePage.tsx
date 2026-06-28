@@ -46,7 +46,7 @@ export default function HomePage() {
         <div className="container-page relative grid items-center gap-10 py-16 lg:grid-cols-2 lg:py-24">
           <div className="text-white">
             <span className="pill bg-white/15 text-white ring-1 ring-white/25">{t.home.heroBadge}</span>
-            <h1 className="mt-4 text-4xl font-extrabold leading-[1.1] tracking-tight sm:text-5xl">
+            <h1 className="mt-4 whitespace-pre-line text-4xl font-extrabold leading-[1.1] tracking-tight sm:text-5xl">
               {t.home.heroTitle}
             </h1>
             <p className="mt-5 max-w-xl text-lg text-white/90">

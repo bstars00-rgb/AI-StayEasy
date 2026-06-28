@@ -44,7 +44,7 @@ export default function PartnerPage() {
           <div className="grid items-center gap-8 lg:grid-cols-2">
             <div>
               <span className="pill bg-brand-500/25 text-brand-100 ring-1 ring-brand-400/30">{t.partner.heroBadge}</span>
-              <h1 className="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl">{t.partner.heroTitle}</h1>
+              <h1 className="mt-4 whitespace-pre-line text-4xl font-extrabold tracking-tight sm:text-5xl">{t.partner.heroTitle}</h1>
               <p className="mt-4 max-w-xl text-lg text-white/85">
                 {t.partner.heroSubtitle}
               </p>

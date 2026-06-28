@@ -118,7 +118,7 @@ export const en = {
     metaDesc:
       'StayEasy helps you choose the right Vietnam hotel through clear content and official booking benefits, then book directly on each hotel’s official website.',
     heroBadge: '🇻🇳 Vietnam hotels · Starting in Da Nang',
-    heroTitle: 'Book Vietnam hotels directly with confidence',
+    heroTitle: 'Book Vietnam hotels\ndirectly, with confidence',
     heroSubtitle:
       'StayEasy helps you choose the right hotel through clear content, official booking benefits, and practical travel guidance.',
     ctaExplore: 'Explore Da Nang Hotels',
@@ -171,7 +171,7 @@ export const en = {
     metaTitle: 'Vietnam hotels — StayEasy',
     metaDesc:
       'Find the right hotel for your Vietnam trip. Compare hotels by real travel needs across Da Nang and more.',
-    heroTitle: 'Find the right hotel for your Vietnam trip',
+    heroTitle: 'Find the right hotel\nfor your Vietnam trip',
     heroSubtitle:
       'From beach resorts in Da Nang to city hotels in Ho Chi Minh City, StayEasy helps you choose hotels based on real travel needs.',
     destEyebrow: 'Destinations',
@@ -365,7 +365,7 @@ export const en = {
     metaDesc:
       'Promote your official hotel benefits through trusted content, destination guides, and sponsored placements — without booking commission.',
     heroBadge: 'Hotel partner program',
-    heroTitle: 'Grow your direct booking traffic in Vietnam',
+    heroTitle: 'Grow your direct booking\ntraffic in Vietnam',
     heroSubtitle:
       'Promote your official hotel benefits through trusted content, destination guides, and sponsored placements — without paying booking commission.',
     heroCta1: 'List your hotel on StayEasy',

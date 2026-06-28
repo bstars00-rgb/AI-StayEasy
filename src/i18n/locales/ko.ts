@@ -118,7 +118,7 @@ export const ko: Locale = {
     metaDesc:
       'StayEasy는 명확한 콘텐츠와 공식 예약 혜택으로 알맞은 베트남 호텔을 고르도록 돕고, 각 호텔 공식 웹사이트에서 직접 예약하게 해줍니다.',
     heroBadge: '🇻🇳 베트남 호텔 · 다낭에서 시작',
-    heroTitle: '베트남 호텔, 안심하고 직접 예약하세요',
+    heroTitle: '베트남 호텔,\n안심하고 직접 예약하세요',
     heroSubtitle:
       'StayEasy는 명확한 콘텐츠, 공식 예약 혜택, 실용적인 여행 정보로 알맞은 호텔을 고르도록 돕습니다.',
     ctaExplore: '다낭 호텔 둘러보기',
@@ -171,7 +171,7 @@ export const ko: Locale = {
     metaTitle: '베트남 호텔 — StayEasy',
     metaDesc:
       '베트남 여행에 알맞은 호텔을 찾아보세요. 다낭을 비롯한 도시에서 실제 여행 니즈에 맞춰 호텔을 비교합니다.',
-    heroTitle: '베트남 여행에 알맞은 호텔을 찾으세요',
+    heroTitle: '베트남 여행에 알맞은\n호텔을 찾으세요',
     heroSubtitle:
       '다낭의 비치 리조트부터 호치민의 시티 호텔까지, StayEasy는 실제 여행 니즈를 기준으로 호텔을 고르도록 돕습니다.',
     destEyebrow: '여행지',
@@ -365,7 +365,7 @@ export const ko: Locale = {
     metaDesc:
       '신뢰할 수 있는 콘텐츠, 여행지 가이드, 스폰서 노출로 예약 수수료 없이 호텔 공식 혜택을 알리세요.',
     heroBadge: '호텔 파트너 프로그램',
-    heroTitle: '베트남에서 직접 예약 트래픽을 키우세요',
+    heroTitle: '베트남에서\n직접 예약 트래픽을 키우세요',
     heroSubtitle:
       '신뢰할 수 있는 콘텐츠, 여행지 가이드, 스폰서 노출로 예약 수수료를 내지 않고 호텔 공식 혜택을 알리세요.',
     heroCta1: 'StayEasy에 호텔 등록하기',
