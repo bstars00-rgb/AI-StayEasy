@@ -48,7 +48,7 @@ export function HotelCard({ hotel: raw }: { hotel: Hotel }) {
       <div className="flex flex-1 flex-col gap-3 p-4">
         <div>
           <Link to={`/hotels/${hotel.slug}`}>
-            <h3 className="font-bold leading-snug text-ink-900 group-hover:text-brand-700">{hotel.name}</h3>
+            <h3 className="line-clamp-2 min-h-[2.75rem] font-bold leading-snug text-ink-900 group-hover:text-brand-700">{hotel.name}</h3>
           </Link>
           <p className="mt-0.5 text-sm text-ink-700/70">
             <span aria-hidden>📍</span> {area}, {city}
@@ -65,18 +65,22 @@ export function HotelCard({ hotel: raw }: { hotel: Hotel }) {
           </div>
         </div>
 
-        <p className="text-sm text-ink-700/90">{hotel.shortDescription}</p>
+        <p className="line-clamp-2 min-h-[2.5rem] text-sm text-ink-700/90">{hotel.shortDescription}</p>
 
         <div>
           <p className="text-xs font-semibold uppercase tracking-wide text-ink-700/50">{t.common.bestFor}</p>
-          <p className="mt-0.5 text-sm font-medium text-ink-800">{hotel.bestFor.slice(0, 2).join(' · ')}</p>
+          <p className="mt-0.5 truncate text-sm font-medium text-ink-800">{hotel.bestFor.slice(0, 2).join(' · ')}</p>
         </div>
 
-        <FacilityChips items={hotel.facilities} limit={3} />
+        {/* Fixed single-row height so the official-benefit block sits at the same
+            position on every card regardless of how many facilities a hotel has. */}
+        <div className="h-7 overflow-hidden">
+          <FacilityChips items={hotel.facilities} limit={3} />
+        </div>
 
         <div className="rounded-xl bg-brand-50 px-3 py-2">
           <p className="text-xs font-semibold text-brand-700">🏷️ {t.common.officialBenefit}</p>
-          <p className="text-sm text-ink-800">{hotel.officialBenefits[0]}</p>
+          <p className="line-clamp-1 text-sm text-ink-800">{hotel.officialBenefits[0]}</p>
         </div>
 
         <div className="mt-auto grid grid-cols-2 gap-2 pt-1">

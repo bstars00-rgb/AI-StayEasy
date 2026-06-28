@@ -39,6 +39,9 @@ export default function HotelListPage() {
 
   const [searchParams, setSearchParams] = useSearchParams()
   const [selected, setSelected] = useState<Record<GroupKey, string[]>>({ area: [], travel: [], stars: [], conditions: [] })
+  // Collapsed by default so the hotel cards are visible immediately, not pushed
+  // far down the page by a tall filter panel.
+  const [filtersOpen, setFiltersOpen] = useState(false)
 
   // City's hotels + the areas that actually exist for this city.
   const all = hotelsQ.data ?? []
@@ -167,14 +170,27 @@ export default function HotelListPage() {
       <section className="container-page mt-6">
         {/* 2. Filter bar */}
         <div className="rounded-2xl bg-white p-4 shadow-card ring-1 ring-black/5 sm:p-5">
-          <div className="flex items-center justify-between">
-            <h2 className="text-sm font-bold text-ink-900">{t.list.filterTitle}</h2>
+          <div className="flex items-center justify-between gap-3">
+            <button
+              type="button"
+              onClick={() => setFiltersOpen((o) => !o)}
+              aria-expanded={filtersOpen}
+              className="flex items-center gap-2 text-sm font-bold text-ink-900"
+            >
+              <span aria-hidden>⚙️</span>
+              {t.list.filterTitle}
+              {activeCount > 0 && (
+                <span className="rounded-full bg-brand-600 px-1.5 py-0.5 text-[11px] font-semibold text-white">{activeCount}</span>
+              )}
+              <span aria-hidden className="text-ink-700/40">{filtersOpen ? '▲' : '▼'}</span>
+            </button>
             {activeCount > 0 && (
               <button onClick={clearAll} className="text-xs font-semibold text-ink-700/60 underline hover:text-ink-900">
                 {t.list.clearAll} ({activeCount})
               </button>
             )}
           </div>
+          {filtersOpen && (
           <div className="mt-4 space-y-4">
             {(Object.keys(filters) as GroupKey[]).map((g) => (
               <div key={g}>
@@ -199,6 +215,7 @@ export default function HotelListPage() {
               </div>
             ))}
           </div>
+          )}
         </div>
 
         {/* 3. Hotel cards */}
