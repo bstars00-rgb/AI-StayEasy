@@ -74,7 +74,7 @@ export const zh: Locale = {
 
   footer: {
     tagline:
-      'StayEasy 帮助旅客挑选更合适的酒店，并直接向酒店官网预订。我们不是 OTA——我们从不收取预订佣金。',
+      'StayEasy 帮助旅客挑选更合适的酒店，并直接向酒店官网预订。我们不是 Agoda、Booking.com 那样的预订中介——我们从不收取预订佣金。',
     colStayeasy: 'StayEasy',
     about: '关于我们',
     directGuide: '官网直订指南',
@@ -123,7 +123,7 @@ export const zh: Locale = {
       'StayEasy 通过清晰的内容、官网预订权益与实用的旅行建议，帮助您挑选合适的酒店。',
     ctaExplore: '探索岘港酒店',
     ctaWhy: '为何官网直订？',
-    heroPoint1: '不是 OTA',
+    heroPoint1: '非预订中介',
     heroPoint2: '不收预订佣金',
     heroPoint3: '亲子 · 情侣 · 商务 · 海滩 · 长住',
     trust: {
@@ -148,7 +148,7 @@ export const zh: Locale = {
     sponsoredNote:
       '★ 赞助酒店付费购买精选推荐位。我们始终予以标注。我们绝不抽取您的预订分成。',
     notOtaPosition: '我们的立场',
-    notOtaTitle: 'StayEasy 不是 OTA',
+    notOtaTitle: 'StayEasy 不是预订中介网站',
     notOtaText:
       '我们是酒店内容与官网直订指南。我们帮您更好地了解酒店——然后您直接向酒店预订。',
     notOtaCta: '阅读官网直订指南',
@@ -159,7 +159,7 @@ export const zh: Locale = {
     notOta3t: '最终预订直接向酒店完成',
     notOta3d: '您在酒店官方网站完成预订。',
     notOta4t: '酒店免佣推广官网权益',
-    notOta4d: '酒店无需支付 OTA 预订佣金即可触达旅客。',
+    notOta4d: '酒店无需向预订网站支付佣金即可触达旅客。',
     partnerCtaTitle: '在越南拥有一家酒店？',
     partnerCtaText:
       '通过值得信赖的内容与赞助位推广您的官网预订权益——并保留 100% 的预订收入。',
@@ -260,7 +260,7 @@ export const zh: Locale = {
     mainReason: '选择的主要理由',
     thingsToCheck: '需先核对的事项',
     benefitsTitle: '官网预订权益',
-    benefitsSub: '在该酒店官方网站预订才能享有的礼遇——而非通过 OTA。',
+    benefitsSub: '在该酒店官方网站预订才能享有的礼遇——而非通过 Agoda、Booking.com 那样的预订网站。',
     roomTitle: '选房指南',
     roomCouples: '最适合情侣',
     roomFamilies: '最适合家庭',
@@ -530,7 +530,7 @@ export const zh: Locale = {
       'StayEasy 通过清晰的内容、官网预订权益与实用的旅行建议，帮助旅客挑选更合适的酒店，并直接向酒店预订。',
     positionTitle: '我们的立场',
     positionText:
-      '我们不是 OTA。我们不处理预订或收取付款，也从不向酒店收取预订佣金。我们帮旅客更好地了解酒店，再将他们引导至酒店官方网站直接预订。',
+      '我们不是 Agoda、Booking.com 那样的预订中介。我们不处理预订或收取付款，也从不向酒店收取预订佣金。我们帮旅客更好地了解酒店，再将他们引导至酒店官方网站直接预订。',
     position: [
       '我们不处理预订',
       '我们帮旅客更好地了解酒店',

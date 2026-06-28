@@ -74,7 +74,7 @@ export const en = {
 
   footer: {
     tagline:
-      'StayEasy helps travelers choose better hotels and book directly with hotels. We are not an OTA — we never take booking commission.',
+      'StayEasy helps travelers choose better hotels and book directly with hotels. We’re not a booking site like Agoda or Booking.com — we never take booking commission.',
     colStayeasy: 'StayEasy',
     about: 'About',
     directGuide: 'Direct Booking Guide',
@@ -123,7 +123,7 @@ export const en = {
       'StayEasy helps you choose the right hotel through clear content, official booking benefits, and practical travel guidance.',
     ctaExplore: 'Explore Da Nang Hotels',
     ctaWhy: 'Why Book Direct?',
-    heroPoint1: 'Not an OTA',
+    heroPoint1: 'No booking middleman',
     heroPoint2: 'No booking commission',
     heroPoint3: 'Family · Couple · Business · Beach · Long stay',
     trust: {
@@ -148,7 +148,7 @@ export const en = {
     sponsoredNote:
       '★ Sponsored hotels pay for featured placement. We always label them. We never take a cut of your booking.',
     notOtaPosition: 'Our position',
-    notOtaTitle: 'StayEasy is not an OTA',
+    notOtaTitle: 'We’re not a booking site like Agoda or Booking.com',
     notOtaText:
       'We’re a hotel content and direct-booking guide. We help you understand hotels better — then you book straight with the hotel.',
     notOtaCta: 'Read the direct booking guide',
@@ -159,7 +159,7 @@ export const en = {
     notOta3t: 'Final booking is made directly with the hotel',
     notOta3d: 'You complete your booking on the hotel’s official website.',
     notOta4t: 'Hotels promote official benefits, commission-free',
-    notOta4d: 'Hotels reach travelers without paying OTA booking commission.',
+    notOta4d: 'Hotels reach travelers without paying commission to a booking site.',
     partnerCtaTitle: 'Own a hotel in Vietnam?',
     partnerCtaText:
       'Promote your official booking benefits through trusted content and sponsored placements — and keep 100% of your booking revenue.',
@@ -260,7 +260,7 @@ export const en = {
     mainReason: 'Main reason to choose',
     thingsToCheck: 'Things to check first',
     benefitsTitle: 'Official booking benefits',
-    benefitsSub: 'Perks you get by booking on this hotel’s official website — not through an OTA.',
+    benefitsSub: 'Perks you get by booking on this hotel’s official website — not through a booking site like Agoda or Booking.com.',
     roomTitle: 'Room choice guide',
     roomCouples: 'Best for couples',
     roomFamilies: 'Best for families',
@@ -530,7 +530,7 @@ export const en = {
       'StayEasy helps travelers choose better hotels and book directly with hotels — through clear content, official booking benefits, and practical travel guidance.',
     positionTitle: 'Our position',
     positionText:
-      'We are not an OTA. We do not process bookings or take payment, and we never charge hotels a booking commission. We help travelers understand hotels better, then send them to the hotel’s official website to book directly.',
+      'We’re not a booking site like Agoda or Booking.com. We do not process bookings or take payment, and we never charge hotels a booking commission. We help travelers understand hotels better, then send them to the hotel’s official website to book directly.',
     position: [
       'We do not process bookings',
       'We help travelers understand hotels better',

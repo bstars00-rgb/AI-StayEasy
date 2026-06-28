@@ -873,7 +873,7 @@ const rawHotels: RawHotel[] = [
     thingsToCheck: ['Small property — book early', 'Plunge pool, not for laps', 'Limited family facilities'],
     tags: ['Couple', 'Beach'],
     facilities: ['Pool', 'Breakfast', 'Restaurant', 'Bar', 'Free Wi-Fi'],
-    officialBenefits: ['Free coffee & cake daily', 'Cheapest direct rate (no OTA fees)', 'Late checkout to 1pm', 'Flexible cancellation'],
+    officialBenefits: ['Free coffee & cake daily', 'Cheapest direct rate (no booking-site fees)', 'Late checkout to 1pm', 'Flexible cancellation'],
     roomGuide: {
       couples: 'Boutique Queen — design-led with a pour-over coffee kit.',
       families: 'Larger Queen — fits a child; no dedicated family facilities.',
@@ -1071,7 +1071,7 @@ const rawHotels: RawHotel[] = [
     thingsToCheck: ['It’s a simple hotel, not a resort', 'Beach is a short drive', 'Pool is small'],
     tags: ['Couple', 'Business'],
     facilities: ['Pool', 'Breakfast', 'Restaurant', 'Free Wi-Fi'],
-    officialBenefits: ['Cheapest direct rate (no OTA fees)', 'Free bicycle hire', 'Late checkout', 'Flexible cancellation'],
+    officialBenefits: ['Cheapest direct rate (no booking-site fees)', 'Free bicycle hire', 'Late checkout', 'Flexible cancellation'],
     roomGuide: {
       couples: 'River-View Double — bright room facing the Thu Bon River.',
       families: 'Twin Room — fits a small family near the center.',

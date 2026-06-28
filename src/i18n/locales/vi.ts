@@ -74,7 +74,7 @@ export const vi: Locale = {
 
   footer: {
     tagline:
-      'StayEasy giúp du khách chọn được khách sạn tốt hơn và đặt phòng trực tiếp với khách sạn. Chúng tôi không phải OTA — chúng tôi không bao giờ thu hoa hồng đặt phòng.',
+      'StayEasy giúp du khách chọn được khách sạn tốt hơn và đặt phòng trực tiếp với khách sạn. Chúng tôi không phải trang đặt phòng trung gian như Agoda hay Booking.com — chúng tôi không bao giờ thu hoa hồng đặt phòng.',
     colStayeasy: 'StayEasy',
     about: 'Giới thiệu',
     directGuide: 'Hướng dẫn đặt phòng trực tiếp',
@@ -123,7 +123,7 @@ export const vi: Locale = {
       'StayEasy giúp bạn chọn đúng khách sạn thông qua nội dung rõ ràng, ưu đãi đặt phòng chính thức và những lời khuyên du lịch thiết thực.',
     ctaExplore: 'Khám phá khách sạn Đà Nẵng',
     ctaWhy: 'Tại sao nên đặt trực tiếp?',
-    heroPoint1: 'Không phải OTA',
+    heroPoint1: 'Không qua trung gian',
     heroPoint2: 'Không thu hoa hồng đặt phòng',
     heroPoint3: 'Gia đình · Cặp đôi · Công tác · Biển · Lưu trú dài hạn',
     trust: {
@@ -148,7 +148,7 @@ export const vi: Locale = {
     sponsoredNote:
       '★ Khách sạn tài trợ trả phí cho vị trí nổi bật. Chúng tôi luôn ghi nhãn rõ ràng. Chúng tôi không bao giờ lấy phần trăm từ đơn đặt phòng của bạn.',
     notOtaPosition: 'Lập trường của chúng tôi',
-    notOtaTitle: 'StayEasy không phải là OTA',
+    notOtaTitle: 'StayEasy không phải trang đặt phòng như Agoda hay Booking.com',
     notOtaText:
       'Chúng tôi là một nền tảng nội dung khách sạn và hướng dẫn đặt phòng trực tiếp. Chúng tôi giúp bạn hiểu rõ khách sạn hơn — rồi bạn đặt phòng thẳng với khách sạn.',
     notOtaCta: 'Đọc hướng dẫn đặt phòng trực tiếp',
@@ -159,7 +159,7 @@ export const vi: Locale = {
     notOta3t: 'Việc đặt phòng cuối cùng được thực hiện trực tiếp với khách sạn',
     notOta3d: 'Bạn hoàn tất việc đặt phòng trên website chính thức của khách sạn.',
     notOta4t: 'Khách sạn quảng bá ưu đãi chính thức, không mất hoa hồng',
-    notOta4d: 'Khách sạn tiếp cận du khách mà không phải trả hoa hồng đặt phòng cho OTA.',
+    notOta4d: 'Khách sạn tiếp cận du khách mà không phải trả hoa hồng cho trang đặt phòng.',
     partnerCtaTitle: 'Bạn sở hữu khách sạn tại Việt Nam?',
     partnerCtaText:
       'Quảng bá ưu đãi đặt phòng chính thức của bạn qua nội dung đáng tin cậy và các vị trí tài trợ — và giữ 100% doanh thu đặt phòng của bạn.',
@@ -260,7 +260,7 @@ export const vi: Locale = {
     mainReason: 'Lý do chính để lựa chọn',
     thingsToCheck: 'Những điều cần kiểm tra trước',
     benefitsTitle: 'Ưu đãi đặt phòng chính thức',
-    benefitsSub: 'Những ưu đãi bạn nhận được khi đặt trên website chính thức của khách sạn này — không qua OTA.',
+    benefitsSub: 'Những ưu đãi bạn nhận được khi đặt trên website chính thức của khách sạn này — không qua trang đặt phòng trung gian.',
     roomTitle: 'Hướng dẫn chọn phòng',
     roomCouples: 'Phù hợp nhất cho cặp đôi',
     roomFamilies: 'Phù hợp nhất cho gia đình',
@@ -530,7 +530,7 @@ export const vi: Locale = {
       'StayEasy giúp du khách chọn được khách sạn tốt hơn và đặt phòng trực tiếp với khách sạn — thông qua nội dung rõ ràng, ưu đãi đặt phòng chính thức và những lời khuyên du lịch thiết thực.',
     positionTitle: 'Lập trường của chúng tôi',
     positionText:
-      'Chúng tôi không phải là OTA. Chúng tôi không xử lý đặt phòng hay nhận thanh toán, và chúng tôi không bao giờ thu hoa hồng đặt phòng từ khách sạn. Chúng tôi giúp du khách hiểu rõ khách sạn hơn, rồi đưa họ tới website chính thức của khách sạn để đặt trực tiếp.',
+      'Chúng tôi không phải trang đặt phòng trung gian (như Agoda hay Booking.com). Chúng tôi không xử lý đặt phòng hay nhận thanh toán, và chúng tôi không bao giờ thu hoa hồng đặt phòng từ khách sạn. Chúng tôi giúp du khách hiểu rõ khách sạn hơn, rồi đưa họ tới website chính thức của khách sạn để đặt trực tiếp.',
     position: [
       'Chúng tôi không xử lý đặt phòng',
       'Chúng tôi giúp du khách hiểu rõ khách sạn hơn',

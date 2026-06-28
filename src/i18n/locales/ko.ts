@@ -74,7 +74,7 @@ export const ko: Locale = {
 
   footer: {
     tagline:
-      'StayEasy는 여행자가 더 나은 호텔을 고르고 호텔에 직접 예약하도록 돕습니다. 저희는 OTA가 아니며, 예약 수수료를 받지 않습니다.',
+      'StayEasy는 여행자가 더 나은 호텔을 고르고 호텔에 직접 예약하도록 돕습니다. 아고다·부킹닷컴 같은 예약 대행 사이트가 아니며, 예약 수수료를 받지 않습니다.',
     colStayeasy: 'StayEasy',
     about: '소개',
     directGuide: '직접 예약 가이드',
@@ -123,7 +123,7 @@ export const ko: Locale = {
       'StayEasy는 명확한 콘텐츠, 공식 예약 혜택, 실용적인 여행 정보로 알맞은 호텔을 고르도록 돕습니다.',
     ctaExplore: '다낭 호텔 둘러보기',
     ctaWhy: '왜 직접 예약일까요?',
-    heroPoint1: 'OTA가 아닙니다',
+    heroPoint1: '예약 대행 아님',
     heroPoint2: '예약 수수료 없음',
     heroPoint3: '가족 · 커플 · 비즈니스 · 해변 · 장기 투숙',
     trust: {
@@ -148,7 +148,7 @@ export const ko: Locale = {
     sponsoredNote:
       '★ 스폰서 호텔은 추천 노출 비용을 지불합니다. 항상 표시하며, 예약 금액에서 수수료를 떼지 않습니다.',
     notOtaPosition: '저희의 입장',
-    notOtaTitle: 'StayEasy는 OTA가 아닙니다',
+    notOtaTitle: 'StayEasy는 예약 대행 사이트가 아니에요',
     notOtaText:
       '저희는 호텔 콘텐츠와 직접 예약 가이드입니다. 호텔을 더 잘 이해하도록 돕고, 예약은 호텔에 직접 하시면 됩니다.',
     notOtaCta: '직접 예약 가이드 읽기',
@@ -159,7 +159,7 @@ export const ko: Locale = {
     notOta3t: '최종 예약은 호텔에 직접 합니다',
     notOta3d: '호텔 공식 웹사이트에서 예약을 완료하시면 됩니다.',
     notOta4t: '호텔은 수수료 없이 공식 혜택을 알립니다',
-    notOta4d: '호텔은 OTA 예약 수수료 없이 여행자에게 다가갈 수 있습니다.',
+    notOta4d: '호텔은 예약 사이트에 수수료를 내지 않고 여행자에게 다가갈 수 있습니다.',
     partnerCtaTitle: '베트남에서 호텔을 운영하시나요?',
     partnerCtaText:
       '신뢰할 수 있는 콘텐츠와 스폰서 노출로 공식 예약 혜택을 알리고, 예약 매출은 100% 그대로 가져가세요.',
@@ -260,7 +260,7 @@ export const ko: Locale = {
     mainReason: '선택할 핵심 이유',
     thingsToCheck: '먼저 확인할 사항',
     benefitsTitle: '공식 예약 혜택',
-    benefitsSub: 'OTA가 아니라 이 호텔 공식 웹사이트에서 예약할 때 받는 혜택입니다.',
+    benefitsSub: '아고다·부킹닷컴 같은 예약 사이트가 아니라, 이 호텔 공식 웹사이트에서 예약할 때 받는 혜택입니다.',
     roomTitle: '객실 선택 가이드',
     roomCouples: '커플에게 추천',
     roomFamilies: '가족에게 추천',
@@ -530,7 +530,7 @@ export const ko: Locale = {
       'StayEasy는 명확한 콘텐츠, 공식 예약 혜택, 실용적인 여행 정보로 여행자가 더 나은 호텔을 고르고 호텔에 직접 예약하도록 돕습니다.',
     positionTitle: '저희의 입장',
     positionText:
-      '저희는 OTA가 아닙니다. 예약이나 결제를 처리하지 않으며, 호텔에 예약 수수료를 부과하지 않습니다. 여행자가 호텔을 더 잘 이해하도록 돕고, 직접 예약할 수 있도록 호텔 공식 웹사이트로 안내합니다.',
+      '저희는 아고다·부킹닷컴 같은 예약 대행 사이트가 아닙니다. 예약이나 결제를 처리하지 않으며, 호텔에 예약 수수료를 부과하지 않습니다. 여행자가 호텔을 더 잘 이해하도록 돕고, 직접 예약할 수 있도록 호텔 공식 웹사이트로 안내합니다.',
     position: [
       '예약을 처리하지 않습니다',
       '여행자가 호텔을 더 잘 이해하도록 돕습니다',
