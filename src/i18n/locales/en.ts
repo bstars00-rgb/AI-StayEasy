@@ -66,6 +66,7 @@ export const en = {
   nav: {
     destinations: 'Destinations',
     daNangHotels: 'Da Nang hotels',
+    hotels: 'Hotels',
     guide: 'Direct booking guide',
     forHotels: 'For hotels',
     hotelLogin: 'Hotel login',

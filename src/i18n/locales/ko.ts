@@ -66,6 +66,7 @@ export const ko: Locale = {
   nav: {
     destinations: '여행지',
     daNangHotels: '다낭 호텔',
+    hotels: '호텔',
     guide: '직접 예약 가이드',
     forHotels: '호텔 파트너',
     hotelLogin: '호텔 로그인',

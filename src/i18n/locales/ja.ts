@@ -66,6 +66,7 @@ export const ja: Locale = {
   nav: {
     destinations: '目的地',
     daNangHotels: 'ダナンのホテル',
+    hotels: 'ホテル',
     guide: '直接予約ガイド',
     forHotels: 'ホテル事業者の方へ',
     hotelLogin: 'ホテルログイン',

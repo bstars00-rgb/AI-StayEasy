@@ -66,6 +66,7 @@ export const vi: Locale = {
   nav: {
     destinations: 'Điểm đến',
     daNangHotels: 'Khách sạn Đà Nẵng',
+    hotels: 'Khách sạn',
     guide: 'Hướng dẫn đặt phòng trực tiếp',
     forHotels: 'Dành cho khách sạn',
     hotelLogin: 'Đăng nhập khách sạn',
