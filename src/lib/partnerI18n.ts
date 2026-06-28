@@ -180,6 +180,24 @@ export interface PartnerStrings {
     previewTitle: string
     previewSub: string
     completeness: string
+    facilitiesHint: string
+    tags: string
+    suitabilityTitle: string
+    bestFor: string
+    notIdealFor: string
+    thingsToCheck: string
+    onePerLine: string
+    roomTitle: string
+    roomCouples: string
+    roomFamilies: string
+    roomLongStay: string
+    roomCheck: string
+    locTitle: string
+    locNearby: string
+    locAirport: string
+    locAround: string
+    locFood: string
+    cancellation: string
   }
 }
 
@@ -348,6 +366,24 @@ export const partnerStrings: Record<Lang, PartnerStrings> = {
       previewTitle: 'Live preview',
       previewSub: 'How guests see your listing',
       completeness: 'Listing completeness',
+      facilitiesHint: 'select all that apply',
+      tags: 'Travel styles',
+      suitabilityTitle: 'Suitability & guides',
+      bestFor: 'Best for',
+      notIdealFor: 'Not ideal for',
+      thingsToCheck: 'Things to check before booking',
+      onePerLine: 'one per line',
+      roomTitle: 'Room guide',
+      roomCouples: 'For couples',
+      roomFamilies: 'For families',
+      roomLongStay: 'For long stays',
+      roomCheck: 'Check before booking',
+      locTitle: 'Location guide',
+      locNearby: 'Nearby',
+      locAirport: 'Airport distance',
+      locAround: 'Getting around',
+      locFood: 'Nearby food',
+      cancellation: 'Cancellation checklist',
     },
   },
 
@@ -515,6 +551,24 @@ export const partnerStrings: Record<Lang, PartnerStrings> = {
       previewTitle: '실시간 미리보기',
       previewSub: '게스트에게 보이는 모습',
       completeness: '리스팅 완성도',
+      facilitiesHint: '해당 항목 모두 선택',
+      tags: '여행 스타일',
+      suitabilityTitle: '적합도 & 가이드',
+      bestFor: '추천 대상',
+      notIdealFor: '비추천 대상',
+      thingsToCheck: '예약 전 확인 사항',
+      onePerLine: '한 줄에 하나',
+      roomTitle: '객실 가이드',
+      roomCouples: '커플에게',
+      roomFamilies: '가족에게',
+      roomLongStay: '장기 투숙에게',
+      roomCheck: '예약 전 확인',
+      locTitle: '위치 가이드',
+      locNearby: '주변',
+      locAirport: '공항 거리',
+      locAround: '이동 방법',
+      locFood: '주변 맛집',
+      cancellation: '취소 체크리스트',
     },
   },
 
@@ -682,6 +736,24 @@ export const partnerStrings: Record<Lang, PartnerStrings> = {
       previewTitle: 'Xem trước trực tiếp',
       previewSub: 'Cách khách thấy trang của bạn',
       completeness: 'Mức độ hoàn thiện',
+      facilitiesHint: 'chọn tất cả phù hợp',
+      tags: 'Phong cách du lịch',
+      suitabilityTitle: 'Độ phù hợp & hướng dẫn',
+      bestFor: 'Phù hợp với',
+      notIdealFor: 'Không phù hợp với',
+      thingsToCheck: 'Cần kiểm tra trước khi đặt',
+      onePerLine: 'mỗi mục một dòng',
+      roomTitle: 'Hướng dẫn phòng',
+      roomCouples: 'Cho cặp đôi',
+      roomFamilies: 'Cho gia đình',
+      roomLongStay: 'Cho lưu trú dài',
+      roomCheck: 'Kiểm tra trước khi đặt',
+      locTitle: 'Hướng dẫn vị trí',
+      locNearby: 'Lân cận',
+      locAirport: 'Khoảng cách sân bay',
+      locAround: 'Di chuyển',
+      locFood: 'Ẩm thực gần đó',
+      cancellation: 'Danh sách kiểm tra hủy phòng',
     },
   },
 
@@ -849,6 +921,24 @@ export const partnerStrings: Record<Lang, PartnerStrings> = {
       previewTitle: '实时预览',
       previewSub: '游客看到的样子',
       completeness: '资料完整度',
+      facilitiesHint: '勾选所有适用项',
+      tags: '出行风格',
+      suitabilityTitle: '适配度与指南',
+      bestFor: '适合',
+      notIdealFor: '不适合',
+      thingsToCheck: '预订前需确认',
+      onePerLine: '每行一项',
+      roomTitle: '客房指南',
+      roomCouples: '情侣',
+      roomFamilies: '家庭',
+      roomLongStay: '长住',
+      roomCheck: '预订前确认',
+      locTitle: '位置指南',
+      locNearby: '周边',
+      locAirport: '机场距离',
+      locAround: '交通出行',
+      locFood: '周边美食',
+      cancellation: '取消核对清单',
     },
   },
 
@@ -1016,6 +1106,24 @@ export const partnerStrings: Record<Lang, PartnerStrings> = {
       previewTitle: 'ライブプレビュー',
       previewSub: 'ゲストに見える表示',
       completeness: '掲載の完成度',
+      facilitiesHint: '該当するものをすべて選択',
+      tags: '旅のスタイル',
+      suitabilityTitle: '適合度＆ガイド',
+      bestFor: 'おすすめの方',
+      notIdealFor: '不向きな方',
+      thingsToCheck: '予約前の確認事項',
+      onePerLine: '1行に1つ',
+      roomTitle: '客室ガイド',
+      roomCouples: 'カップル向け',
+      roomFamilies: 'ファミリー向け',
+      roomLongStay: 'ロングステイ向け',
+      roomCheck: '予約前に確認',
+      locTitle: '立地ガイド',
+      locNearby: '周辺',
+      locAirport: '空港までの距離',
+      locAround: '移動手段',
+      locFood: '周辺グルメ',
+      cancellation: 'キャンセル確認リスト',
     },
   },
 }

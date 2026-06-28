@@ -21,6 +21,13 @@ export type HotelPatch = Partial<
     | 'koreanFriendly'
     | 'voucher'
     | 'contact'
+    | 'tags'
+    | 'bestFor'
+    | 'notIdealFor'
+    | 'thingsToCheck'
+    | 'roomGuide'
+    | 'locationGuide'
+    | 'cancellationChecklist'
   >
 >
 

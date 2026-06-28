@@ -4,8 +4,10 @@ import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import { findInCatalogue } from '../data/mockRepo'
 import { Logo } from '../components/Logo'
 import { LanguageSwitcher } from '../components/LanguageSwitcher'
-import { useLang } from '../i18n'
+import { useLang, useT } from '../i18n'
 import { partnerStrings } from '../lib/partnerI18n'
+import { facilityIcon } from '../lib/facilities'
+import type { TravelStyle } from '../types'
 import { usePartnerSession } from '../lib/partnerAuth'
 import { hotelEdits } from '../lib/hotelEdits'
 import type { HotelPatch } from '../lib/hotelEdits'
@@ -13,6 +15,10 @@ import { useDocumentMeta } from '../lib/useDocumentMeta'
 
 const inputCls = 'w-full rounded-xl border border-black/10 bg-sand-50 px-3 py-2.5 text-sm outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100'
 const lines = (s: string): string[] => s.split('\n').map((l) => l.trim()).filter(Boolean)
+
+/** Canonical, translatable facility set offered as checkboxes (matches i18n enums). */
+const FACILITY_OPTIONS = ['Pool', 'Breakfast', 'Beachfront', 'Kids club', 'Kids-friendly', 'Korean-friendly', 'Spa', 'Gym', 'Airport transfer', 'Restaurant', 'Bar', 'Parking', 'Free Wi-Fi', 'Kitchen']
+const TRAVEL_STYLE_OPTIONS: TravelStyle[] = ['Family', 'Couple', 'Business', 'Beach', 'Long Stay', 'Korean-friendly']
 
 function Field({ label, hint, children }: { label: string; hint?: string; children: ReactNode }) {
   return (
@@ -27,6 +33,7 @@ function Field({ label, hint, children }: { label: string; hint?: string; childr
 export default function PartnerEditPage() {
   useDocumentMeta('Edit listing — StayEasy partners', 'Update your StayEasy listing content.')
   const { lang } = useLang()
+  const tt = useT()
   const t = partnerStrings[lang]
   const te = t.edit
   const navigate = useNavigate()
@@ -43,7 +50,20 @@ export default function PartnerEditPage() {
     shortDescription: hotel?.shortDescription ?? '',
     positioningLine: hotel?.positioningLine ?? '',
     mainReason: hotel?.mainReason ?? '',
-    facilities: (hotel?.facilities ?? []).join('\n'),
+    facilitiesSel: (hotel?.facilities ?? []) as string[],
+    tags: (hotel?.tags ?? []) as string[],
+    bestFor: (hotel?.bestFor ?? []).join('\n'),
+    notIdealFor: (hotel?.notIdealFor ?? []).join('\n'),
+    thingsToCheck: (hotel?.thingsToCheck ?? []).join('\n'),
+    cancellationChecklist: (hotel?.cancellationChecklist ?? []).join('\n'),
+    rgCouples: hotel?.roomGuide?.couples ?? '',
+    rgFamilies: hotel?.roomGuide?.families ?? '',
+    rgLongStay: hotel?.roomGuide?.longStay ?? '',
+    rgCheck: hotel?.roomGuide?.checkBeforeBooking ?? '',
+    lgNearby: hotel?.locationGuide?.nearby ?? '',
+    lgAirport: hotel?.locationGuide?.airportDistance ?? '',
+    lgAround: hotel?.locationGuide?.gettingAround ?? '',
+    lgFood: hotel?.locationGuide?.nearbyFood ?? '',
     officialBenefits: (hotel?.officialBenefits ?? []).join('\n'),
     officialWebsiteUrl: hotel?.officialWebsiteUrl ?? '',
     imageUrl: hotel?.imageUrl ?? '',
@@ -89,13 +109,26 @@ export default function PartnerEditPage() {
       setF((prev) => ({ ...prev, [k]: v }))
     }
 
+  const toggleArr = (key: 'facilitiesSel' | 'tags', value: string) =>
+    setF((prev) => ({
+      ...prev,
+      [key]: prev[key].includes(value) ? prev[key].filter((x) => x !== value) : [...prev[key], value],
+    }))
+
   const save = (e: React.FormEvent) => {
     e.preventDefault()
     const patch: HotelPatch = {
       shortDescription: f.shortDescription.trim(),
       positioningLine: f.positioningLine.trim(),
       mainReason: f.mainReason.trim(),
-      facilities: lines(f.facilities),
+      facilities: f.facilitiesSel,
+      tags: f.tags as TravelStyle[],
+      bestFor: lines(f.bestFor),
+      notIdealFor: lines(f.notIdealFor),
+      thingsToCheck: lines(f.thingsToCheck),
+      cancellationChecklist: lines(f.cancellationChecklist),
+      roomGuide: { couples: f.rgCouples.trim(), families: f.rgFamilies.trim(), longStay: f.rgLongStay.trim(), checkBeforeBooking: f.rgCheck.trim() },
+      locationGuide: { nearby: f.lgNearby.trim(), airportDistance: f.lgAirport.trim(), gettingAround: f.lgAround.trim(), nearbyFood: f.lgFood.trim() },
       officialBenefits: lines(f.officialBenefits),
       officialWebsiteUrl: f.officialWebsiteUrl.trim(),
       imageUrl: f.imageUrl.trim(),
@@ -127,11 +160,11 @@ export default function PartnerEditPage() {
   }
 
   // Live-preview derivations + a simple completeness score for the sidebar.
-  const facLines = lines(f.facilities)
+  const facLines = f.facilitiesSel.map((x) => (tt.enums.facility as Record<string, string>)[x] ?? x)
   const benLines = lines(f.officialBenefits)
   const previewImg = f.imageUrl.trim() || gallery.find((g) => g.trim()) || ''
   const checkFields = [
-    f.positioningLine, f.shortDescription, f.mainReason, f.facilities, f.officialBenefits,
+    f.positioningLine, f.shortDescription, f.mainReason, f.facilitiesSel.join(' '), f.officialBenefits,
     f.officialWebsiteUrl, f.imageUrl, f.voucherCode,
     [f.cEmail, f.cPhone, f.cWhatsapp, f.cZalo, f.cKakao, f.cLine, f.cMessenger].find((x) => x.trim()) ?? '',
   ]
@@ -160,15 +193,75 @@ export default function PartnerEditPage() {
           <Field label={te.positioning} hint={te.positioningHint}><input value={f.positioningLine} onChange={set('positioningLine')} className={inputCls} /></Field>
           <Field label={te.shortDesc}><textarea value={f.shortDescription} onChange={set('shortDescription')} rows={3} className={inputCls} /></Field>
           <Field label={te.mainReason}><textarea value={f.mainReason} onChange={set('mainReason')} rows={2} className={inputCls} /></Field>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <Field label={te.facilities}><textarea value={f.facilities} onChange={set('facilities')} rows={5} className={inputCls} /></Field>
-            <Field label={te.officialBenefits}><textarea value={f.officialBenefits} onChange={set('officialBenefits')} rows={5} className={inputCls} /></Field>
-          </div>
+          <Field label={te.facilities} hint={te.facilitiesHint}>
+            <div className="flex flex-wrap gap-2">
+              {[...FACILITY_OPTIONS, ...f.facilitiesSel.filter((x) => !FACILITY_OPTIONS.includes(x))].map((opt) => {
+                const on = f.facilitiesSel.includes(opt)
+                return (
+                  <button
+                    type="button"
+                    key={opt}
+                    onClick={() => toggleArr('facilitiesSel', opt)}
+                    aria-pressed={on}
+                    className={`pill border transition-colors ${on ? 'border-brand-600 bg-brand-600 text-white' : 'border-black/10 bg-white text-ink-700 hover:bg-sand-50'}`}
+                  >
+                    <span aria-hidden>{facilityIcon(opt)}</span> {(tt.enums.facility as Record<string, string>)[opt] ?? opt}
+                  </button>
+                )
+              })}
+            </div>
+          </Field>
+          <Field label={te.tags} hint={te.facilitiesHint}>
+            <div className="flex flex-wrap gap-2">
+              {TRAVEL_STYLE_OPTIONS.map((opt) => {
+                const on = f.tags.includes(opt)
+                return (
+                  <button
+                    type="button"
+                    key={opt}
+                    onClick={() => toggleArr('tags', opt)}
+                    aria-pressed={on}
+                    className={`pill border transition-colors ${on ? 'border-brand-600 bg-brand-600 text-white' : 'border-black/10 bg-white text-ink-700 hover:bg-sand-50'}`}
+                  >
+                    {(tt.enums.travelStyle as Record<string, string>)[opt] ?? opt}
+                  </button>
+                )
+              })}
+            </div>
+          </Field>
+          <Field label={te.officialBenefits} hint={te.onePerLine}><textarea value={f.officialBenefits} onChange={set('officialBenefits')} rows={4} className={inputCls} /></Field>
           <div className="grid gap-4 sm:grid-cols-2">
             <Field label={te.officialUrl}><input value={f.officialWebsiteUrl} onChange={set('officialWebsiteUrl')} placeholder="https://hotel.example/booking" className={inputCls} /></Field>
             <Field label={te.mainPhoto}><input value={f.imageUrl} onChange={set('imageUrl')} className={inputCls} /></Field>
           </div>
           <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={f.koreanFriendly} onChange={set('koreanFriendly')} /> {te.koreanFriendly}</label>
+        </section>
+
+        <section className="space-y-4 rounded-2xl bg-white p-5 shadow-card ring-1 ring-black/5 sm:p-6">
+          <h2 className="font-bold text-ink-900">{te.suitabilityTitle}</h2>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field label={te.bestFor} hint={te.onePerLine}><textarea value={f.bestFor} onChange={set('bestFor')} rows={3} className={inputCls} /></Field>
+            <Field label={te.notIdealFor} hint={te.onePerLine}><textarea value={f.notIdealFor} onChange={set('notIdealFor')} rows={3} className={inputCls} /></Field>
+          </div>
+          <Field label={te.thingsToCheck} hint={te.onePerLine}><textarea value={f.thingsToCheck} onChange={set('thingsToCheck')} rows={3} className={inputCls} /></Field>
+
+          <p className="pt-1 text-xs font-bold uppercase tracking-wide text-ink-700/50">{te.roomTitle}</p>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field label={te.roomCouples}><input value={f.rgCouples} onChange={set('rgCouples')} className={inputCls} /></Field>
+            <Field label={te.roomFamilies}><input value={f.rgFamilies} onChange={set('rgFamilies')} className={inputCls} /></Field>
+            <Field label={te.roomLongStay}><input value={f.rgLongStay} onChange={set('rgLongStay')} className={inputCls} /></Field>
+            <Field label={te.roomCheck}><input value={f.rgCheck} onChange={set('rgCheck')} className={inputCls} /></Field>
+          </div>
+
+          <p className="pt-1 text-xs font-bold uppercase tracking-wide text-ink-700/50">{te.locTitle}</p>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field label={te.locNearby}><input value={f.lgNearby} onChange={set('lgNearby')} className={inputCls} /></Field>
+            <Field label={te.locAirport}><input value={f.lgAirport} onChange={set('lgAirport')} className={inputCls} /></Field>
+            <Field label={te.locAround}><input value={f.lgAround} onChange={set('lgAround')} className={inputCls} /></Field>
+            <Field label={te.locFood}><input value={f.lgFood} onChange={set('lgFood')} className={inputCls} /></Field>
+          </div>
+
+          <Field label={te.cancellation} hint={te.onePerLine}><textarea value={f.cancellationChecklist} onChange={set('cancellationChecklist')} rows={3} className={inputCls} /></Field>
         </section>
 
         <section className="space-y-4 rounded-2xl bg-white p-5 shadow-card ring-1 ring-black/5 sm:p-6">
