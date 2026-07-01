@@ -12,6 +12,7 @@ import { useT } from '../i18n'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 import { useSiteImages } from '../lib/siteImages'
 import { MarketingBanner } from '../components/MarketingBanner'
+import { IconCheck } from '../components/icons'
 
 /** The four hero tiles — decorative emoji by default; an operator can swap in
  *  real photos from the admin Images tab (siteImages.hero[i]). */
@@ -160,13 +161,15 @@ export default function HomePage() {
             <div className="p-8 sm:p-10">
               <ul className="space-y-4">
                 {[
-                  { icon: '🚫', t: t.home.notOta1t, d: t.home.notOta1d },
-                  { icon: '📚', t: t.home.notOta2t, d: t.home.notOta2d },
-                  { icon: '🏨', t: t.home.notOta3t, d: t.home.notOta3d },
-                  { icon: '🏷️', t: t.home.notOta4t, d: t.home.notOta4d },
+                  { t: t.home.notOta1t, d: t.home.notOta1d },
+                  { t: t.home.notOta2t, d: t.home.notOta2d },
+                  { t: t.home.notOta3t, d: t.home.notOta3d },
+                  { t: t.home.notOta4t, d: t.home.notOta4d },
                 ].map((r) => (
                   <li key={r.t} className="flex gap-3">
-                    <span className="text-2xl">{r.icon}</span>
+                    <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-brand-50 text-brand-700">
+                      <IconCheck className="h-3.5 w-3.5" strokeWidth={2.25} />
+                    </span>
                     <div>
                       <p className="font-bold text-ink-900">{r.t}</p>
                       <p className="text-sm text-ink-700/80">{r.d}</p>

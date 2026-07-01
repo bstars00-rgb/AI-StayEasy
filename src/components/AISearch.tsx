@@ -4,6 +4,7 @@ import { repo } from '../data/repo'
 import { type Recommendation } from '../lib/searchEngine'
 import { searchStrings } from '../lib/searchI18n'
 import { HotelCard } from './HotelCard'
+import { IconSparkle } from './icons'
 
 export function AISearch({ autoFocus = false }: { autoFocus?: boolean }) {
   const { lang } = useLang()
@@ -29,7 +30,7 @@ export function AISearch({ autoFocus = false }: { autoFocus?: boolean }) {
       {/* Search box */}
       <div className="rounded-3xl bg-white p-5 shadow-card ring-1 ring-black/5 sm:p-6">
         <div className="flex items-center gap-2 text-brand-700">
-          <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-brand-500 to-accent-500 text-white shadow-glow-accent">✨</span>
+          <span className="grid h-8 w-8 place-items-center rounded-lg bg-brand-600 text-white"><IconSparkle className="h-4 w-4" /></span>
           <h2 className="text-lg font-extrabold text-ink-900">{s.title}</h2>
         </div>
         <p className="mt-1.5 text-sm text-ink-700/80">{s.subtitle}</p>
@@ -55,7 +56,7 @@ export function AISearch({ autoFocus = false }: { autoFocus?: boolean }) {
             disabled={!query.trim() || loading}
             className="shrink-0 rounded-2xl bg-brand-600 px-6 py-3 text-sm font-bold text-white shadow-sm transition-colors hover:bg-brand-700 disabled:opacity-50 sm:self-stretch"
           >
-            {loading ? '…' : `✨ ${s.button}`}
+            {loading ? '…' : s.button}
           </button>
         </div>
 

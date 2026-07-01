@@ -8,6 +8,7 @@ import { useLang, useT, localizeHotel } from '../i18n'
 import { voucherStrings } from '../lib/voucherI18n'
 import { officialLink } from '../lib/officialLink'
 import { scoreStrings } from '../lib/scoreI18n'
+import { IconPin, IconStar, IconTag } from './icons'
 
 /**
  * Suitability-first hotel card. Leads with *who it's for* and the official
@@ -37,7 +38,7 @@ export function HotelCard({ hotel: raw }: { hotel: Hotel }) {
         <div className="absolute left-3 top-3 flex flex-wrap gap-2">
           {hotel.isSponsored && <SponsoredBadge />}
           {raw.voucher && (
-            <span className="pill bg-brand-600 text-white">🎟️ {voucherStrings[lang].badge}</span>
+            <span className="pill bg-brand-600 text-white"><IconTag className="h-3.5 w-3.5" /> {voucherStrings[lang].badge}</span>
           )}
         </div>
         <div className="absolute bottom-3 right-3">
@@ -50,16 +51,18 @@ export function HotelCard({ hotel: raw }: { hotel: Hotel }) {
           <Link to={`/hotels/${hotel.slug}`}>
             <h3 className="line-clamp-2 min-h-[2.75rem] font-bold leading-snug text-ink-900 group-hover:text-brand-700">{hotel.name}</h3>
           </Link>
-          <p className="mt-0.5 text-sm text-ink-700/70">
-            <span aria-hidden>📍</span> {area}, {city}
+          <p className="mt-0.5 flex items-center gap-1 text-sm text-ink-700/70">
+            <IconPin className="h-3.5 w-3.5 shrink-0 text-ink-700/45" /> {area}, {city}
           </p>
           <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs">
-            <span className="rounded bg-amber-50 px-1.5 py-0.5 font-bold text-amber-700">{'★'.repeat(raw.conditions.starRating)}</span>
+            <span className="inline-flex items-center gap-0.5 rounded bg-amber-50 px-1.5 py-0.5 font-bold text-amber-700">
+              <IconStar className="h-3 w-3" /> {raw.conditions.starRating}
+            </span>
             <span
               className="inline-flex items-center gap-1 rounded bg-brand-600 px-1.5 py-0.5 font-bold text-white"
               title={scoreStrings[lang].tagline}
             >
-              <span aria-hidden>✦</span> {raw.conditions.stayEasyScore.toFixed(1)}
+              {raw.conditions.stayEasyScore.toFixed(1)}
             </span>
             <span className="text-ink-700/50">{scoreStrings[lang].label}</span>
           </div>
@@ -79,7 +82,7 @@ export function HotelCard({ hotel: raw }: { hotel: Hotel }) {
         </div>
 
         <div className="rounded-xl bg-brand-50 px-3 py-2">
-          <p className="text-xs font-semibold text-brand-700">🏷️ {t.common.officialBenefit}</p>
+          <p className="flex items-center gap-1 text-xs font-semibold text-brand-700"><IconTag className="h-3.5 w-3.5" /> {t.common.officialBenefit}</p>
           <p className="line-clamp-1 text-sm text-ink-800">{hotel.officialBenefits[0]}</p>
         </div>
 
