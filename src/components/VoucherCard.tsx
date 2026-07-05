@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { Hotel } from '../types'
 import { useLang } from '../i18n'
 import { voucherStrings } from '../lib/voucherI18n'
+import { accountStrings } from '../lib/accountI18n'
 import { downloadVoucher } from '../lib/voucher'
 import { officialLink } from '../lib/officialLink'
 import { guestAuth, useGuest } from '../lib/guestAuth'
@@ -59,30 +60,36 @@ function UnlockingLock({ open }: { open: boolean }) {
 export function VoucherCard({ hotel }: { hotel: Hotel }) {
   const { lang } = useLang()
   const s = voucherStrings[lang]
+  const as = accountStrings[lang]
   const guest = useGuest()
   const [copied, setCopied] = useState(false)
   const [unlocking, setUnlocking] = useState(false)
   const [celebrate, setCelebrate] = useState(false)
+  const [email, setEmail] = useState('')
   const v = hotel.voucher
 
-  // Unlock in place — no page change, no popup. The lock springs open and the
-  // voucher rises like a chest lid. Real Google sign-in is used when configured;
-  // Hotel/market dimensions attached to every voucher event, so GA4 can answer
-  // "which hotels convert?" and "what do these travelers want?".
   const dims = { hotel_slug: hotel.slug, city: hotel.city, hotel_type: hotel.hotelType, lang }
 
-  // otherwise a demo identity unlocks instantly.
-  const unlock = () => {
-    if (unlocking || guest) return
+  // Signing in unlocks the voucher — the lock springs open and the code rises.
+  // A real login step is required (email, or Google when configured); no popup,
+  // no page change. `person` is the signed-in profile.
+  const runUnlock = (person: { email: string; name?: string; picture?: string }) => {
     trackEvent('voucher_unlock', dims)
     setUnlocking(true)
     setCelebrate(true)
-    if (googleEnabled && promptGoogle((p) => guestAuth.signIn(p))) {
-      // Google's own UI drives it; settle the lock back if the user dismisses it.
-      setTimeout(() => setUnlocking(false), 2000)
-      return
-    }
-    setTimeout(() => guestAuth.signIn({ email: 'guest@gmail.com', name: 'Guest' }), 560)
+    setTimeout(() => guestAuth.signIn(person), 560)
+  }
+
+  const submitEmail = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (unlocking || guest) return
+    if (!email.includes('@')) return
+    runUnlock({ email: email.trim() })
+  }
+
+  const withGoogle = () => {
+    if (unlocking || guest) return
+    promptGoogle((p) => runUnlock(p))
   }
 
   // Hotel offers no voucher → an honest notice (not nothing).
@@ -171,19 +178,43 @@ export function VoucherCard({ hotel }: { hotel: Hotel }) {
             <p className="text-xs text-ink-700/55">{s.note}</p>
           </div>
         ) : (
-          <button
-            type="button"
-            onClick={unlock}
-            disabled={unlocking}
-            aria-label={s.unlock}
-            className="group w-full rounded-xl bg-sand-50 p-4 text-center ring-1 ring-black/5 transition-colors hover:bg-sand-100 disabled:cursor-default"
-          >
+          <form onSubmit={submitEmail} className="rounded-xl bg-sand-50 p-4 text-center ring-1 ring-black/5">
             <div className="flex justify-center"><UnlockingLock open={unlocking} /></div>
             <p className="mt-1 text-sm text-ink-700/80">{s.unlockNote}</p>
-            <span className="mt-3 inline-block rounded-full bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors group-hover:bg-brand-700">
-              {unlocking ? `🔓 ${s.unlocking}` : `🔒 ${s.unlock}`}
-            </span>
-          </button>
+
+            {googleEnabled && (
+              <>
+                <button
+                  type="button"
+                  onClick={withGoogle}
+                  disabled={unlocking}
+                  className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-black/15 bg-white px-4 py-2.5 text-sm font-semibold text-ink-800 hover:bg-sand-100"
+                >
+                  {as.google}
+                </button>
+                <div className="my-3 flex items-center gap-3 text-[11px] text-ink-600/50">
+                  <span className="h-px flex-1 bg-black/10" /> or <span className="h-px flex-1 bg-black/10" />
+                </div>
+              </>
+            )}
+
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder={as.emailPh}
+              disabled={unlocking}
+              className="mt-3 w-full rounded-xl border border-black/10 bg-white px-3 py-2.5 text-sm outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100"
+            />
+            <button
+              type="submit"
+              disabled={unlocking}
+              className="mt-2 w-full rounded-full bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-700 disabled:opacity-60"
+            >
+              {unlocking ? s.unlocking : s.unlock}
+            </button>
+          </form>
         )}
       </div>
     </div>

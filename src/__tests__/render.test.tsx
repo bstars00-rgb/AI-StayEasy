@@ -245,7 +245,8 @@ describe('interaction: member-gated hotel voucher', () => {
         </MemoryRouter>
       </I18nProvider>,
     )
-    // Click the in-place unlock — demo sign-in resolves without leaving the page.
+    // Enter an email and submit — sign-in resolves in place, no navigation.
+    fireEvent.change(screen.getByPlaceholderText(/you@gmail.com/i), { target: { value: 'me@gmail.com' } })
     fireEvent.click(screen.getByRole('button', { name: /sign in to unlock/i }))
     // The code is revealed right here once the lock springs open.
     expect(await screen.findByRole('button', { name: /copy code/i })).toBeTruthy()
@@ -264,6 +265,7 @@ describe('interaction: member-gated hotel voucher', () => {
         </MemoryRouter>
       </I18nProvider>,
     )
+    fireEvent.change(screen.getByPlaceholderText(/you@gmail.com/i), { target: { value: 'me@gmail.com' } })
     fireEvent.click(screen.getByRole('button', { name: /sign in to unlock/i }))
     expect(spy).toHaveBeenCalledWith('voucher_unlock', expect.objectContaining({ hotel_slug: hotel.slug }))
 
