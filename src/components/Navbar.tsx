@@ -9,6 +9,7 @@ import { useWishlist } from '../lib/wishlist'
 import { wishlistStrings } from '../lib/wishlistI18n'
 import { useGuest } from '../lib/guestAuth'
 import { accountStrings } from '../lib/accountI18n'
+import { BM_ENABLED } from '../lib/bm'
 
 export function Navbar() {
   const [open, setOpen] = useState(false)
@@ -82,15 +83,17 @@ export function Navbar() {
               </span>
             )}
           </NavLink>
-          {guest ? (
-            <Link to="/account" aria-label={as.accountTitle} title={guest.email} className="ml-1 grid h-9 w-9 place-items-center rounded-full bg-brand-600 text-sm font-bold text-white hover:bg-brand-700">
-              {guest.name.charAt(0).toUpperCase()}
-            </Link>
-          ) : (
-            <Link to="/signin" className="ml-1 rounded-full px-3.5 py-2 text-sm font-medium text-ink-700 hover:bg-sand-100">
-              {as.signIn}
-            </Link>
-          )}
+          {/* Consumer sign-in exists only to unlock hotel vouchers (a BM surface). */}
+          {BM_ENABLED &&
+            (guest ? (
+              <Link to="/account" aria-label={as.accountTitle} title={guest.email} className="ml-1 grid h-9 w-9 place-items-center rounded-full bg-brand-600 text-sm font-bold text-white hover:bg-brand-700">
+                {guest.name.charAt(0).toUpperCase()}
+              </Link>
+            ) : (
+              <Link to="/signin" className="ml-1 rounded-full px-3.5 py-2 text-sm font-medium text-ink-700 hover:bg-sand-100">
+                {as.signIn}
+              </Link>
+            ))}
           <Link
             to="/partner/login"
             className="ml-1 rounded-full bg-ink-900 px-4 py-2 text-sm font-semibold text-white hover:bg-ink-800"
@@ -172,11 +175,12 @@ export function Navbar() {
             >
               ♥ {ws.nav}{count > 0 ? ` (${count})` : ''}
             </NavLink>
-            {guest ? (
-              <Link to="/account" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2.5 text-sm font-medium text-ink-800 hover:bg-sand-100">👤 {guest.name} · {as.member}</Link>
-            ) : (
-              <Link to="/signin" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2.5 text-sm font-medium text-ink-800 hover:bg-sand-100">{as.signIn}</Link>
-            )}
+            {BM_ENABLED &&
+              (guest ? (
+                <Link to="/account" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2.5 text-sm font-medium text-ink-800 hover:bg-sand-100">👤 {guest.name} · {as.member}</Link>
+              ) : (
+                <Link to="/signin" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2.5 text-sm font-medium text-ink-800 hover:bg-sand-100">{as.signIn}</Link>
+              ))}
             <Link
               to="/partner/login"
               onClick={() => setOpen(false)}

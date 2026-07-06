@@ -13,6 +13,7 @@ import { useAsync } from '../lib/useAsync'
 import { Spinner } from '../components/Loading'
 import { useT, useLang, localizeHotel } from '../i18n'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
+import { BM_ENABLED } from '../lib/bm'
 import { officialLink } from '../lib/officialLink'
 import { trackEvent } from '../lib/analytics'
 import { scoreStrings } from '../lib/scoreI18n'
@@ -137,7 +138,7 @@ export default function HotelDetailPage() {
       {/* 1. Hotel header */}
       <section className="container-page mt-6">
         <div className="flex flex-wrap items-center gap-2">
-          {hotel.isSponsored && <SponsoredBadge />}
+          {BM_ENABLED && hotel.isSponsored && <SponsoredBadge />}
           <span className="pill bg-sand-100 text-ink-700">{hotelType}</span>
           {hotel.koreanFriendly && <span className="pill bg-rose-50 text-rose-600">🇰🇷 {t.badges.koreanFriendly}</span>}
         </div>
@@ -272,7 +273,7 @@ export default function HotelDetailPage() {
 
         {/* Sticky rail */}
         <aside className="lg:sticky lg:top-20 lg:h-fit space-y-3">
-          <VoucherCard hotel={hotel} />
+          {BM_ENABLED && <VoucherCard hotel={hotel} />}
           <div className="rounded-2xl bg-white p-5 shadow-card ring-1 ring-black/5">
             <p className="text-sm font-bold text-ink-900">{t.detail.railTitle}</p>
             <p className="mt-1 text-sm text-ink-700/70">{t.detail.railText}</p>

@@ -13,6 +13,7 @@ import { useDocumentMeta } from '../lib/useDocumentMeta'
 import { useSiteImages } from '../lib/siteImages'
 import { MarketingBanner } from '../components/MarketingBanner'
 import { IconCheck } from '../components/icons'
+import { BM_ENABLED } from '../lib/bm'
 
 /** The four hero tiles — decorative emoji by default; an operator can swap in
  *  real photos from the admin Images tab (siteImages.hero[i]). */
@@ -136,9 +137,11 @@ export default function HomePage() {
             ))}
           </div>
         )}
-        <p className="mt-4 text-xs text-ink-700/60">
-          {t.home.sponsoredNote}
-        </p>
+        {BM_ENABLED && (
+          <p className="mt-4 text-xs text-ink-700/60">
+            {t.home.sponsoredNote}
+          </p>
+        )}
       </section>
 
       {/* Admin-controlled marketing banner */}

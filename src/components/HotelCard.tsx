@@ -9,6 +9,7 @@ import { voucherStrings } from '../lib/voucherI18n'
 import { officialLink } from '../lib/officialLink'
 import { scoreStrings } from '../lib/scoreI18n'
 import { IconPin, IconStar, IconTag } from './icons'
+import { BM_ENABLED } from '../lib/bm'
 
 /**
  * Suitability-first hotel card. Leads with *who it's for* and the official
@@ -36,8 +37,8 @@ export function HotelCard({ hotel: raw }: { hotel: Hotel }) {
           label={hotel.name}
         />
         <div className="absolute left-3 top-3 flex flex-wrap gap-2">
-          {hotel.isSponsored && <SponsoredBadge />}
-          {raw.voucher && (
+          {BM_ENABLED && hotel.isSponsored && <SponsoredBadge />}
+          {BM_ENABLED && raw.voucher && (
             <span className="pill bg-brand-600 text-white"><IconTag className="h-3.5 w-3.5" /> {voucherStrings[lang].badge}</span>
           )}
         </div>

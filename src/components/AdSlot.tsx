@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { BM_ENABLED } from '../lib/bm'
 
 /**
  * Google AdSense display slot.
@@ -39,7 +40,7 @@ export function AdSlot({ slot, className = '' }: { slot?: string; className?: st
   const ref = useRef<HTMLModElement>(null)
 
   useEffect(() => {
-    if (!CLIENT) return
+    if (!BM_ENABLED || !CLIENT) return
     ensureAdScript(CLIENT)
     try {
       ;(window.adsbygoogle = window.adsbygoogle || []).push({})
@@ -47,6 +48,8 @@ export function AdSlot({ slot, className = '' }: { slot?: string; className?: st
       /* AdSense not ready yet — it retries on the next render */
     }
   }, [])
+
+  if (!BM_ENABLED) return null
 
   if (!CLIENT) {
     if (import.meta.env.DEV) {
