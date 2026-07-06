@@ -4,6 +4,7 @@ import Button from '../components/Button'
 import { SectionHeading } from '../components/SectionHeading'
 import { useT } from '../i18n'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
+import { BM_ENABLED } from '../lib/bm'
 
 export default function PartnerPage() {
   const t = useT()
@@ -89,22 +90,24 @@ export default function PartnerPage() {
         </div>
       </section>
 
-      {/* 3. Products */}
-      <section className="container-page mt-16">
-        <SectionHeading eyebrow={t.partner.productsEyebrow} title={t.partner.productsTitle} subtitle={t.partner.productsSubtitle} />
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {products.map((p) => (
-            <div key={p.name} className="rounded-2xl bg-white p-6 shadow-card ring-1 ring-black/5">
-              <div className="flex items-center justify-between">
-                <span className="text-2xl">{p.icon}</span>
-                <span className="pill bg-brand-50 text-brand-700">{p.tag}</span>
+      {/* 3. Products (paid offerings menu — a BM surface) */}
+      {BM_ENABLED && (
+        <section className="container-page mt-16">
+          <SectionHeading eyebrow={t.partner.productsEyebrow} title={t.partner.productsTitle} subtitle={t.partner.productsSubtitle} />
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {products.map((p) => (
+              <div key={p.name} className="rounded-2xl bg-white p-6 shadow-card ring-1 ring-black/5">
+                <div className="flex items-center justify-between">
+                  <span className="text-2xl">{p.icon}</span>
+                  <span className="pill bg-brand-50 text-brand-700">{p.tag}</span>
+                </div>
+                <h3 className="mt-3 font-bold text-ink-900">{p.name}</h3>
+                <p className="mt-1.5 text-sm text-ink-700/80">{p.desc}</p>
               </div>
-              <h3 className="mt-3 font-bold text-ink-900">{p.name}</h3>
-              <p className="mt-1.5 text-sm text-ink-700/80">{p.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* 4. What hotels get */}
       <section className="container-page mt-16">
@@ -120,47 +123,51 @@ export default function PartnerPage() {
         </div>
       </section>
 
-      {/* 5. Example report preview */}
-      <section className="container-page mt-16">
-        <SectionHeading eyebrow={t.partner.reportEyebrow} title={t.partner.reportTitle} subtitle={t.partner.reportSubtitle} />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          {reportMetrics.map((m) => (
-            <div key={m.label} className="rounded-2xl bg-white p-5 text-center shadow-card ring-1 ring-black/5">
-              <div className="text-2xl font-extrabold text-ink-900">{m.value}</div>
-              <div className="mt-1 text-xs text-ink-700/70">{m.label}</div>
-            </div>
-          ))}
-        </div>
-        <div className="mt-4 text-center">
-          <Link to="/dashboard" className="text-sm font-semibold text-brand-700 hover:underline">{t.partner.reportLink} →</Link>
-        </div>
-      </section>
+      {/* 5. Example report preview (analytics-as-product teaser — a BM surface) */}
+      {BM_ENABLED && (
+        <section className="container-page mt-16">
+          <SectionHeading eyebrow={t.partner.reportEyebrow} title={t.partner.reportTitle} subtitle={t.partner.reportSubtitle} />
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+            {reportMetrics.map((m) => (
+              <div key={m.label} className="rounded-2xl bg-white p-5 text-center shadow-card ring-1 ring-black/5">
+                <div className="text-2xl font-extrabold text-ink-900">{m.value}</div>
+                <div className="mt-1 text-xs text-ink-700/70">{m.label}</div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-4 text-center">
+            <Link to="/dashboard" className="text-sm font-semibold text-brand-700 hover:underline">{t.partner.reportLink} →</Link>
+          </div>
+        </section>
+      )}
 
-      {/* 6. Pricing placeholder */}
-      <section className="container-page mt-16">
-        <SectionHeading eyebrow={t.partner.plansEyebrow} title={t.partner.plansTitle} align="center" />
-        <div className="grid gap-5 lg:grid-cols-3">
-          {plans.map((p) => (
-            <div key={p.name} className={`relative rounded-3xl p-6 ring-1 ${p.highlight ? 'bg-ink-900 text-white ring-ink-900 shadow-card-hover' : 'bg-white text-ink-900 ring-black/5 shadow-card'}`}>
-              {p.highlight && <span className="absolute -top-3 left-6 pill bg-brand-500 text-white">★ {t.partner.plans.popular}</span>}
-              <h3 className="text-lg font-bold">{p.name}</h3>
-              <p className={`mt-1 text-sm ${p.highlight ? 'text-white/70' : 'text-ink-700/70'}`}>{p.sub}</p>
-              <ul className="mt-4 space-y-2 text-sm">
-                {p.features.map((f) => (
-                  <li key={f} className="flex gap-2">
-                    <span className="text-brand-500">✓</span>
-                    <span className={p.highlight ? 'text-white/85' : 'text-ink-700/85'}>{f}</span>
-                  </li>
-                ))}
-              </ul>
-              <a href="#contact" className={`mt-6 block rounded-full px-5 py-2.5 text-center text-sm font-semibold ${p.highlight ? 'bg-brand-500 text-white hover:bg-brand-400' : 'bg-brand-600 text-white hover:bg-brand-700'}`}>
-                {t.partner.plans.contact}
-              </a>
-            </div>
-          ))}
-        </div>
-        <p className="mt-4 text-center text-xs text-ink-700/60">{t.partner.plansNote}</p>
-      </section>
+      {/* 6. Pricing — the business model. Hidden until BM_ENABLED. */}
+      {BM_ENABLED && (
+        <section className="container-page mt-16">
+          <SectionHeading eyebrow={t.partner.plansEyebrow} title={t.partner.plansTitle} align="center" />
+          <div className="grid gap-5 lg:grid-cols-3">
+            {plans.map((p) => (
+              <div key={p.name} className={`relative rounded-3xl p-6 ring-1 ${p.highlight ? 'bg-ink-900 text-white ring-ink-900 shadow-card-hover' : 'bg-white text-ink-900 ring-black/5 shadow-card'}`}>
+                {p.highlight && <span className="absolute -top-3 left-6 pill bg-brand-500 text-white">★ {t.partner.plans.popular}</span>}
+                <h3 className="text-lg font-bold">{p.name}</h3>
+                <p className={`mt-1 text-sm ${p.highlight ? 'text-white/70' : 'text-ink-700/70'}`}>{p.sub}</p>
+                <ul className="mt-4 space-y-2 text-sm">
+                  {p.features.map((f) => (
+                    <li key={f} className="flex gap-2">
+                      <span className="text-brand-500">✓</span>
+                      <span className={p.highlight ? 'text-white/85' : 'text-ink-700/85'}>{f}</span>
+                    </li>
+                  ))}
+                </ul>
+                <a href="#contact" className={`mt-6 block rounded-full px-5 py-2.5 text-center text-sm font-semibold ${p.highlight ? 'bg-brand-500 text-white hover:bg-brand-400' : 'bg-brand-600 text-white hover:bg-brand-700'}`}>
+                  {t.partner.plans.contact}
+                </a>
+              </div>
+            ))}
+          </div>
+          <p className="mt-4 text-center text-xs text-ink-700/60">{t.partner.plansNote}</p>
+        </section>
+      )}
 
       {/* 7. Contact form */}
       <section id="contact" className="container-page my-16">
