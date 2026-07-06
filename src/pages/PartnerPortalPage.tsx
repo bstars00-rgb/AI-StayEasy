@@ -5,6 +5,7 @@ import { Logo } from '../components/Logo'
 import { LanguageSwitcher } from '../components/LanguageSwitcher'
 import { ClicksTrend } from '../components/ClicksTrend'
 import { SearchInsightsPanel } from '../components/SearchInsightsPanel'
+import { PartnerInsights } from '../components/PartnerInsights'
 import { LANGS, useLang } from '../i18n'
 import { partnerStrings } from '../lib/partnerI18n'
 import { getPartnerAnalytics } from '../lib/partnerAnalytics'
@@ -151,6 +152,9 @@ export default function PartnerPortalPage() {
           <Kpi label={r.contactClicks} value={a.kpis.contactClicks.value.toLocaleString()} deltaPct={a.kpis.contactClicks.deltaPct} hint={r.contactClicksHint} />
           <Kpi label={r.convRate} value={`${a.kpis.convRate.value}%`} deltaPct={a.kpis.convRate.deltaPct} hint={r.convRateHint} />
         </div>
+
+        {/* Insights: benchmark, completeness, and action cards */}
+        {hotel && <PartnerInsights hotel={hotel} analytics={a} />}
 
         {/* Trend + funnel */}
         <div className="mt-4 grid gap-4 lg:grid-cols-3">

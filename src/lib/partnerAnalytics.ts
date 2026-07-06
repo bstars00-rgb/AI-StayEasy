@@ -65,7 +65,11 @@ function toPct(rows: { key: string; w: number }[]): SplitRow[] {
 export function getPartnerAnalytics(slug: string, baseClicks: number, koreanFriendly = false): PartnerAnalytics {
   const h = hash(slug)
   const officialClicks = Math.max(1, baseClicks)
-  const views = Math.round(officialClicks * 6.2)
+  // Views-per-click varies per hotel (≈4.8–8.7) so the conversion rate spreads
+  // realistically across ~11.5%–20.8% — otherwise every hotel would sit at a
+  // fixed ratio and peer benchmarking would be meaningless.
+  const viewsPer = 4.8 + (h % 40) / 10
+  const views = Math.round(officialClicks * viewsPer)
   const unlocks = Math.round(officialClicks * 1.6)
   const contactClicks = Math.round(officialClicks * 0.45)
   const convRate = views ? Math.round((officialClicks / views) * 1000) / 10 : 0

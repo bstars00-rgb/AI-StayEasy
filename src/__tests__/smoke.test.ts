@@ -21,6 +21,9 @@ import { conciergeStrings, REQUEST_KEYS } from '../lib/conciergeI18n'
 import { translatePhrase } from '../lib/translate'
 import { composeMessage, resolveChannels } from '../lib/contact'
 import { guestAuth } from '../lib/guestAuth'
+import { getPartnerAnalytics } from '../lib/partnerAnalytics'
+import { getBenchmark, getCompleteness, getInsights } from '../lib/partnerInsights'
+import { insightStrings } from '../lib/insightsI18n'
 
 /** Collects the sorted set of key-paths (leaves = strings/arrays) of an object. */
 function shapePaths(obj: unknown, prefix = ''): string[] {
@@ -409,6 +412,40 @@ describe('search insights (mock)', () => {
     // Totals sum the rows.
     expect(a.totals.clicks).toBe(a.topQueries.reduce((n, q) => n + q.clicks, 0))
     expect(a.totals.impressions).toBe(a.topQueries.reduce((n, q) => n + q.impressions, 0))
+  })
+})
+
+describe('partner insights (benchmark / completeness / actions)', () => {
+  const a = getPartnerAnalytics('olalani-resort-condotel', 400, false)
+
+  it('varies conversion rate across hotels so benchmarks are meaningful', () => {
+    const rates = hotels.slice(0, 8).map((h) => getPartnerAnalytics(h.slug, 300).kpis.convRate.value)
+    expect(new Set(rates).size).toBeGreaterThan(1)
+  })
+
+  it('benchmarks against peers and classifies standing', () => {
+    const h = getHotel('olalani-resort-condotel')!
+    const b = getBenchmark(h, a)
+    expect(b.peers).toBeGreaterThan(0)
+    expect(['above', 'onpar', 'below']).toContain(b.standing)
+    expect(b.peerConv).toBeGreaterThan(0)
+  })
+
+  it('scores listing completeness between 0 and 100', () => {
+    const c = getCompleteness(getHotel('olalani-resort-condotel')!)
+    expect(c.pct).toBeGreaterThanOrEqual(0)
+    expect(c.pct).toBeLessThanOrEqual(100)
+    expect(c.done.length + c.missing.length).toBe(12)
+  })
+
+  it('always returns at least one actionable insight with a known key', () => {
+    const h = getHotel('olalani-resort-condotel')!
+    const ins = getInsights(h, a, getBenchmark(h, a), getCompleteness(h))
+    expect(ins.length).toBeGreaterThan(0)
+    expect(ins.length).toBeLessThanOrEqual(5)
+    for (const lang of ['en', 'ko', 'vi', 'zh', 'ja'] as const) {
+      for (const i of ins) expect(typeof insightStrings[lang].rules[i.key]).toBe('string')
+    }
   })
 })
 
