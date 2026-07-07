@@ -45,8 +45,16 @@ export default function HomePage() {
   return (
     <>
       {/* 1. Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-brand-700 via-brand-600 to-sky-500">
-        <div className="absolute inset-0 opacity-20 [background-image:radial-gradient(circle_at_20%_20%,white_0,transparent_35%),radial-gradient(circle_at_85%_60%,white_0,transparent_30%)]" />
+      <section className="relative overflow-hidden bg-gradient-to-br from-emerald-800 via-brand-600 to-sky-500">
+        {/* Layered decorative background — soft color orbs + a fine dot grid give
+            the flat gradient real depth (all CSS, no images). */}
+        <div aria-hidden className="pointer-events-none absolute inset-0">
+          <div className="absolute -left-24 -top-24 h-96 w-96 rounded-full bg-emerald-300/30 blur-3xl" />
+          <div className="absolute right-[-6rem] top-1/4 h-80 w-80 rounded-full bg-sky-300/30 blur-3xl" />
+          <div className="absolute bottom-[-8rem] left-1/3 h-80 w-80 rounded-full bg-teal-200/20 blur-3xl" />
+          <div className="absolute inset-0 opacity-[0.14] [background-image:radial-gradient(circle_at_1px_1px,white_1px,transparent_0)] [background-size:22px_22px]" />
+          <div className="absolute inset-0 opacity-20 [background-image:radial-gradient(circle_at_20%_20%,white_0,transparent_35%),radial-gradient(circle_at_85%_60%,white_0,transparent_30%)]" />
+        </div>
         <div className="container-page relative grid items-center gap-10 py-16 lg:grid-cols-2 lg:py-24">
           <div className="text-white">
             <span className="pill bg-white/15 text-white ring-1 ring-white/25">{t.home.heroBadge}</span>
