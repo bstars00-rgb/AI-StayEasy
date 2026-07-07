@@ -24,6 +24,7 @@ import { propertyTypeOf } from '../lib/propertyType'
 import { propertyTypeStrings } from '../lib/propertyTypeI18n'
 import { HotelMap } from '../components/HotelMap'
 import { mapStrings } from '../lib/mapI18n'
+import { HotelCommunity } from '../components/HotelCommunity'
 import { contactStrings } from '../lib/contactI18n'
 import { ContactHotelDialog } from '../components/ContactHotelDialog'
 
@@ -286,6 +287,9 @@ export default function HotelDetailPage() {
             </ul>
             <p className="mt-2 text-xs text-ink-700/60">{t.detail.cancelNote}</p>
           </Card>
+
+          {/* 8. Hotel community */}
+          <HotelCommunity slug={hotel.slug} />
         </div>
 
         {/* Sticky rail */}

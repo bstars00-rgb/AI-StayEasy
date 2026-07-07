@@ -26,6 +26,7 @@ import { getBenchmark, getCompleteness, getInsights } from '../lib/partnerInsigh
 import { insightStrings } from '../lib/insightsI18n'
 import { distinctionOf, distinctionCounts } from '../lib/distinction'
 import { scoreStrings } from '../lib/scoreI18n'
+import { community } from '../lib/community'
 
 /** Collects the sorted set of key-paths (leaves = strings/arrays) of an object. */
 function shapePaths(obj: unknown, prefix = ''): string[] {
@@ -474,6 +475,27 @@ describe('StayEasy Distinction (Michelin-style scarcity)', () => {
       expect(scoreStrings[lang].choice.length).toBeGreaterThan(0)
       expect(scoreStrings[lang].recommended.length).toBeGreaterThan(0)
     }
+  })
+})
+
+describe('hotel community store (localStorage mock)', () => {
+  it('adds, lists newest-first, and removes posts per hotel', () => {
+    const slug = 'test-community-hotel'
+    community.posts(slug).forEach((p) => community.remove(slug, p.id))
+    community.add(slug, 'Mina', 'Great sea view rooms on high floors.')
+    community.add(slug, '', 'Ask for a late checkout — they were flexible.')
+    const posts = community.posts(slug)
+    expect(posts.length).toBe(2)
+    // Empty author is allowed (UI substitutes a fallback label).
+    expect(posts.some((p) => p.body.includes('late checkout'))).toBe(true)
+    community.remove(slug, posts[0].id)
+    expect(community.posts(slug).length).toBe(1)
+  })
+
+  it('ignores blank posts', () => {
+    const slug = 'test-community-blank'
+    community.add(slug, 'x', '   ')
+    expect(community.posts(slug).length).toBe(0)
   })
 })
 
