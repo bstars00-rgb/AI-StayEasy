@@ -20,6 +20,8 @@ import { trackEvent } from '../lib/analytics'
 import { scoreStrings } from '../lib/scoreI18n'
 import { distinctionOf } from '../lib/distinction'
 import { StarRating, DistinctionBadge } from '../components/HotelRating'
+import { propertyTypeOf } from '../lib/propertyType'
+import { propertyTypeStrings } from '../lib/propertyTypeI18n'
 import { contactStrings } from '../lib/contactI18n'
 import { ContactHotelDialog } from '../components/ContactHotelDialog'
 
@@ -102,6 +104,7 @@ export default function HotelDetailPage() {
   const city = (t.enums.city as Record<string, string>)[hotel.city] ?? hotel.city
   const hotelType = (t.enums.hotelType as Record<string, string>)[hotel.hotelType] ?? hotel.hotelType
   const dist = distinctionOf(hotel.slug)
+  const propType = propertyTypeStrings[lang].type[propertyTypeOf(hotel)]
 
   return (
     <>
@@ -143,6 +146,7 @@ export default function HotelDetailPage() {
       <section className="container-page mt-6">
         <div className="flex flex-wrap items-center gap-2">
           {BM_ENABLED && hotel.isSponsored && <SponsoredBadge />}
+          <span className="pill bg-brand-50 text-brand-700 ring-1 ring-brand-100">{propType}</span>
           <span className="pill bg-sand-100 text-ink-700">{hotelType}</span>
           {hotel.koreanFriendly && <span className="pill bg-rose-50 text-rose-600">🇰🇷 {t.badges.koreanFriendly}</span>}
         </div>

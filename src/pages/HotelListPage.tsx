@@ -10,8 +10,10 @@ import { useT, useLang } from '../i18n'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 import { filterStrings, CONDITION_OPTS } from '../lib/filterI18n'
 import type { ConditionKey } from '../lib/filterI18n'
+import { propertyTypeOf, PROPERTY_TYPES, type PropertyType } from '../lib/propertyType'
+import { propertyTypeStrings } from '../lib/propertyTypeI18n'
 
-type GroupKey = 'area' | 'travel' | 'stars' | 'conditions'
+type GroupKey = 'area' | 'travel' | 'stars' | 'conditions' | 'propertyType'
 
 const TRAVEL_OPTS = ['Family', 'Couple', 'Business', 'Beach', 'Long Stay']
 const STAR_OPTS = ['5', '4', '3']
@@ -24,6 +26,7 @@ const matchers: Record<GroupKey, (h: Hotel, value: string) => boolean> = {
   travel: (h, v) => h.tags.includes(v as Hotel['tags'][number]),
   stars: (h, v) => h.conditions.starRating === Number(v),
   conditions: (h, v) => h.conditions[v as ConditionKey] === true,
+  propertyType: (h, v) => propertyTypeOf(h) === v,
 }
 
 export default function HotelListPage() {
@@ -38,7 +41,7 @@ export default function HotelListPage() {
   const hotelsQ = useAsync(() => (dest ? repo.listHotelsByCity(dest.city) : Promise.resolve([])), [dest?.city])
 
   const [searchParams, setSearchParams] = useSearchParams()
-  const [selected, setSelected] = useState<Record<GroupKey, string[]>>({ area: [], travel: [], stars: [], conditions: [] })
+  const [selected, setSelected] = useState<Record<GroupKey, string[]>>({ area: [], travel: [], stars: [], conditions: [], propertyType: [] })
   // Collapsed by default so the hotel cards are visible immediately, not pushed
   // far down the page by a tall filter panel.
   const [filtersOpen, setFiltersOpen] = useState(false)
@@ -46,10 +49,12 @@ export default function HotelListPage() {
   // City's hotels + the areas that actually exist for this city.
   const all = hotelsQ.data ?? []
   const areaOptions = useMemo(() => Array.from(new Set(all.map((h) => h.area))), [all])
+  // Only offer property types that actually exist among this city's hotels.
+  const propertyOptions = useMemo(() => PROPERTY_TYPES.filter((p) => all.some((h) => propertyTypeOf(h) === p)), [all])
 
   // Reset filters when the city changes.
   useEffect(() => {
-    setSelected({ area: [], travel: [], stars: [], conditions: [] })
+    setSelected({ area: [], travel: [], stars: [], conditions: [], propertyType: [] })
   }, [citySlug])
 
   // Preselect a travel-style from the home discovery block (?style=Family).
@@ -94,6 +99,7 @@ export default function HotelListPage() {
     area: areaOptions,
     travel: TRAVEL_OPTS,
     stars: STAR_OPTS,
+    propertyType: propertyOptions,
     conditions: CONDITION_OPTS,
   }
 
@@ -112,7 +118,7 @@ export default function HotelListPage() {
     })
 
   const clearAll = () => {
-    setSelected({ area: [], travel: [], stars: [], conditions: [] })
+    setSelected({ area: [], travel: [], stars: [], conditions: [], propertyType: [] })
     setSearchParams({})
   }
 
@@ -122,6 +128,7 @@ export default function HotelListPage() {
     area: t.list.groupArea,
     travel: t.list.groupTravel,
     stars: fs.groupStars,
+    propertyType: propertyTypeStrings[lang].title,
     conditions: fs.groupConditions,
   }
 
@@ -129,6 +136,7 @@ export default function HotelListPage() {
     if (g === 'area') return (t.enums.area as Record<string, string>)[opt] ?? opt
     if (g === 'travel') return (t.enums.travelStyle as Record<string, string>)[opt] ?? opt
     if (g === 'stars') return `${opt}★`
+    if (g === 'propertyType') return propertyTypeStrings[lang].type[opt as PropertyType] ?? opt
     return fs.cond[opt as ConditionKey] ?? opt
   }
 
