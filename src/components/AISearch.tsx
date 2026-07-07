@@ -75,7 +75,6 @@ export function AISearch({ autoFocus = false }: { autoFocus?: boolean }) {
             </button>
           ))}
         </div>
-        <p className="mt-3 text-xs text-ink-700/50">🔒 {s.poweredNote}</p>
       </div>
 
       {/* Loading */}
