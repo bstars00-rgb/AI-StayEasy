@@ -14,7 +14,7 @@ import { useSiteImages } from '../lib/siteImages'
 import { MarketingBanner } from '../components/MarketingBanner'
 import { IconCheck } from '../components/icons'
 import { BM_ENABLED } from '../lib/bm'
-import { HERO_PHOTOS, cityPhoto } from '../lib/cityPhotos'
+import { HERO_PHOTOS, HERO_BG, cityPhoto } from '../lib/cityPhotos'
 
 /** The four hero tiles — decorative emoji by default; an operator can swap in
  *  real photos from the admin Images tab (siteImages.hero[i]). */
@@ -45,15 +45,18 @@ export default function HomePage() {
   return (
     <>
       {/* 1. Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-emerald-800 via-brand-600 to-sky-500">
-        {/* Layered decorative background — soft color orbs + a fine dot grid give
-            the flat gradient real depth (all CSS, no images). */}
+      <section className="relative overflow-hidden bg-brand-800">
+        {/* Full-bleed scenic photo + brand overlay for legibility, then a fine
+            dot texture. Photo is admin-overridable (siteImages 'hero-bg'). */}
         <div aria-hidden className="pointer-events-none absolute inset-0">
-          <div className="absolute -left-24 -top-24 h-96 w-96 rounded-full bg-emerald-300/30 blur-3xl" />
-          <div className="absolute right-[-6rem] top-1/4 h-80 w-80 rounded-full bg-sky-300/30 blur-3xl" />
-          <div className="absolute bottom-[-8rem] left-1/3 h-80 w-80 rounded-full bg-teal-200/20 blur-3xl" />
-          <div className="absolute inset-0 opacity-[0.14] [background-image:radial-gradient(circle_at_1px_1px,white_1px,transparent_0)] [background-size:22px_22px]" />
-          <div className="absolute inset-0 opacity-20 [background-image:radial-gradient(circle_at_20%_20%,white_0,transparent_35%),radial-gradient(circle_at_85%_60%,white_0,transparent_30%)]" />
+          <img
+            src={siteImgs['hero-bg'] ?? HERO_BG}
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-emerald-950/90 via-brand-800/75 to-brand-600/40" />
+          <div className="absolute inset-0 bg-gradient-to-t from-brand-900/55 to-transparent" />
+          <div className="absolute inset-0 opacity-[0.10] [background-image:radial-gradient(circle_at_1px_1px,white_1px,transparent_0)] [background-size:22px_22px]" />
         </div>
         <div className="container-page relative grid items-center gap-10 py-16 lg:grid-cols-2 lg:py-24">
           <div className="text-white">

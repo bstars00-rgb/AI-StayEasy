@@ -40,6 +40,10 @@ export function cityPhoto(slug: string, w = 800): string {
   return u(SIGNATURE[slug] ?? POOL[hash(slug) % POOL.length], w)
 }
 
+/** Full-bleed scenic background photo for the home hero (admin-overridable via
+ *  siteImages 'hero-bg'). A wide, verified beach shot. */
+export const HERO_BG = u('1507525428034-b723cf961d3e', 1920)
+
 /** The four home hero tiles — beach, city, nature, stay. */
 export const HERO_PHOTOS: string[] = [
   u('1507525428034-b723cf961d3e', 1000), // beach
