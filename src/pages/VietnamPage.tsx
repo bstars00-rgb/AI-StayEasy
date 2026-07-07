@@ -4,6 +4,7 @@ import type { Destination } from '../types'
 import Button from '../components/Button'
 import { SectionHeading } from '../components/SectionHeading'
 import { HotelImage } from '../components/HotelImage'
+import { cityPhoto } from '../lib/cityPhotos'
 import { repo } from '../data/repo'
 import { useAsync } from '../lib/useAsync'
 import { travelStyles } from '../data/travelStyles'
@@ -38,7 +39,7 @@ export default function VietnamPage() {
     return (
       <div key={d.city} className="overflow-hidden rounded-3xl bg-white shadow-card ring-1 ring-black/5">
         <div className="relative">
-          <HotelImage gradient={d.heroColor} emoji={d.emoji} rounded="" className="h-44 w-full" label={cityNames[d.city] ?? d.city} />
+          <HotelImage gradient={d.heroColor} emoji={d.emoji} src={cityPhoto(d.slug)} rounded="" className="h-44 w-full" label={cityNames[d.city] ?? d.city} />
           <div className="absolute right-4 top-4">
             {d.available ? (
               <span className="pill bg-brand-600 text-white">● {t.common.liveNow}</span>
