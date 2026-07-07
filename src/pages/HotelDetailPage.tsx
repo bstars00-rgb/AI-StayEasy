@@ -22,6 +22,8 @@ import { distinctionOf } from '../lib/distinction'
 import { StarRating, DistinctionBadge } from '../components/HotelRating'
 import { propertyTypeOf } from '../lib/propertyType'
 import { propertyTypeStrings } from '../lib/propertyTypeI18n'
+import { HotelMap } from '../components/HotelMap'
+import { mapStrings } from '../lib/mapI18n'
 import { contactStrings } from '../lib/contactI18n'
 import { ContactHotelDialog } from '../components/ContactHotelDialog'
 
@@ -260,6 +262,10 @@ export default function HotelDetailPage() {
                   <p className="mt-1 text-sm text-ink-700/80">{d}</p>
                 </div>
               ))}
+            </div>
+            <div className="mt-4">
+              <HotelMap hotels={[rawHotel]} height={280} />
+              <p className="mt-1.5 text-xs text-ink-700/55">{mapStrings[lang].approx}</p>
             </div>
           </Card>
 

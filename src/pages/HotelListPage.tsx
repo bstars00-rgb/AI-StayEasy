@@ -12,6 +12,8 @@ import { filterStrings, CONDITION_OPTS } from '../lib/filterI18n'
 import type { ConditionKey } from '../lib/filterI18n'
 import { propertyTypeOf, PROPERTY_TYPES, type PropertyType } from '../lib/propertyType'
 import { propertyTypeStrings } from '../lib/propertyTypeI18n'
+import { HotelMap } from '../components/HotelMap'
+import { mapStrings } from '../lib/mapI18n'
 
 type GroupKey = 'area' | 'travel' | 'stars' | 'conditions' | 'propertyType'
 
@@ -33,6 +35,7 @@ export default function HotelListPage() {
   const t = useT()
   const { lang } = useLang()
   const fs = filterStrings[lang]
+  const ms = mapStrings[lang]
   const { citySlug } = useParams()
   useDocumentMeta(t.list.metaTitle, t.list.metaDesc)
 
@@ -45,6 +48,7 @@ export default function HotelListPage() {
   // Collapsed by default so the hotel cards are visible immediately, not pushed
   // far down the page by a tall filter panel.
   const [filtersOpen, setFiltersOpen] = useState(false)
+  const [view, setView] = useState<'list' | 'map'>('list')
 
   // City's hotels + the areas that actually exist for this city.
   const all = hotelsQ.data ?? []
@@ -231,7 +235,22 @@ export default function HotelListPage() {
           <p className="text-sm text-ink-700/70">
             <span className="font-semibold text-ink-900">{shown.length}</span> {t.common.hotels} {t.list.resultsMatch}
           </p>
-          <p className="hidden text-xs text-ink-700/50 sm:block">{t.list.curatedNote}</p>
+          <div className="inline-flex rounded-full bg-sand-100 p-0.5 text-xs font-semibold ring-1 ring-black/5">
+            <button
+              onClick={() => setView('list')}
+              aria-pressed={view === 'list'}
+              className={`rounded-full px-3 py-1.5 ${view === 'list' ? 'bg-white text-ink-900 shadow-sm' : 'text-ink-700/70'}`}
+            >
+              {ms.listView}
+            </button>
+            <button
+              onClick={() => setView('map')}
+              aria-pressed={view === 'map'}
+              className={`rounded-full px-3 py-1.5 ${view === 'map' ? 'bg-white text-ink-900 shadow-sm' : 'text-ink-700/70'}`}
+            >
+              {ms.mapView}
+            </button>
+          </div>
         </div>
 
         {relaxed && (
@@ -245,11 +264,18 @@ export default function HotelListPage() {
             <CardGridSkeleton count={6} />
           </div>
         ) : shown.length > 0 ? (
-          <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {shown.map((h) => (
-              <HotelCard key={h.id} hotel={h} />
-            ))}
-          </div>
+          view === 'map' ? (
+            <div className="mt-4">
+              <HotelMap hotels={shown} height={480} />
+              <p className="mt-1.5 text-xs text-ink-700/55">{ms.approx}</p>
+            </div>
+          ) : (
+            <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {shown.map((h) => (
+                <HotelCard key={h.id} hotel={h} />
+              ))}
+            </div>
+          )
         ) : (
           <div className="mt-4 rounded-2xl bg-white p-10 text-center shadow-card ring-1 ring-black/5">
             <div className="text-3xl">🔍</div>
