@@ -54,9 +54,10 @@ export default function HomePage() {
             alt=""
             className="absolute inset-0 h-full w-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-emerald-950/90 via-brand-800/75 to-brand-600/40" />
-          <div className="absolute inset-0 bg-gradient-to-t from-brand-900/55 to-transparent" />
-          <div className="absolute inset-0 opacity-[0.10] [background-image:radial-gradient(circle_at_1px_1px,white_1px,transparent_0)] [background-size:22px_22px]" />
+          {/* Legibility only on the left third; the photo stays clearly visible
+              on the right. Dark brand tone, not bright green. */}
+          <div className="absolute inset-0 bg-gradient-to-r from-brand-950/80 from-0% via-brand-950/25 via-40% to-transparent to-70%" />
+          <div className="absolute inset-0 bg-gradient-to-t from-brand-950/25 to-transparent" />
         </div>
         <div className="container-page relative grid items-center gap-10 py-16 lg:grid-cols-2 lg:py-24">
           <div className="text-white">
