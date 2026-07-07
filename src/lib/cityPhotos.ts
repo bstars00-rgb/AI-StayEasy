@@ -41,8 +41,9 @@ export function cityPhoto(slug: string, w = 800): string {
 }
 
 /** Full-bleed scenic background photo for the home hero (admin-overridable via
- *  siteImages 'hero-bg'). A wide, verified beach shot. */
-export const HERO_BG = u('1507525428034-b723cf961d3e', 1920)
+ *  siteImages 'hero-bg'). A calm, deep-teal tropical seascape — deliberately
+ *  not a bright sunset, so the white hero text stays readable. */
+export const HERO_BG = u('1540541338287-41700207dee6', 1920)
 
 /** The four home hero tiles — beach, city, nature, stay. */
 export const HERO_PHOTOS: string[] = [
