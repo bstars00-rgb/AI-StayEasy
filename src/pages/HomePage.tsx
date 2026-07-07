@@ -54,18 +54,20 @@ export default function HomePage() {
             alt=""
             className="absolute inset-0 h-full w-full object-cover"
           />
-          {/* Legibility only on the left third; the photo stays clearly visible
-              on the right. Dark brand tone, not bright green. */}
-          <div className="absolute inset-0 bg-gradient-to-r from-brand-950/80 from-0% via-brand-950/25 via-40% to-transparent to-70%" />
-          <div className="absolute inset-0 bg-gradient-to-t from-brand-950/25 to-transparent" />
+          {/* Darken the left (text) side strongly, fade out toward the photo on
+              the right; plus a light global dim so bright photos don't wash out
+              the white text. */}
+          <div className="absolute inset-0 bg-gradient-to-r from-brand-950/90 from-0% via-brand-950/55 via-38% to-transparent to-80%" />
+          <div className="absolute inset-0 bg-gradient-to-t from-brand-950/40 to-transparent" />
+          <div className="absolute inset-0 bg-brand-950/15" />
         </div>
         <div className="container-page relative grid items-center gap-10 py-16 lg:grid-cols-2 lg:py-24">
           <div className="text-white">
             <span className="pill bg-white/15 text-white ring-1 ring-white/25">{t.home.heroBadge}</span>
-            <h1 className="mt-4 whitespace-pre-line text-4xl font-extrabold leading-[1.1] tracking-tight sm:text-5xl">
+            <h1 className="mt-4 whitespace-pre-line text-4xl font-extrabold leading-[1.1] tracking-tight [text-shadow:_0_2px_16px_rgb(0_0_0_/_45%)] sm:text-5xl">
               {t.home.heroTitle}
             </h1>
-            <p className="mt-5 max-w-xl text-lg text-white/90">
+            <p className="mt-5 max-w-xl text-lg text-white/95 [text-shadow:_0_1px_10px_rgb(0_0_0_/_45%)]">
               {t.home.heroSubtitle}
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
@@ -74,7 +76,7 @@ export default function HomePage() {
                 {t.home.ctaWhy}
               </Button>
             </div>
-            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-white/80">
+            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-white/90 [text-shadow:_0_1px_8px_rgb(0_0_0_/_45%)]">
               <span>✓ {t.home.heroPoint1}</span>
               <span>✓ {t.home.heroPoint2}</span>
               <span>✓ {t.home.heroPoint3}</span>
