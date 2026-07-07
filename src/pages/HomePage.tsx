@@ -54,12 +54,12 @@ export default function HomePage() {
             alt=""
             className="absolute inset-0 h-full w-full object-cover"
           />
-          {/* Darken the left (text) side strongly, fade out toward the photo on
-              the right; plus a light global dim so bright photos don't wash out
-              the white text. */}
-          <div className="absolute inset-0 bg-gradient-to-r from-brand-950/90 from-0% via-brand-950/55 via-38% to-transparent to-80%" />
-          <div className="absolute inset-0 bg-gradient-to-t from-brand-950/40 to-transparent" />
-          <div className="absolute inset-0 bg-brand-950/15" />
+          {/* The text column spans the left half on desktop, so keep that whole
+              half solidly dark and only reveal the photo toward the right; the
+              global dim keeps any photo from washing out white text. */}
+          <div className="absolute inset-0 bg-gradient-to-r from-brand-950/95 from-0% via-brand-950/70 via-50% to-transparent to-95%" />
+          <div className="absolute inset-0 bg-gradient-to-t from-brand-950/45 to-transparent" />
+          <div className="absolute inset-0 bg-brand-950/25" />
         </div>
         <div className="container-page relative grid items-center gap-10 py-16 lg:grid-cols-2 lg:py-24">
           <div className="text-white">
