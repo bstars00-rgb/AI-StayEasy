@@ -17,6 +17,8 @@ import { BM_ENABLED } from '../lib/bm'
 import { officialLink } from '../lib/officialLink'
 import { trackEvent } from '../lib/analytics'
 import { scoreStrings } from '../lib/scoreI18n'
+import { distinctionOf } from '../lib/distinction'
+import { StarRating, DistinctionBadge } from '../components/HotelRating'
 import { contactStrings } from '../lib/contactI18n'
 import { ContactHotelDialog } from '../components/ContactHotelDialog'
 
@@ -98,6 +100,7 @@ export default function HotelDetailPage() {
   const area = (t.enums.area as Record<string, string>)[hotel.area] ?? hotel.area
   const city = (t.enums.city as Record<string, string>)[hotel.city] ?? hotel.city
   const hotelType = (t.enums.hotelType as Record<string, string>)[hotel.hotelType] ?? hotel.hotelType
+  const dist = distinctionOf(hotel.slug)
 
   return (
     <>
@@ -144,15 +147,18 @@ export default function HotelDetailPage() {
         </div>
         <div className="mt-2 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div>
-            <h1 className="text-3xl font-extrabold tracking-tight text-ink-900 sm:text-4xl">{hotel.name}</h1>
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+              <h1 className="text-3xl font-extrabold tracking-tight text-ink-900 sm:text-4xl">{hotel.name}</h1>
+              <StarRating value={hotel.conditions.starRating} className="mt-1" />
+            </div>
             <p className="mt-1 text-ink-700/80">📍 {area}, {city}</p>
             <p className="mt-2 max-w-2xl text-lg font-medium text-ink-800">{hotel.positioningLine}</p>
-            <div className="mt-3 flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-600 px-3 py-1.5 text-sm font-extrabold text-white">
-                <span aria-hidden>✦</span> {hotel.conditions.stayEasyScore.toFixed(1)} · {scoreStrings[lang].label}
-              </span>
-              <span className="text-xs text-ink-700/60">{scoreStrings[lang].localFocus}</span>
-            </div>
+            {dist && (
+              <div className="mt-3 flex flex-wrap items-center gap-2">
+                <DistinctionBadge kind={dist} size="lg" />
+                <Link to="/about" className="text-xs text-ink-700/60 hover:text-brand-700 hover:underline">{scoreStrings[lang].localFocus}</Link>
+              </div>
+            )}
             <div className="mt-3"><TagChips items={hotel.tags} /></div>
           </div>
           <div className="shrink-0">

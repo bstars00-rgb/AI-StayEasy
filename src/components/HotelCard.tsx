@@ -7,9 +7,10 @@ import { WishlistButton } from './WishlistButton'
 import { useLang, useT, localizeHotel } from '../i18n'
 import { voucherStrings } from '../lib/voucherI18n'
 import { officialLink } from '../lib/officialLink'
-import { scoreStrings } from '../lib/scoreI18n'
-import { IconPin, IconStar, IconTag } from './icons'
+import { IconPin, IconTag } from './icons'
 import { BM_ENABLED } from '../lib/bm'
+import { distinctionOf } from '../lib/distinction'
+import { StarRating, DistinctionBadge } from './HotelRating'
 
 /**
  * Suitability-first hotel card. Leads with *who it's for* and the official
@@ -23,6 +24,7 @@ export function HotelCard({ hotel: raw }: { hotel: Hotel }) {
   const area = (t.enums.area as Record<string, string>)[hotel.area] ?? hotel.area
   const city = (t.enums.city as Record<string, string>)[hotel.city] ?? hotel.city
   const type = (t.enums.hotelType as Record<string, string>)[hotel.hotelType] ?? hotel.hotelType
+  const dist = distinctionOf(raw.slug)
 
   return (
     <div className="group relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-black/5 transition-all hover:-translate-y-0.5 hover:shadow-card-hover">
@@ -37,6 +39,7 @@ export function HotelCard({ hotel: raw }: { hotel: Hotel }) {
           label={hotel.name}
         />
         <div className="absolute left-3 top-3 flex flex-wrap gap-2">
+          {dist && <DistinctionBadge kind={dist} />}
           {BM_ENABLED && hotel.isSponsored && <SponsoredBadge />}
           {BM_ENABLED && raw.voucher && (
             <span className="pill bg-brand-600 text-white"><IconTag className="h-3.5 w-3.5" /> {voucherStrings[lang].badge}</span>
@@ -52,21 +55,10 @@ export function HotelCard({ hotel: raw }: { hotel: Hotel }) {
           <Link to={`/hotels/${hotel.slug}`}>
             <h3 className="line-clamp-2 min-h-[2.75rem] font-bold leading-snug text-ink-900 group-hover:text-brand-700">{hotel.name}</h3>
           </Link>
-          <p className="mt-0.5 flex items-center gap-1 text-sm text-ink-700/70">
+          <StarRating value={raw.conditions.starRating} className="mt-0.5" />
+          <p className="mt-1 flex items-center gap-1 text-sm text-ink-700/70">
             <IconPin className="h-3.5 w-3.5 shrink-0 text-ink-700/45" /> {area}, {city}
           </p>
-          <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs">
-            <span className="inline-flex items-center gap-0.5 rounded bg-amber-50 px-1.5 py-0.5 font-bold text-amber-700">
-              <IconStar className="h-3 w-3" /> {raw.conditions.starRating}
-            </span>
-            <span
-              className="inline-flex items-center gap-1 rounded bg-brand-600 px-1.5 py-0.5 font-bold text-white"
-              title={scoreStrings[lang].tagline}
-            >
-              {raw.conditions.stayEasyScore.toFixed(1)}
-            </span>
-            <span className="text-ink-700/50">{scoreStrings[lang].label}</span>
-          </div>
         </div>
 
         <p className="line-clamp-2 min-h-[2.5rem] text-sm text-ink-700/90">{hotel.shortDescription}</p>

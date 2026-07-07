@@ -24,6 +24,8 @@ import { guestAuth } from '../lib/guestAuth'
 import { getPartnerAnalytics } from '../lib/partnerAnalytics'
 import { getBenchmark, getCompleteness, getInsights } from '../lib/partnerInsights'
 import { insightStrings } from '../lib/insightsI18n'
+import { distinctionOf, distinctionCounts } from '../lib/distinction'
+import { scoreStrings } from '../lib/scoreI18n'
 
 /** Collects the sorted set of key-paths (leaves = strings/arrays) of an object. */
 function shapePaths(obj: unknown, prefix = ''): string[] {
@@ -445,6 +447,32 @@ describe('partner insights (benchmark / completeness / actions)', () => {
     expect(ins.length).toBeLessThanOrEqual(5)
     for (const lang of ['en', 'ko', 'vi', 'zh', 'ja'] as const) {
       for (const i of ins) expect(typeof insightStrings[lang].rules[i.key]).toBe('string')
+    }
+  })
+})
+
+describe('StayEasy Distinction (Michelin-style scarcity)', () => {
+  it('awards a mark to only a small minority of hotels', () => {
+    const c = distinctionCounts()
+    const distinguished = c.choice + c.recommended
+    // Scarcity is the whole point: most hotels carry no mark.
+    expect(distinguished).toBeLessThan(c.total / 2)
+    expect(c.choice).toBeGreaterThan(0)
+  })
+
+  it('gives at most one "Choice" per city', () => {
+    const choiceCities = hotels.filter((h) => distinctionOf(h.slug) === 'choice').map((h) => h.city)
+    expect(new Set(choiceCities).size).toBe(choiceCities.length)
+  })
+
+  it('every distinction resolves to a labelled tier in all languages', () => {
+    for (const h of hotels) {
+      const d = distinctionOf(h.slug)
+      expect([null, 'choice', 'recommended']).toContain(d)
+    }
+    for (const lang of ['en', 'ko', 'vi', 'zh', 'ja'] as const) {
+      expect(scoreStrings[lang].choice.length).toBeGreaterThan(0)
+      expect(scoreStrings[lang].recommended.length).toBeGreaterThan(0)
     }
   })
 })
