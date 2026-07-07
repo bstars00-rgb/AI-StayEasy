@@ -3,7 +3,8 @@ import { useEffect, useState, type ReactNode } from 'react'
 import Button from '../components/Button'
 import { HotelImage } from '../components/HotelImage'
 import { SponsoredBadge } from '../components/SponsoredBadge'
-import { FacilityGrid, TagChips } from '../components/Facilities'
+import { TagChips } from '../components/Facilities'
+import { AmenityGrid } from '../components/AmenityGrid'
 import { WishlistButton } from '../components/WishlistButton'
 import { VoucherCard } from '../components/VoucherCard'
 import { JsonLd } from '../components/JsonLd'
@@ -258,9 +259,9 @@ export default function HotelDetailPage() {
             </div>
           </Card>
 
-          {/* 6. Facilities guide */}
+          {/* 6. Facilities guide — at-a-glance amenity icon grid */}
           <Card title={t.detail.facilitiesTitle} icon="✨">
-            <FacilityGrid items={hotel.facilities} />
+            <AmenityGrid conditions={hotel.conditions} />
           </Card>
 
           {/* 7. Cancellation & payment checklist */}
