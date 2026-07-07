@@ -16,6 +16,13 @@ export interface CommunityStrings {
   minsAgo: string // {n}m
   hoursAgo: string // {n}h
   daysAgo: string // {n}d
+  // Members-only gate (shown to signed-out visitors — content hidden)
+  gateTitle: string
+  gateText: string
+  lockedCount: string // {n} conversations inside
+  join: string
+  createHint: string
+  participatingAs: string // {name}
 }
 
 export const communityStrings: Record<Lang, CommunityStrings> = {
@@ -34,6 +41,12 @@ export const communityStrings: Record<Lang, CommunityStrings> = {
     minsAgo: '{n}m ago',
     hoursAgo: '{n}h ago',
     daysAgo: '{n}d ago',
+    gateTitle: 'Members only',
+    gateText: 'Sign in to read and join what other travelers are asking about this hotel.',
+    lockedCount: '{n} conversations inside',
+    join: 'Sign in / Create account',
+    createHint: 'Curious about this hotel? Create an account and ask.',
+    participatingAs: 'Posting as {name}',
   },
   ko: {
     title: '호텔 커뮤니티',
@@ -50,6 +63,12 @@ export const communityStrings: Record<Lang, CommunityStrings> = {
     minsAgo: '{n}분 전',
     hoursAgo: '{n}시간 전',
     daysAgo: '{n}일 전',
+    gateTitle: '회원 전용',
+    gateText: '로그인하면 다른 여행자들이 이 호텔에 대해 나눈 질문과 인사이트를 보고 참여할 수 있어요.',
+    lockedCount: '{n}개의 대화가 있어요',
+    join: '로그인 / 계정 만들기',
+    createHint: '이 호텔이 궁금해서 오셨나요? 계정을 만들고 물어보세요.',
+    participatingAs: '{name}님으로 참여 중',
   },
   vi: {
     title: 'Cộng đồng khách sạn',
@@ -66,6 +85,12 @@ export const communityStrings: Record<Lang, CommunityStrings> = {
     minsAgo: '{n} phút trước',
     hoursAgo: '{n} giờ trước',
     daysAgo: '{n} ngày trước',
+    gateTitle: 'Chỉ dành cho thành viên',
+    gateText: 'Đăng nhập để đọc và tham gia những gì du khách khác đang hỏi về khách sạn này.',
+    lockedCount: 'Có {n} cuộc trò chuyện bên trong',
+    join: 'Đăng nhập / Tạo tài khoản',
+    createHint: 'Tò mò về khách sạn này? Tạo tài khoản và đặt câu hỏi.',
+    participatingAs: 'Đăng với tên {name}',
   },
   zh: {
     title: '酒店社区',
@@ -82,6 +107,12 @@ export const communityStrings: Record<Lang, CommunityStrings> = {
     minsAgo: '{n} 分钟前',
     hoursAgo: '{n} 小时前',
     daysAgo: '{n} 天前',
+    gateTitle: '仅限会员',
+    gateText: '登录后即可查看并参与其他旅行者关于这家酒店的讨论。',
+    lockedCount: '内有 {n} 条讨论',
+    join: '登录 / 创建账户',
+    createHint: '对这家酒店感兴趣？创建账户来提问吧。',
+    participatingAs: '以 {name} 发布',
   },
   ja: {
     title: 'ホテルコミュニティ',
@@ -98,5 +129,11 @@ export const communityStrings: Record<Lang, CommunityStrings> = {
     minsAgo: '{n}分前',
     hoursAgo: '{n}時間前',
     daysAgo: '{n}日前',
+    gateTitle: '会員限定',
+    gateText: 'ログインすると、他の旅行者がこのホテルについて交わした質問やインサイトを見て参加できます。',
+    lockedCount: '{n}件の会話があります',
+    join: 'ログイン / アカウント作成',
+    createHint: 'このホテルが気になりますか？アカウントを作って質問しましょう。',
+    participatingAs: '{name} として投稿中',
   },
 }
