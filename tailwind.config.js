@@ -16,6 +16,7 @@ export default {
           700: '#077655',
           800: '#0a5d45',
           900: '#0a4d3a',
+          950: '#04231a',
         },
         // Accent — sunset coral. Energy & warmth for a 20–40 travel audience.
         accent: {
