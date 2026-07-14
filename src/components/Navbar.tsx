@@ -96,6 +96,8 @@ export function Navbar() {
             ))}
           <Link
             to="/partner/login"
+            target="_blank"
+            rel="noopener noreferrer"
             className="ml-1 rounded-full bg-ink-900 px-4 py-2 text-sm font-semibold text-white hover:bg-ink-800"
           >
             {t.nav.hotelLogin}
@@ -183,6 +185,8 @@ export function Navbar() {
               ))}
             <Link
               to="/partner/login"
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => setOpen(false)}
               className="mt-1 rounded-lg bg-ink-900 px-3 py-2.5 text-center text-sm font-semibold text-white"
             >

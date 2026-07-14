@@ -176,7 +176,9 @@ export default function PartnerEditPage() {
         <Link to={backTo} className="flex items-center gap-2 text-sm font-medium text-ink-700 hover:text-ink-900">{adminMode ? '← Back to admin' : t.backToPortal}</Link>
         <div className="flex items-center gap-3">
           <LanguageSwitcher />
-          <Logo size={30} textClass="text-base" />
+          <Link to="/" aria-label="StayEasy home" className="rounded-lg hover:opacity-80">
+            <Logo size={30} textClass="text-base" />
+          </Link>
         </div>
       </header>
 
