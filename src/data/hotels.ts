@@ -58,6 +58,10 @@ type RawHotel = Omit<Hotel, 'country' | 'conditions'>
 const rawHotels: RawHotel[] = [
   // ---------- Da Nang (real local hotels) ----------
   {
+    // Content verified against the official site (olalani.net) on 2026-07-14 —
+    // this is a REAL listing, not sample copy. Facts (rooms, address, contact)
+    // are from the hotel's own site; hotel-specific booking perks are left for
+    // the property to confirm via the partner portal rather than invented.
     id: 'h01',
     priceTier: 'premium',
     slug: 'olalani-resort-condotel',
@@ -66,31 +70,32 @@ const rawHotels: RawHotel[] = [
     area: 'Resort Area',
     hotelType: 'Beach resort',
     shortDescription:
-      'A low-rise 5-star resort and condotel by Bac My An Beach with three outdoor pools — including a lazy river and waterslide — a private beach, spa and four dining venues.',
-    positioningLine: 'Sprawling beachfront family resort with a lazy-river pool, by Bac My An Beach.',
-    bestFor: ['Families with children', 'Beach holidays', 'Longer resort stays'],
-    notIdealFor: ['Travelers wanting a city-center base', 'Adults-only quiet seekers'],
-    mainReason: 'A genuine resort feel — private beach, multiple pools with a kids lazy river and waterslide — booked direct on the official site for the best rate.',
-    thingsToCheck: ['Resort vs condotel apartment room types', 'Distance to the beach from your building', 'Whether breakfast is on your rate'],
+      "A five-star beachfront resort and condotel on Da Nang's Vo Nguyen Giap beach road, with 285 hotel rooms and 1–3 bedroom condos, an outdoor pool, spa, gym, five dining venues and direct beach access.",
+    positioningLine: "Five-star beachfront resort-and-condotel on Da Nang's eastern beach strip, with hotel rooms, condos and a beachfront villa.",
+    bestFor: ['Families with children', 'Beach holidays', 'Longer stays in a condo'],
+    notIdealFor: ['Travelers wanting a city-center base', 'Budget travelers'],
+    mainReason: 'A genuine five-star resort-and-condotel right on the beach road — hotel rooms plus 1–3 bedroom condos and a beachfront villa — reserved directly with the property.',
+    thingsToCheck: ['Whether your unit is a hotel room or a condo apartment', 'The floor and sea-view of your room', 'Whether breakfast is included on your rate'],
     tags: ['Family', 'Beach', 'Korean-friendly'],
-    facilities: ['Pool', 'Private beach', 'Kids-friendly', 'Spa', 'Restaurant', 'Bar', 'Fitness', 'Free Wi-Fi', 'Parking'],
-    officialBenefits: ['Book direct on the official website', 'Best available rate', 'Three pools incl. lazy river & waterslide', 'Private beach access'],
+    facilities: ['Pool', 'Beachfront', 'Spa', 'Gym', 'Restaurant', 'Bar', 'Free Wi-Fi', 'Parking', 'Kids-friendly'],
+    officialBenefits: ['Book direct on the official website (olalani.net)', 'Reserve directly with the property team — rsvn@olalani.net · +84 236 3981 999', 'Choice of hotel rooms or 1–3 bedroom condos booked direct'],
     roomGuide: {
-      couples: 'Ocean-view room in the resort wing for sunrise over the East Sea.',
-      families: 'Two-bedroom condotel apartment with a kitchenette, close to the kids pool.',
-      longStay: 'Condotel apartment — full kitchen and living area for week-plus stays.',
-      checkBeforeBooking: 'Confirm whether your room is in the resort or condotel block and its pool access.',
+      couples: 'Grand Deluxe Ocean room for a sea view on the upper floors.',
+      families: 'A one- to three-bedroom condo with a kitchenette, or the three-bedroom beachfront villa.',
+      longStay: 'A condo unit (1–3 bedrooms) with kitchen and living space for week-plus stays.',
+      checkBeforeBooking: 'Confirm whether your unit is a hotel room or a condo apartment, and its floor and view.',
     },
     locationGuide: {
-      nearby: 'On Bac My An Beach, ~10 min south of the city center and Han River bridges.',
-      airportDistance: '~15 minutes from Da Nang International Airport.',
-      gettingAround: 'Beach is on-site; Grab/taxi for the city, Marble Mountains and Hoi An.',
-      nearbyFood: 'Seafood and Korean restaurants along the An Thuong tourist area nearby.',
+      nearby: "On Vo Nguyen Giap beach road in Ngu Hanh Son, along Da Nang's eastern beach; ~10–15 min to the city center and the Han River bridges.",
+      airportDistance: '~15–20 minutes from Da Nang International Airport.',
+      gettingAround: 'Beach is across the road; Grab/taxi for the city. Marble Mountains are nearby and Hoi An is ~30 minutes south.',
+      nearbyFood: 'Seafood and international restaurants along the Vo Nguyen Giap and An Thuong areas.',
     },
     cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
     imageUrl: img('olalani-resort-condotel'),
     gallery: [u('1507525428034-b723cf961d3e', 1200), u('1582719478250-c89cae4dc85b', 1200), u('1571896349842-33c89424de2d', 1200), u('1566073771259-6a8506099945', 1200)],
     officialWebsiteUrl: 'https://www.olalani.net/',
+    contact: { lang: 'en', email: 'rsvn@olalani.net', phone: '+842363981999' },
     isSponsored: false,
     similarHotelSlugs: ['grand-tourane-danang', 'parosand-danang', 'haian-beach-hotel-spa'],
     heroColor: 'from-sky-500 to-brand-500',
