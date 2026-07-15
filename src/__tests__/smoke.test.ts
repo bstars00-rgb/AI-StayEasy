@@ -337,6 +337,35 @@ describe('AI search engine', () => {
     expect(lux.results[0].hotel.priceTier).toBe('premium')
   })
 
+  it('city intents are hard filters across all 6 cities', () => {
+    const hanoi = recommend('하노이 시내 호텔', hotels)
+    expect(hanoi.detected).toEqual(expect.arrayContaining(['hanoi', 'city']))
+    expect(hanoi.results.length).toBeGreaterThan(0)
+    expect(hanoi.results.every((r) => r.hotel.city === 'Hanoi')).toBe(true)
+
+    const pq = recommend('phu quoc beach resort', hotels)
+    expect(pq.results.length).toBeGreaterThan(0)
+    expect(pq.results.every((r) => r.hotel.city === 'Phu Quoc')).toBe(true)
+
+    const saigon = recommend('サイゴンのビジネスホテル', hotels)
+    expect(saigon.results.length).toBeGreaterThan(0)
+    expect(saigon.results.every((r) => r.hotel.city === 'Ho Chi Minh City')).toBe(true)
+  })
+
+  it('matches unaccented Vietnamese typing (diacritic-insensitive)', () => {
+    const rec = recommend('khach san gia dinh gan bien', hotels)
+    expect(rec.detected).toEqual(expect.arrayContaining(['family', 'beach']))
+    expect(rec.results.length).toBeGreaterThan(0)
+  })
+
+  it('does not rank by raw id order (no Da Nang bias in generic results)', () => {
+    const rec = recommend('', hotels)
+    const cities = new Set(rec.results.map((r) => r.hotel.city))
+    // Editorial tie-break spreads the default list across cities instead of
+    // returning h01..h06 (all Da Nang) like the old id sort did.
+    expect(cities.size).toBeGreaterThan(1)
+  })
+
   it('detects place-name intents (Hoi An)', () => {
     const rec = recommend('hotel near Hoi An', hotels)
     expect(rec.detected).toContain('hoian')

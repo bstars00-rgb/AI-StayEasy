@@ -1,4 +1,14 @@
 import type { Hotel } from '../types'
+import { BM_ENABLED } from './bm'
+
+/** Diacritic-insensitive normalization so unaccented Vietnamese typing
+ *  ("gia dinh", "bien") matches the accented synonyms; CJK is unaffected. */
+const norm = (s: string) =>
+  s
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/đ/g, 'd')
 
 /**
  * On-device hotel recommender. Parses a free-text request (in any of the 5
@@ -29,16 +39,33 @@ export type Signal =
   | 'budget'
   | 'firsttime'
   | 'hoian'
+  | 'danang'
+  | 'hcmc'
+  | 'nhatrang'
+  | 'phuquoc'
+  | 'hanoi'
 
 export const ALL_SIGNALS: Signal[] = [
   'family', 'couple', 'business', 'beach', 'longstay', 'korean', 'pool', 'breakfast',
-  'kids', 'spa', 'gym', 'airport', 'kitchen', 'city', 'quiet', 'golf', 'luxury', 'budget', 'firsttime', 'hoian',
+  'kids', 'spa', 'gym', 'airport', 'kitchen', 'city', 'quiet', 'golf', 'luxury', 'budget', 'firsttime',
+  'hoian', 'danang', 'hcmc', 'nhatrang', 'phuquoc', 'hanoi',
 ]
+
+/** Destination signals act as hard filters: asking for Hanoi means Hanoi. */
+const CITY_SIGNALS: Partial<Record<Signal, Hotel['city']>> = {
+  danang: 'Da Nang',
+  hcmc: 'Ho Chi Minh City',
+  nhatrang: 'Nha Trang',
+  phuquoc: 'Phu Quoc',
+  hoian: 'Hoi An',
+  hanoi: 'Hanoi',
+}
 
 // Strong "what kind of trip" signals weigh more than individual amenities.
 const WEIGHT: Record<Signal, number> = {
   family: 3, couple: 3, business: 3, beach: 3, longstay: 3, korean: 3, firsttime: 2,
-  city: 2, quiet: 2, luxury: 2, budget: 2, golf: 2, hoian: 2,
+  city: 2, quiet: 2, luxury: 2, budget: 2, golf: 2,
+  hoian: 2, danang: 2, hcmc: 2, nhatrang: 2, phuquoc: 2, hanoi: 2,
   pool: 1, breakfast: 1, kids: 2, spa: 1, gym: 1, airport: 1, kitchen: 1,
 }
 
@@ -65,14 +92,28 @@ const SYNONYMS: Record<Signal, string[]> = {
   budget: ['budget', 'cheap', 'affordable', 'value', 'inexpensive', 'low cost', '저렴', '가성비', '싼', '예산', '알뜰', 'giá rẻ', 'tiết kiệm', 'bình dân', '便宜', '实惠', '性价比', '经济', '格安', '安い', 'リーズナブル', 'コスパ'],
   firsttime: ['first time', 'first-time', 'first visit', 'first trip', 'beginner', 'never been', '처음', '첫 베트남', '초행', '처음 가', 'lần đầu', 'mới đến', 'chưa từng', '第一次', '初次', '首次', '初めて', '初訪問', '初ベトナム'],
   hoian: ['hoi an', 'hoian', 'hoi-an', '호이안', 'hội an', '会安', 'ホイアン'],
+  danang: ['da nang', 'danang', 'đà nẵng', '다낭', '岘港', 'ダナン'],
+  hcmc: ['ho chi minh', 'hcmc', 'saigon', 'sài gòn', 'sai gon', '호치민', '사이공', '胡志明', '西贡', 'ホーチミン', 'サイゴン'],
+  nhatrang: ['nha trang', 'nhatrang', '냐짱', '나트랑', '芽庄', 'ニャチャン'],
+  phuquoc: ['phu quoc', 'phú quốc', 'phuquoc', '푸꾸옥', '푸쿠옥', '富国岛', '富国', 'フーコック'],
+  hanoi: ['hanoi', 'ha noi', 'hà nội', '하노이', '河内', 'ハノイ'],
 }
+
+// Precompute diacritic-normalized synonym lists once.
+const NORM_SYNONYMS: Record<Signal, string[]> = Object.fromEntries(
+  (Object.entries(SYNONYMS) as [Signal, string[]][]).map(([k, ws]) => [k, ws.map(norm)]),
+) as Record<Signal, string[]>
+
+// Area groupings so location signals work in every city, not just Da Nang.
+const CITYISH_AREAS = new Set<Hotel['area']>(['City Center', 'Han River', 'District 1', 'Old Quarter', 'French Quarter', 'Ancient Town', 'Thao Dien'])
+const QUIET_AREAS = new Set<Hotel['area']>(['Resort Area', 'Cam Thanh', 'West Lake', 'Sao Beach', 'North Nha Trang'])
 
 // Whether a hotel satisfies a given signal (uses canonical English data).
 const SATISFIES: Record<Signal, (h: Hotel) => boolean> = {
   family: (h) => h.tags.includes('Family') || h.facilities.some((f) => /kids/i.test(f)),
   couple: (h) => h.tags.includes('Couple'),
   business: (h) => h.tags.includes('Business') || h.hotelType === 'Business hotel',
-  beach: (h) => h.tags.includes('Beach') || h.area === 'My Khe Beach' || h.area === 'Resort Area',
+  beach: (h) => h.tags.includes('Beach') || h.conditions.beachfront,
   longstay: (h) => h.tags.includes('Long Stay') || h.hotelType === 'Long stay serviced apartment' || h.facilities.includes('Kitchen'),
   korean: (h) => h.koreanFriendly,
   pool: (h) => h.facilities.includes('Pool'),
@@ -82,13 +123,18 @@ const SATISFIES: Record<Signal, (h: Hotel) => boolean> = {
   gym: (h) => h.facilities.includes('Gym'),
   airport: (h) => h.facilities.includes('Airport transfer'),
   kitchen: (h) => h.facilities.includes('Kitchen'),
-  city: (h) => h.area === 'City Center' || h.area === 'Han River',
-  quiet: (h) => h.area === 'Resort Area' || (h.tags.includes('Couple') && h.area !== 'City Center' && h.area !== 'Han River'),
+  city: (h) => CITYISH_AREAS.has(h.area),
+  quiet: (h) => QUIET_AREAS.has(h.area) || (h.tags.includes('Couple') && !CITYISH_AREAS.has(h.area)),
   golf: (h) => /golf/i.test(h.name),
   luxury: (h) => h.priceTier === 'premium',
   budget: (h) => h.priceTier === 'budget',
-  firsttime: (h) => h.koreanFriendly || h.facilities.includes('Airport transfer') || h.area === 'City Center',
-  hoian: (h) => /hoi an/i.test(`${h.locationGuide.nearby} ${h.locationGuide.gettingAround} ${h.locationGuide.nearbyFood}`),
+  firsttime: (h) => h.koreanFriendly || h.facilities.includes('Airport transfer') || CITYISH_AREAS.has(h.area),
+  hoian: (h) => h.city === 'Hoi An',
+  danang: (h) => h.city === 'Da Nang',
+  hcmc: (h) => h.city === 'Ho Chi Minh City',
+  nhatrang: (h) => h.city === 'Nha Trang',
+  phuquoc: (h) => h.city === 'Phu Quoc',
+  hanoi: (h) => h.city === 'Hanoi',
 }
 
 // Composite intents pull in related signals so "honeymoon" implies couple+quiet+spa, etc.
@@ -111,33 +157,45 @@ export interface Recommendation {
   results: SearchResult[]
 }
 
+/** Editorial-quality tie-break — never raw id order (that systematically
+ *  favored Da Nang's h01–h20). Sponsored priority applies ONLY when the
+ *  business model is on, so a paid boost can never run without its label. */
+function tieBreak(a: Hotel, b: Hotel): number {
+  if (BM_ENABLED && a.isSponsored !== b.isSponsored) return a.isSponsored ? -1 : 1
+  return b.conditions.stayEasyScore - a.conditions.stayEasyScore || a.slug.localeCompare(b.slug)
+}
+
 export function recommend(query: string, hotels: Hotel[], limit = 6): Recommendation {
-  const q = query.toLowerCase().trim()
+  const q = norm(query.trim())
 
   const detected = new Set<Signal>()
   if (q) {
     for (const sig of ALL_SIGNALS) {
-      if (SYNONYMS[sig].some((w) => q.includes(w.toLowerCase()))) detected.add(sig)
+      if (NORM_SYNONYMS[sig].some((w) => q.includes(w))) detected.add(sig)
     }
     for (const exp of EXPANSIONS) {
-      if (exp.test.some((w) => q.includes(w.toLowerCase()))) exp.add.forEach((s) => detected.add(s))
+      if (exp.test.some((w) => q.includes(norm(w)))) exp.add.forEach((s) => detected.add(s))
     }
   }
 
   const detectedList = ALL_SIGNALS.filter((s) => detected.has(s))
 
-  // No recognizable intent → show a sensible default (sponsored first, then id).
+  // No recognizable intent → a sensible editorial default.
   if (detectedList.length === 0) {
     const results = [...hotels]
-      .sort((a, b) => (a.isSponsored === b.isSponsored ? a.id.localeCompare(b.id) : a.isSponsored ? -1 : 1))
+      .sort(tieBreak)
       .slice(0, limit)
       .map((hotel) => ({ hotel, score: 0, pct: 0, reasons: [] as Signal[] }))
     return { detected: [], generic: true, results }
   }
 
+  // Destination signals are hard filters: "하노이 호텔" must return Hanoi.
+  const wantedCities = detectedList.map((s) => CITY_SIGNALS[s]).filter(Boolean) as Hotel['city'][]
+  const pool = wantedCities.length ? hotels.filter((h) => wantedCities.includes(h.city)) : hotels
+
   const possible = detectedList.reduce((sum, s) => sum + WEIGHT[s], 0)
 
-  const scored: SearchResult[] = hotels.map((hotel) => {
+  const scored: SearchResult[] = pool.map((hotel) => {
     const reasons = detectedList.filter((s) => SATISFIES[s](hotel))
     const score = reasons.reduce((sum, s) => sum + WEIGHT[s], 0)
     return { hotel, score, pct: Math.round((score / possible) * 100), reasons }
@@ -145,11 +203,7 @@ export function recommend(query: string, hotels: Hotel[], limit = 6): Recommenda
 
   const results = scored
     .filter((r) => r.score > 0)
-    .sort((a, b) =>
-      b.score - a.score ||
-      b.pct - a.pct ||
-      (a.hotel.isSponsored === b.hotel.isSponsored ? a.hotel.id.localeCompare(b.hotel.id) : a.hotel.isSponsored ? -1 : 1),
-    )
+    .sort((a, b) => b.score - a.score || b.pct - a.pct || tieBreak(a.hotel, b.hotel))
     .slice(0, limit)
 
   return { detected: detectedList, generic: false, results }
