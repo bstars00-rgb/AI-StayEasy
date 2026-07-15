@@ -39,11 +39,11 @@ function shapePaths(obj: unknown, prefix = ''): string[] {
 }
 
 describe('hotel data integrity', () => {
-  it('has 30 hotels across 6 cities with unique ids and slugs', () => {
-    expect(hotels).toHaveLength(30)
-    expect(new Set(hotels.map((h) => h.id)).size).toBe(30)
-    expect(new Set(hotels.map((h) => h.slug)).size).toBe(30)
-    expect(hotels.filter((h) => h.city === 'Da Nang')).toHaveLength(10)
+  it('has 40 hotels across 6 cities with unique ids and slugs', () => {
+    expect(hotels).toHaveLength(40)
+    expect(new Set(hotels.map((h) => h.id)).size).toBe(40)
+    expect(new Set(hotels.map((h) => h.slug)).size).toBe(40)
+    expect(hotels.filter((h) => h.city === 'Da Nang')).toHaveLength(20)
     expect(hotels.filter((h) => h.city === 'Ho Chi Minh City')).toHaveLength(4)
     expect(hotels.filter((h) => h.city === 'Nha Trang')).toHaveLength(4)
     expect(hotels.filter((h) => h.city === 'Phu Quoc')).toHaveLength(4)
@@ -361,14 +361,14 @@ describe('back-office data', () => {
 describe('async data repo (mock-backed)', () => {
   it('resolves the full catalogue and a single hotel', async () => {
     const all = await repo.allHotels()
-    expect(all).toHaveLength(30)
+    expect(all).toHaveLength(40)
     const h = await repo.getHotel('olalani-resort-condotel')
     expect(h?.slug).toBe('olalani-resort-condotel')
   })
 
   it('resolves destinations, city hotels, and recommendations', async () => {
     expect((await repo.listDestinations()).length).toBeGreaterThan(12)
-    expect((await repo.listHotelsByCity('Da Nang'))).toHaveLength(10)
+    expect((await repo.listHotelsByCity('Da Nang'))).toHaveLength(20)
     const rec = await repo.recommend('family beach hotel with a pool')
     expect(rec.results.length).toBeGreaterThan(0)
   })

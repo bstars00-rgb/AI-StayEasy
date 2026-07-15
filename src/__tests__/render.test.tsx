@@ -135,7 +135,7 @@ describe('interaction: hotel partner self-service portal', () => {
     wrap('/partner/edit')
     await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
 
-    const posInput = await screen.findByDisplayValue(/lazy-river pool/i)
+    const posInput = await screen.findByDisplayValue(/beachfront resort-and-condotel/i)
     fireEvent.change(posInput, { target: { value: 'A calm beachfront escape for couples.' } })
     fireEvent.click(screen.getByRole('button', { name: /save changes/i }))
 
