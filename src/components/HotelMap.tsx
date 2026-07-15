@@ -1,14 +1,21 @@
 import { useEffect, useRef } from 'react'
 import 'maplibre-gl/dist/maplibre-gl.css'
+import type maplibregl from 'maplibre-gl'
 import type { Hotel } from '../types'
 import { hotelLatLng } from '../lib/geo'
+import { mapStrings } from '../lib/mapI18n'
+import type { Lang } from '../i18n'
 
 /** BASE_URL always ends in "/" (Vite), so this yields a correct absolute path. */
 const hotelHref = (slug: string) => `${import.meta.env.BASE_URL}hotels/${slug}`
 
+/** Escape text interpolated into popup HTML (names can carry user input via
+ *  partner-registered drafts — never trust them as markup). */
+const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+
 /** MapTiler key (client-side, publishable). When set, the base map uses vector
- *  tiles whose labels follow the app language. Without it, we fall back to free
- *  OpenStreetMap raster tiles (local/Vietnamese labels). */
+ *  tiles whose labels follow the app language. Without it — or if the MapTiler
+ *  style fails to load — we fall back to free OpenStreetMap raster tiles. */
 const MAPTILER_KEY = import.meta.env.VITE_MAPTILER_KEY as string | undefined
 
 /** App language → OSM/MapTiler `name:<lang>` field suffix. */
@@ -42,12 +49,14 @@ function markerEl(html: string): HTMLDivElement {
 const HOTEL_HTML = '<span style="display:grid;place-items:center;width:26px;height:26px;border-radius:50% 50% 50% 0;background:#0d9488;transform:rotate(-45deg);box-shadow:0 1px 4px rgba(0,0,0,.4)"><span style="width:8px;height:8px;border-radius:50%;background:#fff;transform:rotate(45deg)"></span></span>'
 const SPOT_HTML = '<span style="display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#f59e0b;box-shadow:0 1px 4px rgba(0,0,0,.35);color:#fff;font-size:12px;line-height:1">★</span>'
 
+type ML = typeof import('maplibre-gl')
+
 /**
- * MapLibre GL map of hotels + optional attractions. MapLibre is dynamically
- * imported inside the effect so it never runs during prerender/SSR or tests,
- * and every call is guarded — a map failure degrades to an empty container.
- * With a MapTiler key the base-map labels follow `lang`; otherwise OSM raster.
- * Zoom (wheel / double-click / pinch / buttons) and drag are all enabled.
+ * MapLibre GL map of hotels + optional attractions. The map instance is created
+ * ONCE per mount; when props change only the markers are replaced (no tile
+ * re-download, pan/zoom preserved). MapLibre is dynamically imported so it never
+ * runs during prerender/SSR or tests, and every call is guarded. With a MapTiler
+ * key the base-map labels follow `lang`; on style failure it falls back to OSM.
  */
 export function HotelMap({
   hotels,
@@ -63,8 +72,78 @@ export function HotelMap({
   lang?: string
 }) {
   const elRef = useRef<HTMLDivElement>(null)
-  const mapRef = useRef<{ remove: () => void } | null>(null)
+  const mapRef = useRef<maplibregl.Map | null>(null)
+  const glRef = useRef<ML | null>(null)
+  const markersRef = useRef<maplibregl.Marker[]>([])
+  const fittedRef = useRef<string>('')
+  const fellBackRef = useRef(false)
 
+  // Latest props for the async create step.
+  const propsRef = useRef({ hotels, attractions, zoom, lang })
+  propsRef.current = { hotels, attractions, zoom, lang }
+
+  /** Localize base-map labels (vector styles only). */
+  const applyLanguage = (map: maplibregl.Map, language: string) => {
+    if (!MAPTILER_KEY || fellBackRef.current) return
+    const suffix = NAME_SUFFIX[language] ?? 'en'
+    const expr = ['coalesce', ['get', `name:${suffix}`], ['get', 'name:latin'], ['get', 'name']]
+    for (const layer of map.getStyle().layers ?? []) {
+      if (layer.type === 'symbol' && (layer.layout as Record<string, unknown> | undefined)?.['text-field']) {
+        try {
+          map.setLayoutProperty(layer.id, 'text-field', expr as unknown as string)
+        } catch {
+          /* non-settable text-field — skip */
+        }
+      }
+    }
+  }
+
+  /** Replace all markers with the current hotel/attraction sets. */
+  const renderMarkers = (map: maplibregl.Map, gl: ML) => {
+    markersRef.current.forEach((m) => m.remove())
+    markersRef.current = []
+    const { hotels: hs, attractions: ats } = propsRef.current
+
+    for (const a of ats) {
+      const m = new gl.Marker({ element: markerEl(SPOT_HTML), anchor: 'center' })
+        .setLngLat([a.lng, a.lat])
+        .setPopup(new gl.Popup({ offset: 14 }).setHTML(`<span style="font-weight:600;color:#b45309">★ ${esc(a.name)}</span>`))
+        .addTo(map)
+      markersRef.current.push(m)
+    }
+    for (const h of hs) {
+      const ll = hotelLatLng(h)
+      const m = new gl.Marker({ element: markerEl(HOTEL_HTML), anchor: 'bottom' })
+        .setLngLat([ll[1], ll[0]])
+        .setPopup(new gl.Popup({ offset: 24 }).setHTML(`<a href="${hotelHref(h.slug)}" style="font-weight:700;color:#0f766e">${esc(h.name)}</a>`))
+        .addTo(map)
+      markersRef.current.push(m)
+    }
+
+    // Refit only when the hotel SET actually changes (filters), never on a
+    // simple re-render — preserves the traveler's pan/zoom.
+    const signature = hs.map((h) => h.slug).sort().join(',')
+    if (signature !== fittedRef.current && hs.length > 0) {
+      fittedRef.current = signature
+      try {
+        if (hs.length === 1) {
+          const ll = hotelLatLng(hs[0])
+          map.setCenter([ll[1], ll[0]])
+        } else {
+          const b = new gl.LngLatBounds()
+          hs.forEach((h) => {
+            const ll = hotelLatLng(h)
+            b.extend([ll[1], ll[0]])
+          })
+          map.fitBounds(b, { padding: 40, maxZoom: 14, animate: false })
+        }
+      } catch {
+        /* keep current view */
+      }
+    }
+  }
+
+  // Create the map once per mount.
   useEffect(() => {
     let cancelled = false
     const el = elRef.current
@@ -72,61 +151,40 @@ export function HotelMap({
 
     import('maplibre-gl')
       .then((mod) => {
-        const maplibregl = (mod as { default?: typeof import('maplibre-gl') }).default ?? (mod as unknown as typeof import('maplibre-gl'))
+        const gl = ((mod as { default?: ML }).default ?? (mod as unknown as ML)) as ML
         if (cancelled || !el || mapRef.current) return
+        glRef.current = gl
 
-        const points = hotels.map((h) => ({ h, ll: hotelLatLng(h) })) // ll = [lat, lng]
-        if (!points.length) return
-
+        const p = propsRef.current
+        if (!p.hotels.length) return
+        const first = hotelLatLng(p.hotels[0])
         const style = MAPTILER_KEY ? `https://api.maptiler.com/maps/streets-v2/style.json?key=${MAPTILER_KEY}` : (OSM_STYLE as unknown as string)
-        const map = new maplibregl.Map({
+        const map = new gl.Map({
           container: el,
           style,
-          center: [points[0].ll[1], points[0].ll[0]],
-          zoom: zoom ?? (points.length > 1 ? 11 : 14),
+          center: [first[1], first[0]],
+          zoom: p.zoom ?? (p.hotels.length > 1 ? 11 : 14),
         })
         mapRef.current = map
-        map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-left')
+        map.addControl(new gl.NavigationControl({ showCompass: false }), 'top-left')
+
+        // If the MapTiler style can't load (bad/expired key, network), fall
+        // back to OSM raster instead of showing a blank box.
+        map.on('error', (e) => {
+          const msg = String((e as { error?: { message?: string } }).error?.message ?? '')
+          if (MAPTILER_KEY && !fellBackRef.current && /style|401|403|maptiler/i.test(msg)) {
+            fellBackRef.current = true
+            try {
+              map.setStyle(OSM_STYLE as unknown as string)
+            } catch {
+              /* give up quietly */
+            }
+          }
+        })
 
         map.on('load', () => {
-          // Localize base-map labels to the app language (vector/MapTiler only).
-          if (MAPTILER_KEY) {
-            const suffix = NAME_SUFFIX[lang] ?? 'en'
-            const expr = ['coalesce', ['get', `name:${suffix}`], ['get', 'name:latin'], ['get', 'name']]
-            for (const layer of map.getStyle().layers ?? []) {
-              if (layer.type === 'symbol' && (layer.layout as Record<string, unknown> | undefined)?.['text-field']) {
-                try {
-                  map.setLayoutProperty(layer.id, 'text-field', expr as unknown as string)
-                } catch {
-                  /* layer without a settable text-field — skip */
-                }
-              }
-            }
-          }
-
-          for (const a of attractions) {
-            new maplibregl.Marker({ element: markerEl(SPOT_HTML), anchor: 'center' })
-              .setLngLat([a.lng, a.lat])
-              .setPopup(new maplibregl.Popup({ offset: 14, closeButton: true }).setHTML(`<span style="font-weight:600;color:#b45309">★ ${a.name}</span>`))
-              .addTo(map)
-          }
-          for (const { h, ll } of points) {
-            new maplibregl.Marker({ element: markerEl(HOTEL_HTML), anchor: 'bottom' })
-              .setLngLat([ll[1], ll[0]])
-              .setPopup(new maplibregl.Popup({ offset: 24, closeButton: true }).setHTML(`<a href="${hotelHref(h.slug)}" style="font-weight:700;color:#0f766e">${h.name}</a>`))
-              .addTo(map)
-          }
-
-          // Fit to the hotels only (attractions can be far) so listings stay focus.
-          if (points.length > 1) {
-            try {
-              const b = new maplibregl.LngLatBounds()
-              points.forEach((p) => b.extend([p.ll[1], p.ll[0]]))
-              map.fitBounds(b, { padding: 40, maxZoom: 14, animate: false })
-            } catch {
-              /* keep the initial center/zoom */
-            }
-          }
+          applyLanguage(map, propsRef.current.lang)
+          renderMarkers(map, gl)
         })
       })
       .catch(() => {
@@ -135,12 +193,34 @@ export function HotelMap({
 
     return () => {
       cancelled = true
+      markersRef.current = []
       if (mapRef.current) {
         mapRef.current.remove()
         mapRef.current = null
       }
     }
-  }, [hotels, attractions, zoom, lang])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
-  return <div ref={elRef} style={{ height }} className="relative z-0 w-full overflow-hidden rounded-2xl ring-1 ring-black/10" role="img" aria-label="Map" />
+  // Prop changes update markers in place — the map itself is never recreated.
+  useEffect(() => {
+    const map = mapRef.current
+    const gl = glRef.current
+    if (!map || !gl) return
+    if (map.loaded()) renderMarkers(map, gl)
+    else map.once('load', () => renderMarkers(map, gl))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hotels, attractions])
+
+  // Language changes relabel the base map without a rebuild.
+  useEffect(() => {
+    const map = mapRef.current
+    if (!map) return
+    if (map.loaded()) applyLanguage(map, lang)
+    else map.once('load', () => applyLanguage(map, lang))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lang])
+
+  const aria = mapStrings[(lang as Lang) in mapStrings ? (lang as Lang) : 'en'].title
+  return <div ref={elRef} style={{ height }} className="relative z-0 w-full overflow-hidden rounded-2xl ring-1 ring-black/10" role="img" aria-label={aria} />
 }

@@ -209,7 +209,7 @@ export const vi: Locale = {
     neutralNote:
       'StayEasy giữ quan điểm trung lập: chúng tôi giải thích các đánh đổi để bạn tự quyết định. OTA cũng tiện lợi — lựa chọn đúng tùy thuộc vào chuyến đi của bạn.',
     ctaTitle: 'Sẵn sàng bắt đầu lên kế hoạch?',
-    ctaText: 'Đà Nẵng đã hoạt động với 12 khách sạn được chọn theo phong cách du lịch và ưu đãi đặt phòng chính thức.',
+    ctaText: 'Đà Nẵng dẫn đầu với 20 khách sạn thật đã xác minh, chọn theo phong cách du lịch và ưu đãi đặt phòng chính thức.',
     ctaBtn: 'Bắt đầu với khách sạn Đà Nẵng',
   },
 

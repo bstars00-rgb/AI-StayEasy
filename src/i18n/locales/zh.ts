@@ -209,7 +209,7 @@ export const zh: Locale = {
     neutralNote:
       'StayEasy 保持中立：我们说明各项利弊，由您来决定。OTA 同样便利——正确的选择取决于您的行程。',
     ctaTitle: '准备好开始规划了吗？',
-    ctaText: '岘港现已上线 12 家酒店，按出行风格与官网预订权益精选。',
+    ctaText: '岘港已上线 20 家真实且经验证的酒店，按出行风格与官网预订权益精选。',
     ctaBtn: '从岘港酒店开始',
   },
 

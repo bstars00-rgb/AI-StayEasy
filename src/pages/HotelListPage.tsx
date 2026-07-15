@@ -38,10 +38,16 @@ export default function HotelListPage() {
   const fs = filterStrings[lang]
   const ms = mapStrings[lang]
   const { citySlug } = useParams()
-  useDocumentMeta(t.list.metaTitle, t.list.metaDesc)
 
   const destQ = useAsync(() => repo.getDestination(citySlug ?? 'da-nang'), [citySlug])
   const dest = destQ.data
+  // SEO meta follows the actual city — the localized strings only describe
+  // Da Nang, so other cities compose their own localized title/description.
+  const metaCity = dest ? ((t.enums.city as Record<string, string>)[dest.city] ?? dest.city) : null
+  useDocumentMeta(
+    metaCity && dest?.city !== 'Da Nang' ? `${metaCity} — StayEasy` : t.list.metaTitle,
+    metaCity && dest?.city !== 'Da Nang' ? `${metaCity} — ${t.list.heroSubtitle}` : t.list.metaDesc,
+  )
   const hotelsQ = useAsync(() => (dest ? repo.listHotelsByCity(dest.city) : Promise.resolve([])), [dest?.city])
 
   const [searchParams, setSearchParams] = useSearchParams()

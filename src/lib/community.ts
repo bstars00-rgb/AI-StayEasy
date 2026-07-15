@@ -10,6 +10,9 @@ export interface CommunityPost {
   id: string
   slug: string
   author: string
+  /** Signed-in account email — ownership key for delete (display name is not
+   *  unique: two different accounts can share the same first name). */
+  authorEmail?: string
   body: string
   at: number
 }
@@ -23,7 +26,7 @@ function read(): Store {
   if (typeof localStorage === 'undefined') return EMPTY_STORE
   try {
     const v = JSON.parse(localStorage.getItem(KEY) ?? '{}')
-    return v && typeof v === 'object' ? (v as Store) : EMPTY_STORE
+    return v && typeof v === 'object' && !Array.isArray(v) ? (v as Store) : EMPTY_STORE
   } catch {
     return EMPTY_STORE
   }
@@ -52,11 +55,11 @@ function makeId(at: number): string {
 export const community = {
   get: () => store,
   posts: (slug: string): CommunityPost[] => store[slug] ?? EMPTY_POSTS,
-  add: (slug: string, author: string, body: string) => {
+  add: (slug: string, author: string, body: string, authorEmail?: string) => {
     const text = body.trim()
     if (!text) return
     const at = Date.now()
-    const post: CommunityPost = { id: makeId(at), slug, author: author.trim(), body: text, at }
+    const post: CommunityPost = { id: makeId(at), slug, author: author.trim(), authorEmail, body: text, at }
     commit({ ...store, [slug]: [...(store[slug] ?? []), post] })
   },
   remove: (slug: string, id: string) =>

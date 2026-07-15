@@ -209,7 +209,7 @@ export const en = {
     neutralNote:
       'StayEasy stays neutral: we explain the trade-offs so you can decide. OTAs are convenient too — the right choice depends on your trip.',
     ctaTitle: 'Ready to start planning?',
-    ctaText: 'Da Nang is live with 12 hotels chosen by travel style and official booking benefits.',
+    ctaText: 'Da Nang leads with 20 real, verified hotels chosen by travel style and official booking benefits.',
     ctaBtn: 'Start with Da Nang hotels',
   },
 

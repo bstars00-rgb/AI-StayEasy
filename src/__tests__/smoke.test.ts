@@ -27,6 +27,10 @@ import { insightStrings } from '../lib/insightsI18n'
 import { distinctionOf, distinctionCounts } from '../lib/distinction'
 import { scoreStrings } from '../lib/scoreI18n'
 import { community } from '../lib/community'
+import { ko as koHotelContent } from '../i18n/hotelContent/ko'
+import { ja as jaHotelContent } from '../i18n/hotelContent/ja'
+import { vi as viHotelContent } from '../i18n/hotelContent/vi'
+import { zh as zhHotelContent } from '../i18n/hotelContent/zh'
 
 /** Collects the sorted set of key-paths (leaves = strings/arrays) of an object. */
 function shapePaths(obj: unknown, prefix = ''): string[] {
@@ -511,6 +515,35 @@ describe('hotel community store (localStorage mock)', () => {
     const slug = 'test-community-blank'
     community.add(slug, 'x', '   ')
     expect(community.posts(slug).length).toBe(0)
+  })
+})
+
+describe('hotel content locale parity (regression guard)', () => {
+  // House rule: every catalogue hotel must have complete content in all 4
+  // non-English locales. This guards the rule so a future hotel addition that
+  // skips a locale fails fast instead of shipping a desynced page.
+  const locales = { ko: koHotelContent, ja: jaHotelContent, vi: viHotelContent, zh: zhHotelContent }
+
+  it('every hotel has complete content in ko/ja/vi/zh', () => {
+    for (const [name, map] of Object.entries(locales)) {
+      for (const h of hotels) {
+        const c = map[h.id]
+        expect(c, `${name}.ts is missing hotel ${h.id} (${h.slug})`).toBeTruthy()
+        expect(c.shortDescription.trim().length, `${name} ${h.id} shortDescription empty`).toBeGreaterThan(10)
+        expect(c.positioningLine.trim().length, `${name} ${h.id} positioningLine empty`).toBeGreaterThan(5)
+        expect(c.bestFor.length, `${name} ${h.id} bestFor empty`).toBeGreaterThan(0)
+        expect(c.officialBenefits.length, `${name} ${h.id} officialBenefits empty`).toBeGreaterThan(0)
+        expect(c.cancellationChecklist.length, `${name} ${h.id} cancellationChecklist`).toBeGreaterThan(0)
+      }
+    }
+  })
+
+  it('no orphan locale entries (content for hotels that no longer exist)', () => {
+    const ids = new Set(hotels.map((h) => h.id))
+    for (const [name, map] of Object.entries(locales)) {
+      const orphans = Object.keys(map).filter((k) => !ids.has(k))
+      expect(orphans, `${name}.ts has orphan ids: ${orphans.join(', ')}`).toHaveLength(0)
+    }
   })
 })
 
