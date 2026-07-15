@@ -158,7 +158,7 @@ export default function HotelDetailPage() {
           <div>
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
               <h1 className="text-3xl font-extrabold tracking-tight text-ink-900 sm:text-4xl">{hotel.name}</h1>
-              <StarRating value={hotel.conditions.starRating} className="mt-1" />
+              {hotel.conditions.starRating && <StarRating value={hotel.conditions.starRating} className="mt-1" />}
             </div>
             <p className="mt-1 text-ink-700/80">📍 {area}, {city}</p>
             <p className="mt-2 max-w-2xl text-lg font-medium text-ink-800">{hotel.positioningLine}</p>

@@ -55,7 +55,11 @@ export function HotelCard({ hotel: raw }: { hotel: Hotel }) {
           <Link to={`/hotels/${hotel.slug}`}>
             <h3 className="line-clamp-2 min-h-[2.75rem] font-bold leading-snug text-ink-900 group-hover:text-brand-700">{hotel.name}</h3>
           </Link>
-          <StarRating value={raw.conditions.starRating} className="mt-0.5" />
+          {raw.conditions.starRating ? (
+            <StarRating value={raw.conditions.starRating} className="mt-0.5" />
+          ) : (
+            <span aria-hidden className="mt-0.5 block h-3.5" />
+          )}
           <p className="mt-1 flex items-center gap-1 text-sm text-ink-700/70">
             <IconPin className="h-3.5 w-3.5 shrink-0 text-ink-700/45" /> {area}, {city}
           </p>

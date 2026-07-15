@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import type { HotelConditions } from '../types'
 import { useLang } from '../i18n'
 import { filterStrings, type ConditionKey } from '../lib/filterI18n'
-import { amenityExtra, type AmenityExtraKey } from '../lib/amenityI18n'
+import { amenityExtra, amenityVerifiedNote, type AmenityExtraKey } from '../lib/amenityI18n'
 
 type AmenityKey = ConditionKey | AmenityExtraKey
 
@@ -46,13 +46,16 @@ export function AmenityGrid({ conditions }: { conditions: HotelConditions }) {
   const present = ORDER.filter((k) => Boolean((conditions as unknown as Record<string, boolean>)[k]))
 
   return (
-    <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
-      {present.map((k) => (
-        <div key={k} className="flex items-center gap-2.5 rounded-xl bg-sand-50 px-3 py-2.5 ring-1 ring-black/5">
-          <svg viewBox="0 0 24 24" className="h-5 w-5 shrink-0 text-brand-600" aria-hidden>{ICONS[k]}</svg>
-          <span className="text-sm font-medium text-ink-800">{label(k)}</span>
-        </div>
-      ))}
+    <div>
+      <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+        {present.map((k) => (
+          <div key={k} className="flex items-center gap-2.5 rounded-xl bg-sand-50 px-3 py-2.5 ring-1 ring-black/5">
+            <svg viewBox="0 0 24 24" className="h-5 w-5 shrink-0 text-brand-600" aria-hidden>{ICONS[k]}</svg>
+            <span className="text-sm font-medium text-ink-800">{label(k)}</span>
+          </div>
+        ))}
+      </div>
+      <p className="mt-3 text-xs text-ink-700/55">{amenityVerifiedNote[lang]}</p>
     </div>
   )
 }

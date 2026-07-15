@@ -74,15 +74,26 @@ describe('hotel data integrity', () => {
 
 describe('filterable travel conditions', () => {
   it('every hotel has normalized conditions with sane values', () => {
+    let starred = 0
     for (const h of hotels) {
       const c = h.conditions
-      expect([3, 4, 5]).toContain(c.starRating)
+      // Star class only when the verified description states one; else hidden.
+      if (c.starRating !== undefined) {
+        expect([3, 4, 5]).toContain(c.starRating)
+        starred++
+      }
       expect(c.stayEasyScore).toBeGreaterThanOrEqual(7.5)
       expect(c.stayEasyScore).toBeLessThanOrEqual(9.7)
       expect(typeof c.freeCancellation).toBe('boolean')
       expect(typeof c.beachfront).toBe('boolean')
       expect(c.walkToBeachMin).toBeGreaterThanOrEqual(0)
+      // Integrity: unverifiable attributes must never be claimed.
+      expect(c.petFriendly).toBe(false)
+      expect(c.accessible).toBe(false)
+      expect(c.twentyFourHourFrontDesk).toBe(false)
+      expect(c.nonSmoking).toBe(false)
     }
+    expect(starred).toBeGreaterThan(0)
   })
 
   it('common area + travel-style combos return at least one hotel', () => {

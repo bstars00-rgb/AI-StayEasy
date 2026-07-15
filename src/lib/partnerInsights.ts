@@ -35,7 +35,10 @@ function analyticsFor(h: Hotel): PartnerAnalytics {
 
 export function getBenchmark(hotel: Hotel, self: PartnerAnalytics): Benchmark {
   const star = hotel.conditions.starRating
-  const sameCityStar = hotels.filter((h) => h.slug !== hotel.slug && h.city === hotel.city && h.conditions.starRating === star)
+  // No verified star class → skip the star-based cohort and widen to the city.
+  const sameCityStar = star
+    ? hotels.filter((h) => h.slug !== hotel.slug && h.city === hotel.city && h.conditions.starRating === star)
+    : []
   const sameCity = hotels.filter((h) => h.slug !== hotel.slug && h.city === hotel.city)
   const sameCountry = hotels.filter((h) => h.slug !== hotel.slug && h.country === hotel.country)
 

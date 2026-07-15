@@ -100,8 +100,9 @@ export interface Voucher {
 /** Normalized, filterable travel conditions — the attributes travelers actually
  *  filter by. Derived deterministically from each hotel's profile. */
 export interface HotelConditions {
-  /** Official star rating (3–5). */
-  starRating: 3 | 4 | 5
+  /** Official star class (3–5) — present ONLY when stated in the hotel's
+   *  verified description; undefined = unverified, and the UI shows no stars. */
+  starRating?: 3 | 4 | 5
   /** StayEasy Score out of 10 — our own independent, editorial rating (not an
    *  aggregate of user reviews). Like a guide rating, it favors standout local
    *  hotels over big global chains. */

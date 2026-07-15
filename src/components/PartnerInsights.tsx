@@ -57,7 +57,8 @@ export function PartnerInsights({ hotel, analytics }: { hotel: Hotel; analytics:
 
   const cityLabel = (t.enums.city as Record<string, string>)[hotel.city] ?? hotel.city
   const basisTpl = bench.basis === 'cityStar' ? s.basisCityStar : bench.basis === 'city' ? s.basisCity : s.basisCountry
-  const basisText = fill(basisTpl, { n: bench.peers, star: hotel.conditions.starRating, city: cityLabel, country: hotel.country })
+  // starRating may be undefined; the cityStar template is only chosen when it exists.
+  const basisText = fill(basisTpl, { n: bench.peers, star: hotel.conditions.starRating ?? '', city: cityLabel, country: hotel.country })
 
   const standLabel = bench.standing === 'above' ? s.above : bench.standing === 'below' ? s.below : s.onpar
   const standCls = bench.standing === 'above' ? 'bg-emerald-50 text-emerald-700' : bench.standing === 'below' ? 'bg-rose-50 text-rose-600' : 'bg-sand-100 text-ink-700'

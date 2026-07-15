@@ -1709,40 +1709,102 @@ const rawHotels: RawHotel[] = [
   },
 ]
 
-/** Derives normalized, filterable conditions from a hotel's existing profile.
- *  Deterministic (seeded by slug) so values are stable across builds/tests.
- *  Exported so newly registered hotels get conditions the same way. */
+/**
+ * StayEasy editorial scores — explicit judgments per hotel, assigned by our
+ * editorial review (suitability, location, direct-booking value; we champion
+ * characterful local/independent hotels over big chains). These are OPINIONS
+ * we own — never presented as facts — and they drive the scarce Distinction
+ * ranking. Unlisted hotels get a neutral 8.0 baseline.
+ */
+const EDITORIAL_SCORES: Record<string, number> = {
+  // Da Nang — TIA's all-spa-inclusive concept is the city's standout; Naman's
+  // design-retreat character earns the runner-up mark.
+  'tia-wellness-resort': 9.5,
+  'naman-retreat': 9.3,
+  'furama-resort-danang': 9.1,
+  'fusion-resort-villas-danang': 9.0,
+  'pullman-danang-beach-resort': 8.9,
+  'olalani-resort-condotel': 8.8,
+  'a-la-carte-danang-beach': 8.8,
+  'haian-beach-hotel-spa': 8.7,
+  'dlg-hotel-danang': 8.6,
+  'grand-tourane-danang': 8.5,
+  'm-hotel-danang': 8.5,
+  'le-sands-oceanfront-danang': 8.4,
+  'sanouva-danang': 8.4,
+  'brilliant-hotel-danang': 8.3,
+  'parosand-danang': 8.3,
+  'diamond-sea-hotel': 8.2,
+  'adamo-hotel-danang': 8.2,
+  'muong-thanh-luxury-danang': 8.1,
+  'grandvrio-city-danang': 8.1,
+  'wink-hotel-danang-centre': 8.0,
+  // Ho Chi Minh City — the Rex's Vietnamese-run heritage over global chains.
+  'rex-hotel-saigon': 9.2,
+  'hotel-nikko-saigon': 8.9,
+  'sq-saigon-thao-dien': 8.4,
+  'the-airport-hotel-saigon': 8.0,
+  // Nha Trang — Amiana's independent bayfront setting is the pick.
+  'amiana-resort-nha-trang': 9.3,
+  'intercontinental-nha-trang': 8.9,
+  'sunrise-nha-trang-beach-hotel-spa': 8.5,
+  'liberty-central-nha-trang': 8.3,
+  // Phu Quoc — Cassia Cottage's garden-boutique character over the big resorts.
+  'cassia-cottage-phu-quoc': 9.2,
+  'intercontinental-phu-quoc-long-beach-resort': 9.0,
+  'salinda-resort-phu-quoc': 8.9,
+  'novotel-phu-quoc-resort': 8.4,
+  // Hoi An — Silk Sense's independent riverfront resort leads.
+  'silk-sense-hoi-an-river-resort': 9.2,
+  'aira-boutique-hoi-an': 8.9,
+  'allegro-hoi-an': 8.8,
+  'hoi-an-eco-lodge-spa': 8.6,
+  // Hanoi — La Siesta, the standout Vietnamese-owned boutique brand.
+  'la-siesta-premium-hang-be': 9.3,
+  'sofitel-legend-metropole-hanoi': 9.2,
+  'apricot-hotel-hanoi': 8.7,
+  'intercontinental-hanoi-westlake': 8.6,
+}
+
+/**
+ * Derives normalized, filterable conditions from a hotel's VERIFIED profile.
+ * Every field traces to something we can stand behind:
+ *  - facility/benefit-derived booleans come from the verified facility list and
+ *    the official-site benefit text;
+ *  - starRating is set ONLY when the verified description states a star class
+ *    (else undefined → the UI shows no stars);
+ *  - stayEasyScore is our explicit editorial judgment (EDITORIAL_SCORES);
+ *  - attributes we have NOT verified (pet policy, accessibility, 24h desk,
+ *    smoking policy, exact cancellation terms) default to false = "not shown",
+ *    never to a fabricated claim. Travelers are told to confirm with the hotel.
+ */
 export function deriveConditions(h: Omit<Hotel, 'country' | 'conditions'>): HotelConditions {
   const fac = (n: string) => h.facilities.some((f) => f.toLowerCase().includes(n.toLowerCase()))
   const benefit = (re: RegExp) => h.officialBenefits.some((b) => re.test(b))
-  const seed = hashSlug(h.slug)
-  const beachfront = fac('Beachfront') || /beach/i.test(h.area)
-  const star: 3 | 4 | 5 = h.priceTier === 'premium' ? 5 : h.priceTier === 'mid' ? 4 : 3
-  // StayEasy Score — our own editorial rating. Like a guide, it rewards standout
-  // independent/local hotels (boutiques, lodges, retreats) over generic chains.
-  const localCharacter = /boutique|lodge|house|retreat|residences|eco|hillside|villa/i.test(`${h.name} ${h.hotelType}`)
-  const stayEasyScore = Math.min(
-    9.7,
-    Math.round((8.0 + (seed % 14) / 10 + (star - 3) * 0.1 + (localCharacter ? 0.3 : 0)) * 10) / 10,
-  )
+  const text = `${h.shortDescription} ${h.positioningLine}`
+  const beachfront = fac('Beachfront') || fac('Private beach') || /beach/i.test(h.area)
+  const starRating = /\b(five|5)[- ]star/i.test(text) ? 5 as const
+    : /\b(four|4)[- ]star/i.test(text) ? 4 as const
+    : /\b(three|3)[- ]star/i.test(text) ? 3 as const
+    : undefined
   return {
-    starRating: star,
-    stayEasyScore,
-    freeCancellation: benefit(/cancel|flexible/i) || seed % 4 !== 0, // ~75%
+    starRating,
+    stayEasyScore: EDITORIAL_SCORES[h.slug] ?? 8.0,
+    freeCancellation: benefit(/cancel|flexible/i), // only when officially stated
     breakfastIncluded: fac('Breakfast') || benefit(/breakfast/i),
     freeAirportShuttle: fac('Airport transfer'),
     freeParking: fac('Parking'),
-    freeWifi: fac('Wi-Fi') || true,
+    freeWifi: fac('Wi-Fi'),
     pool: fac('Pool'),
     beachfront,
     familyFriendly: h.tags.includes('Family') || fac('Kids'),
-    petFriendly: seed % 10 < 3, // ~30%
+    petFriendly: false, // unverified — never claimed
     spa: fac('Spa'),
-    gym: fac('Gym'),
-    twentyFourHourFrontDesk: seed % 7 !== 0, // ~85%
-    nonSmoking: true,
-    accessible: seed % 2 === 0, // ~50%
-    walkToBeachMin: beachfront ? seed % 3 : 5 + (seed % 25),
+    gym: fac('Gym') || fac('Fitness'),
+    twentyFourHourFrontDesk: false, // unverified
+    nonSmoking: false, // unverified
+    accessible: false, // unverified
+    walkToBeachMin: beachfront ? 2 : 15, // coarse bucket for search scoring only
   }
 }
 
