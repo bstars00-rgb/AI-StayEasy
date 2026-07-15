@@ -267,7 +267,7 @@ export default function HotelListPage() {
         ) : shown.length > 0 ? (
           view === 'map' ? (
             <div className="mt-4">
-              <HotelMap hotels={shown} attractions={attractionsForCity(dest.city, lang)} height={480} />
+              <HotelMap hotels={shown} attractions={attractionsForCity(dest.city, lang)} height={480} lang={lang} />
               <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-ink-700/70">
                 <span className="inline-flex items-center gap-1.5"><span className="inline-block h-2.5 w-2.5 rounded-full bg-brand-600" /> {ms.hotels}</span>
                 <span className="inline-flex items-center gap-1.5"><span className="inline-block h-2.5 w-2.5 rounded-full bg-amber-500" /> {ms.attractions}</span>

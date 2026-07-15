@@ -39,6 +39,10 @@ jobs:
           # GA4 measurement ID — public (client-side) value, safe to keep here.
           # Override later via repo Variable if preferred: ${{ vars.VITE_GA_ID }}
           VITE_GA_ID: G-S37KPRNVX4
+          # MapTiler key for localized base-map labels. Add repo secret
+          # VITE_MAPTILER_KEY (Settings → Secrets and variables → Actions).
+          # If unset, the map falls back to OpenStreetMap raster tiles.
+          VITE_MAPTILER_KEY: ${{ secrets.VITE_MAPTILER_KEY }}
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

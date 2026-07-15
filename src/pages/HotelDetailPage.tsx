@@ -266,7 +266,7 @@ export default function HotelDetailPage() {
               ))}
             </div>
             <div className="mt-4">
-              <HotelMap hotels={[rawHotel]} height={280} />
+              <HotelMap hotels={[rawHotel]} height={280} lang={lang} />
               <p className="mt-1.5 text-xs text-ink-700/55">{mapStrings[lang].approx}</p>
             </div>
           </Card>
