@@ -1,76 +1,76 @@
 # StayEasy Vietnam 🏨🇻🇳
 
-> **StayEasy helps travelers choose better hotels and book directly with hotels.**
-> Compare Vietnam hotels through clear content and official booking benefits — then book on each hotel's official website.
+> **StayEasy helps travelers choose better hotels and book directly with each hotel.**
+> Compare Vietnam hotels through clear content and official-booking benefits — then book on the hotel's own official website.
 
-StayEasy Vietnam is a **direct-booking content & support platform**. It is **not an OTA**: it does not process bookings or take payment, and it never charges hotels a booking commission. Every hotel detail page guides travelers to the hotel's **official website** with a clear **"Book on Official Website"** call to action.
+StayEasy Vietnam is a **Direct Booking Platform (DBP)** — a hotel content & guide site, **not an OTA**. It never processes bookings, takes payment, or charges hotels a booking commission. Every hotel detail page routes the traveler to the hotel's **official website** with a clear **"Book on Official Website"** call to action.
 
-> ⚠️ **StayEasy does not process hotel reservations or payments. Final booking is completed through each hotel's official website.**
+> ⚠️ **StayEasy does not process hotel reservations or payments. Final booking is completed on each hotel's official website.**
 
-This repository is a working **MVP frontend prototype** built with React + Vite + TypeScript + Tailwind CSS. All hotel data is mocked locally — there is no backend, no payment, and no real booking engine.
+This repository is the **frontend web app** (React + Vite + TypeScript + Tailwind). Hotel content is served from a local catalogue (no live backend required); a parked Fastify + Prisma backend scaffold lives in [`server/`](./server).
 
----
-
-## 💡 Concept & business model
-
-- **Position:** a trustworthy hotel content & comparison platform that helps travelers understand hotels and book **directly** with them. It does **not** compete head-on with OTAs — it complements them.
-- **What it is _not_:** Agoda / Booking.com / Expedia. We don't sell rooms or hold reservations.
-- **Revenue = advertising, content & exposure — never commission:**
-  1. Free hotel listing
-  2. Paid official-booking guide pages
-  3. Premium content production
-  4. Featured (top) hotel placement
-  5. Official-booking click advertising (CPC)
-  6. Seasonal campaign advertising
-- **Transparency:** any paid placement is clearly labeled **"Sponsored"**.
-- **Market:** Vietnam hotels — launching in **Da Nang**, then Ho Chi Minh City, Nha Trang, and Phu Quoc.
-- **Audience:** Korean, English-speaking, and international travelers planning a Vietnam trip.
-
-The product focus is **trust and suitability** (not lowest price): official-website benefits, family/couple/business/beach/long-stay fit, location, room guide, cancellation policy, breakfast, pool, and practical travel info.
+**Live:** https://bstars00-rgb.github.io/AI-StayEasy/
 
 ---
 
-## 🧭 Pages & routes
+## 🚦 Current state (2026-07)
 
-| Route | Page | Description |
-|-------|------|-------------|
-| `/` | **Home** | Hero, **AI hotel search**, featured destinations, featured hotels, "StayEasy is not an OTA" explainer |
-| `/search` | **AI Search** | Natural-language hotel recommender — describe your trip in any language, get ranked matches with reasons |
-| `/wishlist` | **Wishlist** | Save hotels (localStorage) via the heart on any card/detail; navbar count badge; 5-language |
-| `/destinations/vietnam` | **Vietnam overview** | Destination cards, travel-style guide, balanced direct-booking explanation |
-| `/destinations/da-nang` | **Da Nang hotel list** | Filter bar (Area / Travel type / Features / Official benefits) + suitability-first cards + "how to choose" |
-| `/hotels/:slug` | **Hotel detail** | StayEasy summary, official benefits, room guide, location guide, facilities, cancellation checklist, prominent **Book on Official Website** CTA, similar hotels, disclaimer |
-| `/guides/direct-booking` | **Direct booking guide** | Neutral OTA-vs-direct comparison table, when each is better, pre-booking checklist |
-| `/partners` | **Hotel partner page** | Value prop, 6 products, plans (Starter / Growth / Campaign), sample report, mock contact form |
-| `/dashboard` | **Mock hotel dashboard** | Partner-facing: period selector, KPI cards, traffic & traveler charts, content table, recommendations |
-| `/admin` | **Back-office (operator console)** | Sidebar shell with Overview / Hotels / Partners / Campaigns / Inquiries — its own chrome, mock data |
-| `/about` | **About** | Position + business model summary |
+- **Launch-first strategy is content, not revenue.** The site currently runs as a pure audience/content product. **All monetization surfaces are hidden behind a single switch** (`VITE_ENABLE_BM`, off by default) — see [Business model](#-business-model-gated-off-by-default).
+- **40 hotels across 6 cities.** **Da Nang (20) are real, verified listings** (data checked against each hotel's official website). The other cities' listings are being converted from sample to real the same way.
+- **5 languages**, PWA-installable, SEO pre-rendered, GA4-instrumented, interactive maps.
 
-**Destinations live:** Da Nang (12), Ho Chi Minh City (4), Nha Trang (4), Phu Quoc (4) — 24 sample hotels across 4 cities, via a city-parameterized list route `/destinations/:citySlug`.
+---
 
-> Legacy routes (`/da-nang`, `/vietnam`, `/booking-guide`, `/hotel/:slug`) redirect to their new paths. `vercel.json` adds a SPA rewrite so deep links resolve on refresh.
+## ✨ Features
+
+- **AI hotel search** — describe your trip in natural language (any of the 5 languages); an **on-device** rule-based engine ranks hotels with human-readable reasons. No backend, no API key.
+- **Suitability-first hotel cards & detail** — who it's for, official-booking benefit, room/location guides, cancellation checklist, similar hotels.
+- **StayEasy Distinction** — a scarce, Michelin-style editorial mark (*Choice* = one per city; *Recommended* = a select few). Most hotels carry no mark — that scarcity is the point. Official **star ratings (3–5★)** show next to the hotel name.
+- **At-a-glance amenity grid** — structured amenities as minimal line icons.
+- **Property-type filter** — Resort / Beach hotel / Boutique / Apartment / Hostel / B&B / … per city.
+- **Maps** — interactive Leaflet/OpenStreetMap on the detail page (single hotel) and a List/Map toggle on city lists. *(Coordinates are approximate — area centre + jitter — pending real GPS.)*
+- **Hotel community** — a members-only per-hotel discussion thread; signed-out visitors see a gate that lets them create an account. Mock auth + storage (localStorage).
+- **Wishlist** — save hotels (localStorage), navbar count badge.
+- **Partner area** — hotel partner landing + a report-grade analytics **portal** (`/dashboard`) with benchmark, listing-completeness score and action cards.
+- **Back-office** (`/admin`) — operator console (overview, hotels, partners, campaigns, inquiries, media, marketing banner).
+- **i18n** — full UI + hotel content in **English, 한국어, Tiếng Việt, 中文, 日本語**, with a language switcher, `<html lang>` sync and per-page localized SEO/OG meta.
+- **PWA** — installable (manifest + service worker), mobile-responsive.
+- **SEO** — per-route pre-rendered HTML (200-indexable), sitemap, robots, OG images, JSON-LD.
+
+---
+
+## 💰 Business model (gated off by default)
+
+Revenue is **advertising / content / sponsorship — never commission**. All of it is hidden behind `VITE_ENABLE_BM` (see [`src/lib/bm.ts`](./src/lib/bm.ts)) so the site can grow an audience first:
+
+- discount vouchers (consumer), display ads (AdSense), "Sponsored" placement, and the consumer member sign-in are all hidden while the switch is off;
+- the partner **pricing tiers** (Starter / Growth / Campaign) and paid-product menu are hidden too.
+
+Set `VITE_ENABLE_BM=true` to bring the whole business model back. **Never set it in the deployed environment** until monetization is intended.
+
+---
+
+## 🧭 Key routes
+
+| Route | Page |
+|-------|------|
+| `/` | Home — photo hero, AI search, featured destinations & hotels |
+| `/destinations/vietnam` | Vietnam overview (destination cards + Asia map) |
+| `/destinations/:citySlug` | City hotel list — filters (area / travel type / property type / features) + **List/Map toggle** |
+| `/hotels/:slug` | Hotel detail — summary, official benefits, amenity grid, room/location guides, **map**, **community**, Book-on-Official CTA |
+| `/guides/:slug`, `/guides` | Direct-booking & travel guides |
+| `/partners` | Hotel partner landing |
+| `/dashboard` · `/partner/*` | Partner portal + listing editor (member) |
+| `/admin`, `/admin/hotels/:slug/edit` | Operator back-office |
+| `/about` · legal pages | Positioning + legal |
 
 ---
 
 ## 🛠️ Tech stack
 
-- **React 18** + **TypeScript** (strict)
-- **Vite 5** (dev server & build)
-- **Tailwind CSS 3** (mobile-first design system)
-- **React Router 6** (client-side routing)
-- **Vitest** smoke tests (data integrity, locale parity, AI search, hotel localization)
-- Local **mock data** in `src/data/` — **12 sample Da Nang hotels**, no backend, no API, no payment
-
-### 🌐 Languages (i18n)
-Full UI + hotel content in **5 languages** — English, 한국어, Tiếng Việt, 中文, 日本語 — with a navbar language switcher, `localStorage` persistence, `<html lang>` sync, and per-page localized SEO/OG meta. Source in `src/i18n/` (`locales/*` for UI, `hotelContent/*` for hotel text).
-
-### 🤖 AI hotel search
-A natural-language recommender (`src/lib/searchEngine.ts`) that runs **entirely on-device** — no backend, no API key. It parses a free-text request in any of the 5 languages into weighted intent signals, scores each hotel, and ranks results with human-readable reasons. The same interface can later be backed by a real LLM via a serverless proxy.
-
-### Reusable components (`src/components/`)
-`Button` · `HotelCard` · `HotelImage` · `SponsoredBadge` · `Facilities` · `AISearch` · `LanguageSwitcher` · `ErrorBoundary` · `Navbar` · `Footer` · `Layout` · `SectionHeading` · `TrustStrip`
-
-> Hotel images use placeholder photos with a branded gradient + emoji fallback, so the prototype still renders cleanly offline if an image fails to load.
+- **React 18.3** + **TypeScript** (strict) · **Vite 5** · **Tailwind CSS 3** · **React Router 6**
+- **Leaflet 1.9 / OpenStreetMap** (maps, lazy-loaded) · **Vitest** (smoke + render tests)
+- Local **catalogue** in `src/data/` (40 hotels) + a `repo` abstraction; parked **Fastify + Prisma (SQLite)** backend in `server/`
 
 ---
 
@@ -79,118 +79,109 @@ A natural-language recommender (`src/lib/searchEngine.ts`) that runs **entirely 
 **Prerequisites:** Node.js 18+ and npm.
 
 ```bash
-# 1. Install dependencies
 npm install
+npm run dev        # Vite dev server (http://localhost:5173)
+npm run lint       # TypeScript type-check (tsc --noEmit)
+npm test           # Vitest
+npm run build      # tsc -b + vite build + SEO asset generation (sitemap/og/icons/static-routes)
+npm run preview    # serve the production build
 
-# 2. Start the dev server
-npm run dev
-# open the printed URL (default http://localhost:5173)
-
-# 3. Type-check (no emit)
-npm run lint
-
-# 4. Production build + local preview
-npm run build
-npm run preview
+# GitHub Pages build (sets base '/AI-StayEasy/' + basename):
+GITHUB_PAGES=true npm run build
 ```
 
 ### Scripts
 
 | Command | What it does |
 |---------|--------------|
-| `npm install` | Install dependencies |
-| `npm run dev` | Start the Vite dev server with HMR |
-| `npm run build` | Type-check (`tsc -b`) then build to `dist/` |
-| `npm run preview` | Serve the production build locally |
-| `npm run lint` | TypeScript type-check only (`tsc --noEmit`) |
+| `npm run dev` | Vite dev server with HMR |
+| `npm run build` | Type-check, build to `dist/`, then generate sitemap / OG image / PWA icons / pre-rendered routes |
+| `npm run preview` | Serve the production build |
+| `npm run lint` | TypeScript type-check only |
+| `npm test` | Run the Vitest suite |
 
-### Project structure
+---
+
+## ⚙️ Environment variables
+
+Every feature below is **off / no-op until its variable is set** (`.env` is gitignored; see [`.env.example`](./.env.example) for the full template). **Do not commit real values.**
+
+| Variable | Purpose |
+|---|---|
+| `VITE_ENABLE_BM` | Business-model master switch (vouchers, ads, sponsored, member sign-in, pricing). **Off by default — keep off in production.** |
+| `VITE_GA_ID` | Google Analytics 4 measurement ID (SPA page_view + intent events) |
+| `VITE_GOOGLE_CLIENT_ID` | Google sign-in (real OAuth instead of the demo identity) — *not yet set* |
+| `VITE_ADSENSE_CLIENT` | AdSense publisher ID (ads render only when set + BM on) |
+| `VITE_API_URL` | Backend base URL — when set, the repo layer can read from the API instead of the in-browser catalogue |
+| `VITE_CONTACT_EMAIL` | Public contact address for legal/footer |
+| `SITE_URL`, `GITHUB_PAGES` | Build-time: canonical URL + Pages base path |
+| `DATABASE_URL` | `server/` only (Prisma) |
+
+---
+
+## 📁 Project structure
 
 ```
-stayeasy-vietnam/
-├─ index.html
-├─ vite.config.ts
-├─ tailwind.config.js
-├─ vercel.json
-├─ public/favicon.svg
+AI-StayEasy/
+├─ index.html                 # includes the Search Console verification meta
+├─ .github/workflows/deploy.yml  # GitHub Pages auto-deploy on push to main
+├─ public/                    # favicon, PWA manifest, sw.js, og-image
+├─ scripts/                   # gen-sitemap / gen-og / gen-icons / gen-static-routes (.mjs)
+├─ docs/                      # planning docs (backend, partner portal, app concept, adsense, search console)
+├─ server/                    # parked Fastify + Prisma backend scaffold (SQLite, unbuilt/undeployed)
 └─ src/
-   ├─ main.tsx              # app entry + router
-   ├─ App.tsx               # routes + legacy redirects
-   ├─ index.css             # Tailwind layers + component classes
-   ├─ types/index.ts        # Hotel / Destination / TravelStyle types
-   ├─ data/                 # hotels (12), destinations, travel styles
-   ├─ lib/facilities.ts     # facility → icon helper
-   ├─ components/           # reusable UI
-   └─ pages/                # Home, Vietnam, list, detail, guide, partners, dashboard, about, 404
+   ├─ main.tsx / App.tsx      # entry + routes
+   ├─ data/                   # hotels.ts (40-hotel catalogue) + repo abstraction
+   ├─ i18n/                   # locales/* (UI) + hotelContent/* (hotel text, keyed by hotel id)
+   ├─ lib/                    # bm, distinction, propertyType, geo, community, analytics, searchEngine, partnerAuth …
+   ├─ components/             # reusable UI (+ admin/)
+   └─ pages/                  # Home, list, detail, guides, partners, portal, admin, about, legal, 404
 ```
 
 ---
 
-## ☁️ Deploy to GitHub + Vercel
+## ☁️ Deploy
 
-### 1. Push to GitHub
+### GitHub Pages (primary)
+CI at [`.github/workflows/deploy.yml`](./.github/workflows/deploy.yml) builds and publishes on every push to `main`.
+1. Repo → **Settings → Pages → Source → GitHub Actions**.
+2. Push to `main` → live at **https://bstars00-rgb.github.io/AI-StayEasy/**.
+3. The build sets `GITHUB_PAGES=true` (Vite `base: '/AI-StayEasy/'` + Router `basename`) and injects the GA4 id. `404.html` provides the SPA fallback.
+4. **If you fork/rename or transfer the repo, the Pages URL changes** — update the base path and re-verify Search Console / GA4 (see below).
 
-```bash
-git init
-git add .
-git commit -m "StayEasy Vietnam MVP prototype"
-git branch -M main
-git remote add origin https://github.com/<your-username>/stayeasy-vietnam.git
-git push -u origin main
-```
-
-### 2. Deploy on Vercel
-
-**Option A — Dashboard (recommended)**
-1. Go to [vercel.com/new](https://vercel.com/new) and import your GitHub repo.
-2. Vercel auto-detects **Vite**. Defaults are correct:
-   - **Build command:** `npm run build`
-   - **Output directory:** `dist`
-3. Click **Deploy**. Every push to `main` redeploys automatically.
-
-**Option B — Vercel CLI**
-```bash
-npm i -g vercel
-vercel          # preview deploy
-vercel --prod   # production deploy
-```
-
-The included [`vercel.json`](./vercel.json) sets the Vite framework and adds a SPA rewrite so deep links like `/hotels/an-bang-beach-resort` resolve correctly on refresh.
+### Vercel (alternative)
+[`vercel.json`](./vercel.json) sets the Vite framework + SPA rewrite; `render.yaml` is a parked option for the backend. Vercel keeps `base: '/'`.
 
 ---
 
-## 🐙 Deploy to GitHub Pages (GitHub Actions)
+## 🔗 External services & account dependencies
 
-This repo includes a Pages workflow at [`.github/workflows/deploy.yml`](./.github/workflows/deploy.yml).
-
-1. In the repo, go to **Settings → Pages → Build and deployment → Source** and select **GitHub Actions**.
-2. Push to `main`. The workflow builds with the Pages base path and publishes automatically.
-3. The site goes live at **https://bstars00-rgb.github.io/AI-StayEasy/**.
-
-Notes:
-- The build sets `GITHUB_PAGES=true`, which makes Vite use `base: '/AI-StayEasy/'` and React Router use the matching `basename`. Local dev and Vercel keep `base: '/'`.
-- `vite.config.ts` copies `index.html` → `404.html` so client-side routes resolve on a hard refresh (GitHub Pages SPA fallback).
-- If you fork/rename the repo, update the `base` path in `vite.config.ts` to match the new repo name.
+| Service | Use | Dependency |
+|---|---|---|
+| GitHub repo + Pages | source + hosting | repo `bstars00-rgb/AI-StayEasy` — **owned by a personal account**; transferring changes the Pages URL |
+| Google Analytics 4 | traffic + intent events | property owned by the creating Google account |
+| Google Search Console | indexing | verified via `index.html` meta tag |
+| OpenStreetMap | map tiles | no account |
+| Google OAuth / AdSense | sign-in / ads | not yet configured (BM roadmap) |
 
 ---
 
-## ⚠️ Prototype disclaimer
+## ⚠️ Notes & disclaimers
 
-This is a demonstration prototype. Hotels, official-website URLs, benefits, dashboard analytics, and the partner contact form are **all fictional sample data** (hotel names are suffixed "(Sample)"). No real bookings, payments, or data submissions occur.
-
-**StayEasy does not process hotel reservations or payments. Final booking is completed through each hotel's official website.**
+- **Da Nang (20) hotels are real, verified listings** (data checked against official sites). Hotels in the other five cities are being converted from sample to real; until then their URLs/benefits may be placeholder.
+- **No real bookings or payments occur here** — StayEasy always routes to the hotel's official website.
+- Community posts, wishlist, partner accounts and guest sign-in are **localStorage demo data** (this browser only; no server).
+- The `server/` backend is an **unbuilt scaffold** — not deployed.
 
 ---
 
-## 📱 Mobile app concept
+## 🗺️ Roadmap
 
-A mobile app concept (positioning, features, IA, AI strategy, tech stack with web-code reuse, MVP roadmap) is drafted in **[docs/APP_CONCEPT.md](docs/APP_CONCEPT.md)**. Recommended approach: React Native + Expo sharing a `packages/core` (data, types, i18n, search engine, design tokens) with this web app.
+- Convert the remaining cities (HCMC / Nha Trang / Phu Quoc / Hoi An / Hanoi) to real verified hotels ✅ *(in progress)*
+- Real per-hotel GPS coordinates for maps
+- Real Google OAuth sign-in (`VITE_GOOGLE_CLIENT_ID`)
+- Community real backend + deploy `server/` (SQLite → PostgreSQL) + switch to `VITE_API_URL`
+- Search Console data → partner portal (server-side)
+- Partner self-serve onboarding & billing (when BM is turned on)
 
-## 🗺️ Roadmap ideas
-
-- Korean / English language toggle (i18n)
-- Real hotel imagery & CMS-driven content
-- Additional cities (HCMC, Nha Trang, Phu Quoc)
-- Map view & geo-filtering
-- Partner self-serve onboarding & billing
-- Real analytics pipeline for the hotel dashboard
+A mobile-app concept (React Native + Expo sharing a `packages/core`) is drafted in [`docs/APP_CONCEPT.md`](docs/APP_CONCEPT.md).
