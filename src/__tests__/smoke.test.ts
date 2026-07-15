@@ -241,8 +241,10 @@ describe('Asia market roadmap', () => {
 describe('direct-booking vouchers', () => {
   const withVouchers = hotels.filter((h) => h.voucher)
 
-  it('only sponsored hotels carry vouchers and codes are unique', () => {
-    expect(withVouchers).toHaveLength(5)
+  // Real, verified listings carry NO fabricated vouchers — so `withVouchers` is
+  // normally empty. The invariant still holds: any hotel that DID carry a
+  // voucher must be sponsored, with a valid, unique code.
+  it('any hotel carrying a voucher is sponsored, with a valid unique code', () => {
     for (const h of withVouchers) {
       expect(h.isSponsored, `${h.slug} has a voucher but is not sponsored`).toBe(true)
       expect(h.voucher!.code).toMatch(/^[A-Z0-9]+$/)
@@ -253,10 +255,11 @@ describe('direct-booking vouchers', () => {
   })
 
   it('renders a self-contained SVG coupon carrying the code', () => {
-    const h = getHotel('saigon-central-boutique')!
+    // Synthetic voucher fixture — the catalogue no longer ships demo vouchers.
+    const h = { ...hotels[0], voucher: { code: 'TESTCODE10', discountLabel: '10% off your direct booking', terms: 'Show this code on the official website.', validUntil: '2026-12-31' } }
     const svg = buildVoucherSvg(h, { heading: 'Voucher', validUntilLabel: 'Valid until', footer: 'Use on official site' })
     expect(svg.startsWith('<svg')).toBe(true)
-    expect(svg).toContain(h.voucher!.code)
+    expect(svg).toContain('TESTCODE10')
     expect(svg).toContain('STAYEASY VIETNAM')
   })
 
@@ -341,8 +344,9 @@ describe('back-office data', () => {
   })
 
   it('derives campaigns only from sponsored hotels', () => {
+    // No real hotel is marked sponsored (no paid relationship), so this is 0 —
+    // the derivation invariant (one campaign per sponsored hotel) still holds.
     const sponsored = hotels.filter((h) => h.isSponsored).length
-    expect(sponsored).toBeGreaterThan(0)
     expect(campaigns).toHaveLength(sponsored)
   })
 
