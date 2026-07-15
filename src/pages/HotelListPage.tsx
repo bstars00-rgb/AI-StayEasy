@@ -58,10 +58,35 @@ export default function HotelListPage() {
   const [view, setView] = useState<'list' | 'map'>('list')
 
   // City's hotels + the areas that actually exist for this city.
-  const all = hotelsQ.data ?? []
+  const all = useMemo(() => hotelsQ.data ?? [], [hotelsQ.data])
   const areaOptions = useMemo(() => Array.from(new Set(all.map((h) => h.area))), [all])
   // Only offer property types that actually exist among this city's hotels.
   const propertyOptions = useMemo(() => PROPERTY_TYPES.filter((p) => all.some((h) => propertyTypeOf(h) === p)), [all])
+  // Stable references for the map — a fresh array every render would churn
+  // markers and close open popups (Round 2 QA finding m-1).
+  const cityAttractions = useMemo(() => (dest ? attractionsForCity(dest.city, lang) : []), [dest, lang])
+  const filtered = useMemo(() => {
+    const results = all.filter((h) =>
+      (Object.keys(selected) as GroupKey[]).every((g) => {
+        const vals = selected[g]
+        return vals.length === 0 || vals.some((v) => matchers[g](h, v))
+      }),
+    )
+    // Graceful fallback: if nothing matches every filter, show the closest
+    // hotels — keep the area (most intentional) when chosen, otherwise drop
+    // only the narrowest "conditions" group. Avoids a dead-end screen.
+    const closest = selected.area.length
+      ? all.filter((h) => selected.area.some((v) => matchers.area(h, v)))
+      : all.filter((h) =>
+          (['travel', 'stars'] as GroupKey[]).every((g) => {
+            const vals = selected[g]
+            return vals.length === 0 || vals.some((v) => matchers[g](h, v))
+          }),
+        )
+    const active = Object.values(selected).reduce((n, arr) => n + arr.length, 0)
+    const relaxed = results.length === 0 && active > 0 && closest.length > 0
+    return { shown: results.length > 0 ? results : relaxed ? closest : [], relaxed }
+  }, [all, selected])
 
   // Reset filters when the city changes.
   useEffect(() => {
@@ -151,26 +176,7 @@ export default function HotelListPage() {
     return fs.cond[opt as ConditionKey] ?? opt
   }
 
-  const results = all.filter((h) =>
-    (Object.keys(selected) as GroupKey[]).every((g) => {
-      const vals = selected[g]
-      return vals.length === 0 || vals.some((v) => matchers[g](h, v))
-    }),
-  )
-
-  // Graceful fallback: if nothing matches every filter, show the closest hotels
-  // — keep the area (most intentional) when chosen, otherwise drop only the
-  // narrowest "conditions" group. Avoids a dead-end "no results" screen.
-  const closest = selected.area.length
-    ? all.filter((h) => selected.area.some((v) => matchers.area(h, v)))
-    : all.filter((h) =>
-        (['travel', 'stars'] as GroupKey[]).every((g) => {
-          const vals = selected[g]
-          return vals.length === 0 || vals.some((v) => matchers[g](h, v))
-        }),
-      )
-  const relaxed = results.length === 0 && activeCount > 0 && closest.length > 0
-  const shown = results.length > 0 ? results : relaxed ? closest : []
+  const { shown, relaxed } = filtered
 
   return (
     <>
@@ -273,7 +279,7 @@ export default function HotelListPage() {
         ) : shown.length > 0 ? (
           view === 'map' ? (
             <div className="mt-4">
-              <HotelMap hotels={shown} attractions={attractionsForCity(dest.city, lang)} height={480} lang={lang} />
+              <HotelMap hotels={shown} attractions={cityAttractions} height={480} lang={lang} />
               <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-ink-700/70">
                 <span className="inline-flex items-center gap-1.5"><span className="inline-block h-2.5 w-2.5 rounded-full bg-brand-600" /> {ms.hotels}</span>
                 <span className="inline-flex items-center gap-1.5"><span className="inline-block h-2.5 w-2.5 rounded-full bg-amber-500" /> {ms.attractions}</span>

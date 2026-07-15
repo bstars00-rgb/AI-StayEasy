@@ -9,6 +9,7 @@ import { voucherStrings } from '../lib/voucherI18n'
 import { officialLink } from '../lib/officialLink'
 import { IconPin, IconTag } from './icons'
 import { BM_ENABLED } from '../lib/bm'
+import { imageNotice } from '../lib/imageNoticeI18n'
 import { distinctionOf } from '../lib/distinction'
 import { StarRating, DistinctionBadge } from './HotelRating'
 
@@ -48,6 +49,10 @@ export function HotelCard({ hotel: raw }: { hotel: Hotel }) {
         <div className="absolute bottom-3 right-3">
           <span className="pill bg-white/90 text-ink-900 backdrop-blur">{type}</span>
         </div>
+        {/* Honesty: listing photos are stock until the hotel supplies real ones. */}
+        <span className="absolute bottom-3 left-3 rounded bg-black/45 px-1.5 py-0.5 text-[10px] font-medium text-white/90 backdrop-blur-sm">
+          {imageNotice[lang].chip}
+        </span>
       </Link>
 
       <div className="flex flex-1 flex-col gap-3 p-4">

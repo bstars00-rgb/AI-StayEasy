@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom'
-import { useEffect, useState, type ReactNode } from 'react'
+import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import Button from '../components/Button'
 import { HotelImage } from '../components/HotelImage'
 import { SponsoredBadge } from '../components/SponsoredBadge'
@@ -27,6 +27,7 @@ import { HotelMap } from '../components/HotelMap'
 import { mapStrings } from '../lib/mapI18n'
 import { HotelCommunity } from '../components/HotelCommunity'
 import { poolPhoto } from '../lib/cityPhotos'
+import { imageNotice } from '../lib/imageNoticeI18n'
 import { contactStrings } from '../lib/contactI18n'
 import { ContactHotelDialog } from '../components/ContactHotelDialog'
 
@@ -69,6 +70,10 @@ export default function HotelDetailPage() {
     () => (rawHotel ? repo.getSimilarHotels(rawHotel) : Promise.resolve([])),
     [rawHotel?.id],
   )
+
+  // Stable array for the map — an inline [rawHotel] would churn markers on
+  // every re-render (Round 2 QA finding m-1).
+  const mapHotels = useMemo(() => (rawHotel ? [rawHotel] : []), [rawHotel])
 
   // Record the hotel view (canonical, un-localized dimensions) for partner insights.
   useEffect(() => {
@@ -147,6 +152,7 @@ export default function HotelDetailPage() {
             </>
           )}
         </div>
+        <p className="mt-2 text-xs text-ink-700/55">{imageNotice[lang].note}</p>
       </section>
 
       {/* 1. Hotel header */}
@@ -269,7 +275,7 @@ export default function HotelDetailPage() {
               ))}
             </div>
             <div className="mt-4">
-              <HotelMap hotels={[rawHotel]} height={280} lang={lang} />
+              <HotelMap hotels={mapHotels} height={280} lang={lang} />
               <p className="mt-1.5 text-xs text-ink-700/55">{mapStrings[lang].approx}</p>
             </div>
           </Card>

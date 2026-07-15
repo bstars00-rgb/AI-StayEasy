@@ -1790,7 +1790,9 @@ export function deriveConditions(h: Omit<Hotel, 'country' | 'conditions'>): Hote
   return {
     starRating,
     stayEasyScore: EDITORIAL_SCORES[h.slug] ?? 8.0,
-    freeCancellation: benefit(/cancel|flexible/i), // only when officially stated
+    // Explicit per-hotel flag only — the old regex mistook "flexible check-in"
+    // and "Best Flexible Rate" (a rate-plan name) for free cancellation.
+    freeCancellation: h.freeCancellationVerified === true,
     breakfastIncluded: fac('Breakfast') || benefit(/breakfast/i),
     freeAirportShuttle: fac('Airport transfer'),
     freeParking: fac('Parking'),

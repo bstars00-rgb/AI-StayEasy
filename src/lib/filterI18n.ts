@@ -12,9 +12,12 @@ export type ConditionKey =
   | 'spa'
   | 'accessible'
 
+// Only facets we can actually verify from official sites are offered as
+// filters. freeCancellation / petFriendly / accessible are excluded until we
+// hold verified data — a filter that can never match is a dead end.
 export const CONDITION_OPTS: ConditionKey[] = [
-  'freeCancellation', 'breakfastIncluded', 'pool', 'beachfront', 'familyFriendly',
-  'freeAirportShuttle', 'freeParking', 'petFriendly', 'spa', 'accessible',
+  'breakfastIncluded', 'pool', 'beachfront', 'familyFriendly',
+  'freeAirportShuttle', 'freeParking', 'spa',
 ]
 
 export interface FilterStrings {

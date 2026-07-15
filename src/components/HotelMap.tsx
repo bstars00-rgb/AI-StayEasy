@@ -77,6 +77,13 @@ export function HotelMap({
   const markersRef = useRef<maplibregl.Marker[]>([])
   const fittedRef = useRef<string>('')
   const fellBackRef = useRef(false)
+  // maplibre's 'load' fires exactly once, and map.loaded() goes false again
+  // whenever tiles are streaming — so effects must key off our own flag, never
+  // `map.loaded() ? apply : once('load', …)` (that silently drops updates that
+  // arrive while the user pans). The 'load' handler renders from propsRef, so
+  // anything that changed before load is picked up then; after load, effects
+  // apply immediately.
+  const readyRef = useRef(false)
 
   // Latest props for the async create step.
   const propsRef = useRef({ hotels, attractions, zoom, lang })
@@ -168,11 +175,13 @@ export function HotelMap({
         mapRef.current = map
         map.addControl(new gl.NavigationControl({ showCompass: false }), 'top-left')
 
-        // If the MapTiler style can't load (bad/expired key, network), fall
-        // back to OSM raster instead of showing a blank box.
+        // Fall back to OSM raster ONLY when the style itself fails (bad key,
+        // blocked network before first load) — a transient single-tile 5xx
+        // after load must NOT demote the whole map.
         map.on('error', (e) => {
           const msg = String((e as { error?: { message?: string } }).error?.message ?? '')
-          if (MAPTILER_KEY && !fellBackRef.current && /style|401|403|maptiler/i.test(msg)) {
+          const styleFailed = /style\.json/i.test(msg) || (!readyRef.current && /failed to fetch|networkerror/i.test(msg))
+          if (MAPTILER_KEY && !fellBackRef.current && styleFailed) {
             fellBackRef.current = true
             try {
               map.setStyle(OSM_STYLE as unknown as string)
@@ -183,6 +192,7 @@ export function HotelMap({
         })
 
         map.on('load', () => {
+          readyRef.current = true
           applyLanguage(map, propsRef.current.lang)
           renderMarkers(map, gl)
         })
@@ -203,21 +213,18 @@ export function HotelMap({
   }, [])
 
   // Prop changes update markers in place — the map itself is never recreated.
+  // Pre-load changes are picked up by the 'load' handler via propsRef.
   useEffect(() => {
     const map = mapRef.current
     const gl = glRef.current
-    if (!map || !gl) return
-    if (map.loaded()) renderMarkers(map, gl)
-    else map.once('load', () => renderMarkers(map, gl))
+    if (map && gl && readyRef.current) renderMarkers(map, gl)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hotels, attractions])
 
   // Language changes relabel the base map without a rebuild.
   useEffect(() => {
     const map = mapRef.current
-    if (!map) return
-    if (map.loaded()) applyLanguage(map, lang)
-    else map.once('load', () => applyLanguage(map, lang))
+    if (map && readyRef.current) applyLanguage(map, lang)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lang])
 

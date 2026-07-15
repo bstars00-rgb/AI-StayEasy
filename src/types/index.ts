@@ -163,6 +163,10 @@ export interface LocationGuide {
 export interface Hotel {
   id: string
   slug: string
+  /** Set to true ONLY when free cancellation is explicitly verified on the
+   *  hotel's official site (with source noted in the entry's verification
+   *  comment). Absent = unverified = never claimed. No regex derivation. */
+  freeCancellationVerified?: boolean
   name: string
   country: Country
   city: City
