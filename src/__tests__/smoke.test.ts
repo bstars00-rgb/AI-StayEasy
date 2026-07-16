@@ -209,10 +209,16 @@ describe('contact-channel routing (no hosted inbox)', () => {
       return c && (c.whatsapp || c.zalo || c.kakao || c.line || c.messenger)
     })
     expect(withChat.length).toBeGreaterThan(0)
-    // And no chat number is merely the front-desk landline (integrity check).
+    // And no chat number is merely the front-desk landline (integrity check):
+    // WhatsApp/Zalo aren't registered on a hotel's landline, so a "chat" value
+    // equal to the front-desk phone would be a fabricated channel.
     for (const h of withChat) {
       const phoneDigits = (h.contact!.phone ?? '').replace(/[^0-9]/g, '')
+      if (!phoneDigits) continue
       if (h.contact!.whatsapp) expect(h.contact!.whatsapp.replace(/[^0-9]/g, '')).not.toBe(phoneDigits)
+      // A bare-number Zalo (no zalo.me URL) must also differ from the landline.
+      const zalo = h.contact!.zalo
+      if (zalo && !/[a-z]/i.test(zalo)) expect(zalo.replace(/[^0-9]/g, '')).not.toBe(phoneDigits)
     }
   })
 
