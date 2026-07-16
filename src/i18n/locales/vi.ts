@@ -103,6 +103,7 @@ export const vi: Locale = {
   common: {
     bestFor: 'Phù hợp nhất cho',
     officialBenefit: 'Ưu đãi đặt phòng chính thức',
+    directRate: 'Giá đặt trực tiếp',
     viewGuide: 'Xem hướng dẫn',
     officialWebsite: 'Website chính thức',
     bookOfficial: 'Đặt phòng trên website chính thức',
@@ -279,6 +280,8 @@ export const vi: Locale = {
     rail1: 'Không phí đặt phòng hay chênh lệch',
     rail2: 'Bao gồm các ưu đãi chỉ dành cho khách đặt trực tiếp',
     rail3: 'Khách sạn xử lý việc đặt phòng & hỗ trợ của bạn',
+    saveTitle: 'Lợi thế khi đặt trực tiếp',
+    saveText: 'Bạn đặt trên chính website của khách sạn — không có hoa hồng OTA ở giữa. Nhiều khách sạn dành mức giá và ưu đãi tốt nhất cho khách đặt trực tiếp.',
     railGuideTitle: 'Mới đặt phòng trực tiếp? 🤔',
     railGuideText: 'Đọc hướng dẫn đặt phòng trực tiếp',
     ctaTitle: 'Sẵn sàng đặt phòng trực tiếp?',

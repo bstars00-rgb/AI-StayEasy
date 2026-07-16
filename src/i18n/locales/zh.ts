@@ -103,6 +103,7 @@ export const zh: Locale = {
   common: {
     bestFor: '适合',
     officialBenefit: '官网预订权益',
+    directRate: '官网直订价',
     viewGuide: '查看指南',
     officialWebsite: '官方网站',
     bookOfficial: '前往官网预订',
@@ -279,6 +280,8 @@ export const zh: Locale = {
     rail1: '无预订手续费或加价',
     rail2: '含官网专属礼遇',
     rail3: '由酒店处理您的预订与支持',
+    saveTitle: '直接预订的优势',
+    saveText: '您在酒店官网预订——中间没有 OTA 佣金。许多酒店把最优价格和权益留给直接预订的客人。',
     railGuideTitle: '第一次官网直订？🤔',
     railGuideText: '阅读官网直订指南',
     ctaTitle: '准备好官网直订了吗？',

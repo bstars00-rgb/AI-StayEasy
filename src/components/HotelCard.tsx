@@ -45,6 +45,7 @@ export function HotelCard({ hotel: raw }: { hotel: Hotel }) {
           {BM_ENABLED && raw.voucher && (
             <span className="pill bg-brand-600 text-white"><IconTag className="h-3.5 w-3.5" /> {voucherStrings[lang].badge}</span>
           )}
+          <span className="pill bg-white/90 text-brand-700 backdrop-blur"><IconTag className="h-3.5 w-3.5" /> {t.common.directRate}</span>
         </div>
         <div className="absolute bottom-3 right-3">
           <span className="pill bg-white/90 text-ink-900 backdrop-blur">{type}</span>

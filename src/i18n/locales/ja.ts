@@ -103,6 +103,7 @@ export const ja: Locale = {
   common: {
     bestFor: 'おすすめの方',
     officialBenefit: '公式予約特典',
+    directRate: '公式直販レート',
     viewGuide: 'ガイドを見る',
     officialWebsite: '公式サイト',
     bookOfficial: '公式サイトで予約する',
@@ -279,6 +280,8 @@ export const ja: Locale = {
     rail1: '予約手数料や上乗せなし',
     rail2: '直接予約限定の特典付き',
     rail3: 'ホテルが予約とサポートを担当',
+    saveTitle: '直接予約のメリット',
+    saveText: 'ホテル公式サイトで予約 — 間にOTA手数料が入りません。多くのホテルは直接予約するお客様に最良の料金と特典を用意しています。',
     railGuideTitle: '直接予約は初めてですか？🤔',
     railGuideText: '直接予約ガイドを読む',
     ctaTitle: '直接予約の準備はできましたか？',

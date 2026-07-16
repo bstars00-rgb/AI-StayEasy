@@ -103,6 +103,7 @@ export const ko: Locale = {
   common: {
     bestFor: '이런 분께 추천',
     officialBenefit: '공식 예약 혜택',
+    directRate: '공식 직접가',
     viewGuide: '가이드 보기',
     officialWebsite: '공식 웹사이트',
     bookOfficial: '공식 웹사이트에서 예약',
@@ -279,6 +280,8 @@ export const ko: Locale = {
     rail1: '예약 수수료나 추가 마진 없음',
     rail2: '직접 예약 전용 혜택 포함',
     rail3: '예약과 응대는 호텔이 직접 처리',
+    saveTitle: '직접예약의 이점',
+    saveText: '호텔 공식 사이트에서 예약해요 — 중간에 OTA 수수료가 붙지 않아요. 많은 호텔이 직접 예약하는 손님에게 가장 좋은 요금과 혜택을 줍니다.',
     railGuideTitle: '직접 예약이 처음이신가요? 🤔',
     railGuideText: '직접 예약 가이드 읽기',
     ctaTitle: '직접 예약할 준비가 되셨나요?',

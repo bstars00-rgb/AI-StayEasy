@@ -103,6 +103,7 @@ export const en = {
   common: {
     bestFor: 'Best for',
     officialBenefit: 'Official booking benefit',
+    directRate: 'Direct rate',
     viewGuide: 'View Guide',
     officialWebsite: 'Official Website',
     bookOfficial: 'Book on Official Website',
@@ -279,6 +280,8 @@ export const en = {
     rail1: 'No booking fee or markup',
     rail2: 'Direct-only perks included',
     rail3: 'The hotel handles your booking & support',
+    saveTitle: 'The direct-booking advantage',
+    saveText: 'You book on the hotel’s own website — no OTA commission in between. Many hotels save their best rates and perks for guests who book direct.',
     railGuideTitle: 'New to booking direct? 🤔',
     railGuideText: 'Read the direct booking guide',
     ctaTitle: 'Ready to book directly?',

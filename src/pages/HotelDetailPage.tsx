@@ -311,6 +311,10 @@ export default function HotelDetailPage() {
           <div className="rounded-2xl bg-white p-5 shadow-card ring-1 ring-black/5">
             <p className="text-sm font-bold text-ink-900">{t.detail.railTitle}</p>
             <p className="mt-1 text-sm text-ink-700/70">{t.detail.railText}</p>
+            <div className="mt-3 rounded-xl bg-brand-50 p-3 ring-1 ring-brand-100">
+              <p className="flex items-center gap-1.5 text-sm font-bold text-brand-800">💸 {t.detail.saveTitle}</p>
+              <p className="mt-1 text-xs leading-relaxed text-ink-700/80">{t.detail.saveText}</p>
+            </div>
             <BookOfficialButton href={officialLink(hotel)} hotelName={hotel.name} label={t.common.bookOfficial} className="mt-4 w-full" />
             <div className="mt-4 space-y-2 border-t border-black/5 pt-4 text-sm text-ink-700/80">
               <p className="flex items-center gap-2">🔒 {t.detail.rail1}</p>
