@@ -1,4 +1,5 @@
 import type { Destination } from '../types'
+import { hotels } from './hotels'
 
 // Launch-market destinations are all in Vietnam; `country` is injected below.
 const rawDestinations: Omit<Destination, 'country'>[] = [
@@ -242,7 +243,13 @@ const rawDestinations: Omit<Destination, 'country'>[] = [
   },
 ]
 
-export const destinations: Destination[] = rawDestinations.map((d) => ({ country: 'Vietnam', ...d }))
+// hotelCount is DERIVED from the real catalogue (never hardcoded) so the count
+// shown on cards can't drift from the hotels actually listed for a city.
+export const destinations: Destination[] = rawDestinations.map((d) => ({
+  country: 'Vietnam',
+  ...d,
+  hotelCount: hotels.filter((h) => h.city === d.city).length,
+}))
 
 export const getDestination = (slug: string) =>
   destinations.find((d) => d.slug === slug || d.city.toLowerCase() === slug.toLowerCase())

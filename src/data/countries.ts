@@ -1,4 +1,8 @@
 import type { Country } from '../types'
+import { hotels } from './hotels'
+
+/** Derived from the real catalogue so Vietnam's count can't drift (was hardcoded). */
+const VIETNAM_HOTELS = hotels.filter((h) => h.country === 'Vietnam').length
 
 /**
  * Asia expansion roadmap. StayEasy launched in Vietnam to enter the market, then
@@ -32,7 +36,7 @@ export const countries: CountryMarket[] = [
     flag: '🇻🇳',
     region: 'Southeast Asia',
     available: true,
-    hotelCount: 32,
+    hotelCount: VIETNAM_HOTELS,
     cities: [
       'Da Nang', 'Ho Chi Minh City', 'Hanoi', 'Nha Trang', 'Phu Quoc', 'Hoi An',
       'Ha Long Bay', 'Sapa', 'Ninh Binh', 'Hue', 'Da Lat', 'Mui Ne', 'Can Tho',

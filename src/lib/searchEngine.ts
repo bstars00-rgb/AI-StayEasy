@@ -111,7 +111,9 @@ const SYNONYMS: Record<Signal, string[]> = {
   // collides with 'gòn' in "Sài Gòn" (Saigon). Unambiguous golf phrases only.
   golf: ['golf', '골프', 'đánh gôn', 'sân gôn', 'chơi gôn', '高尔夫', 'ゴルフ'],
   luxury: ['luxury', 'luxurious', '5-star', '5 star', 'five star', 'premium', 'high-end', 'upscale', '럭셔리', '고급', '5성', '프리미엄', '최고급', 'sang trọng', 'cao cấp', '5 sao', '奢华', '豪华', '五星', '高级', 'ラグジュアリー', '高級', '五つ星'],
-  budget: ['budget', 'cheap', 'affordable', 'value', 'inexpensive', 'low cost', '저렴', '가성비', '싼', '예산', '알뜰', 'giá rẻ', 'tiết kiệm', 'bình dân', '便宜', '实惠', '性价比', '经济', '格安', '安い', 'リーズナブル', 'コスパ'],
+  // NOTE: bare '싼' is excluded — it's a substring of '비싼' (expensive), which
+  // would invert the intent. '저렴/가성비/알뜰' cover the budget meaning.
+  budget: ['budget', 'cheap', 'affordable', 'value', 'inexpensive', 'low cost', '저렴', '가성비', '예산', '알뜰', 'giá rẻ', 'tiết kiệm', 'bình dân', '便宜', '实惠', '性价比', '经济', '格安', '安い', 'リーズナブル', 'コスパ'],
   firsttime: ['first time', 'first-time', 'first visit', 'first trip', 'beginner', 'never been', '처음', '첫 베트남', '초행', '처음 가', 'lần đầu', 'mới đến', 'chưa từng', '第一次', '初次', '首次', '初めて', '初訪問', '初ベトナム'],
   hoian: ['hoi an', 'hoian', 'hoi-an', '호이안', 'hội an', '会安', 'ホイアン'],
   danang: ['da nang', 'danang', 'đà nẵng', '다낭', '岘港', 'ダナン'],
@@ -256,6 +258,17 @@ export function recommend(query: string, hotels: Hotel[], limit = 6): Recommenda
     .filter((r) => r.score > 0)
     .sort((a, b) => b.score - a.score || b.pct - a.pct || tieBreak(a.hotel, b.hotel))
     .slice(0, limit)
+
+  // Signals were understood but nothing in the pool satisfies them (e.g. "golf"
+  // — no golf hotels in the catalogue). Show an editorial list instead of a
+  // dead-end empty screen; generic=true so no misleading match %.
+  if (results.length === 0) {
+    const fallback = [...pool]
+      .sort(tieBreak)
+      .slice(0, limit)
+      .map((hotel) => ({ hotel, score: 0, pct: 0, reasons: [] as Signal[] }))
+    return { detected: detectedList, generic: true, results: fallback }
+  }
 
   return { detected: detectedList, generic: false, results }
 }

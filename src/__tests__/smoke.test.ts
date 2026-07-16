@@ -26,6 +26,8 @@ import { getBenchmark, getCompleteness, getInsights } from '../lib/partnerInsigh
 import { insightStrings } from '../lib/insightsI18n'
 import { distinctionOf, distinctionCounts } from '../lib/distinction'
 import { scoreStrings } from '../lib/scoreI18n'
+import { destinations } from '../data/destinations'
+import { jsonLdString } from '../components/JsonLd'
 import { community } from '../lib/community'
 import { ko as koHotelContent } from '../i18n/hotelContent/ko'
 import { ja as jaHotelContent } from '../i18n/hotelContent/ja'
@@ -383,6 +385,18 @@ describe('AI search engine', () => {
     expect(rec.results.length).toBeGreaterThan(0)
   })
 
+  it('does not invert "비싼"(expensive) into budget intent', () => {
+    expect(recommend('비싼 호텔', hotels).detected).not.toContain('budget')
+    expect(recommend('저렴한 호텔', hotels).detected).toContain('budget')
+  })
+
+  it('an understood-but-unmatched intent (golf) falls back, never a dead end', () => {
+    const rec = recommend('resort with golf', hotels)
+    expect(rec.detected).toContain('golf')
+    expect(rec.results.length).toBeGreaterThan(0) // fallback list, not empty
+    expect(rec.generic).toBe(true)
+  })
+
   it('does not rank by raw id order (no Da Nang bias in generic results)', () => {
     const rec = recommend('', hotels)
     const cities = new Set(rec.results.map((r) => r.hotel.city))
@@ -569,6 +583,32 @@ describe('hotel community store (localStorage mock)', () => {
     const slug = 'test-community-blank'
     community.add(slug, 'x', '   ')
     expect(community.posts(slug).length).toBe(0)
+  })
+})
+
+describe('hotel counts are derived from the catalogue (no drift)', () => {
+  it('each destination hotelCount equals its real hotels', () => {
+    for (const d of destinations) {
+      const real = hotels.filter((h) => h.city === d.city).length
+      expect(d.hotelCount, `${d.city} count`).toBe(real)
+    }
+    // Da Nang really is 20 now (was hardcoded 12).
+    expect(destinations.find((d) => d.city === 'Da Nang')?.hotelCount).toBe(20)
+  })
+
+  it('Vietnam market hotelCount equals the whole catalogue', () => {
+    const vn = countries.find((c) => c.name === 'Vietnam')
+    expect(vn?.hotelCount).toBe(hotels.filter((h) => h.country === 'Vietnam').length)
+    expect(vn?.hotelCount).toBe(40)
+  })
+})
+
+describe('JSON-LD injection safety', () => {
+  it('escapes </script> and line separators, still parses back', () => {
+    const out = jsonLdString({ name: '</scr' + 'ipt><img src=x onerror=alert(1)>' })
+    expect(out.includes('</scr' + 'ipt>')).toBe(false)
+    expect(out.includes('\\u003c')).toBe(true)
+    expect(JSON.parse(out).name).toBe('</scr' + 'ipt><img src=x onerror=alert(1)>')
   })
 })
 
