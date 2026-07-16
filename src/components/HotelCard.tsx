@@ -50,8 +50,8 @@ export function HotelCard({ hotel: raw }: { hotel: Hotel }) {
           <span className="pill bg-white/90 text-ink-900 backdrop-blur">{type}</span>
         </div>
         {/* Honesty: listing photos are stock until the hotel supplies real ones. */}
-        <span className="absolute bottom-3 left-3 rounded bg-black/45 px-1.5 py-0.5 text-[10px] font-medium text-white/90 backdrop-blur-sm">
-          {imageNotice[lang].chip}
+        <span className="absolute bottom-3 left-3 inline-flex items-center gap-1 rounded-md bg-black/60 px-2 py-1 text-[11px] font-semibold text-white shadow-sm backdrop-blur-sm">
+          <span aria-hidden>📷</span> {imageNotice[lang].chip}
         </span>
       </Link>
 

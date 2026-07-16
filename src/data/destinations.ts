@@ -1,8 +1,9 @@
 import type { Destination } from '../types'
 import { hotels } from './hotels'
 
-// Launch-market destinations are all in Vietnam; `country` is injected below.
-const rawDestinations: Omit<Destination, 'country'>[] = [
+// Launch-market destinations are all in Vietnam; `country` and `hotelCount` are
+// injected below (hotelCount is derived from the catalogue, never authored here).
+const rawDestinations: Omit<Destination, 'country' | 'hotelCount'>[] = [
   {
     city: 'Da Nang',
     slug: 'da-nang',
@@ -15,7 +16,6 @@ const rawDestinations: Omit<Destination, 'country'>[] = [
     heroColor: 'from-sky-500 to-brand-500',
     emoji: '🏖️',
     highlights: ['My Khe Beach', 'Dragon Bridge', 'Marble Mountains', '25 min to Hoi An'],
-    hotelCount: 12,
   },
   {
     city: 'Ho Chi Minh City',
@@ -29,7 +29,6 @@ const rawDestinations: Omit<Destination, 'country'>[] = [
     heroColor: 'from-amber-500 to-orange-500',
     emoji: '🌆',
     highlights: ['Ben Thanh Market', 'District 1 rooftops', 'Mekong Delta day trip'],
-    hotelCount: 4,
   },
   {
     city: 'Nha Trang',
@@ -42,7 +41,6 @@ const rawDestinations: Omit<Destination, 'country'>[] = [
     heroColor: 'from-cyan-500 to-blue-500',
     emoji: '🐚',
     highlights: ['Nha Trang Bay', 'Island hopping', 'Mud-spa resorts'],
-    hotelCount: 4,
   },
   {
     city: 'Phu Quoc',
@@ -55,7 +53,6 @@ const rawDestinations: Omit<Destination, 'country'>[] = [
     heroColor: 'from-teal-500 to-emerald-500',
     emoji: '🌴',
     highlights: ['Sao Beach', 'Hon Thom cable car', 'Sunset coast'],
-    hotelCount: 4,
   },
 
   // ---- Discoverable destinations (onboarding hotel partners) ----
@@ -71,7 +68,6 @@ const rawDestinations: Omit<Destination, 'country'>[] = [
     heroColor: 'from-rose-500 to-red-600',
     emoji: '🏛️',
     highlights: ['Old Quarter', 'Hoan Kiem Lake', 'Train Street', 'Egg coffee'],
-    hotelCount: 4,
   },
   {
     city: 'Ha Long Bay',
@@ -85,7 +81,6 @@ const rawDestinations: Omit<Destination, 'country'>[] = [
     heroColor: 'from-emerald-500 to-teal-600',
     emoji: '⛰️',
     highlights: ['Overnight cruise', 'Limestone karsts', 'Sung Sot Cave', 'Kayaking'],
-    hotelCount: 0,
   },
   {
     city: 'Sapa',
@@ -99,7 +94,6 @@ const rawDestinations: Omit<Destination, 'country'>[] = [
     heroColor: 'from-green-600 to-lime-600',
     emoji: '🏔️',
     highlights: ['Rice terraces', 'Fansipan cable car', 'Hill-tribe villages', 'Cat Cat'],
-    hotelCount: 0,
   },
   {
     city: 'Ninh Binh',
@@ -113,7 +107,6 @@ const rawDestinations: Omit<Destination, 'country'>[] = [
     heroColor: 'from-lime-500 to-green-600',
     emoji: '🛶',
     highlights: ['Trang An boat ride', 'Tam Coc', 'Mua Cave viewpoint', 'Bai Dinh'],
-    hotelCount: 0,
   },
   {
     city: 'Hue',
@@ -127,7 +120,6 @@ const rawDestinations: Omit<Destination, 'country'>[] = [
     heroColor: 'from-amber-600 to-yellow-600',
     emoji: '👑',
     highlights: ['Imperial Citadel', 'Royal tombs', 'Perfume River', 'Hue cuisine'],
-    hotelCount: 0,
   },
   {
     city: 'Hoi An',
@@ -141,7 +133,6 @@ const rawDestinations: Omit<Destination, 'country'>[] = [
     heroColor: 'from-orange-500 to-amber-500',
     emoji: '🏮',
     highlights: ['Ancient Town', 'Lantern night', 'Tailor shops', 'An Bang Beach'],
-    hotelCount: 4,
   },
   {
     city: 'Da Lat',
@@ -155,7 +146,6 @@ const rawDestinations: Omit<Destination, 'country'>[] = [
     heroColor: 'from-emerald-600 to-green-700',
     emoji: '🌲',
     highlights: ['Flower gardens', 'Coffee farms', 'Datanla canyoning', 'Xuan Huong Lake'],
-    hotelCount: 0,
   },
   {
     city: 'Mui Ne',
@@ -169,7 +159,6 @@ const rawDestinations: Omit<Destination, 'country'>[] = [
     heroColor: 'from-orange-500 to-rose-500',
     emoji: '🏜️',
     highlights: ['Sand dunes', 'Fairy Stream', 'Kitesurfing', 'Fishing village'],
-    hotelCount: 0,
   },
   {
     city: 'Can Tho',
@@ -183,7 +172,6 @@ const rawDestinations: Omit<Destination, 'country'>[] = [
     heroColor: 'from-lime-600 to-emerald-600',
     emoji: '🛥️',
     highlights: ['Cai Rang floating market', 'Canal cruise', 'Fruit orchards', 'Ninh Kieu'],
-    hotelCount: 0,
   },
   {
     city: 'Vung Tau',
@@ -197,7 +185,6 @@ const rawDestinations: Omit<Destination, 'country'>[] = [
     heroColor: 'from-sky-500 to-blue-600',
     emoji: '⛱️',
     highlights: ['Back Beach', 'Christ of Vung Tau', 'Lighthouse', 'Seafood'],
-    hotelCount: 0,
   },
   {
     city: 'Quy Nhon',
@@ -211,7 +198,6 @@ const rawDestinations: Omit<Destination, 'country'>[] = [
     heroColor: 'from-cyan-500 to-teal-600',
     emoji: '🐟',
     highlights: ['Ky Co Beach', 'Eo Gio', 'Cham towers', 'Seafood'],
-    hotelCount: 0,
   },
   {
     city: 'Con Dao',
@@ -225,7 +211,6 @@ const rawDestinations: Omit<Destination, 'country'>[] = [
     heroColor: 'from-teal-600 to-cyan-700',
     emoji: '🐢',
     highlights: ['Empty beaches', 'Diving & reefs', 'Turtle nesting', 'National park'],
-    hotelCount: 0,
   },
   {
     city: 'Phu Yen',
@@ -239,7 +224,6 @@ const rawDestinations: Omit<Destination, 'country'>[] = [
     heroColor: 'from-cyan-600 to-teal-600',
     emoji: '🌅',
     highlights: ['Ganh Da Dia', 'Bai Xep', 'Tuy Hoa beach', 'Local seafood'],
-    hotelCount: 0,
   },
 ]
 

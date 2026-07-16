@@ -206,6 +206,11 @@ export function HotelMap({
     return () => {
       cancelled = true
       markersRef.current = []
+      // Reset ready/gl too, so a StrictMode remount can't fire the marker/lang
+      // effects against a not-yet-loaded new map instance.
+      readyRef.current = false
+      glRef.current = null
+      fittedRef.current = ''
       if (mapRef.current) {
         mapRef.current.remove()
         mapRef.current = null

@@ -11,32 +11,35 @@ import type { Hotel, HotelConditions } from '../types'
  *  hotels — removes the "demo placeholder" look on the most visible listings. */
 const u = (id: string, w = 800) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=70`
 
-// Curated hero photo per sponsored hotel (others keep deterministic placeholders).
-const realPhotos: Record<string, string> = {
-  'olalani-resort-condotel': u('1455587734955-081b22074882'),
-  'dlg-hotel-danang': u('1611892440504-42a792e24d32'),
-  'saigon-central-boutique': u('1571896349842-33c89424de2d'),
-  'brilliant-hotel-danang': u('1520250497591-112f2f40a3f4'),
-  'nha-trang-bay-resort': u('1551882547-ff40c63fe5fa'),
-  'long-beach-grand-resort': u('1582719478250-c89cae4dc85b'),
-  'hoi-an-lantern-boutique': u('1578683010236-d716f9a3f461'),
-  'old-quarter-boutique-hanoi': u('1566073771259-6a8506099945'),
-}
-
-// Verified hotel/resort/room photos used as a deterministic fallback so every
-// listing shows real photography (no placeholder look) — not just the sponsored ones.
+// 44 distinct, HTTP-verified (200) Unsplash hotel/resort/travel photos. Every
+// listing gets a UNIQUE one (assigned by sorted-slug index in the hotels map
+// below), so no two hotels ever share the same image. These are illustrative
+// stock photos, clearly labelled "Sample photo" in the UI — see imageNoticeI18n.
 const PHOTO_POOL = [
-  '1455587734955-081b22074882', '1566073771259-6a8506099945', '1582719478250-c89cae4dc85b',
-  '1520250497591-112f2f40a3f4', '1571896349842-33c89424de2d', '1551882547-ff40c63fe5fa',
-  '1578683010236-d716f9a3f461', '1611892440504-42a792e24d32', '1540541338287-41700207dee6',
-  '1517824806704-9040b037703b', '1555921015-5532091f6026', '1540611025311-01df3cef54b5',
+  '1455587734955-081b22074882', '1611892440504-42a792e24d32', '1571896349842-33c89424de2d',
+  '1520250497591-112f2f40a3f4', '1551882547-ff40c63fe5fa', '1582719478250-c89cae4dc85b',
+  '1578683010236-d716f9a3f461', '1566073771259-6a8506099945', '1507525428034-b723cf961d3e',
+  '1540541338287-41700207dee6', '1517824806704-9040b037703b', '1540611025311-01df3cef54b5',
+  '1445019980597-93fa8acb246c', '1631049307264-da0ec9d70304', '1596436889106-be35e843f974',
+  '1584132967334-10e028bd69f7', '1614957004131-9e8f2a13123c', '1568084680786-a84f91d1153c',
+  '1601918774946-25832a4be0d6', '1606046604972-77cc76aee944', '1584132915807-fd1f5fbc078f',
+  '1618773928121-c32242e63f39', '1549294413-26f195200c16', '1564501049412-61c2a3083791',
+  '1571003123894-1f0594d2b5d9', '1590490360182-c33d57733427', '1590381105924-c72589b9ef3f',
+  '1631049035182-249067d7618e', '1560448204-e02f11c3d0e2', '1560448204-603b3fc33ddc',
+  '1560185007-cde436f6a4d0', '1522708323590-d24dbb6b0267', '1512918728675-ed5a9ecdebfd',
+  '1602002418082-a4443e081dd1', '1584132905271-512c958d674a', '1605346434674-a440ca4dc4c0',
+  '1615460549969-36fa19521a4f', '1611048267451-e6ed903d4a38', '1591088398332-8a7791972843',
+  '1613490493576-7fde63acd811', '1566665797739-1674de7a421a', '1600011689032-8b628b8a8747',
+  '1615529182904-14819c35db37', '1590073242678-70ee3fc28e8e',
 ]
 const hashSlug = (s: string) => {
   let h = 0
   for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0
   return h
 }
-const img = (slug: string) => realPhotos[slug] ?? u(PHOTO_POOL[hashSlug(slug) % PHOTO_POOL.length])
+// Provisional per-slug photo for inline use; the final export overrides it with
+// a collision-free unique assignment.
+const img = (slug: string) => u(PHOTO_POOL[hashSlug(slug) % PHOTO_POOL.length])
 
 // All launch-market hotels are in Vietnam; `country` and the normalized
 // `conditions` are injected below so the 32 records don't each repeat them.
@@ -1810,9 +1813,14 @@ export function deriveConditions(h: Omit<Hotel, 'country' | 'conditions'>): Hote
   }
 }
 
+// Unique photo per hotel: index each slug in sorted order into the verified
+// PHOTO_POOL. With 40 hotels and 44 distinct photos, no two ever collide.
+const PHOTO_INDEX = new Map([...rawHotels].map((h) => h.slug).sort().map((slug, i) => [slug, i] as const))
+
 export const hotels: Hotel[] = rawHotels.map((h) => ({
   country: 'Vietnam',
   ...h,
+  imageUrl: u(PHOTO_POOL[(PHOTO_INDEX.get(h.slug) ?? hashSlug(h.slug)) % PHOTO_POOL.length]),
   conditions: deriveConditions(h),
 }))
 

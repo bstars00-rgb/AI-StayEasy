@@ -49,6 +49,8 @@ describe('hotel data integrity', () => {
     expect(hotels).toHaveLength(40)
     expect(new Set(hotels.map((h) => h.id)).size).toBe(40)
     expect(new Set(hotels.map((h) => h.slug)).size).toBe(40)
+    // No two hotels share the same listing photo (stock, but never duplicated).
+    expect(new Set(hotels.map((h) => h.imageUrl)).size).toBe(40)
     expect(hotels.filter((h) => h.city === 'Da Nang')).toHaveLength(20)
     expect(hotels.filter((h) => h.city === 'Ho Chi Minh City')).toHaveLength(4)
     expect(hotels.filter((h) => h.city === 'Nha Trang')).toHaveLength(4)
