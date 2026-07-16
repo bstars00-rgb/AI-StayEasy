@@ -8,6 +8,7 @@ export interface ContactStrings {
   copy: string
   copied: string
   recommended: string
+  chatNote: string
   phoneNote: string
   website: string
   email: string
@@ -24,6 +25,7 @@ export const contactStrings: Record<Lang, ContactStrings> = {
     copy: 'Copy',
     copied: 'Copied!',
     recommended: 'Chat apps are easiest — you can translate as you go.',
+    chatNote: 'Chat links are the channels each hotel published on its official site. If one doesn’t connect, use email or the website.',
     phoneNote: 'Calling may be hard across languages — a chat app is easier.',
     website: 'Official website',
     email: 'Email',
@@ -38,6 +40,7 @@ export const contactStrings: Record<Lang, ContactStrings> = {
     copy: '복사',
     copied: '복사됨!',
     recommended: '채팅 앱이 가장 편해요 — 번역하며 대화할 수 있어요.',
+    chatNote: '채팅 링크는 각 호텔이 공식 사이트에 게시한 채널이에요. 연결이 안 되면 이메일이나 웹사이트를 이용하세요.',
     phoneNote: '전화는 언어 때문에 어려울 수 있어요 — 채팅 앱이 더 쉬워요.',
     website: '공식 웹사이트',
     email: '이메일',
@@ -52,6 +55,7 @@ export const contactStrings: Record<Lang, ContactStrings> = {
     copy: 'Sao chép',
     copied: 'Đã sao chép!',
     recommended: 'Ứng dụng chat là tiện nhất — bạn có thể dịch khi trò chuyện.',
+    chatNote: 'Liên kết chat là kênh mỗi khách sạn công bố trên trang chính thức. Nếu không kết nối được, hãy dùng email hoặc website.',
     phoneNote: 'Gọi điện có thể khó vì ngôn ngữ — ứng dụng chat dễ hơn.',
     website: 'Website chính thức',
     email: 'Email',
@@ -66,6 +70,7 @@ export const contactStrings: Record<Lang, ContactStrings> = {
     copy: '复制',
     copied: '已复制！',
     recommended: '聊天软件最方便——可以边聊边翻译。',
+    chatNote: '聊天链接是各酒店在官网公布的渠道。如无法连接，请使用邮箱或官网。',
     phoneNote: '打电话可能有语言障碍——聊天软件更方便。',
     website: '官方网站',
     email: '邮件',
@@ -80,6 +85,7 @@ export const contactStrings: Record<Lang, ContactStrings> = {
     copy: 'コピー',
     copied: 'コピーしました！',
     recommended: 'チャットアプリが一番簡単 — 翻訳しながらやり取りできます。',
+    chatNote: 'チャットリンクは各ホテルが公式サイトに掲載したチャネルです。つながらない場合はメールや公式サイトをご利用ください。',
     phoneNote: '電話は言語が難しいことも — チャットアプリの方が簡単です。',
     website: '公式サイト',
     email: 'メール',

@@ -191,6 +191,31 @@ describe('contact-channel routing (no hosted inbox)', () => {
     expect(ch.some((c) => c.key === 'website')).toBe(true)
   })
 
+  it('resolves Zalo / Messenger deep links, chat channels first', () => {
+    const labels = { website: 'Official website', email: 'Email', phone: 'Call' }
+    const hotel = { contact: { zalo: '0975883110', messenger: 'SomeHotel', phone: '+842363000000' }, officialWebsiteUrl: 'https://h.example', name: 'H', city: 'Da Nang' }
+    const ch = resolveChannels(hotel, '', labels)
+    expect(ch.find((c) => c.key === 'zalo')!.href).toBe('https://zalo.me/0975883110')
+    expect(ch.find((c) => c.key === 'messenger')!.href).toBe('https://m.me/SomeHotel')
+    // Chat channels come before phone and website.
+    const keys = ch.map((c) => c.key)
+    expect(keys.indexOf('zalo')).toBeLessThan(keys.indexOf('phone'))
+    expect(keys.indexOf('messenger')).toBeLessThan(keys.indexOf('website'))
+  })
+
+  it('at least some hotels carry a verified chat channel', () => {
+    const withChat = hotels.filter((h) => {
+      const c = h.contact
+      return c && (c.whatsapp || c.zalo || c.kakao || c.line || c.messenger)
+    })
+    expect(withChat.length).toBeGreaterThan(0)
+    // And no chat number is merely the front-desk landline (integrity check).
+    for (const h of withChat) {
+      const phoneDigits = (h.contact!.phone ?? '').replace(/[^0-9]/g, '')
+      if (h.contact!.whatsapp) expect(h.contact!.whatsapp.replace(/[^0-9]/g, '')).not.toBe(phoneDigits)
+    }
+  })
+
   it('keeps the structured-request dictionary translating across languages', () => {
     for (const k of REQUEST_KEYS) {
       for (const loc of [conciergeStrings.en, conciergeStrings.ko, conciergeStrings.vi, conciergeStrings.zh, conciergeStrings.ja]) {

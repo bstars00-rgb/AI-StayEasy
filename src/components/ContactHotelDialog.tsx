@@ -21,6 +21,7 @@ export function ContactHotelDialog({ hotel, onClose }: { hotel: Hotel; onClose: 
   const message = useMemo(() => composeMessage(picked, note, lang, hotelLang), [picked, note, lang, hotelLang])
   const channels = useMemo(() => resolveChannels(hotel, message, c), [hotel, message, c])
   const hasDirect = channels.some((ch) => ch.key !== 'website')
+  const hasChat = channels.some((ch) => ch.chat)
 
   const toggle = (k: RequestKey) => setPicked((p) => (p.includes(k) ? p.filter((x) => x !== k) : [...p, k]))
   const copy = async () => {
@@ -69,7 +70,7 @@ export function ContactHotelDialog({ hotel, onClose }: { hotel: Hotel; onClose: 
         )}
 
         {/* Channels */}
-        {hasDirect && <p className="mt-4 text-xs text-brand-700">💡 {c.recommended}</p>}
+        {hasChat && <p className="mt-4 text-xs text-brand-700">💬 {c.recommended}</p>}
         {!hasDirect && <p className="mt-4 text-xs text-ink-600/60">{c.noChannels}</p>}
         <div className="mt-2 grid gap-2 sm:grid-cols-2">
           {channels.map((ch) => (
@@ -90,7 +91,8 @@ export function ContactHotelDialog({ hotel, onClose }: { hotel: Hotel; onClose: 
           ))}
         </div>
 
-        <p className="mt-3 text-center text-xs text-ink-600/55">StayEasy doesn’t process bookings or host the chat — you contact the hotel directly.</p>
+        {hasChat && <p className="mt-3 text-xs text-ink-600/55">{c.chatNote}</p>}
+        <p className="mt-2 text-center text-xs text-ink-600/55">StayEasy doesn’t process bookings or host the chat — you contact the hotel directly.</p>
       </div>
     </div>
   )
