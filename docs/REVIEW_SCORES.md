@@ -9,6 +9,14 @@
 | 2 | 2026-07-15 | **6.5/10** ↑ | **8/10** ↑ | R1 패치 재검증: 해시 해체·편집점수·다낭 하드코딩·커뮤니티 게이트·삭제권한·이스케이프·패리티테스트 = 해결 확인. 신규 지적 — 기획: freeCancellation 정규식 오탐 2건(HAIAN·Fusion, 필터 결과 100% 거짓), 스톡사진 무고지(악화 판정), 검색 다낭 편향 잔존. QA: once('load') 갱신 유실(Major), 마커 churn(useMemo 부재), MapTiler 폴백 과잉/과소 매치. Critical 0건 유지, 배포 번들 동일성까지 확인. |
 | 3 | 2026-07-15 | **7/10** ↑ | **8.5/10** ↑ | R2 지적 대부분 코드·테스트(90개)·배포 번들에서 해결 확인. **신규 회귀(즉시 수정 대상)** — QA Major: norm()의 golf 동의어 'gôn'→'gon'이 'saigon' 부분매치 → 사이공 검색 시 "🧠 골프" 오탐 노출. 기획 Major: ①검색 엔진은 6도시화됐으나 서브타이틀 카피 5개 언어가 여전히 "다낭 호텔 추천" ②JSON-LD `image`가 스톡사진을 공식 이미지로 송출(UI 고지와 배치) ③destinations의 coming-soon 9개 도시를 검색이 인식 못해 무관 매칭. Critical 0건. |
 
+## Round 4 패치 적용 현황 (2026-07-15, 커밋 9fb5c2d)
+
+- [x] 1. golf/saigon 오탐 — 짧은 ASCII 단어경계 매칭 + 모호한 'gôn' 제거(두 표기 회귀 테스트), 도시 시그널 pct 분모 제외
+- [x] 2. 정직성·카피 — 검색 서브타이틀 5개 언어 탈-다낭, JSON-LD `image` 제거 + </script> 이스케이프, VerifiedBadge·verified 카피·죽은 guest 필터 문자열 삭제
+- [x] 3. coming-soon 도시 11곳 인식 → "아직 없음" 안내(5개 언어) + 인기 호텔 폴백
+- [x] 4. 하드닝 — community 비배열 방어, HotelMap 빈 배열 마운트, peers=0 가드. 테스트 93개
+- [ ] (이월 최우선) 실사진·실혜택·freeCancellationVerified 1호 — 파트너 컨택 필요
+
 ## Round 4 패치 우선순위 (Round 3 처방)
 
 1. **golf 오탐 수정 (즉시)** — 'gôn' 단어경계/제거, 'saigon hotel' 회귀 테스트 + 도시 시그널을 pct 분모에서 제외(매치율 왜곡).
