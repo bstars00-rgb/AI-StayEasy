@@ -97,8 +97,6 @@ export const en = {
   badges: {
     sponsored: 'Sponsored',
     sponsoredTitle: 'This hotel pays for a featured placement. StayEasy never takes booking commission.',
-    verified: 'Verified partner',
-    verifiedTitle: "StayEasy has verified this hotel's official website, benefits, and policies.",
     koreanFriendly: 'Korean-friendly',
   },
 

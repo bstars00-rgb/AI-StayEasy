@@ -358,6 +358,31 @@ describe('AI search engine', () => {
     expect(rec.results.length).toBeGreaterThan(0)
   })
 
+  it('does not misfire golf on Saigon (both spellings) yet keeps real golf', () => {
+    for (const q of ['saigon hotel', 'sài gòn hotel', 'sai gon']) {
+      const rec = recommend(q, hotels)
+      expect(rec.detected, q).not.toContain('golf')
+      expect(rec.detected, q).toContain('hcmc')
+      expect(rec.results.every((r) => r.hotel.city === 'Ho Chi Minh City')).toBe(true)
+    }
+    expect(recommend('resort with golf', hotels).detected).toContain('golf')
+    expect(recommend('sân gôn', hotels).detected).toContain('golf')
+  })
+
+  it('city match does not inflate the match % (city excluded from scoring)', () => {
+    const withCity = recommend('da nang spa', hotels)
+    const noCity = recommend('spa', hotels)
+    // "da nang spa" and "spa" both score only on spa → same top pct, not doubled.
+    expect(withCity.results[0].pct).toBe(noCity.results[0].pct)
+  })
+
+  it('flags a coming-soon destination instead of a wrong-city match', () => {
+    const rec = recommend('da lat quiet hotel', hotels)
+    expect(rec.comingSoon).toBe('Da Lat')
+    expect(rec.generic).toBe(true)
+    expect(rec.results.length).toBeGreaterThan(0)
+  })
+
   it('does not rank by raw id order (no Da Nang bias in generic results)', () => {
     const rec = recommend('', hotels)
     const cities = new Set(rec.results.map((r) => r.hotel.city))

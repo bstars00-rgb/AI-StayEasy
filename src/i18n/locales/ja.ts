@@ -97,8 +97,6 @@ export const ja: Locale = {
   badges: {
     sponsored: 'スポンサー',
     sponsoredTitle: 'このホテルは注目掲載のために費用を支払っています。StayEasyは予約手数料を一切いただきません。',
-    verified: '認証済みパートナー',
-    verifiedTitle: 'StayEasyはこのホテルの公式サイト、特典、ポリシーを確認済みです。',
     koreanFriendly: '韓国人向け',
   },
 

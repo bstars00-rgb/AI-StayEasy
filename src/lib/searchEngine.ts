@@ -51,6 +51,26 @@ export const ALL_SIGNALS: Signal[] = [
   'hoian', 'danang', 'hcmc', 'nhatrang', 'phuquoc', 'hanoi',
 ]
 
+/**
+ * Cities that exist as destinations but have no hotels onboarded yet. Detected
+ * so a query like "Da Lat hotel" gets an honest "not available yet" answer
+ * instead of a confident-but-wrong match against another city's hotels.
+ * Keyed by the display name; values are diacritic-normalized triggers.
+ */
+export const COMING_SOON: { name: string; triggers: string[] }[] = [
+  { name: 'Ha Long Bay', triggers: ['ha long', 'halong', '하롱', '下龙', 'ハロン'] },
+  { name: 'Sapa', triggers: ['sapa', 'sa pa', '사파', '沙巴', 'サパ'] },
+  { name: 'Ninh Binh', triggers: ['ninh binh', '닌빈', '宁平', 'ニンビン'] },
+  { name: 'Hue', triggers: ['hue', '후에', '顺化', 'フエ'] },
+  { name: 'Da Lat', triggers: ['da lat', 'dalat', '달랏', '大叻', 'ダラット'] },
+  { name: 'Mui Ne', triggers: ['mui ne', 'muine', '무이네', '美奈', 'ムイネ'] },
+  { name: 'Can Tho', triggers: ['can tho', '껀터', '芹苴', 'カントー'] },
+  { name: 'Vung Tau', triggers: ['vung tau', '붕따우', '头顿', 'ブンタウ'] },
+  { name: 'Quy Nhon', triggers: ['quy nhon', '뀌년', '归仁', 'クイニョン'] },
+  { name: 'Con Dao', triggers: ['con dao', '꼰다오', '昆岛', 'コンダオ'] },
+  { name: 'Phu Yen', triggers: ['phu yen', '푸옌', '富安', 'フーイエン'] },
+]
+
 /** Destination signals act as hard filters: asking for Hanoi means Hanoi. */
 const CITY_SIGNALS: Partial<Record<Signal, Hotel['city']>> = {
   danang: 'Da Nang',
@@ -87,7 +107,9 @@ const SYNONYMS: Record<Signal, string[]> = {
   kitchen: ['kitchen', 'cook', 'cooking', 'self-cater', 'kitchenette', 'self catering', '주방', '부엌', '취사', '요리', '조리', 'bếp', 'nấu ăn', 'tự nấu', '厨房', '做饭', '自炊', 'キッチン', '自炊', '料理'],
   city: ['city', 'downtown', 'central', 'city center', 'nightlife', 'walkable', 'urban', 'shopping', 'han river', 'dragon bridge', 'riverside', '시내', '도심', '중심가', '번화가', '야경', '쇼핑', '걷기 좋', '한강', '드래곤브리지', '강변', 'trung tâm', 'thành phố', 'mua sắm', 'sông hàn', 'cầu rồng', '市中心', '市区', '夜生活', '逛街', '韩江', '龙桥', '市内', '繁華街', '街中', '夜景', 'ハン川', 'ドラゴン橋'],
   quiet: ['quiet', 'calm', 'peaceful', 'relax', 'relaxing', 'secluded', 'tranquil', 'getaway', 'son tra', '조용', '한적', '휴식', '힐링', '평화', '여유', '손짜', '손트라', 'yên tĩnh', 'thư giãn', 'yên bình', 'sơn trà', '安静', '宁静', '放松', '山茶', '静か', 'のんびり', 'リラックス', '癒やし', 'ソンチャ'],
-  golf: ['golf', '골프', 'gôn', 'đánh gôn', '高尔夫', 'ゴルフ'],
+  // NOTE: bare 'gôn' is intentionally excluded — it normalizes to 'gon', which
+  // collides with 'gòn' in "Sài Gòn" (Saigon). Unambiguous golf phrases only.
+  golf: ['golf', '골프', 'đánh gôn', 'sân gôn', 'chơi gôn', '高尔夫', 'ゴルフ'],
   luxury: ['luxury', 'luxurious', '5-star', '5 star', 'five star', 'premium', 'high-end', 'upscale', '럭셔리', '고급', '5성', '프리미엄', '최고급', 'sang trọng', 'cao cấp', '5 sao', '奢华', '豪华', '五星', '高级', 'ラグジュアリー', '高級', '五つ星'],
   budget: ['budget', 'cheap', 'affordable', 'value', 'inexpensive', 'low cost', '저렴', '가성비', '싼', '예산', '알뜰', 'giá rẻ', 'tiết kiệm', 'bình dân', '便宜', '实惠', '性价比', '经济', '格安', '安い', 'リーズナブル', 'コスパ'],
   firsttime: ['first time', 'first-time', 'first visit', 'first trip', 'beginner', 'never been', '처음', '첫 베트남', '초행', '처음 가', 'lần đầu', 'mới đến', 'chưa từng', '第一次', '初次', '首次', '初めて', '初訪問', '初ベトナム'],
@@ -103,6 +125,19 @@ const SYNONYMS: Record<Signal, string[]> = {
 const NORM_SYNONYMS: Record<Signal, string[]> = Object.fromEntries(
   (Object.entries(SYNONYMS) as [Signal, string[]][]).map(([k, ws]) => [k, ws.map(norm)]),
 ) as Record<Signal, string[]>
+
+/**
+ * Match a normalized synonym in a normalized query. Short, pure-ASCII words
+ * (≤4 letters) match on WORD BOUNDARIES so "gon" (golf) can't hide inside
+ * "saigon"; CJK and longer/multi-word synonyms keep substring matching (no
+ * tokenization needed for Korean/Chinese/Japanese).
+ */
+const isShortAscii = (w: string) => /^[a-z]+$/.test(w) && w.length <= 4
+function hits(q: string, w: string): boolean {
+  if (!w) return false
+  if (isShortAscii(w)) return new RegExp(`(^|[^a-z])${w}([^a-z]|$)`).test(q)
+  return q.includes(w)
+}
 
 // Area groupings so location signals work in every city, not just Da Nang.
 const CITYISH_AREAS = new Set<Hotel['area']>(['City Center', 'Han River', 'District 1', 'Old Quarter', 'French Quarter', 'Ancient Town', 'Thao Dien'])
@@ -155,6 +190,9 @@ export interface Recommendation {
   detected: Signal[]
   generic: boolean
   results: SearchResult[]
+  /** Set when the query names a destination we don't cover yet — the UI shows a
+   *  "not available yet, here are live cities" notice above the fallback list. */
+  comingSoon?: string
 }
 
 /** Editorial-quality tie-break — never raw id order (that systematically
@@ -171,32 +209,45 @@ export function recommend(query: string, hotels: Hotel[], limit = 6): Recommenda
   const detected = new Set<Signal>()
   if (q) {
     for (const sig of ALL_SIGNALS) {
-      if (NORM_SYNONYMS[sig].some((w) => q.includes(w))) detected.add(sig)
+      if (NORM_SYNONYMS[sig].some((w) => hits(q, w))) detected.add(sig)
     }
     for (const exp of EXPANSIONS) {
-      if (exp.test.some((w) => q.includes(norm(w)))) exp.add.forEach((s) => detected.add(s))
+      if (exp.test.some((w) => hits(q, norm(w)))) exp.add.forEach((s) => detected.add(s))
     }
   }
 
   const detectedList = ALL_SIGNALS.filter((s) => detected.has(s))
 
-  // No recognizable intent → a sensible editorial default.
-  if (detectedList.length === 0) {
-    const results = [...hotels]
+  // Destination signals are HARD FILTERS, not scoring signals: "하노이 호텔"
+  // must return Hanoi, and a matched city must not inflate the match %.
+  const wantedCities = detectedList.map((s) => CITY_SIGNALS[s]).filter(Boolean) as Hotel['city'][]
+
+  // A not-yet-covered destination, and no live city also named → be honest.
+  if (!wantedCities.length && q) {
+    const soon = COMING_SOON.find((c) => c.triggers.some((w) => hits(q, norm(w))))
+    if (soon) {
+      const results = [...hotels].sort(tieBreak).slice(0, limit).map((hotel) => ({ hotel, score: 0, pct: 0, reasons: [] as Signal[] }))
+      return { detected: detectedList, generic: true, results, comingSoon: soon.name }
+    }
+  }
+
+  const pool = wantedCities.length ? hotels.filter((h) => wantedCities.includes(h.city)) : hotels
+  const scoringSignals = detectedList.filter((s) => !CITY_SIGNALS[s])
+
+  // Only a city (or nothing) parsed → an editorial list within the pool, no
+  // per-result match % (there are no preferences to score against).
+  if (scoringSignals.length === 0) {
+    const results = [...pool]
       .sort(tieBreak)
       .slice(0, limit)
       .map((hotel) => ({ hotel, score: 0, pct: 0, reasons: [] as Signal[] }))
-    return { detected: [], generic: true, results }
+    return { detected: detectedList, generic: true, results }
   }
 
-  // Destination signals are hard filters: "하노이 호텔" must return Hanoi.
-  const wantedCities = detectedList.map((s) => CITY_SIGNALS[s]).filter(Boolean) as Hotel['city'][]
-  const pool = wantedCities.length ? hotels.filter((h) => wantedCities.includes(h.city)) : hotels
-
-  const possible = detectedList.reduce((sum, s) => sum + WEIGHT[s], 0)
+  const possible = scoringSignals.reduce((sum, s) => sum + WEIGHT[s], 0)
 
   const scored: SearchResult[] = pool.map((hotel) => {
-    const reasons = detectedList.filter((s) => SATISFIES[s](hotel))
+    const reasons = scoringSignals.filter((s) => SATISFIES[s](hotel))
     const score = reasons.reduce((sum, s) => sum + WEIGHT[s], 0)
     return { hotel, score, pct: Math.round((score / possible) * 100), reasons }
   })

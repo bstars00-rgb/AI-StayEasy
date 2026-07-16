@@ -97,8 +97,6 @@ export const vi: Locale = {
   badges: {
     sponsored: 'Tài trợ',
     sponsoredTitle: 'Khách sạn này trả phí cho vị trí nổi bật. StayEasy không bao giờ thu hoa hồng đặt phòng.',
-    verified: 'Đối tác đã xác minh',
-    verifiedTitle: 'StayEasy đã xác minh website chính thức, ưu đãi và chính sách của khách sạn này.',
     koreanFriendly: 'Thân thiện với khách Hàn',
   },
 

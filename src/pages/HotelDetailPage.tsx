@@ -126,7 +126,10 @@ export default function HotelDetailPage() {
           '@type': 'Hotel',
           name: hotel.name,
           description: hotel.positioningLine,
-          image: hotel.imageUrl,
+          // No `image`: listing photos are illustrative stock, not this hotel —
+          // emitting them as the property's official image would be dishonest
+          // in search/social rich results. Add real photos here once verified.
+          url: officialLink(hotel),
           address: { '@type': 'PostalAddress', addressLocality: city, addressCountry: hotel.country },
           amenityFeature: hotel.facilities.slice(0, 8).map((f) => ({ '@type': 'LocationFeatureSpecification', name: f })),
         }}

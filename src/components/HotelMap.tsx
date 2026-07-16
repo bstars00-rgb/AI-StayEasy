@@ -162,9 +162,11 @@ export function HotelMap({
         if (cancelled || !el || mapRef.current) return
         glRef.current = gl
 
+        // Create the map even if hotels haven't loaded yet (the markers effect
+        // fills them in later) — a Vietnam-centre default avoids a permanently
+        // blank map when mounted with an empty list.
         const p = propsRef.current
-        if (!p.hotels.length) return
-        const first = hotelLatLng(p.hotels[0])
+        const first = p.hotels.length ? hotelLatLng(p.hotels[0]) : ([16.05, 108.2] as [number, number])
         const style = MAPTILER_KEY ? `https://api.maptiler.com/maps/streets-v2/style.json?key=${MAPTILER_KEY}` : (OSM_STYLE as unknown as string)
         const map = new gl.Map({
           container: el,

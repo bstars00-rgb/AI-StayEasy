@@ -54,7 +54,8 @@ export function getBenchmark(hotel: Hotel, self: PartnerAnalytics): Benchmark {
   const yourViews = self.kpis.views.value
 
   const convDiffPct = peerConv ? Math.round(((yourConv - peerConv) / peerConv) * 100) : 0
-  const standing: Benchmark['standing'] = convDiffPct >= 8 ? 'above' : convDiffPct <= -8 ? 'below' : 'onpar'
+  // No peers → no comparison; report 'onpar' only when we actually have peers.
+  const standing: Benchmark['standing'] = peers.length === 0 ? 'onpar' : convDiffPct >= 8 ? 'above' : convDiffPct <= -8 ? 'below' : 'onpar'
 
   return { peers: peers.length, basis, peerConv, peerViews, yourConv, yourViews, convDiffPct, standing }
 }

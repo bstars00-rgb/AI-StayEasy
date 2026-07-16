@@ -12,6 +12,7 @@ export interface SearchStrings {
   examples: string[]
   understood: string
   genericNote: string
+  comingSoonNote: string // {city}
   noMatchTitle: string
   noMatchText: string
   matchSuffix: string
@@ -24,7 +25,7 @@ export const searchStrings: Record<Lang, SearchStrings> = {
   en: {
     nav: 'AI Search',
     title: 'Describe your ideal stay',
-    subtitle: 'Tell our AI what you want in plain words — we’ll recommend the best-matching Da Nang hotels and explain why.',
+    subtitle: 'Tell our AI what you want in plain words — we’ll recommend the best-matching Vietnam hotels and explain why.',
     placeholder: 'e.g. A beachfront family hotel with a kids pool, breakfast and airport pickup, Korean-friendly',
     button: 'Recommend hotels',
     thinking: 'Finding your best matches…',
@@ -37,6 +38,7 @@ export const searchStrings: Record<Lang, SearchStrings> = {
     ],
     understood: 'What we understood',
     genericNote: 'Tell us more about your trip for tailored picks. Meanwhile, here are popular hotels.',
+    comingSoonNote: '{city} isn’t on StayEasy yet — here are hotels in our live cities meanwhile.',
     noMatchTitle: 'No strong match found',
     noMatchText: 'Try describing your trip differently — for example a travel style, area, or amenity.',
     matchSuffix: 'match',
@@ -53,7 +55,7 @@ export const searchStrings: Record<Lang, SearchStrings> = {
   ko: {
     nav: 'AI 검색',
     title: '원하는 숙소를 설명해 주세요',
-    subtitle: 'AI에게 원하는 조건을 자유롭게 말해 주세요 — 가장 잘 맞는 다낭 호텔을 추천하고 이유까지 알려드립니다.',
+    subtitle: 'AI에게 원하는 조건을 자유롭게 말해 주세요 — 가장 잘 맞는 베트남 호텔을 추천하고 이유까지 알려드립니다.',
     placeholder: '예: 키즈풀과 조식, 공항 픽업이 있는 해변 가족 호텔, 한국어 가능',
     button: '호텔 추천받기',
     thinking: '가장 잘 맞는 호텔을 찾는 중…',
@@ -66,6 +68,7 @@ export const searchStrings: Record<Lang, SearchStrings> = {
     ],
     understood: 'AI가 이해한 조건',
     genericNote: '여행에 대해 더 알려주시면 맞춤 추천을 드릴게요. 우선 인기 호텔을 보여드립니다.',
+    comingSoonNote: '{city}는 아직 StayEasy에 없어요 — 우선 서비스 중인 도시의 호텔을 보여드립니다.',
     noMatchTitle: '딱 맞는 호텔을 찾지 못했어요',
     noMatchText: '여행 스타일, 지역, 편의시설 등으로 다르게 설명해 보세요.',
     matchSuffix: '일치',
@@ -82,7 +85,7 @@ export const searchStrings: Record<Lang, SearchStrings> = {
   vi: {
     nav: 'Tìm kiếm AI',
     title: 'Mô tả kỳ nghỉ lý tưởng của bạn',
-    subtitle: 'Hãy nói với AI điều bạn muốn bằng lời tự nhiên — chúng tôi sẽ gợi ý các khách sạn Đà Nẵng phù hợp nhất và giải thích lý do.',
+    subtitle: 'Hãy nói với AI điều bạn muốn bằng lời tự nhiên — chúng tôi sẽ gợi ý các khách sạn Việt Nam phù hợp nhất và giải thích lý do.',
     placeholder: 'VD: Khách sạn gia đình ven biển có hồ bơi trẻ em, bữa sáng và đưa đón sân bay, thân thiện với khách Hàn',
     button: 'Gợi ý khách sạn',
     thinking: 'Đang tìm lựa chọn phù hợp nhất…',
@@ -95,6 +98,7 @@ export const searchStrings: Record<Lang, SearchStrings> = {
     ],
     understood: 'Điều chúng tôi hiểu',
     genericNote: 'Hãy cho biết thêm về chuyến đi để có gợi ý riêng. Trong khi đó, đây là các khách sạn phổ biến.',
+    comingSoonNote: '{city} chưa có trên StayEasy — trong khi đó, đây là khách sạn ở các thành phố đang hoạt động.',
     noMatchTitle: 'Chưa tìm thấy lựa chọn thật phù hợp',
     noMatchText: 'Hãy mô tả chuyến đi theo cách khác — ví dụ phong cách du lịch, khu vực hoặc tiện ích.',
     matchSuffix: 'phù hợp',
@@ -111,7 +115,7 @@ export const searchStrings: Record<Lang, SearchStrings> = {
   zh: {
     nav: 'AI 搜索',
     title: '描述你理想的住宿',
-    subtitle: '用平实的话告诉 AI 你的需求——我们会推荐最匹配的岘港酒店并说明理由。',
+    subtitle: '用平实的话告诉 AI 你的需求——我们会推荐最匹配的越南酒店并说明理由。',
     placeholder: '例如：带儿童泳池、含早餐和机场接送的海滨亲子酒店，韩国游客友好',
     button: '推荐酒店',
     thinking: '正在为你寻找最佳匹配…',
@@ -124,6 +128,7 @@ export const searchStrings: Record<Lang, SearchStrings> = {
     ],
     understood: '我们理解到的需求',
     genericNote: '多告诉我们一些行程信息即可获得定制推荐。先为你呈现热门酒店。',
+    comingSoonNote: '{city} 暂未上线 StayEasy——先为你显示已上线城市的酒店。',
     noMatchTitle: '未找到非常匹配的酒店',
     noMatchText: '换个方式描述行程吧——例如出行风格、区域或设施。',
     matchSuffix: '匹配',
@@ -140,7 +145,7 @@ export const searchStrings: Record<Lang, SearchStrings> = {
   ja: {
     nav: 'AI検索',
     title: '理想の滞在を教えてください',
-    subtitle: 'ご希望を自由な言葉でAIにお伝えください — 最適なダナンのホテルを理由とともにおすすめします。',
+    subtitle: 'ご希望を自由な言葉でAIにお伝えください — 最適なベトナムのホテルを理由とともにおすすめします。',
     placeholder: '例：キッズプール・朝食・空港送迎付きのビーチファミリーホテル、韓国人向け',
     button: 'ホテルを提案',
     thinking: '最適なホテルを探しています…',
@@ -153,6 +158,7 @@ export const searchStrings: Record<Lang, SearchStrings> = {
     ],
     understood: 'AIが理解した条件',
     genericNote: 'ご旅行について詳しく教えていただくと、ぴったりの提案ができます。まずは人気のホテルをどうぞ。',
+    comingSoonNote: '{city}はまだStayEasyにありません — まずは対応中の都市のホテルをどうぞ。',
     noMatchTitle: 'ぴったりのホテルが見つかりませんでした',
     noMatchText: '旅のスタイル、エリア、設備など、別の言い方で説明してみてください。',
     matchSuffix: '一致',

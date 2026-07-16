@@ -15,15 +15,3 @@ export function SponsoredBadge({ className = '' }: { className?: string }) {
     </span>
   )
 }
-
-export function VerifiedBadge({ className = '' }: { className?: string }) {
-  const t = useT()
-  return (
-    <span
-      className={`pill bg-brand-100 text-brand-800 ring-1 ring-brand-200 ${className}`}
-      title={t.badges.verifiedTitle}
-    >
-      <span aria-hidden>✓</span> {t.badges.verified}
-    </span>
-  )
-}

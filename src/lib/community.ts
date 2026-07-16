@@ -54,7 +54,8 @@ function makeId(at: number): string {
 
 export const community = {
   get: () => store,
-  posts: (slug: string): CommunityPost[] => store[slug] ?? EMPTY_POSTS,
+  // Guard against corrupted localStorage where a slug's value isn't an array.
+  posts: (slug: string): CommunityPost[] => (Array.isArray(store[slug]) ? store[slug] : EMPTY_POSTS),
   add: (slug: string, author: string, body: string, authorEmail?: string) => {
     const text = body.trim()
     if (!text) return
@@ -74,7 +75,6 @@ export const community = {
 
 /** Reactive posts for one hotel, newest first. */
 export function useCommunity(slug: string): CommunityPost[] {
-  const map = useSyncExternalStore(community.subscribe, community.get, () => EMPTY_STORE)
-  const posts = map[slug] ?? EMPTY_POSTS
-  return [...posts].sort((a, b) => b.at - a.at)
+  useSyncExternalStore(community.subscribe, community.get, () => EMPTY_STORE)
+  return [...community.posts(slug)].sort((a, b) => b.at - a.at)
 }

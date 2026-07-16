@@ -97,8 +97,6 @@ export const zh: Locale = {
   badges: {
     sponsored: '赞助',
     sponsoredTitle: '该酒店付费购买精选推荐位。StayEasy 从不收取预订佣金。',
-    verified: '认证合作伙伴',
-    verifiedTitle: 'StayEasy 已核实该酒店的官方网站、权益与政策。',
     koreanFriendly: '韩国游客友好',
   },
 

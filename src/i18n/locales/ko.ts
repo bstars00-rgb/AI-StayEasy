@@ -97,8 +97,6 @@ export const ko: Locale = {
   badges: {
     sponsored: '스폰서',
     sponsoredTitle: '이 호텔은 추천 노출 비용을 지불했습니다. StayEasy는 예약 수수료를 받지 않습니다.',
-    verified: '인증 파트너',
-    verifiedTitle: 'StayEasy가 이 호텔의 공식 웹사이트, 혜택, 정책을 검증했습니다.',
     koreanFriendly: '한국인 친화',
   },
 

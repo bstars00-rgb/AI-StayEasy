@@ -103,10 +103,16 @@ export function AISearch({ autoFocus = false }: { autoFocus?: boolean }) {
               </div>
             </div>
           )}
-          {rec.generic && (
+          {rec.comingSoon ? (
             <div className="mb-4 rounded-2xl bg-amber-50 px-4 py-3 text-sm text-amber-800 ring-1 ring-amber-200">
-              {s.genericNote}
+              {s.comingSoonNote.replace('{city}', rec.comingSoon)}
             </div>
+          ) : (
+            rec.generic && (
+              <div className="mb-4 rounded-2xl bg-amber-50 px-4 py-3 text-sm text-amber-800 ring-1 ring-amber-200">
+                {s.genericNote}
+              </div>
+            )
           )}
 
           {rec.results.length === 0 ? (
