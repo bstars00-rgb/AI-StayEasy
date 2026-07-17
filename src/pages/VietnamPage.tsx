@@ -19,7 +19,7 @@ export default function VietnamPage() {
   const asia = asiaStrings[lang]
   useDocumentMeta(t.vietnam.metaTitle, t.vietnam.metaDesc)
   const { data: destinations = [], loading: destLoading } = useAsync(() => repo.listDestinations(), [])
-  const destText = t.destText as unknown as Record<string, { short: string; bestFor: string[]; recommended: string; highlights: string[] }>
+  const destText = t.destText as unknown as Record<string, { short: string; bestFor: string[]; recommended: string }>
   const cityNames = t.enums.city as Record<string, string>
   const [showMore, setShowMore] = useState(false)
 

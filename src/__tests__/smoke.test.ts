@@ -336,6 +336,28 @@ describe('i18n locale parity', () => {
   it('every locale declares its own language name', () => {
     expect(new Set([en.langName, ko.langName, vi.langName, zh.langName, ja.langName]).size).toBe(5)
   })
+
+  // The parity test above compares locales against EACH OTHER, so a city missing
+  // from all five passes it — which is exactly how six launched cities shipped
+  // with English destination copy in every language. These two compare the
+  // locales against the CATALOGUE instead, which is the thing that grows.
+  const allLocales = { en, ko, vi, zh, ja }
+
+  it('every destination has card copy in every locale', () => {
+    for (const [name, loc] of Object.entries(allLocales)) {
+      const covered = Object.keys((loc as unknown as { destText: Record<string, unknown> }).destText)
+      const missing = destinations.map((d) => d.slug).filter((s) => !covered.includes(s))
+      expect(missing, `locale "${name}" is missing destText for`).toEqual([])
+    }
+  })
+
+  it('every city has a translated name in every locale', () => {
+    for (const [name, loc] of Object.entries(allLocales)) {
+      const labels = (loc as unknown as { enums: { city: Record<string, string> } }).enums.city
+      const missing = destinations.map((d) => d.city).filter((c) => !labels[c])
+      expect(missing, `locale "${name}" is missing city labels for`).toEqual([])
+    }
+  })
 })
 
 describe('AI search engine', () => {
