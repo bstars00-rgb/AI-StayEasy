@@ -72,7 +72,7 @@ const rawDestinations: Omit<Destination, 'country' | 'hotelCount'>[] = [
   {
     city: 'Ha Long Bay',
     slug: 'ha-long-bay',
-    available: false,
+    available: true,
     shortDescription: 'A UNESCO seascape of thousands of limestone karsts — best seen on an overnight cruise.',
     description:
       'Emerald waters and towering limestone islands make Ha Long one of Vietnam’s iconic sights. Overnight cruises, kayaking, and caves are the draw.',

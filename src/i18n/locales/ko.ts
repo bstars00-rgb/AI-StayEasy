@@ -14,6 +14,7 @@ export const ko: Locale = {
       'Hue': '후에',
       'Da Lat': '달랏',
       'Sapa': '사파',
+      'Ha Long Bay': '하롱베이',
     },
     area: {
       'My Khe Beach': '미케 비치',
@@ -53,6 +54,12 @@ export const ko: Locale = {
       'Muong Hoa Valley': '므엉호아 계곡',
       'Ham Rong': '함롱산',
       'Ban Ho': '반호',
+      'Bai Chay': '바이짜이',
+      'Halong Marina': '하롱 마리나',
+      'Reu Island': '레우섬',
+      'Tuan Chau': '뚜언쩌우',
+      'Hon Gai': '혼가이',
+      'Quang Hanh': '꽝하인',
     },
     hotelType: {
       'Beach resort': '비치 리조트',

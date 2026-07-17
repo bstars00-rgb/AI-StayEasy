@@ -51,6 +51,10 @@ const PHOTO_POOL = [
   '1470071459604-3b5ec3a7fe05', '1447752875215-b2761acb3c5d', '1441974231531-c6227db76b6e',
   '1426604966848-d7adac402bff', '1501854140801-50d01698950b', '1472214103451-9374bd1c798e',
   '1500581276021-a4bbcd0050c5', '1418065460487-3e41a6c84dc5',
+  '1512453979798-5ea266f8880c', '1449824913935-59a10b8d2000', '1477959858617-67f85cf4f1df',
+  '1494526585095-c41746248156', '1480714378408-67cf0d13bc1b', '1496442226666-8d4d0e62e6e9',
+  '1487958449943-2429e8be8625', '1449034446853-66c86144b0ad', '1493246507139-91e8fad9978e',
+  '1444723121867-7a241cacace9', '1519501025264-65ba15a82390',
 ]
 const hashSlug = (s: string) => {
   let h = 0
@@ -4309,6 +4313,463 @@ const rawHotels: RawHotel[] = [
     emoji: '⛪',
     koreanFriendly: false,
   },
+  {
+    id: 'hl01',
+    priceTier: 'premium',
+    slug: 'vinpearl-resort-spa-ha-long',
+    name: 'Vinpearl Resort & Spa Ha Long',
+    city: 'Ha Long Bay',
+    area: 'Reu Island',
+    hotelType: 'Beach resort',
+    // Content verified against the official site (vinpearl.com) on 2026-07-17.
+    // No room count is published, so none is stated. The page's own intro says
+    // "three restaurants" while its Dining section lists five outlets, so no
+    // count is given here. NOTE: the site footer prints Vinpearl JSC's
+    // corporate seat in Nha Trang (~1,100 km away) — not this hotel.
+    shortDescription:
+      'A five-star resort on Reu Island, its own private island off Bai Chay, reached by a five-minute speedboat from the Ha Long shore, with three private beaches, indoor and outdoor pools, Vincharm Spa and dining from the Accogliente and Bayview restaurants to the Pearl Lounge.',
+    positioningLine: 'Your own island off Bai Chay — five minutes by speedboat, then nothing but the bay.',
+    bestFor: ['Couples wanting the bay without the town', 'Families using the three private beaches', 'Travelers who want the arrival to be part of the trip'],
+    notIdealFor: ['Travelers who want to walk out to restaurants', 'Anyone unwilling to plan around boat times'],
+    mainReason: 'Nothing else in Ha Long puts you on your own island — a five-minute speedboat, three private beaches and the karsts on every side, reserved directly with the resort.',
+    thingsToCheck: ['The speedboat schedule — this is an island, so transfers set your day', 'Room view and category', 'All dining is on-resort; there is nothing else on the island'],
+    tags: ['Couple', 'Family', 'Beach'],
+    facilities: ['Pool', 'Private beach', 'Spa', 'Restaurant', 'Bar', 'Free Wi-Fi'],
+    officialBenefits: ['Book direct on the official website (vinpearl.com) — Korean-language site available', 'Reserve directly with the resort — res.VPRSHL@vinpearl.com · +84 203 385 7858', 'Suite and island-transfer arrangements are easiest to make directly'],
+    roomGuide: {
+      couples: 'A Deluxe Ocean View — the bay is the whole point here.',
+      families: 'A Family Suite, with the three beaches below.',
+      longStay: 'An Executive Suite; the island rewards slowing down.',
+      checkBeforeBooking: 'Confirm the view category — ocean, terrace and standard rooms differ.',
+    },
+    locationGuide: {
+      nearby: 'Reu Island, a private island off Bai Chay in Ha Long Bay; the Quang Ninh Museum is among the mainland sights the resort points to.',
+      airportDistance: 'The resort does not publish airport or Hanoi distances — confirm transfers directly.',
+      gettingAround: 'A five-minute speedboat links the island to the Ha Long shore; everything else is on the island.',
+      nearbyFood: 'All dining is on-resort — Accogliente, Pavilion, Bayview, the Pearl Lounge and the Pool Bar.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('vinpearl-resort-spa-ha-long'),
+    officialWebsiteUrl: 'https://vinpearl.com/en/hotels/vinpearl-resort-spa-ha-long',
+    contact: { lang: 'ko', email: 'res.VPRSHL@vinpearl.com', phone: '+842033857858' },
+    isSponsored: false,
+    similarHotelSlugs: ['paradise-suites-hotel-halong', 'a-la-carte-ha-long-bay', 'novotel-ha-long-bay'],
+    heroColor: 'from-cyan-600 to-blue-800',
+    emoji: '🏝️',
+    koreanFriendly: true,
+  },
+  {
+    id: 'hl02',
+    priceTier: 'mid',
+    slug: 'paradise-suites-hotel-halong',
+    name: 'Paradise Suites Hotel',
+    city: 'Ha Long Bay',
+    area: 'Tuan Chau',
+    hotelType: 'City hotel',
+    // Content verified against the official site (paradisevietnam.com) on
+    // 2026-07-17. No star is claimed: the microsite says "5-Star Standard
+    // Service Quality" (a service boast), the brand page says only "boutique
+    // hotel", and OTAs say 4-star. The spa and restaurant are unnamed
+    // officially. NOTE: the footer prints Paradise Vietnam's Hanoi corporate
+    // office (~150 km away), and the group also runs Ha Long cruise ships —
+    // neither belongs to this hotel.
+    shortDescription:
+      'An all-suite boutique hotel on Tuan Chau Island — officially the first and only one there — with 154 suites, its own two-kilometre private beach, an outdoor pool, a spa and a library, two hundred metres from the Tuan Chau cruise harbour.',
+    positioningLine: 'Two hundred metres from the cruise harbour, with two kilometres of private beach.',
+    bestFor: ['Travelers with an early bay cruise the next morning', 'Couples wanting a beach without the Bai Chay crowds', 'All-suite stays at mid-range prices'],
+    notIdealFor: ['Travelers who want Bai Chay\'s restaurants at the door', 'Those wanting a full resort programme'],
+    mainReason: 'The cruise pier is a two-minute walk and the beach runs two kilometres — the easiest place to start a Ha Long Bay trip, reserved directly with the hotel.',
+    thingsToCheck: ['Classic vs Trend Suite — the Trend suites are 32 m² on floors 1–3', 'Tuan Chau is an island; Bai Chay\'s dining is a drive away', 'Whether breakfast is included on your rate'],
+    tags: ['Couple', 'Beach'],
+    facilities: ['Pool', 'Private beach', 'Spa', 'Restaurant', 'Free Wi-Fi', 'Parking'],
+    officialBenefits: ['Book direct on the official website (paradisevietnam.com)', 'Reserve directly — info@paradisevietnam.com · +84 203 384 2368', 'Suite-category requests are easiest to arrange directly'],
+    roomGuide: {
+      couples: 'A Trend Suite — the newer of the two categories.',
+      families: 'A Classic Suite; there is no kids\' club.',
+      longStay: 'A Classic Suite, with the private beach for the days.',
+      checkBeforeBooking: 'Confirm Classic vs Trend — the hotel publishes 78 Classic and 76 Trend suites.',
+    },
+    locationGuide: {
+      nearby: 'Tuan Chau Island — the official site puts the Tuan Chau harbour 200 m away, the Paradise Cruises pier 500 m, Tuan Chau beach 900 m and the Tuan Chau golf resort 2.5 km.',
+      airportDistance: 'The hotel does not publish airport or Hanoi distances — confirm transfers directly.',
+      gettingAround: 'The harbour and beach are on foot; Bai Chay is a drive across the causeway.',
+      nearbyFood: 'The hotel\'s own restaurant serves European-Asian dishes; there is no dining strip on the doorstep.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('paradise-suites-hotel-halong'),
+    officialWebsiteUrl: 'https://www.paradisevietnam.com/en/paradise-suites',
+    contact: { lang: 'en', email: 'info@paradisevietnam.com', phone: '+842033842368' },
+    isSponsored: false,
+    similarHotelSlugs: ['vinpearl-resort-spa-ha-long', 'a-la-carte-ha-long-bay', 'citadines-marina-halong'],
+    heroColor: 'from-sky-500 to-cyan-600',
+    emoji: '⛵',
+    koreanFriendly: false,
+  },
+  {
+    id: 'hl03',
+    priceTier: 'premium',
+    slug: 'hilton-quang-hanh-onsen-resort',
+    name: 'Hilton Quang Hanh Onsen Resort',
+    city: 'Ha Long Bay',
+    area: 'Quang Hanh',
+    hotelType: 'Family hotel',
+    // Content verified against the official Hilton property pages on
+    // 2026-07-17 (opened 2026-02-12 per Hilton's own page data; 88 rooms from
+    // the same source). No star class is published. IMPORTANT: this is an
+    // inland hot-spring resort — Hilton's own figures put Ha Long Bay 28 km
+    // away, so the copy must never imply a bay-side stay. The hot springs
+    // appear only in Hilton's prose, so no indoor/outdoor/heated claim is made.
+    // KITCHENCRAFT is officially "Opening in 2027" and is deliberately omitted.
+    shortDescription:
+      'A Hilton resort of 88 rooms built on Quang Hanh\'s natural salt-mineral hot springs, in mountain scenery inland from Ha Long — the bay itself is 28 km away — with the eforea Spa, the Japanese Genji and Yasaka restaurants, a fitness centre and a playground.',
+    positioningLine: 'Vietnam\'s salt-mineral onsen in the hills — a destination in itself, not a bay base.',
+    bestFor: ['Travelers coming for the hot springs themselves', 'Couples wanting a wellness stay', 'Families with a car'],
+    notIdealFor: ['Anyone whose trip is really about Ha Long Bay — it is 28 km away', 'Travelers without transport'],
+    mainReason: 'The springs are the destination — Quang Hanh\'s own salt-mineral water under a Hilton flag, with the eforea Spa and Japanese dining, reserved directly with the resort.',
+    thingsToCheck: ['This is an inland onsen resort — Hilton puts Ha Long Bay 28 km and the city centre 15 km away', 'How you will get to the bay if a cruise is on your plan', 'Whether breakfast is included on your rate'],
+    tags: ['Couple', 'Family'],
+    facilities: ['Spa', 'Gym', 'Restaurant', 'Bar', 'Free Wi-Fi', 'Parking'],
+    officialBenefits: ['Book direct on the official website (hilton.com) — Hilton Honors member rates', 'Reserve directly with the resort — VDOHO_hotel@hilton.com · +84 365 882 323', 'Direct bookings earn Hilton Honors points and member pricing'],
+    roomGuide: {
+      couples: 'A King Deluxe Room — all categories have a balcony and a separate bathtub.',
+      families: 'A Twin Deluxe Room; the resort lists a playground but no kids\' club.',
+      longStay: 'A Deluxe room; the springs and spa reward a slower stay.',
+      checkBeforeBooking: 'Confirm the category — Guest and Deluxe rooms differ, and all sleep up to three.',
+    },
+    locationGuide: {
+      nearby: 'Quang Hanh Ward, in mountain scenery east of Ha Long city — Hilton puts the city centre 15 km and Ha Long Bay 28 km away, with the bay and Dau Go Cave "within half an hour".',
+      airportDistance: 'Van Don International 40 km, Hai Phong 100 km, Noi Bai 170 km — no airport shuttle (all per the official site).',
+      gettingAround: 'A car is essential — this is an inland resort, not a bay-side base.',
+      nearbyFood: 'Dining is on-resort at the Genji and Yasaka restaurants and the Genji Bar.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('hilton-quang-hanh-onsen-resort'),
+    officialWebsiteUrl: 'https://www.hilton.com/en/hotels/vdohohi-hilton-quang-hanh-onsen-resort/',
+    contact: { lang: 'en', email: 'VDOHO_hotel@hilton.com', phone: '+84365882323' },
+    isSponsored: false,
+    similarHotelSlugs: ['tru-by-hilton-ha-long-hon-gai', 'vinpearl-resort-spa-ha-long', 'novotel-ha-long-bay'],
+    heroColor: 'from-emerald-700 to-teal-800',
+    emoji: '♨️',
+    koreanFriendly: false,
+  },
+  {
+    id: 'hl04',
+    priceTier: 'premium',
+    slug: 'a-la-carte-ha-long-bay',
+    name: 'A La Carte Ha Long Bay',
+    city: 'Ha Long Bay',
+    area: 'Bai Chay',
+    hotelType: 'Long stay serviced apartment',
+    // Content verified against the official site (alacartehalongbay.com) on
+    // 2026-07-17. No room count is published — the "403 rooms" circulating is
+    // OTA-only. The infinity pool's level is not stated, so it is never called
+    // a rooftop pool; the floor-40 venue is the SKY Pub. The official site
+    // never uses "Managed by TASECO" though OTAs and its own FB page do.
+    shortDescription:
+      'A five-star tower on the Bai Chay shore — officially the tallest landmark building in Ha Long and the first hotel here with the beach directly in front — pairing hotel rooms with kitchen-equipped Residence apartments, an infinity pool with the BAY Bar beside it and the SKY Pub on floor 40.',
+    positioningLine: 'Ha Long\'s tallest tower, with the beach at the door and a pub on the fortieth floor.',
+    bestFor: ['Long stays in the kitchen-equipped Residences', 'Families needing 1–2 bedroom apartments', 'Couples wanting the bay from height'],
+    notIdealFor: ['Travelers wanting a low-rise resort', 'Those who want to be on Tuan Chau for a dawn cruise'],
+    mainReason: 'Hotel rooms and full apartments in one tower, with the beach in front and the bay from forty floors up — reserved directly with the hotel.',
+    thingsToCheck: ['Hotel wing vs Residence wing — only the Residences have kitchens', 'Bay view vs city view', 'Whether breakfast is included on your rate'],
+    tags: ['Family', 'Long Stay', 'Couple'],
+    facilities: ['Pool', 'Spa', 'Restaurant', 'Bar', 'Free Wi-Fi', 'Kitchen', 'Parking'],
+    officialBenefits: ['Book direct on the official website (alacartehalongbay.com)', 'Reserve directly with the hotel — re@alacartehalongbay.com · +84 203 355 9555', 'Residence apartments are booked through a separate direct engine on the official site'],
+    roomGuide: {
+      couples: 'An Executive Bay View room, with the SKY Pub upstairs.',
+      families: 'A Residence 1- or 2-Bedroom — induction hob and a full kitchen.',
+      longStay: 'A Residence apartment; the Penthouse for groups.',
+      checkBeforeBooking: 'Confirm hotel room vs Residence — they are different wings with different bookings.',
+    },
+    locationGuide: {
+      nearby: 'The Hung Thang area of Bai Chay, on the shore — the official site says the beach is a few steps from the door.',
+      airportDistance: 'The hotel publishes no distances, saying only that it is near the expressway and the international airport — confirm directly.',
+      gettingAround: 'The Bai Chay strip is around you; Sun World and the harbour are a short ride.',
+      nearbyFood: 'The hotel\'s own venues plus the Bai Chay strip; Residence guests can self-cater.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('a-la-carte-ha-long-bay'),
+    officialWebsiteUrl: 'https://www.alacartehalongbay.com/',
+    contact: { lang: 'en', email: 're@alacartehalongbay.com', phone: '+842033559555', messenger: 'alacartehalongbay.hotel.residence' },
+    isSponsored: false,
+    similarHotelSlugs: ['citadines-marina-halong', 'wyndham-legend-halong', 'novotel-ha-long-bay'],
+    heroColor: 'from-indigo-600 to-violet-700',
+    emoji: '🏙️',
+    koreanFriendly: false,
+  },
+  {
+    id: 'hl05',
+    priceTier: 'premium',
+    slug: 'citadines-marina-halong',
+    name: 'Citadines Marina Halong',
+    city: 'Ha Long Bay',
+    area: 'Halong Marina',
+    hotelType: 'Long stay serviced apartment',
+    // Content verified against the operator site (discoverasr.com) on
+    // 2026-07-17. No star class is published — the only "star" on the page is
+    // the Ascott Star Rewards logo. No unit count is published either. The
+    // same official page gives two different Noi Bai and Cat Bi distances, so
+    // neither is stated. Its social links are chain-level only.
+    shortDescription:
+      'Ascott-managed serviced apartments on the Marina Halong waterfront, with full kitchens, washer-dryers, indoor and rooftop pools over the bay, a Kids Club, a yoga centre and dining at Soul Bowl, Sandals Kitchen & Bar and On The Rocks — six kilometres from the international cruise port.',
+    positioningLine: 'Apartments on the marina, with a rooftop pool over the bay and a Kids Club below.',
+    bestFor: ['Families on longer stays — kitchens plus a Kids Club', 'Travelers who want to self-cater', 'Couples wanting the rooftop pool at sunset'],
+    notIdealFor: ['Travelers wanting a spa — the resort has none', 'Those who want to be on the beach itself'],
+    mainReason: 'A full apartment on the marina with a rooftop pool over the bay and a Kids Club downstairs — reserved directly with Ascott.',
+    thingsToCheck: ['Studio vs One/Two/Three-Bedroom — all have kitchens', 'There is no spa on site', 'The resort does not take part in the Ascott loyalty programme'],
+    tags: ['Family', 'Long Stay'],
+    facilities: ['Pool', 'Kids club', 'Gym', 'Restaurant', 'Bar', 'Free Wi-Fi', 'Kitchen', 'Parking'],
+    officialBenefits: ['Book direct on the official website (discoverasr.com)', 'Reserve directly — enquiry.halong@the-ascott.com · +84 203 3878 888', 'Apartment-size requests are easiest to arrange directly'],
+    roomGuide: {
+      couples: 'A Studio Deluxe, with the rooftop pool for the evenings.',
+      families: 'A Two-Bedroom Premier — full kitchen, washer and dryer, Kids Club downstairs.',
+      longStay: 'A Two- or Three-Bedroom; this is what the property is built for.',
+      checkBeforeBooking: 'Confirm the apartment size — studios through three-bedrooms all have kitchens.',
+    },
+    locationGuide: {
+      nearby: 'Peninsula 3 of Marina Halong on Halong Marine Boulevard, Bai Chay, looking over the bay; the Halong Marine Plaza outlet mall is a short walk.',
+      airportDistance: 'Van Don International 60 km, about an hour by car (per the official site). Its Noi Bai and Cat Bi figures contradict each other on the same page — confirm directly.',
+      gettingAround: 'The seafront walkway starts at the door; the cruise port is 6 km (about 10 minutes) and the bus station 3 km.',
+      nearbyFood: 'Three venues on-site plus the outlet mall; kitchens in every apartment.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('citadines-marina-halong'),
+    officialWebsiteUrl: 'https://www.discoverasr.com/en/citadines/vietnam/citadines-marina-halong',
+    contact: { lang: 'en', email: 'enquiry.halong@the-ascott.com', phone: '+842033878888' },
+    isSponsored: false,
+    similarHotelSlugs: ['a-la-carte-ha-long-bay', 'novotel-ha-long-bay', 'wyndham-legend-halong'],
+    heroColor: 'from-teal-600 to-cyan-700',
+    emoji: '⚓',
+    koreanFriendly: false,
+  },
+  {
+    id: 'hl06',
+    priceTier: 'mid',
+    slug: 'novotel-ha-long-bay',
+    name: 'Novotel Ha Long Bay',
+    city: 'Ha Long Bay',
+    area: 'Bai Chay',
+    hotelType: 'City hotel',
+    // Content verified against the official site and the live Accor property
+    // page (6185) on 2026-07-17 — the Accor affiliation is current. The spa is
+    // unnamed officially, so it is not named here.
+    shortDescription:
+      'A five-star Accor hotel of 224 rooms in the heart of Bai Chay on Ha Long Road, with bay-view rooms, an outdoor pool, a fitness centre and The Square all-day restaurant — five minutes\' walk from Bai Chay beach and three minutes from Sun World.',
+    positioningLine: 'The dependable Bai Chay base — beach in five minutes, Sun World in three.',
+    bestFor: ['First-time visitors who want everything close', 'Business travelers', 'Couples wanting a bay view without a resort price'],
+    notIdealFor: ['Travelers wanting resort grounds', 'Those seeking an island or beachfront stay'],
+    mainReason: 'Everything Ha Long visitors actually do is minutes away — beach, Sun World, the cruise piers — from a straightforward Accor five-star, reserved directly with the hotel.',
+    thingsToCheck: ['Bay view vs hill view — the two sides are very different', 'The hotel is 100% non-smoking', 'Whether breakfast at The Square is included'],
+    tags: ['Couple', 'Business'],
+    facilities: ['Pool', 'Spa', 'Gym', 'Restaurant', 'Bar', 'Free Wi-Fi', 'Parking'],
+    officialBenefits: ['Book direct on the official website — ALL (Accor Live Limitless) member rates', 'Reserve directly with the hotel — info@novotelhalong.com.vn · +84 203 3848 108', 'Direct Accor bookings earn ALL points and member pricing'],
+    roomGuide: {
+      couples: 'A Superior Bay View, or the Junior Suite Bay View.',
+      families: 'An Executive Bay View room.',
+      longStay: 'A Junior Suite; central Bai Chay suits a few days of day-trips.',
+      checkBeforeBooking: 'Confirm bay view vs hill/mountain view — the bay side is the reason to stay.',
+    },
+    locationGuide: {
+      nearby: '160 Ha Long Road in the heart of Bai Chay — Accor puts Bai Chay Beach 500 m (a five-minute walk) and Sun World with the city centre three minutes\' drive away.',
+      airportDistance: 'Neither official source publishes an airport or Hanoi distance — confirm transfers directly.',
+      gettingAround: 'The beach and the strip are on foot; Ha Long Bay Cruises is 1.4 km and the Tuan Chau boat station about 30 minutes by car.',
+      nearbyFood: 'The Square, the Lobby Lounge Bar and the Pool Bar in-house; the Bai Chay strip surrounds the hotel.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('novotel-ha-long-bay'),
+    officialWebsiteUrl: 'https://novotelhalongbay.com/novotel-ha-long/',
+    contact: { lang: 'en', email: 'info@novotelhalong.com.vn', phone: '+842033848108', messenger: 'novotelhalongbay' },
+    isSponsored: false,
+    similarHotelSlugs: ['wyndham-legend-halong', 'a-la-carte-ha-long-bay', 'muong-thanh-luxury-quang-ninh'],
+    heroColor: 'from-blue-600 to-indigo-700',
+    emoji: '🎡',
+    koreanFriendly: false,
+  },
+  {
+    id: 'hl07',
+    priceTier: 'mid',
+    slug: 'wyndham-legend-halong',
+    name: 'Wyndham Legend Halong',
+    city: 'Ha Long Bay',
+    area: 'Bai Chay',
+    hotelType: 'Family hotel',
+    // Content verified against the official site (wyndhamhalong.com) and the
+    // Wyndham chain page on 2026-07-17. The five-star line is the hotel's own
+    // claim ("claimed the international five-star standard"). No spa is named
+    // officially. Two restaurants are self-declared temporarily closed and are
+    // deliberately not listed. NOTE: "Wyndham Garden Legend Halong" is a
+    // SEPARATE hotel; nothing here is credited from it. The contact page also
+    // prints a Hanoi sales office — not the hotel.
+    shortDescription:
+      'A 450-room twin-tower hotel on the Bai Chay coastline looking across Ha Long Bay to the Bai Chay Bridge and the Sun Wheel, with an outdoor pool and a separate children\'s pool, a play area with childcare, a fitness centre and dining at the Blue Bay and Bay Walk restaurants.',
+    positioningLine: 'Four hundred and fifty rooms facing the bridge, the bay and the Sun Wheel.',
+    bestFor: ['Families using the children\'s pool and play area', 'Groups needing scale', 'Couples wanting a bay-facing room at mid-range prices'],
+    notIdealFor: ['Travelers wanting a boutique feel', 'Those who need a spa on site'],
+    mainReason: 'The view is the product — twin towers aimed straight at Ha Long Bay and the Sun Wheel, with a children\'s pool below, reserved directly with the hotel.',
+    thingsToCheck: ['Bay-facing vs city-facing room — the bridge-and-bay view is why people come', 'Two of the hotel\'s restaurants are temporarily closed — check what is open', 'Whether breakfast is included on your rate'],
+    tags: ['Family', 'Couple'],
+    facilities: ['Pool', 'Gym', 'Restaurant', 'Bar', 'Free Wi-Fi', 'Parking'],
+    officialBenefits: ['Book direct on the official website (wyndhamhalong.com)', 'Reserve directly with the hotel — reservation@wyndhamhalong.com · +84 203 3636 555', 'Suite and connecting-room requests are easiest to arrange directly'],
+    roomGuide: {
+      couples: 'A Deluxe or Executive Deluxe facing the bay.',
+      families: 'A Superior Family Room or Family Suite, with the children\'s pool below.',
+      longStay: 'A Grand Suite or the Penthouse for space over the bay.',
+      checkBeforeBooking: 'Confirm which tower and which side — the bay view is the whole reason.',
+    },
+    locationGuide: {
+      nearby: 'No. 12 Ha Long Street on the Bai Chay coastline, facing Ha Long Bay, the Bai Chay Bridge and the Sun Wheel.',
+      airportDistance: 'The hotel publishes no distances — confirm transfers directly.',
+      gettingAround: 'The Bai Chay strip is at the door; the harbour and Sun World are short rides.',
+      nearbyFood: 'Blue Bay, Bay Walk, the Vivino Bar and La Terrasse in-house; the Bai Chay strip beyond.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('wyndham-legend-halong'),
+    officialWebsiteUrl: 'https://www.wyndhamhalong.com/',
+    contact: { lang: 'en', email: 'reservation@wyndhamhalong.com', phone: '+842033636555', messenger: 'wyndhamlegendhalong' },
+    isSponsored: false,
+    similarHotelSlugs: ['novotel-ha-long-bay', 'muong-thanh-luxury-quang-ninh', 'a-la-carte-ha-long-bay'],
+    heroColor: 'from-amber-600 to-orange-700',
+    emoji: '🌉',
+    koreanFriendly: false,
+  },
+  {
+    id: 'hl08',
+    priceTier: 'mid',
+    slug: 'tru-by-hilton-ha-long-hon-gai',
+    name: 'Tru by Hilton Ha Long Hon Gai Centre',
+    city: 'Ha Long Bay',
+    area: 'Hon Gai',
+    hotelType: 'City hotel',
+    // Content verified against the official Hilton property pages on
+    // 2026-07-17 (opened 2025-04-23; 90 rooms — both from Hilton's own page
+    // data). No star class and no pool are published. NOTE: Hilton's own
+    // location blurb calls this "Bai Chay district ... walking distance to
+    // beach", but the address, the hotel's name and Hilton's own coordinates
+    // all place it in Hon Gai, across the bridge — so that claim is not used.
+    shortDescription:
+      'Hilton\'s select-service Tru brand in the Hon Gai centre of Ha Long — 90 rooms on Le Thanh Tong Street with free hot breakfast, a fitness centre, free parking and an on-site restaurant, two kilometres from the city centre.',
+    positioningLine: 'A simple, well-run base on the Hon Gai side — free breakfast and not much fuss.',
+    bestFor: ['Travelers who want a reliable chain base at a fair price', 'Business travelers on the Hon Gai side', 'Free-breakfast, free-parking practicality'],
+    notIdealFor: ['Travelers wanting a pool or spa — the hotel has neither', 'Anyone who wants to be in Bai Chay, across the bridge'],
+    mainReason: 'A predictable, recently opened Hilton with breakfast and parking included, on the quieter Hon Gai side of the city — reserved directly with the hotel.',
+    thingsToCheck: ['This is Hon Gai, not Bai Chay — they are across the bridge from each other', 'There is no pool and no spa', 'Free breakfast and self-parking are included (per the official site)'],
+    tags: ['Business', 'Couple'],
+    facilities: ['Gym', 'Restaurant', 'Breakfast', 'Free Wi-Fi', 'Parking'],
+    officialBenefits: ['Book direct on the official website (hilton.com) — Hilton Honors member rates', 'Reserve directly with the hotel — VDORU_TRU@hilton.com · +84 203 3688 555', 'Free hot breakfast and free self-parking are included per the official site'],
+    roomGuide: {
+      couples: 'Any room here is straightforward — the hotel is select-service by design.',
+      families: 'Cribs are available; there is no kids\' club or pool.',
+      longStay: 'A practical base; the hotel does not publish room categories.',
+      checkBeforeBooking: 'Confirm the room category directly — Hilton does not list them on the property page.',
+    },
+    locationGuide: {
+      nearby: '168 Le Thanh Tong Street, Bach Dang ward, on the Hon Gai side — Hilton puts the city centre 2 km and Ha Long Bay 3 km away, with the night market among the nearby sights.',
+      airportDistance: 'Hai Phong 50 km is the only airport the official page lists — no shuttle. Confirm other transfers directly.',
+      gettingAround: 'Hon Gai\'s centre is walkable; Bai Chay and Sun World are across the Bai Chay Bridge by car.',
+      nearbyFood: 'The Ha Long night market is among the sights Hilton names nearby; the hotel has its own restaurant.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('tru-by-hilton-ha-long-hon-gai'),
+    officialWebsiteUrl: 'https://www.hilton.com/en/hotels/vdoruru-tru-ha-long-hon-gai-centre/',
+    contact: { lang: 'en', email: 'VDORU_TRU@hilton.com', phone: '+842033688555' },
+    isSponsored: false,
+    similarHotelSlugs: ['muong-thanh-grand-ha-long', 'novotel-ha-long-bay', 'hilton-quang-hanh-onsen-resort'],
+    heroColor: 'from-slate-600 to-gray-700',
+    emoji: '🛏️',
+    koreanFriendly: false,
+  },
+  {
+    id: 'hl09',
+    priceTier: 'mid',
+    slug: 'muong-thanh-luxury-quang-ninh',
+    name: 'Muong Thanh Luxury Quang Ninh',
+    city: 'Ha Long Bay',
+    area: 'Bai Chay',
+    hotelType: 'Family hotel',
+    // Content verified against the chain's own booking site on 2026-07-17. No
+    // star class is published — the "5 sao" claim circulating comes from a
+    // voucher reseller, and the 4.1/5 on the official page is a guest review
+    // score, not a class. "Luxury" is a Muong Thanh brand tier. The pool is
+    // described as outdoor on the EN page but unqualified on the VI one, so no
+    // qualifier is used. Do not confuse with Muong Thanh Luxury Ha Long Centre.
+    shortDescription:
+      'A 508-room, 34-storey Muong Thanh tower directly opposite Sun World Ha Long in the middle of the Bai Chay strip, with a fifth-floor pool, a fourth-floor spa, a Kid Room, tennis, and the Thien Cung and Van Xuan restaurants — a kilometre from both Bai Chay beach and the international cruise port.',
+    positioningLine: 'Directly across from Sun World — 34 floors in the middle of everything.',
+    bestFor: ['Families doing Sun World — it is across the road', 'Groups needing scale and big function space', 'Travelers who want the strip at the door'],
+    notIdealFor: ['Travelers wanting a boutique or resort feel', 'Those seeking quiet'],
+    mainReason: 'You cannot be closer to Sun World — it is directly opposite — with the beach and the cruise port each a kilometre away, reserved directly with the hotel.',
+    thingsToCheck: ['Room floor — this is a 34-storey tower', 'The Kid Room is a play room, not a staffed kids\' club', 'Whether breakfast is included on your rate'],
+    tags: ['Family', 'Business'],
+    facilities: ['Pool', 'Spa', 'Gym', 'Restaurant', 'Bar', 'Free Wi-Fi', 'Parking'],
+    officialBenefits: ['Book direct on the official website (booking.muongthanh.com)', 'Reserve directly with the hotel — info@quangninh.muongthanh.com · +84 203 3646 618', 'Suite and connecting-room requests are easiest to arrange directly'],
+    roomGuide: {
+      couples: 'A Premium Deluxe on a high floor.',
+      families: 'A Family Suite at 150 m², with the Kid Room and pool on the fifth floor.',
+      longStay: 'A Grand Suite; the strip is at the door either way.',
+      checkBeforeBooking: 'Confirm the floor and category — the tower runs to 34 storeys.',
+    },
+    locationGuide: {
+      nearby: 'Block 1, Area 2, Bai Chay — the official site says Sun World Ha Long is directly opposite the hotel, with Bai Chay Beach and the Ha Long International Cruise Port each 1 km away.',
+      airportDistance: 'Van Don airport 50 km (per the official site). Hanoi and Noi Bai are not published — confirm directly.',
+      gettingAround: 'Sun World is across the road; the beach and the cruise port are a kilometre each.',
+      nearbyFood: 'The Thien Cung and Van Xuan restaurants, the Ha Mai Bar and a Highland Coffee are in-house; the Bai Chay strip is all around.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('muong-thanh-luxury-quang-ninh'),
+    officialWebsiteUrl: 'https://booking.muongthanh.com/khach-san-muong-thanh-luxury-quang-ninh',
+    contact: { lang: 'en', email: 'info@quangninh.muongthanh.com', phone: '+842033646618' },
+    isSponsored: false,
+    similarHotelSlugs: ['muong-thanh-grand-ha-long', 'wyndham-legend-halong', 'novotel-ha-long-bay'],
+    heroColor: 'from-rose-600 to-red-700',
+    emoji: '🎢',
+    koreanFriendly: false,
+  },
+  {
+    id: 'hl10',
+    priceTier: 'mid',
+    slug: 'muong-thanh-grand-ha-long',
+    name: 'Muong Thanh Grand Ha Long',
+    city: 'Ha Long Bay',
+    area: 'Bai Chay',
+    hotelType: 'City hotel',
+    // Content verified against the chain's own booking site on 2026-07-17. No
+    // room count is published for THIS property — the "177 rooms" circulating
+    // belongs to the sister hotel Muong Thanh Grand Bai Chay. The four-star
+    // line is the hotel's own prose, not the page's review widget. Its own
+    // copy promises a bay view but every named room category is city view, so
+    // no bay-view claim is made here.
+    shortDescription:
+      'A four-star Muong Thanh city hotel in the Dong Hung Thang area of Bai Chay, half a kilometre from the city centre, with an outdoor pool that is free to use, the fourth-floor Raja Spa, a fitness centre and the Blue Pearl restaurant — 1.4 km from Bai Chay beach.',
+    positioningLine: 'A straightforward four-star in Bai Chay, with the pool thrown in.',
+    bestFor: ['Travelers who want a fair-priced base near the centre', 'Business travelers', 'Families using the free pool'],
+    notIdealFor: ['Travelers wanting a bay view — every room category here is city view', 'Those seeking a resort'],
+    mainReason: 'Uncomplicated value in Bai Chay — a four-star with a free pool and a spa, half a kilometre from the centre, reserved directly with the hotel.',
+    thingsToCheck: ['Every named room category is city view, despite what the marketing says', 'The spa and fitness centre are on the fourth floor', 'Whether breakfast at Blue Pearl is included'],
+    tags: ['Business', 'Family'],
+    facilities: ['Pool', 'Spa', 'Gym', 'Restaurant', 'Bar', 'Free Wi-Fi', 'Airport transfer'],
+    officialBenefits: ['Book direct on the official website (booking.muongthanh.com)', 'Reserve directly with the hotel — info@halong.muongthanh.vn · +84 203 3812 468', 'Airport pick-up and drop-off are arranged directly with the hotel'],
+    roomGuide: {
+      couples: 'A Deluxe King City View at 26 m².',
+      families: 'A Deluxe Family at 54 m²; there is no kids\' club.',
+      longStay: 'An Executive Suite at 45 m².',
+      checkBeforeBooking: 'Confirm the category — the hotel sells city-view rooms only.',
+    },
+    locationGuide: {
+      nearby: 'Unit 7, Lot 20, Dong Hung Thang, Bai Chay — the official site puts the city centre 0.5 km away and Bai Chay Beach 1.4 km.',
+      airportDistance: 'The official page lists Cat Bi International at 34.3 km but elsewhere says "the airport" is 210 minutes away without naming it — the two do not agree, so confirm directly.',
+      gettingAround: 'The centre is half a kilometre; Bai Chay Tourist Wharf and Tuan Chau are within easy reach.',
+      nearbyFood: 'The Blue Pearl restaurant and the Avocado Bar are in-house; the Bai Chay strip is nearby.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('muong-thanh-grand-ha-long'),
+    officialWebsiteUrl: 'https://booking.muongthanh.com/hotel-muong-thanh-grand-ha-long',
+    contact: { lang: 'en', email: 'info@halong.muongthanh.vn', phone: '+842033812468' },
+    isSponsored: false,
+    similarHotelSlugs: ['muong-thanh-luxury-quang-ninh', 'tru-by-hilton-ha-long-hon-gai', 'novotel-ha-long-bay'],
+    heroColor: 'from-lime-700 to-green-800',
+    emoji: '🏨',
+    koreanFriendly: false,
+  },
 ]
 
 /**
@@ -4424,6 +4885,18 @@ const EDITORIAL_SCORES: Record<string, number> = {
   'bamboo-sapa-hotel': 8.3,
   'eden-boutique-hotel-sapa': 8.2,
   'amazing-hotel-sapa': 8.1,
+  // Ha Long Bay — Vinpearl's private island is unmatched here; Paradise Suites,
+  // the only boutique on Tuan Chau and locally run, takes the runner-up mark.
+  'vinpearl-resort-spa-ha-long': 9.3,
+  'paradise-suites-hotel-halong': 9.1,
+  'hilton-quang-hanh-onsen-resort': 9.0,
+  'a-la-carte-ha-long-bay': 8.8,
+  'citadines-marina-halong': 8.6,
+  'novotel-ha-long-bay': 8.5,
+  'wyndham-legend-halong': 8.4,
+  'tru-by-hilton-ha-long-hon-gai': 8.3,
+  'muong-thanh-luxury-quang-ninh': 8.2,
+  'muong-thanh-grand-ha-long': 8.1,
   // Hanoi — La Siesta, the standout Vietnamese-owned boutique brand.
   'la-siesta-premium-hang-be': 9.3,
   'sofitel-legend-metropole-hanoi': 9.2,
@@ -4482,7 +4955,7 @@ export function deriveConditions(h: Omit<Hotel, 'country' | 'conditions'>): Hote
 }
 
 // Unique photo per hotel: index each slug in sorted order into the verified
-// PHOTO_POOL. With 100 hotels and 103 distinct photos, no two ever collide.
+// PHOTO_POOL. With 110 hotels and 114 distinct photos, no two ever collide.
 const PHOTO_INDEX = new Map([...rawHotels].map((h) => h.slug).sort().map((slug, i) => [slug, i] as const))
 
 export const hotels: Hotel[] = rawHotels.map((h) => ({

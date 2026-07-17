@@ -71,6 +71,12 @@ export const ATTRACTIONS: Attraction[] = [
   { id: 'muong-hoa-valley', city: 'Sapa', lat: 22.3057, lng: 103.8836, category: 'landmark', name: { en: 'Muong Hoa Valley', ko: '므엉호아 계곡', vi: 'Thung lũng Mường Hoa', zh: '孟华山谷', ja: 'ムオンホア渓谷' } },
   { id: 'cat-cat-village', city: 'Sapa', lat: 22.3282, lng: 103.8322, category: 'landmark', name: { en: 'Cat Cat Village', ko: '깟깟 마을', vi: 'Bản Cát Cát', zh: '猫猫村', ja: 'カットカット村' } },
   { id: 'sapa-market', city: 'Sapa', lat: 22.3345, lng: 103.8442, category: 'market', name: { en: 'Sapa Market', ko: '사파 시장', vi: 'Chợ Sa Pa', zh: '沙巴市场', ja: 'サパ市場' } },
+  // Ha Long Bay
+  { id: 'ha-long-bay-karsts', city: 'Ha Long Bay', lat: 20.9101, lng: 107.1839, category: 'landmark', name: { en: 'Ha Long Bay (UNESCO karsts)', ko: '하롱베이 (유네스코 카르스트)', vi: 'Vịnh Hạ Long', zh: '下龙湾', ja: 'ハロン湾' } },
+  { id: 'sun-world-ha-long', city: 'Ha Long Bay', lat: 20.956, lng: 107.0479, category: 'landmark', name: { en: 'Sun World Ha Long (Queen Cable Car)', ko: '선월드 하롱 (퀸 케이블카)', vi: 'Sun World Hạ Long', zh: '下龙太阳世界', ja: 'サンワールド・ハロン' } },
+  { id: 'bai-chay-beach', city: 'Ha Long Bay', lat: 20.9505, lng: 107.0554, category: 'landmark', name: { en: 'Bai Chay Beach', ko: '바이짜이 해변', vi: 'Bãi biển Bãi Cháy', zh: '拜寨海滩', ja: 'バイチャイビーチ' } },
+  { id: 'thien-cung-cave', city: 'Ha Long Bay', lat: 20.9057, lng: 107.0289, category: 'landmark', name: { en: 'Thien Cung Cave', ko: '티엔꿍 동굴', vi: 'Động Thiên Cung', zh: '天宫洞', ja: 'ティエンクン洞' } },
+  { id: 'quang-ninh-museum', city: 'Ha Long Bay', lat: 20.9497, lng: 107.0952, category: 'landmark', name: { en: 'Quang Ninh Museum', ko: '꽝닌 박물관', vi: 'Bảo tàng Quảng Ninh', zh: '广宁省博物馆', ja: 'クアンニン博物館' } },
 ]
 
 /** Attractions for a city, with the name resolved to the active language. */

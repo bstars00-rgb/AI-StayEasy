@@ -29,8 +29,8 @@ export type City =
   | 'Hoi An'
   | 'Da Lat'
   | 'Sapa'
-  // Discoverable destinations (onboarding hotel partners)
   | 'Ha Long Bay'
+  // Discoverable destinations (onboarding hotel partners)
   | 'Ninh Binh'
   | 'Mui Ne'
   | 'Can Tho'
@@ -86,6 +86,13 @@ export type Area =
   | 'Muong Hoa Valley'
   | 'Ham Rong'
   | 'Ban Ho'
+  // Ha Long Bay
+  | 'Bai Chay'
+  | 'Halong Marina'
+  | 'Reu Island'
+  | 'Tuan Chau'
+  | 'Hon Gai'
+  | 'Quang Hanh'
 
 export type HotelType =
   | 'Beach resort'

@@ -14,6 +14,7 @@ export const zh: Locale = {
       'Hue': '顺化',
       'Da Lat': '大叻',
       'Sapa': '沙巴',
+      'Ha Long Bay': '下龙湾',
     },
     area: {
       'My Khe Beach': '美溪海滩',
@@ -53,6 +54,12 @@ export const zh: Locale = {
       'Muong Hoa Valley': '孟华山谷',
       'Ham Rong': '咸龙山',
       'Ban Ho': '板湖(Ban Ho)',
+      'Bai Chay': '拜寨',
+      'Halong Marina': '下龙码头区',
+      'Reu Island': 'Reu 岛',
+      'Tuan Chau': '巡州岛',
+      'Hon Gai': '鸿基',
+      'Quang Hanh': '广横(Quang Hanh)',
     },
     hotelType: {
       'Beach resort': '海滨度假村',

@@ -19,6 +19,7 @@ const CITY: Record<string, LatLng> = {
   'Hue': [16.4637, 107.5909],
   'Da Lat': [11.9404, 108.4583],
   'Sapa': [22.3364, 103.8438],
+  'Ha Long Bay': [20.9101, 107.1839],
 }
 
 /**
@@ -77,6 +78,13 @@ const AREA: Record<string, LatLng> = {
   'Sapa|Muong Hoa Valley': [22.331, 103.846],
   'Sapa|Ham Rong': [22.3236, 103.8521],
   'Sapa|Ban Ho': [22.2762, 103.967],
+  // Ha Long Bay
+  'Ha Long Bay|Bai Chay': [20.9505, 107.0554],
+  'Ha Long Bay|Halong Marina': [20.9539, 107.0131],
+  'Ha Long Bay|Reu Island': [20.9475, 107.0247],
+  'Ha Long Bay|Tuan Chau': [20.9203, 106.9906],
+  'Ha Long Bay|Hon Gai': [20.9515, 107.0845],
+  'Ha Long Bay|Quang Hanh': [20.983, 107.2082],
 }
 
 const FALLBACK: LatLng = [16.0544, 108.2022] // Da Nang / Vietnam-ish centre
@@ -203,6 +211,17 @@ const COORDS: Record<string, LatLng> = {
   'sapa-jade-hill-resort': [22.3236, 103.8521],
   'paos-sapa-leisure-hotel': [22.3311, 103.8432],
   'eden-boutique-hotel-sapa': [22.3359, 103.8391],
+  // Ha Long Bay — seven publish their own pin (a Maps link, a printed lat/lng, or
+  // an operator data attribute). Both Muong Thanhs and Paradise publish none —
+  // Muong Thanh's own embed is a NAME-query geocode, which with three confusable
+  // same-chain neighbours could resolve to the wrong building, so they fall back.
+  'vinpearl-resort-spa-ha-long': [20.9475, 107.0247],
+  'wyndham-legend-halong': [20.9587, 107.0597],
+  'novotel-ha-long-bay': [20.952, 107.0422],
+  'a-la-carte-ha-long-bay': [20.9532, 106.9999],
+  'citadines-marina-halong': [20.9539, 107.0131],
+  'tru-by-hilton-ha-long-hon-gai': [20.9515, 107.0845],
+  'hilton-quang-hanh-onsen-resort': [20.983, 107.2082],
 }
 
 /** [lat, lng] for a hotel — real coordinates when known, else area centre + jitter. */

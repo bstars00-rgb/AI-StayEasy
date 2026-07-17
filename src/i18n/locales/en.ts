@@ -14,6 +14,7 @@ export const en = {
       'Hue': 'Hue',
       'Da Lat': 'Da Lat',
       'Sapa': 'Sapa',
+      'Ha Long Bay': 'Ha Long Bay',
     },
     area: {
       'My Khe Beach': 'My Khe Beach',
@@ -53,6 +54,12 @@ export const en = {
       'Muong Hoa Valley': 'Muong Hoa Valley',
       'Ham Rong': 'Ham Rong',
       'Ban Ho': 'Ban Ho',
+      'Bai Chay': 'Bai Chay',
+      'Halong Marina': 'Halong Marina',
+      'Reu Island': 'Reu Island',
+      'Tuan Chau': 'Tuan Chau',
+      'Hon Gai': 'Hon Gai',
+      'Quang Hanh': 'Quang Hanh',
     },
     hotelType: {
       'Beach resort': 'Beach resort',
