@@ -137,7 +137,7 @@ const rawDestinations: Omit<Destination, 'country' | 'hotelCount'>[] = [
   {
     city: 'Da Lat',
     slug: 'da-lat',
-    available: false,
+    available: true,
     shortDescription: 'Cool-climate highlands — pine forests, flower farms, lakes, and coffee plantations.',
     description:
       'A romantic mountain town of eternal spring: French villas, waterfalls, flower gardens, canyoning, and Vietnam’s coffee heartland.',

@@ -59,6 +59,12 @@ export const ATTRACTIONS: Attraction[] = [
   { id: 'khai-dinh-tomb', city: 'Hue', lat: 16.3987, lng: 107.5904, category: 'landmark', name: { en: 'Tomb of Khai Dinh', ko: '카이딘 황릉', vi: 'Lăng Khải Định', zh: '启定陵', ja: 'カイディン帝陵' } },
   { id: 'tu-duc-tomb', city: 'Hue', lat: 16.4361, lng: 107.5546, category: 'landmark', name: { en: 'Tomb of Tu Duc', ko: '뜨득 황릉', vi: 'Lăng Tự Đức', zh: '嗣德陵', ja: 'トゥドゥック帝陵' } },
   { id: 'dong-ba-market', city: 'Hue', lat: 16.4713, lng: 107.588, category: 'market', name: { en: 'Dong Ba Market', ko: '동바 시장', vi: 'Chợ Đông Ba', zh: '东巴市场', ja: 'ドンバ市場' } },
+  // Da Lat
+  { id: 'xuan-huong-lake', city: 'Da Lat', lat: 11.9416, lng: 108.4433, category: 'landmark', name: { en: 'Xuan Huong Lake', ko: '쑤언흐엉 호수', vi: 'Hồ Xuân Hương', zh: '春香湖', ja: 'スアンフーン湖' } },
+  { id: 'dalat-market', city: 'Da Lat', lat: 11.9425, lng: 108.4372, category: 'market', name: { en: 'Da Lat Market', ko: '달랏 야시장', vi: 'Chợ Đà Lạt', zh: '大叻市场', ja: 'ダラット市場' } },
+  { id: 'crazy-house-dalat', city: 'Da Lat', lat: 11.9328, lng: 108.4318, category: 'landmark', name: { en: 'Hang Nga Guesthouse (Crazy House)', ko: '크레이지 하우스', vi: 'Biệt thự Hằng Nga', zh: '疯狂屋', ja: 'クレイジーハウス' } },
+  { id: 'truc-lam-monastery', city: 'Da Lat', lat: 11.9033, lng: 108.4139, category: 'temple', name: { en: 'Truc Lam Zen Monastery', ko: '쭉럼 선원', vi: 'Thiền viện Trúc Lâm', zh: '竹林禅院', ja: 'チュックラム禅院' } },
+  { id: 'tuyen-lam-lake', city: 'Da Lat', lat: 11.8969, lng: 108.4194, category: 'landmark', name: { en: 'Tuyen Lam Lake', ko: '뚜옌럼 호수', vi: 'Hồ Tuyền Lâm', zh: '宣林湖', ja: 'トゥエンラム湖' } },
 ]
 
 /** Attractions for a city, with the name resolved to the active language. */

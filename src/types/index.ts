@@ -24,14 +24,14 @@ export type City =
   | 'Ho Chi Minh City'
   | 'Nha Trang'
   | 'Phu Quoc'
-  // Discoverable destinations (onboarding hotel partners)
   | 'Hanoi'
-  | 'Ha Long Bay'
-  | 'Sapa'
-  | 'Ninh Binh'
   | 'Hue'
   | 'Hoi An'
   | 'Da Lat'
+  // Discoverable destinations (onboarding hotel partners)
+  | 'Ha Long Bay'
+  | 'Sapa'
+  | 'Ninh Binh'
   | 'Mui Ne'
   | 'Can Tho'
   | 'Vung Tau'
@@ -76,6 +76,11 @@ export type Area =
   | 'Thuy Xuan'
   | 'Lang Co'
   | 'Phong Dien'
+  // Da Lat
+  | 'Xuan Huong Lake'
+  | 'Tuyen Lam Lake'
+  | 'Valley of Love'
+  | 'Cam Ly'
 
 export type HotelType =
   | 'Beach resort'

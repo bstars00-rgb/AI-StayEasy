@@ -45,16 +45,17 @@ export type Signal =
   | 'phuquoc'
   | 'hanoi'
   | 'hue'
+  | 'dalat'
 
 export const ALL_SIGNALS: Signal[] = [
   'family', 'couple', 'business', 'beach', 'longstay', 'korean', 'pool', 'breakfast',
   'kids', 'spa', 'gym', 'airport', 'kitchen', 'city', 'quiet', 'golf', 'luxury', 'budget', 'firsttime',
-  'hoian', 'danang', 'hcmc', 'nhatrang', 'phuquoc', 'hanoi', 'hue',
+  'hoian', 'danang', 'hcmc', 'nhatrang', 'phuquoc', 'hanoi', 'hue', 'dalat',
 ]
 
 /**
  * Cities that exist as destinations but have no hotels onboarded yet. Detected
- * so a query like "Da Lat hotel" gets an honest "not available yet" answer
+ * so a query like "Sapa hotel" gets an honest "not available yet" answer
  * instead of a confident-but-wrong match against another city's hotels.
  * Keyed by the display name; values are diacritic-normalized triggers.
  */
@@ -62,7 +63,6 @@ export const COMING_SOON: { name: string; triggers: string[] }[] = [
   { name: 'Ha Long Bay', triggers: ['ha long', 'halong', '하롱', '下龙', 'ハロン'] },
   { name: 'Sapa', triggers: ['sapa', 'sa pa', '사파', '沙巴', 'サパ'] },
   { name: 'Ninh Binh', triggers: ['ninh binh', '닌빈', '宁平', 'ニンビン'] },
-  { name: 'Da Lat', triggers: ['da lat', 'dalat', '달랏', '大叻', 'ダラット'] },
   { name: 'Mui Ne', triggers: ['mui ne', 'muine', '무이네', '美奈', 'ムイネ'] },
   { name: 'Can Tho', triggers: ['can tho', '껀터', '芹苴', 'カントー'] },
   { name: 'Vung Tau', triggers: ['vung tau', '붕따우', '头顿', 'ブンタウ'] },
@@ -80,13 +80,14 @@ const CITY_SIGNALS: Partial<Record<Signal, Hotel['city']>> = {
   hoian: 'Hoi An',
   hanoi: 'Hanoi',
   hue: 'Hue',
+  dalat: 'Da Lat',
 }
 
 // Strong "what kind of trip" signals weigh more than individual amenities.
 const WEIGHT: Record<Signal, number> = {
   family: 3, couple: 3, business: 3, beach: 3, longstay: 3, korean: 3, firsttime: 2,
   city: 2, quiet: 2, luxury: 2, budget: 2, golf: 2,
-  hoian: 2, danang: 2, hcmc: 2, nhatrang: 2, phuquoc: 2, hanoi: 2, hue: 2,
+  hoian: 2, danang: 2, hcmc: 2, nhatrang: 2, phuquoc: 2, hanoi: 2, hue: 2, dalat: 2,
   pool: 1, breakfast: 1, kids: 2, spa: 1, gym: 1, airport: 1, kitchen: 1,
 }
 
@@ -123,6 +124,7 @@ const SYNONYMS: Record<Signal, string[]> = {
   phuquoc: ['phu quoc', 'phú quốc', 'phuquoc', '푸꾸옥', '푸쿠옥', '富国岛', '富国', 'フーコック'],
   hanoi: ['hanoi', 'ha noi', 'hà nội', '하노이', '河内', 'ハノイ'],
   hue: ['hue', 'huế', 'lang co', 'lăng cô', '후에', '랑꼬', '顺化', 'フエ', 'ランコー'],
+  dalat: ['da lat', 'dalat', 'đà lạt', '달랏', '다랏', '大叻', 'ダラット'],
 }
 
 // Precompute diacritic-normalized synonym lists once.
@@ -175,6 +177,7 @@ const SATISFIES: Record<Signal, (h: Hotel) => boolean> = {
   phuquoc: (h) => h.city === 'Phu Quoc',
   hanoi: (h) => h.city === 'Hanoi',
   hue: (h) => h.city === 'Hue',
+  dalat: (h) => h.city === 'Da Lat',
 }
 
 // Composite intents pull in related signals so "honeymoon" implies couple+quiet+spa, etc.

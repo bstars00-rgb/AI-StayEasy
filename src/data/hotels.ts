@@ -43,6 +43,10 @@ const PHOTO_POOL = [
   '1533105045747-b9d71a0955f9', '1544644181-1484b3fdfc62', '1526481280693-3bfa7568e0f3',
   '1512100356356-de1b84283e18', '1502784444187-359ac186c5bb', '1549144511-f099e773c147',
   '1528127269322-539801943592', '1494783367193-149034c05e8f', '1522798514-97ceb8c4f1c8',
+  '1615880484746-a134be9a6ecf', '1502672260266-1c1ef2d93688', '1493809842364-78817add7ffb',
+  '1524758631624-e2822e304c36', '1600607687939-ce8a6c25118c', '1600566753086-00f18fb6b3ea',
+  '1600585154340-be6161a56a0c', '1600607687920-4e2a09cf159d', '1586023492125-27b2c045efd7',
+  '1590073844006-33379778ae09', '1626178793926-22b28830aa30',
 ]
 const hashSlug = (s: string) => {
   let h = 0
@@ -3413,6 +3417,445 @@ const rawHotels: RawHotel[] = [
     emoji: '🏄',
     koreanFriendly: true,
   },
+  {
+    id: 'dl01',
+    priceTier: 'premium',
+    slug: 'ana-mandara-villas-dalat',
+    name: 'Ana Mandara Villas Dalat Resort & Spa',
+    city: 'Da Lat',
+    area: 'Cam Ly',
+    hotelType: 'City hotel',
+    // Content verified against the official site (anamandara-resort.com) on
+    // 2026-07-17. Room count 87 is the hotel's own About Us figure (the
+    // operator's category list sums to 88 — the hotel's own number is used).
+    shortDescription:
+      'A four-star resort made of 17 meticulously restored 1920s French villas — Norman, Gothic, Provence and Spanish Revival styles — holding 87 rooms across seven hectares of century-old pines above Da Lat, with La Cochinchine Spa set inside Villa 14 and Le Petit Restaurant.',
+    positioningLine: 'Seventeen restored 1920s French villas, run as one hillside resort in the pines.',
+    bestFor: ['Couples who want period character over a modern tower', 'Travelers drawn to Da Lat\'s French heritage', 'Quiet stays a short drive from the centre'],
+    notIdealFor: ['Travelers who want to walk to the night market', 'Those wanting a big resort pool and kids\' facilities'],
+    mainReason: 'Nowhere else lets you sleep inside Da Lat\'s French colonial history — a whole hamlet of 1920s villas restored as one resort, reserved directly with the property.',
+    thingsToCheck: ['Which villa and room category — each villa has its own architectural style and layout', 'The resort is a short drive from the centre, not a walk', 'Whether breakfast is included on your rate'],
+    tags: ['Couple'],
+    facilities: ['Spa', 'Restaurant', 'Bar', 'Free Wi-Fi', 'Parking'],
+    officialBenefits: ['Book direct on the official website (anamandara-resort.com) — Korean-language version available', 'Reserve directly with the resort — reservation@anamandara-resort.com · +84 263 3555 888', 'Villa and suite requests are easiest to arrange directly'],
+    roomGuide: {
+      couples: 'A Villa Suite or the Bellevue Suite — the period rooms are the point.',
+      families: 'A Villa Studio, or take a whole villa; there is no kids\' club.',
+      longStay: 'A Villa Studio among the pines suits a slower week.',
+      checkBeforeBooking: 'Confirm the villa and category — the 17 villas differ in style, size and outlook.',
+    },
+    locationGuide: {
+      nearby: 'Le Lai Street on a pine hillside above Da Lat; the official site puts the centre roughly five to ten minutes away by car.',
+      airportDistance: 'The resort does not publish an airport distance — confirm transfers directly.',
+      gettingAround: 'A short drive from the centre — taxis or the resort\'s own transfers; not a walking location.',
+      nearbyFood: 'Dining is on-site at Le Petit Restaurant and the Pool Bar; the town\'s restaurants are a drive away.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('ana-mandara-villas-dalat'),
+    officialWebsiteUrl: 'https://anamandara-resort.com/',
+    contact: { lang: 'en', email: 'reservation@anamandara-resort.com', phone: '+842633555888', messenger: 'anamandaravillasdalat' },
+    isSponsored: false,
+    similarHotelSlugs: ['dalat-palace-heritage-hotel', 'dalat-edensee-lake-resort', 'colline-hotel-dalat'],
+    heroColor: 'from-amber-600 to-yellow-700',
+    emoji: '🏘️',
+    koreanFriendly: true,
+  },
+  {
+    id: 'dl02',
+    priceTier: 'premium',
+    slug: 'dalat-palace-heritage-hotel',
+    name: 'Dalat Palace Heritage Hotel',
+    city: 'Da Lat',
+    area: 'Xuan Huong Lake',
+    hotelType: 'City hotel',
+    // Content verified against the official site (dalatpalacehotel.com) on
+    // 2026-07-17. Still operating: the official history page states it has
+    // remained open since 1922, and a June 2026 Saigon Giai Phong profile
+    // describes active management. The site claims "5-star amenities" — that
+    // describes amenities, not a classification, so no star is set.
+    shortDescription:
+      'The 1922 Lang Bian Palace — Da Lat\'s original French colonial grand hotel — overlooking Xuan Huong Lake, with 73 rooms across its Classic and Modern wings, Sol Spa, the Rose Library, a cigar lounge, butler service and dining from Le Rabelais to High Tea on The Terrace.',
+    positioningLine: 'Da Lat\'s 1922 grand hotel, still open above Xuan Huong Lake.',
+    bestFor: ['Heritage travelers', 'Couples marking an occasion', 'Golfers — the 18-hole Dalat Golf Club adjoins'],
+    notIdealFor: ['Travelers wanting a contemporary hotel', 'Budget travelers'],
+    mainReason: 'A century of Da Lat in one building — the town\'s original grand hotel, above the lake, reserved directly with the hotel.',
+    thingsToCheck: ['Classic wing vs Modern wing — the two halves feel very different', 'Room outlook toward the lake', 'Whether breakfast is included on your rate'],
+    tags: ['Couple', 'Business'],
+    facilities: ['Spa', 'Gym', 'Restaurant', 'Bar', 'Free Wi-Fi', 'Parking'],
+    officialBenefits: ['Book direct on the official website (dalatpalacehotel.com)', 'Reserve directly with the hotel — palace.reservations@royaldl.com · +84 263 3825 444', 'Suite and golf arrangements are easiest to make directly'],
+    roomGuide: {
+      couples: 'A Luxury room with balcony in the Classic wing, or a Suite for the full period effect.',
+      families: 'A Royal Suite in the Modern wing; the Children\'s Room is a play room, not a staffed club.',
+      longStay: 'A Suite; the lakeside centre location suits a few days of exploring.',
+      checkBeforeBooking: 'Confirm Classic vs Modern wing — the Classic rooms carry the 1922 character.',
+    },
+    locationGuide: {
+      nearby: '02 Tran Phu, overlooking Xuan Huong Lake in the heart of Da Lat; the 18-hole Dalat Golf Club is alongside.',
+      airportDistance: '25 minutes from the airport by car or taxi (per the official site).',
+      gettingAround: 'The lake, the market and the centre are all walkable from the door.',
+      nearbyFood: 'Six venues in-house including Le Rabelais and Le Monet; the town\'s restaurants are a short walk.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('dalat-palace-heritage-hotel'),
+    officialWebsiteUrl: 'https://www.dalatpalacehotel.com/',
+    contact: { lang: 'en', email: 'palace.reservations@royaldl.com', phone: '+842633825444' },
+    isSponsored: false,
+    similarHotelSlugs: ['ana-mandara-villas-dalat', 'ttc-hotel-da-lat-ngoc-lan', 'colline-hotel-dalat'],
+    heroColor: 'from-stone-600 to-amber-800',
+    emoji: '🏛️',
+    koreanFriendly: false,
+  },
+  {
+    id: 'dl03',
+    priceTier: 'premium',
+    slug: 'dalat-edensee-lake-resort',
+    name: 'Dalat Edensee Lake Resort & Spa',
+    city: 'Da Lat',
+    area: 'Tuyen Lam Lake',
+    hotelType: 'City hotel',
+    // Content verified against the official site (dalatedensee.com) on
+    // 2026-07-17. No property star rating and no room total are published —
+    // the per-category counts don't cover every building — so neither is stated.
+    shortDescription:
+      'A European-village-style villa resort on a secluded pine-forested peninsula of Tuyen Lam Lake, with La Roseraie Spa, an outdoor pool with a jacuzzi area and a separate children\'s pool, sauna and steam bath, and four dining venues including the Panorama Rooftop.',
+    positioningLine: 'A European village on its own pine peninsula, out on Tuyen Lam Lake.',
+    bestFor: ['Couples wanting lake quiet over town noise', 'Korean-speaking travelers — the resort runs a full Korean site', 'Slow stays among the pines'],
+    notIdealFor: ['Travelers who want the night market at the door', 'Those needing a staffed kids\' club'],
+    mainReason: 'The lake does the work — a villa village on its own peninsula with a rooftop over the water, reserved directly with the resort.',
+    thingsToCheck: ['Villa category — Mimosa, Jasmine, Camellia and the villas differ a lot', 'The resort is out on the lake, well away from the centre', 'Whether breakfast is included on your rate'],
+    tags: ['Couple'],
+    facilities: ['Pool', 'Spa', 'Gym', 'Restaurant', 'Bar', 'Free Wi-Fi', 'Parking'],
+    officialBenefits: ['Book direct on the official website (dalatedensee.com) — full Korean-language site available', 'Reserve directly with the resort — info@dalatedensee.com · +84 263 383 1515', 'Villa-category requests are easiest to arrange directly'],
+    roomGuide: {
+      couples: 'A Camellia Suite, or the Sakura Villa for more seclusion.',
+      families: 'A LaRose Villa — there is a children\'s pool, though no kids\' club.',
+      longStay: 'A villa; the peninsula rewards staying put.',
+      checkBeforeBooking: 'Confirm the villa or building — Mimosa, Jasmine, Camellia, LaRose, Sakura and Baron & Loreley are all different.',
+    },
+    locationGuide: {
+      nearby: 'A secluded peninsula in the Tuyen Lam Lake tourist area, ringed by pine forest and hills.',
+      airportDistance: 'The resort does not publish an airport distance — it offers an airport transfer service; confirm directly.',
+      gettingAround: 'Lakeside and forest walks from the door; the centre needs a car.',
+      nearbyFood: 'Four venues on-site — Riesling, Kuckuck, Eden Lake Café and the Panorama Rooftop; nothing else is nearby.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('dalat-edensee-lake-resort'),
+    officialWebsiteUrl: 'https://www.dalatedensee.com/en/',
+    contact: { lang: 'ko', email: 'info@dalatedensee.com', phone: '+842633831515', messenger: 'dalatedensee.resort' },
+    isSponsored: false,
+    similarHotelSlugs: ['terracotta-hotel-resort-dalat', 'swiss-belresort-tuyen-lam', 'ana-mandara-villas-dalat'],
+    heroColor: 'from-emerald-600 to-teal-700',
+    emoji: '🌲',
+    koreanFriendly: true,
+  },
+  {
+    id: 'dl04',
+    priceTier: 'premium',
+    slug: 'ladalat-hotel',
+    name: 'Ladalat Hotel',
+    city: 'Da Lat',
+    area: 'Valley of Love',
+    hotelType: 'Family hotel',
+    // Content verified against the official site (ladalathotel.com.vn) on
+    // 2026-07-17. The spa is "La Beauty Spa" per the official site (a
+    // third-party summary calling it "Angel Beauty Spa" was discarded).
+    shortDescription:
+      'A 295-room five-star hotel on a quiet hillside overlooking the Valley of Love, five kilometres from the centre, with semi-classical architecture, a heated swimming pool, La Beauty Spa, a Kid Center and five dining venues including the rooftop L\'Amour Sky Lounge.',
+    positioningLine: 'Five-star scale on the hillside above the Valley of Love.',
+    bestFor: ['Families using the heated pool and Kid Center', 'Couples wanting the rooftop lounge and valley views', 'Groups and events'],
+    notIdealFor: ['Travelers who want to walk into town', 'Those wanting boutique intimacy'],
+    mainReason: 'The heated pool matters in Da Lat\'s cool air — plus a Kid Center and a rooftop over the Valley of Love, reserved directly with the hotel.',
+    thingsToCheck: ['Room outlook — valley-facing rooms are the draw', 'The hotel is 5 km from the centre (its own figure)', 'Whether breakfast is included on your rate'],
+    tags: ['Family', 'Couple'],
+    facilities: ['Pool', 'Kids club', 'Spa', 'Restaurant', 'Bar', 'Free Wi-Fi', 'Parking'],
+    officialBenefits: ['Book direct on the official website (ladalathotel.com.vn)', 'Reserve directly with the hotel — info@ladalathotel.com.vn · +84 263 3565 252', 'Suite and connecting-room requests are easiest to arrange directly'],
+    roomGuide: {
+      couples: 'A Junior Suite facing the valley, with evenings at L\'Amour Sky Lounge.',
+      families: 'An Executive Room or Suite, with the Kid Center and heated pool downstairs.',
+      longStay: 'An Executive Suite for space away from the centre.',
+      checkBeforeBooking: 'Confirm the view — City Junior Suites face the town rather than the valley.',
+    },
+    locationGuide: {
+      nearby: '106A Mai Anh Dao on a hillside facing the Valley of Love, about 5 km from the centre (per the official site).',
+      airportDistance: 'The hotel does not publish an airport distance — confirm transfers directly.',
+      gettingAround: 'A drive from the centre; taxis and Grab are the practical option.',
+      nearbyFood: 'Five venues in-house; the Valley of Love area has cafes, with the town\'s food a drive away.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('ladalat-hotel'),
+    officialWebsiteUrl: 'https://www.ladalathotel.com.vn/en',
+    contact: { lang: 'en', email: 'info@ladalathotel.com.vn', phone: '+842633565252', messenger: 'khachsan5saoLadalat' },
+    isSponsored: false,
+    similarHotelSlugs: ['merperle-dalat-hotel', 'dalat-wonder-resort', 'terracotta-hotel-resort-dalat'],
+    heroColor: 'from-rose-500 to-pink-600',
+    emoji: '💗',
+    koreanFriendly: false,
+  },
+  {
+    id: 'dl05',
+    priceTier: 'mid',
+    slug: 'terracotta-hotel-resort-dalat',
+    name: 'Terracotta Hotel & Resort Dalat',
+    city: 'Da Lat',
+    area: 'Tuyen Lam Lake',
+    hotelType: 'Family hotel',
+    // Content verified against the official site (dalat.terracottaresort.com)
+    // on 2026-07-17. No official star rating is published. The pool is an
+    // indoor heated pool — stated as such, and it matters in Da Lat's climate.
+    shortDescription:
+      'A 330-key resort — 240 hotel rooms plus 90 lakeview villas — spread over more than 17 hectares on a pine-forested peninsula of Tuyen Lam Lake, with an indoor heated pool, tennis and pickleball courts, a children\'s play area, organic gardens and Montagne Restaurant.',
+    positioningLine: 'Seventeen hectares on the lake, with an indoor heated pool for Da Lat\'s cool air.',
+    bestFor: ['Families wanting grounds and activities', 'Groups and team retreats', 'Travelers who want a lake base at mid-range prices'],
+    notIdealFor: ['Travelers who want the centre at the door', 'Those wanting boutique quiet'],
+    mainReason: 'Space and an indoor heated pool — 17 hectares by the lake where the water is warm even when Da Lat isn\'t, reserved directly with the resort.',
+    thingsToCheck: ['Hotel room vs lakeview villa — very different stays', 'The pool is indoor and heated (not an outdoor resort pool)', 'The resort is 6 km from the centre (its own figure)'],
+    tags: ['Family', 'Long Stay'],
+    facilities: ['Pool', 'Spa', 'Gym', 'Restaurant', 'Free Wi-Fi', 'Parking'],
+    officialBenefits: ['Book direct on the official website (terracottaresort.com)', 'Reserve directly with the resort — sales.dalat@terracottaresort.com · +84 263 388 3838', 'Villa and group requests are easiest to arrange directly'],
+    roomGuide: {
+      couples: 'A lakeview villa for the outlook over Tuyen Lam.',
+      families: 'A villa, with the play area, gardens and games room for the kids.',
+      longStay: 'A lakeview villa — the grounds and gardens reward a longer stay.',
+      checkBeforeBooking: 'Confirm hotel room vs villa, and note the pool is indoor and heated.',
+    },
+    locationGuide: {
+      nearby: 'A peninsula bordering Tuyen Lam Lake, in pine forest, about 6 km from the centre of Da Lat (per the official site).',
+      airportDistance: '20 minutes from Lien Khuong airport (per the official site).',
+      gettingAround: 'Lakeside promenade and gardens on-site; the centre needs a car.',
+      nearbyFood: 'Montagne Restaurant and Terracotta Plaza on-site; villa BBQ can be arranged.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('terracotta-hotel-resort-dalat'),
+    officialWebsiteUrl: 'https://dalat.terracottaresort.com/en/',
+    contact: { lang: 'en', email: 'sales.dalat@terracottaresort.com', phone: '+842633883838', messenger: 'terracotta.dalat.phankhuchucnang79hotuyenlam' },
+    isSponsored: false,
+    similarHotelSlugs: ['dalat-wonder-resort', 'swiss-belresort-tuyen-lam', 'dalat-edensee-lake-resort'],
+    heroColor: 'from-orange-600 to-red-700',
+    emoji: '🏞️',
+    koreanFriendly: false,
+  },
+  {
+    id: 'dl06',
+    priceTier: 'premium',
+    slug: 'swiss-belresort-tuyen-lam',
+    name: 'Swiss-Belresort Tuyen Lam, Dalat',
+    city: 'Da Lat',
+    area: 'Tuyen Lam Lake',
+    hotelType: 'City hotel',
+    // Content verified against the Swiss-Belhotel International property page
+    // and the operator's site on 2026-07-17. No star rating is published.
+    // NOTE: the adjacent SAM Tuyen Lam Resort is a separate property — the
+    // 151-room figure belongs to Swiss-Belresort only.
+    shortDescription:
+      'A 151-room resort in the Tuyen Lam Lake tourism area, surrounded by the 18-hole SAM Tuyen Lam golf course, with both an indoor heated pool and an outdoor pool, a spa, sauna, tennis court and the Swiss-Café and Mimosa restaurants.',
+    positioningLine: 'Ringed by an 18-hole course in the pines — Da Lat\'s golf base.',
+    bestFor: ['Golfers — the course wraps the resort', 'Couples wanting quiet pine highlands', 'Travelers who want an indoor heated pool'],
+    notIdealFor: ['Travelers who want the centre at the door', 'Those with no interest in golf'],
+    mainReason: 'Wake up inside the golf course — 151 rooms ringed by 18 holes in the pines, with an indoor heated pool, reserved directly with the resort.',
+    thingsToCheck: ['View category — pool, mountain and golf-course views differ', 'Golf tee times and packages, arranged directly', 'Whether breakfast at Swiss-Café is included'],
+    tags: ['Couple', 'Business'],
+    facilities: ['Pool', 'Spa', 'Gym', 'Restaurant', 'Free Wi-Fi', 'Parking'],
+    officialBenefits: ['Book direct on the official website (swiss-belhotel.com)', 'Reserve directly with the resort — resvsrty@swiss-belhotel.com · +84 263 3800 800', 'Golf packages are easiest to arrange directly with the resort'],
+    roomGuide: {
+      couples: 'A mountain-view or golf-course-view room over the pines.',
+      families: 'A pool-view room near the indoor heated pool.',
+      longStay: 'A golf-course-view room if the course is why you came.',
+      checkBeforeBooking: 'Confirm the view category — the resort sits between the pools and the fairways.',
+    },
+    locationGuide: {
+      nearby: 'Zones 7 and 8 of the Tuyen Lam Lake tourism area, in a pine valley surrounded by the 18-hole SAM Tuyen Lam course.',
+      airportDistance: 'The resort does not publish an airport distance — confirm transfers directly.',
+      gettingAround: 'A golf-and-lake destination; the centre needs a car.',
+      nearbyFood: 'Swiss-Café and Mimosa on-site; there is no dining strip nearby.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('swiss-belresort-tuyen-lam'),
+    officialWebsiteUrl: 'https://www.swiss-belhotel.com/hotels/swiss-belresort-tuyen-lam-dalat',
+    contact: { lang: 'en', email: 'resvsrty@swiss-belhotel.com', phone: '+842633800800', messenger: 'SwissBelresortDalat' },
+    isSponsored: false,
+    similarHotelSlugs: ['terracotta-hotel-resort-dalat', 'dalat-edensee-lake-resort', 'dalat-wonder-resort'],
+    heroColor: 'from-lime-700 to-green-800',
+    emoji: '⛳',
+    koreanFriendly: false,
+  },
+  {
+    id: 'dl07',
+    priceTier: 'mid',
+    slug: 'colline-hotel-dalat',
+    name: 'Colline Dalat',
+    city: 'Da Lat',
+    area: 'City Center',
+    hotelType: 'City hotel',
+    // Content verified against the official site (hotelcolline.com) on
+    // 2026-07-17. No star rating and no room count are published — OTA figures
+    // (4-star, 152 rooms) are not official and are not used. The official site
+    // mentions no pool and no spa, so neither is claimed.
+    shortDescription:
+      'A central Da Lat hotel at 10 Phan Boi Chau, about two minutes\' walk from Xuan Huong Lake, with a stairwell leading straight down to the night market, plus SALT restaurant, Central Bakery, the Lobby Bar and Go Gym — and rooms up to condotel apartments.',
+    positioningLine: 'A staircase from your hotel straight down into the night market.',
+    bestFor: ['First-time visitors who want to walk everywhere', 'Night-market evenings', 'Families or groups needing condotel apartments'],
+    notIdealFor: ['Travelers wanting a pool or spa', 'Those wanting resort grounds'],
+    mainReason: 'Location is the product — the lake two minutes one way, the night market down your own stairwell the other, reserved directly with the hotel.',
+    thingsToCheck: ['Room vs condotel apartment — the condotels have 2–3 bedrooms', 'Night-market side rooms can be lively — ask for a quieter side', 'Whether breakfast is included on your rate'],
+    tags: ['Couple', 'Family'],
+    facilities: ['Gym', 'Restaurant', 'Bar', 'Free Wi-Fi', 'Parking'],
+    officialBenefits: ['Book direct on the official website (hotelcolline.com)', 'Reserve directly with the hotel — info@hotelcolline.com · +84 263 3665 588', 'Condotel and suite requests are easiest to arrange directly'],
+    roomGuide: {
+      couples: 'A Premier Deluxe, or the Colline Junior Suite.',
+      families: 'A Deluxe Family, the Family Penthouse, or a 2–3 bedroom Studio Condotel.',
+      longStay: 'A Studio Condotel — the apartments are built for it.',
+      checkBeforeBooking: 'Confirm room vs condotel; the condotels are apartments with separate bedrooms.',
+    },
+    locationGuide: {
+      nearby: '10 Phan Boi Chau in the centre; Xuan Huong Lake is about a two-minute walk and a stairwell leads down to the night market (both per the official site).',
+      airportDistance: 'The hotel does not publish an airport distance — confirm transfers directly.',
+      gettingAround: 'Everything central is on foot — this is the most walkable base in the city.',
+      nearbyFood: 'The Da Lat night market is directly below via the connecting stairwell; SALT and Central Bakery are in-house.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('colline-hotel-dalat'),
+    officialWebsiteUrl: 'https://hotelcolline.com/',
+    contact: { lang: 'en', email: 'info@hotelcolline.com', phone: '+842633665588', messenger: 'HotelColline' },
+    isSponsored: false,
+    similarHotelSlugs: ['merperle-dalat-hotel', 'ttc-hotel-da-lat-ngoc-lan', 'dalat-palace-heritage-hotel'],
+    heroColor: 'from-slate-600 to-gray-700',
+    emoji: '🪜',
+    koreanFriendly: false,
+  },
+  {
+    id: 'dl08',
+    priceTier: 'premium',
+    slug: 'merperle-dalat-hotel',
+    name: 'MerPerle Dalat Hotel',
+    city: 'Da Lat',
+    area: 'City Center',
+    hotelType: 'Family hotel',
+    // Content verified against the operator site (merperle.vn) and the hotel's
+    // own site on 2026-07-17. The spa includes a jjimjilbang, but that is a
+    // Korean-style facility — not evidence of Korean-language service — so
+    // koreanFriendly stays false.
+    shortDescription:
+      'A 389-room five-star hotel over ten floors at 1 Hung Vuong in central Da Lat, with the warm-water Four Seasons pool, MerPerle Spa including a jjimjilbang, a 3D golf simulator, a children\'s play area, Rustic Restaurant and ballrooms for up to a thousand guests.',
+    positioningLine: 'Central Da Lat at scale — a warm-water pool and a jjimjilbang under one roof.',
+    bestFor: ['Families wanting a warm pool in a cool city', 'Groups and events', 'Travelers who want a central full-service hotel'],
+    notIdealFor: ['Travelers wanting a small boutique', 'Those seeking pine-forest quiet'],
+    mainReason: 'A warm-water pool and a jjimjilbang in the middle of a cold-weather town — plus 389 rooms of scale, reserved directly with the hotel.',
+    thingsToCheck: ['Room category and floor — this is a ten-storey hotel', 'Whether an event is in-house during your dates', 'Whether breakfast at Rustic is included'],
+    tags: ['Family', 'Business'],
+    facilities: ['Pool', 'Spa', 'Gym', 'Restaurant', 'Bar', 'Free Wi-Fi', 'Parking'],
+    officialBenefits: ['Book direct on the official website (merperledalat.vn)', 'Reserve directly with the hotel — sales@merperle.vn · +84 263 3553 789', 'Suite and event requests are easiest to arrange directly'],
+    roomGuide: {
+      couples: 'An Executive Suite, or a Deluxe Double on a higher floor.',
+      families: 'A Deluxe Family or Garden Grand Suite, with the warm pool and play area below.',
+      longStay: 'A Luxury Grand Suite for space in the centre.',
+      checkBeforeBooking: 'Confirm the category and floor — the room types range widely across ten storeys.',
+    },
+    locationGuide: {
+      nearby: '1 Hung Vuong in central Da Lat.',
+      airportDistance: 'The hotel does not publish an airport distance — confirm transfers directly.',
+      gettingAround: 'A central base; the lake and market are a short walk or a very short ride.',
+      nearbyFood: 'Rustic Restaurant and the Lobby Bar in-house; the town\'s food is close by.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('merperle-dalat-hotel'),
+    officialWebsiteUrl: 'https://merperledalat.vn/en/',
+    contact: { lang: 'en', email: 'sales@merperle.vn', phone: '+842633553789', messenger: 'Merperledalathotel' },
+    isSponsored: false,
+    similarHotelSlugs: ['ladalat-hotel', 'colline-hotel-dalat', 'ttc-hotel-da-lat-ngoc-lan'],
+    heroColor: 'from-indigo-600 to-violet-700',
+    emoji: '♨️',
+    koreanFriendly: false,
+  },
+  {
+    id: 'dl09',
+    priceTier: 'premium',
+    slug: 'dalat-wonder-resort',
+    name: 'Dalat Wonder Resort',
+    city: 'Da Lat',
+    area: 'Tuyen Lam Lake',
+    hotelType: 'Family hotel',
+    // Content verified against the official site (dalatwonderresort.vn) on
+    // 2026-07-17. The site claims "5-star service quality standards" — a
+    // service claim, not a classification — so no star is set. The room figure
+    // is published as a capacity ("up to 309 rooms"), so it is not stated as
+    // an inventory count. The site's social icons carry no href, so no
+    // messenger channel is attributed.
+    shortDescription:
+      'A lakeside resort and entertainment complex at Tuyen Lam Lake styled as a European village, with an infinity pool, La Santé Spa, La Fonté buffet restaurant, garden BBQ, villas from four to eleven bedrooms, and the Dalat Wonderland recreation area with a zoo and flower, herb and strawberry gardens.',
+    positioningLine: 'A European village with its own park — Da Lat\'s family complex on Tuyen Lam Lake.',
+    bestFor: ['Families who want the attractions inside the resort', 'Large groups taking a multi-bedroom villa', 'Korean-speaking travelers — the resort runs a full Korean site'],
+    notIdealFor: ['Couples wanting quiet seclusion', 'Travelers who want the centre at the door'],
+    mainReason: 'The park is on the property — a zoo, gardens and an infinity pool wrapped around European-style villas, reserved directly with the resort.',
+    thingsToCheck: ['Room in the building vs a villa — villas run 4 to 11 bedrooms', 'Which Wonderland attractions are open during your stay', 'Whether breakfast at La Fonté is included'],
+    tags: ['Family', 'Long Stay'],
+    facilities: ['Pool', 'Spa', 'Gym', 'Restaurant', 'Bar', 'Free Wi-Fi', 'Parking'],
+    officialBenefits: ['Book direct on the official website (dalatwonderresort.vn) — full Korean-language site available', 'Reserve directly with the resort — salesteam@dalatwonderresort.com · +84 263 3800 099', 'Multi-bedroom villa and group requests are easiest to arrange directly'],
+    roomGuide: {
+      couples: 'A Premier or Suite in the main building, by the infinity pool.',
+      families: 'A garden- or lake-view villa; the four-bedroom villas suit two families.',
+      longStay: 'A Luxury Villa — the villas are built for long group stays.',
+      checkBeforeBooking: 'Confirm building room vs villa, and the villa\'s bedroom count and outlook.',
+    },
+    locationGuide: {
+      nearby: '19 Hoa Hong on the Tuyen Lam Lake side, on the outskirts of Da Lat; the resort self-describes as a small European village.',
+      airportDistance: 'The resort does not publish an airport distance — confirm transfers directly.',
+      gettingAround: 'A self-contained resort with its own recreation area; the centre needs a car.',
+      nearbyFood: 'La Fonté, La Buffet Hall and the Bar & Lounge on-site, plus garden BBQ; there is no dining strip nearby.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('dalat-wonder-resort'),
+    officialWebsiteUrl: 'https://dalatwonderresort.vn/en/',
+    contact: { lang: 'ko', email: 'salesteam@dalatwonderresort.com', phone: '+842633800099' },
+    isSponsored: false,
+    similarHotelSlugs: ['terracotta-hotel-resort-dalat', 'ladalat-hotel', 'swiss-belresort-tuyen-lam'],
+    heroColor: 'from-fuchsia-600 to-purple-700',
+    emoji: '🎡',
+    koreanFriendly: true,
+  },
+  {
+    id: 'dl10',
+    priceTier: 'mid',
+    slug: 'ttc-hotel-da-lat-ngoc-lan',
+    name: 'TTC Hotel - Ngoc Lan',
+    city: 'Da Lat',
+    area: 'Xuan Huong Lake',
+    hotelType: 'City hotel',
+    // Content verified against the operator site (ttchospitality.vn) on
+    // 2026-07-17. No rebrand: the operator still brands it "TTC Hotel - Ngoc
+    // Lan" (OTAs add "Premium" — not used). No pool is mentioned officially,
+    // so none is claimed. Per-category room counts sum to exactly 91.
+    shortDescription:
+      'A 91-room four-star hotel at 42 Nguyen Chi Thanh overlooking Xuan Huong Lake, with most rooms facing the water, a spa with sauna and jacuzzi, a gym, an airport shuttle service and the night market a few minutes\' walk away.',
+    positioningLine: 'Lake-facing rooms in the centre, a few minutes from the night market.',
+    bestFor: ['Couples wanting a lake view without a resort price', 'First-time visitors basing in the centre', 'Travelers who want an airport shuttle'],
+    notIdealFor: ['Travelers wanting a pool', 'Those wanting resort grounds'],
+    mainReason: 'The lake from your window at a mid-range price, with the market a short walk away, reserved directly with the hotel.',
+    thingsToCheck: ['Lake View vs standard Deluxe — the lake side is the reason to stay', 'There is no swimming pool', 'Whether breakfast is included on your rate'],
+    tags: ['Couple', 'Business'],
+    facilities: ['Spa', 'Gym', 'Restaurant', 'Free Wi-Fi', 'Parking', 'Airport transfer'],
+    officialBenefits: ['Book direct on the official website (ttchospitality.vn)', 'Reserve directly with the hotel — sales@ngoclanhotel.vn · +84 263 3838 838', 'Lake-view and suite requests are easiest to arrange directly'],
+    roomGuide: {
+      couples: 'A Deluxe Lake View, or the Suite Lake View for more space over the water.',
+      families: 'A Premium Deluxe at 52 m², or the Premium Suite.',
+      longStay: 'A Premium Suite; the central location suits a few days in town.',
+      checkBeforeBooking: 'Confirm lake view — only some categories face the water.',
+    },
+    locationGuide: {
+      nearby: '42 Nguyen Chi Thanh, directly overlooking Xuan Huong Lake in the centre; the night market is a few minutes on foot (per the official site).',
+      airportDistance: 'No distance is published, but the hotel runs an airport shuttle service — arrange it directly.',
+      gettingAround: 'The lake path, the market and the centre are all walkable.',
+      nearbyFood: 'The night market and the central food streets are a few minutes\' walk.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('ttc-hotel-da-lat-ngoc-lan'),
+    officialWebsiteUrl: 'https://ttchospitality.vn/ttc-hotel/ttc-hotel-ngoc-lan',
+    contact: { lang: 'en', email: 'sales@ngoclanhotel.vn', phone: '+842633838838', messenger: 'ttchotelngoclan' },
+    isSponsored: false,
+    similarHotelSlugs: ['colline-hotel-dalat', 'dalat-palace-heritage-hotel', 'merperle-dalat-hotel'],
+    heroColor: 'from-cyan-600 to-blue-700',
+    emoji: '🌸',
+    koreanFriendly: false,
+  },
 ]
 
 /**
@@ -3503,6 +3946,18 @@ const EDITORIAL_SCORES: Record<string, number> = {
   'melia-vinpearl-hue': 8.3,
   'senna-hue-hotel': 8.2,
   'eldora-hotel-hue': 8.1,
+  // Da Lat — Ana Mandara's 17 restored 1920s villas take the city; the 1922
+  // Dalat Palace, the town's original grand hotel, is the runner-up.
+  'ana-mandara-villas-dalat': 9.3,
+  'dalat-palace-heritage-hotel': 9.2,
+  'dalat-edensee-lake-resort': 9.0,
+  'ladalat-hotel': 8.8,
+  'terracotta-hotel-resort-dalat': 8.6,
+  'swiss-belresort-tuyen-lam': 8.5,
+  'colline-hotel-dalat': 8.4,
+  'merperle-dalat-hotel': 8.3,
+  'dalat-wonder-resort': 8.2,
+  'ttc-hotel-da-lat-ngoc-lan': 8.1,
   // Hanoi — La Siesta, the standout Vietnamese-owned boutique brand.
   'la-siesta-premium-hang-be': 9.3,
   'sofitel-legend-metropole-hanoi': 9.2,
@@ -3561,7 +4016,7 @@ export function deriveConditions(h: Omit<Hotel, 'country' | 'conditions'>): Hote
 }
 
 // Unique photo per hotel: index each slug in sorted order into the verified
-// PHOTO_POOL. With 80 hotels and 81 distinct photos, no two ever collide.
+// PHOTO_POOL. With 90 hotels and 92 distinct photos, no two ever collide.
 const PHOTO_INDEX = new Map([...rawHotels].map((h) => h.slug).sort().map((slug, i) => [slug, i] as const))
 
 export const hotels: Hotel[] = rawHotels.map((h) => ({

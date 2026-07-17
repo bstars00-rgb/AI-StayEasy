@@ -45,12 +45,12 @@ function shapePaths(obj: unknown, prefix = ''): string[] {
 }
 
 describe('hotel data integrity', () => {
-  it('has 80 hotels across 7 cities with unique ids and slugs', () => {
-    expect(hotels).toHaveLength(80)
-    expect(new Set(hotels.map((h) => h.id)).size).toBe(80)
-    expect(new Set(hotels.map((h) => h.slug)).size).toBe(80)
+  it('has 90 hotels across 8 cities with unique ids and slugs', () => {
+    expect(hotels).toHaveLength(90)
+    expect(new Set(hotels.map((h) => h.id)).size).toBe(90)
+    expect(new Set(hotels.map((h) => h.slug)).size).toBe(90)
     // No two hotels share the same listing photo (stock, but never duplicated).
-    expect(new Set(hotels.map((h) => h.imageUrl)).size).toBe(80)
+    expect(new Set(hotels.map((h) => h.imageUrl)).size).toBe(90)
     expect(hotels.filter((h) => h.city === 'Da Nang')).toHaveLength(20)
     expect(hotels.filter((h) => h.city === 'Ho Chi Minh City')).toHaveLength(10)
     expect(hotels.filter((h) => h.city === 'Nha Trang')).toHaveLength(10)
@@ -58,6 +58,7 @@ describe('hotel data integrity', () => {
     expect(hotels.filter((h) => h.city === 'Hoi An')).toHaveLength(10)
     expect(hotels.filter((h) => h.city === 'Hanoi')).toHaveLength(10)
     expect(hotels.filter((h) => h.city === 'Hue')).toHaveLength(10)
+    expect(hotels.filter((h) => h.city === 'Da Lat')).toHaveLength(10)
   })
 
   it('every required field is populated', () => {
@@ -373,7 +374,7 @@ describe('AI search engine', () => {
     expect(lux.results[0].hotel.priceTier).toBe('premium')
   })
 
-  it('city intents are hard filters across all 6 cities', () => {
+  it('city intents are hard filters across all live cities', () => {
     const hanoi = recommend('하노이 시내 호텔', hotels)
     expect(hanoi.detected).toEqual(expect.arrayContaining(['hanoi', 'city']))
     expect(hanoi.results.length).toBeGreaterThan(0)
@@ -413,10 +414,20 @@ describe('AI search engine', () => {
   })
 
   it('flags a coming-soon destination instead of a wrong-city match', () => {
-    const rec = recommend('da lat quiet hotel', hotels)
-    expect(rec.comingSoon).toBe('Da Lat')
+    const rec = recommend('sapa quiet hotel', hotels)
+    expect(rec.comingSoon).toBe('Sapa')
     expect(rec.generic).toBe(true)
     expect(rec.results.length).toBeGreaterThan(0)
+  })
+
+  it('a city stops being flagged coming-soon once it goes live', () => {
+    // Regression: Da Lat was a coming-soon destination until its launch. Now it
+    // must hard-filter like any other live city instead of returning the
+    // "not available yet" answer.
+    const rec = recommend('da lat quiet hotel', hotels)
+    expect(rec.comingSoon).toBeUndefined()
+    expect(rec.results.length).toBeGreaterThan(0)
+    expect(rec.results.every((r) => r.hotel.city === 'Da Lat')).toBe(true)
   })
 
   it('does not invert "비싼"(expensive) into budget intent', () => {
@@ -482,7 +493,7 @@ describe('back-office data', () => {
 describe('async data repo (mock-backed)', () => {
   it('resolves the full catalogue and a single hotel', async () => {
     const all = await repo.allHotels()
-    expect(all).toHaveLength(80)
+    expect(all).toHaveLength(90)
     const h = await repo.getHotel('olalani-resort-condotel')
     expect(h?.slug).toBe('olalani-resort-condotel')
   })
@@ -633,7 +644,7 @@ describe('hotel counts are derived from the catalogue (no drift)', () => {
   it('Vietnam market hotelCount equals the whole catalogue', () => {
     const vn = countries.find((c) => c.name === 'Vietnam')
     expect(vn?.hotelCount).toBe(hotels.filter((h) => h.country === 'Vietnam').length)
-    expect(vn?.hotelCount).toBe(80)
+    expect(vn?.hotelCount).toBe(90)
   })
 })
 

@@ -12,6 +12,7 @@ export const zh: Locale = {
       'Hanoi': '河内',
       'Hoi An': '会安',
       'Hue': '顺化',
+      'Da Lat': '大叻',
     },
     area: {
       'My Khe Beach': '美溪海滩',
@@ -43,6 +44,10 @@ export const zh: Locale = {
       'Thuy Xuan': '水春(Thuy Xuan)',
       'Lang Co': '灵姑湾',
       'Phong Dien': '丰田(Phong Dien)',
+      'Xuan Huong Lake': '春香湖',
+      'Tuyen Lam Lake': '宣林湖',
+      'Valley of Love': '情人谷',
+      'Cam Ly': '甘利(Cam Ly)',
     },
     hotelType: {
       'Beach resort': '海滨度假村',

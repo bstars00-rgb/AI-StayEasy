@@ -17,45 +17,60 @@ const CITY: Record<string, LatLng> = {
   'Hoi An': [15.8801, 108.338],
   'Hanoi': [21.0278, 105.8342],
   'Hue': [16.4637, 107.5909],
+  'Da Lat': [11.9404, 108.4583],
 }
 
+/**
+ * Area centres, keyed `"<City>|<Area>"`.
+ *
+ * The key MUST include the city: several area names are reused across cities
+ * ('City Center' exists in Da Nang, Hue and Da Lat), so a city-blind lookup
+ * silently pinned Hue/Da Lat hotels in Da Nang.
+ */
 const AREA: Record<string, LatLng> = {
   // Da Nang
-  'My Khe Beach': [16.06, 108.247],
-  'Han River': [16.07, 108.224],
-  'City Center': [16.0678, 108.2208],
-  'Resort Area': [16.03, 108.25],
+  'Da Nang|My Khe Beach': [16.06, 108.247],
+  'Da Nang|Han River': [16.07, 108.224],
+  'Da Nang|City Center': [16.0678, 108.2208],
+  'Da Nang|Resort Area': [16.03, 108.25],
   // Ho Chi Minh City
-  'District 1': [10.7756, 106.7019],
-  'Thao Dien': [10.803, 106.734],
-  'Airport Area': [10.818, 106.658],
+  'Ho Chi Minh City|District 1': [10.7756, 106.7019],
+  'Ho Chi Minh City|Thao Dien': [10.803, 106.734],
+  'Ho Chi Minh City|Airport Area': [10.818, 106.658],
   // Nha Trang
-  'Nha Trang Beach': [12.2388, 109.196],
-  'North Nha Trang': [12.265, 109.195],
-  'Bai Dong': [12.134, 109.212],
-  'Ninh Van Bay': [12.359, 109.277],
+  'Nha Trang|Nha Trang Beach': [12.2388, 109.196],
+  'Nha Trang|North Nha Trang': [12.265, 109.195],
+  'Nha Trang|Bai Dong': [12.134, 109.212],
+  'Nha Trang|Ninh Van Bay': [12.359, 109.277],
   // Phu Quoc
-  'Long Beach': [10.19, 103.96],
-  'Sao Beach': [10.05, 104.03],
-  'Kem Beach': [10.032, 104.028],
-  'Ong Lang': [10.259, 103.936],
-  'Ong Doi Cape': [10.005, 104.052],
+  'Phu Quoc|Long Beach': [10.19, 103.96],
+  'Phu Quoc|Sao Beach': [10.05, 104.03],
+  'Phu Quoc|Kem Beach': [10.032, 104.028],
+  'Phu Quoc|Ong Lang': [10.259, 103.936],
+  'Phu Quoc|Ong Doi Cape': [10.005, 104.052],
   // Hoi An
-  'Ancient Town': [15.877, 108.327],
-  'An Bang Beach': [15.908, 108.34],
-  'Cam Thanh': [15.885, 108.36],
-  'Cua Dai Beach': [15.898, 108.365],
-  'Ha My Beach': [15.929, 108.318],
+  'Hoi An|Ancient Town': [15.877, 108.327],
+  'Hoi An|An Bang Beach': [15.908, 108.34],
+  'Hoi An|Cam Thanh': [15.885, 108.36],
+  'Hoi An|Cua Dai Beach': [15.898, 108.365],
+  'Hoi An|Ha My Beach': [15.929, 108.318],
   // Hanoi
-  'Old Quarter': [21.034, 105.85],
-  'West Lake': [21.07, 105.82],
-  'French Quarter': [21.023, 105.848],
-  'Ba Dinh': [21.035, 105.814],
+  'Hanoi|Old Quarter': [21.034, 105.85],
+  'Hanoi|West Lake': [21.07, 105.82],
+  'Hanoi|French Quarter': [21.023, 105.848],
+  'Hanoi|Ba Dinh': [21.035, 105.814],
   // Hue
-  'Perfume River': [16.463, 107.585],
-  'Thuy Xuan': [16.425, 107.579],
-  'Lang Co': [16.27, 108.077],
-  'Phong Dien': [16.578, 107.437],
+  'Hue|Perfume River': [16.463, 107.585],
+  'Hue|Thuy Xuan': [16.425, 107.579],
+  'Hue|Lang Co': [16.27, 108.077],
+  'Hue|Phong Dien': [16.578, 107.437],
+  'Hue|City Center': [16.4637, 107.5909],
+  // Da Lat
+  'Da Lat|City Center': [11.9425, 108.4372],
+  'Da Lat|Xuan Huong Lake': [11.9416, 108.4433],
+  'Da Lat|Tuyen Lam Lake': [11.8969, 108.4194],
+  'Da Lat|Valley of Love': [11.9776, 108.451],
+  'Da Lat|Cam Ly': [11.9442, 108.4236],
 }
 
 const FALLBACK: LatLng = [16.0544, 108.2022] // Da Nang / Vietnam-ish centre
@@ -159,12 +174,21 @@ const COORDS: Record<string, LatLng> = {
   'melia-vinpearl-hue': [16.4634, 107.5942],
   'eldora-hotel-hue': [16.4647, 107.5945],
   'alba-wellness-valley-hue': [16.4906, 107.3824],
-  // NOTE: every Hue "City Center" hotel MUST be listed here — the shared
-  // 'City Center' AREA key resolves to Da Nang, so a missing entry would pin
-  // the hotel in the wrong city.
   'senna-hue-hotel': [16.4637, 107.5909],
   'banyan-tree-lang-co': [16.2892, 108.0247],
   'angsana-lang-co': [16.2953, 108.0195],
+  // Da Lat — most pins come from a Google Maps link the hotel publishes on its
+  // own site; the rest are OSM POI matches. Terracotta and Dalat Wonder publish
+  // neither (Wonder's address is ambiguous between two "Hoa Hong" streets), so
+  // they intentionally fall back to the Tuyen Lam Lake area centre.
+  'ana-mandara-villas-dalat': [11.9442, 108.4236],
+  'dalat-palace-heritage-hotel': [11.9376, 108.4405],
+  'dalat-edensee-lake-resort': [11.8868, 108.4209],
+  'swiss-belresort-tuyen-lam': [11.8824, 108.4493],
+  'ladalat-hotel': [11.9776, 108.451],
+  'colline-hotel-dalat': [11.9439, 108.4381],
+  'merperle-dalat-hotel': [11.941, 108.4583],
+  'ttc-hotel-da-lat-ngoc-lan': [11.9407, 108.4364],
 }
 
 /** [lat, lng] for a hotel — real coordinates when known, else area centre + jitter. */
