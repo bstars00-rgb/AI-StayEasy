@@ -63,6 +63,7 @@ export type Area =
   | 'Old Quarter'
   | 'West Lake'
   | 'French Quarter'
+  | 'Ba Dinh'
 
 export type HotelType =
   | 'Beach resort'

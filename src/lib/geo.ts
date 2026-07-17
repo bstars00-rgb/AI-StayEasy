@@ -42,6 +42,7 @@ const AREA: Record<string, LatLng> = {
   'Old Quarter': [21.034, 105.85],
   'West Lake': [21.07, 105.82],
   'French Quarter': [21.023, 105.848],
+  'Ba Dinh': [21.035, 105.814],
 }
 
 const FALLBACK: LatLng = [16.0544, 108.2022] // Da Nang / Vietnam-ish centre
@@ -105,6 +106,12 @@ const COORDS: Record<string, LatLng> = {
   'intercontinental-hanoi-westlake': [21.064, 105.822],
   'la-siesta-premium-hang-be': [21.034, 105.853],
   'apricot-hotel-hanoi': [21.028, 105.851],
+  'lotte-hotel-hanoi': [21.0319, 105.8123],
+  'melia-hanoi': [21.0234, 105.8464],
+  'pan-pacific-hanoi': [21.0498, 105.8399],
+  'hotel-de-lopera-hanoi-mgallery': [21.0244, 105.8583],
+  'solaria-hotel-hanoi': [21.0313, 105.8514],
+  'peridot-grand-hotel-spa-hanoi': [21.033, 105.8465],
 }
 
 /** [lat, lng] for a hotel — real coordinates when known, else area centre + jitter. */

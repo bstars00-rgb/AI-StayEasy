@@ -30,7 +30,9 @@ const PHOTO_POOL = [
   '1602002418082-a4443e081dd1', '1584132905271-512c958d674a', '1605346434674-a440ca4dc4c0',
   '1615460549969-36fa19521a4f', '1611048267451-e6ed903d4a38', '1591088398332-8a7791972843',
   '1613490493576-7fde63acd811', '1566665797739-1674de7a421a', '1600011689032-8b628b8a8747',
-  '1615529182904-14819c35db37', '1590073242678-70ee3fc28e8e',
+  '1615529182904-14819c35db37', '1590073242678-70ee3fc28e8e', '1618221195710-dd6b41faaea6',
+  '1596394516093-501ba68a0ba6', '1631049421450-348ccd7f8949', '1610641818989-c2051b5e2cfd',
+  '1631049552057-403cdb8f0658', '1578898887932-dce23a595ad4',
 ]
 const hashSlug = (s: string) => {
   let h = 0
@@ -1710,6 +1712,258 @@ const rawHotels: RawHotel[] = [
     emoji: '🎒',
     koreanFriendly: false,
   },
+  {
+    id: 'hn05',
+    priceTier: 'premium',
+    slug: 'lotte-hotel-hanoi',
+    name: 'Lotte Hotel Hanoi',
+    city: 'Hanoi',
+    area: 'Ba Dinh',
+    hotelType: 'City hotel',
+    // Content verified against the official site (lottehotel.com/hanoi-hotel) on 2026-07-17.
+    // Room count (318) circulates only in search snippets, so it is deliberately not stated.
+    shortDescription:
+      'A five-star hotel from Korea\'s Lotte chain occupying the upper floors of the 65-storey Lotte Center tower on Lieu Giai Street in Ba Dinh, with indoor and outdoor pools, Evian Spa, a large fitness centre, club-lounge floors and the Top of Hanoi rooftop.',
+    positioningLine: 'Korea\'s Lotte flagship in Hanoi — a five-star sky hotel atop the 65-storey Lotte Center tower.',
+    bestFor: ['Korean travelers wanting Korean-language service', 'Business travelers', 'Couples wanting skyline views'],
+    notIdealFor: ['Travelers who want to walk out into the Old Quarter', 'Budget travelers'],
+    mainReason: 'Hanoi\'s highest-profile Korean-run five-star — sky-high rooms, two pools and the Top of Hanoi rooftop, reserved directly with the hotel.',
+    thingsToCheck: ['Which floor and view direction your room faces', 'Whether club-lounge access is included on your rate', 'Whether breakfast is included'],
+    tags: ['Business', 'Couple', 'Korean-friendly'],
+    facilities: ['Pool', 'Spa', 'Gym', 'Restaurant', 'Bar', 'Free Wi-Fi'],
+    officialBenefits: ['Book direct on the official website (lottehotel.com) for member rates', 'Korean-language booking and service through the Lotte Hotels site', 'Reserve directly with the hotel — official site live chat and reservation desk'],
+    roomGuide: {
+      couples: 'A high-floor Deluxe room facing the city or West Lake for the skyline view.',
+      families: 'A suite, or connecting Deluxe rooms — confirm connecting availability directly.',
+      longStay: 'Club-floor rooms with lounge access make longer business stays easier.',
+      checkBeforeBooking: 'Confirm your floor and view direction — the tower faces both the city and West Lake.',
+    },
+    locationGuide: {
+      nearby: 'Upper floors of the Lotte Center tower on Lieu Giai Street, Ba Dinh; a short drive to the Ho Chi Minh Mausoleum quarter and West Lake.',
+      airportDistance: '~30–40 minutes from Noi Bai International Airport.',
+      gettingAround: 'A busy arterial location rather than a walking quarter — taxis/Grab reach the Old Quarter in ~10–15 minutes.',
+      nearbyFood: 'Dining inside the tower complex plus local eateries around Lieu Giai and Kim Ma; Ba Dinh\'s office lunch spots nearby.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('lotte-hotel-hanoi'),
+    officialWebsiteUrl: 'https://www.lottehotel.com/hanoi-hotel/en',
+    contact: { lang: 'ko', messenger: 'LOTTEHOTELHANOI' },
+    isSponsored: false,
+    similarHotelSlugs: ['pan-pacific-hanoi', 'intercontinental-hanoi-westlake', 'melia-hanoi'],
+    heroColor: 'from-rose-600 to-red-600',
+    emoji: '🗼',
+    koreanFriendly: true,
+  },
+  {
+    id: 'hn06',
+    priceTier: 'premium',
+    slug: 'melia-hanoi',
+    name: 'Melia Hanoi',
+    city: 'Hanoi',
+    area: 'French Quarter',
+    hotelType: 'Business hotel',
+    // Content verified against the official site (melia.com) on 2026-07-17.
+    // Room count (306) circulates only in search snippets, so it is deliberately not stated.
+    shortDescription:
+      'A five-star tower on Ly Thuong Kiet Street in central Hoan Kiem from Spain\'s Melia chain, with a rooftop outdoor pool, spa, gym, The Level executive floors and one of Vietnam\'s largest hotel convention centres.',
+    positioningLine: 'A central five-star business tower between the French Quarter and Hoan Kiem Lake.',
+    bestFor: ['Business travelers and conference guests', 'Travelers wanting a walkable central base', 'Couples combining sightseeing and comfort'],
+    notIdealFor: ['Travelers wanting a boutique or resort feel', 'Budget travelers'],
+    mainReason: 'A dependable central five-star with a rooftop pool and executive floors, an easy walk to Hoan Kiem Lake — reserved directly with the hotel.',
+    thingsToCheck: ['Standard room vs The Level room, as lounge access differs', 'Whether a convention is in-house during your dates', 'Whether breakfast is included on your rate'],
+    tags: ['Business', 'Couple'],
+    facilities: ['Pool', 'Spa', 'Gym', 'Restaurant', 'Bar', 'Free Wi-Fi', 'Parking'],
+    officialBenefits: ['Book direct on the official website (melia.com) — MeliaRewards member rates', 'Reserve directly with the hotel — rsvn@meliahanoi.com.vn · +84 24 3934 3343', 'The Level floors with lounge service are booked direct on the official site'],
+    roomGuide: {
+      couples: 'A high-floor Premium room, or The Level for lounge access and quieter floors.',
+      families: 'The Level rooms or a suite for more space — confirm extra-bed policy directly.',
+      longStay: 'The Level rooms make multi-day business stays easier with lounge workspace.',
+      checkBeforeBooking: 'Confirm whether your rate includes The Level lounge access — it changes the experience noticeably.',
+    },
+    locationGuide: {
+      nearby: '44B Ly Thuong Kiet Street in Hoan Kiem District; the Opera House and Hoan Kiem Lake are both walkable.',
+      airportDistance: '~35–45 minutes from Noi Bai International Airport.',
+      gettingAround: 'A very walkable central base — the French Quarter, Hoan Kiem Lake and the Old Quarter are all within a stroll or short taxi ride.',
+      nearbyFood: 'French Quarter cafes and restaurants along Ly Thuong Kiet, with the Old Quarter food streets a short walk north.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('melia-hanoi'),
+    officialWebsiteUrl: 'https://www.melia.com/en/hotels/vietnam/hanoi/melia-hanoi',
+    contact: { lang: 'en', email: 'rsvn@meliahanoi.com.vn', phone: '+842439343343', messenger: 'meliahanoihotel' },
+    isSponsored: false,
+    similarHotelSlugs: ['sofitel-legend-metropole-hanoi', 'hotel-de-lopera-hanoi-mgallery', 'apricot-hotel-hanoi'],
+    heroColor: 'from-slate-600 to-gray-700',
+    emoji: '🏙️',
+    koreanFriendly: false,
+  },
+  {
+    id: 'hn07',
+    priceTier: 'premium',
+    slug: 'pan-pacific-hanoi',
+    name: 'Pan Pacific Hanoi',
+    city: 'Hanoi',
+    area: 'West Lake',
+    hotelType: 'City hotel',
+    // Content verified against the official site (panpacific.com) on 2026-07-17.
+    shortDescription:
+      'A five-star hotel at 1 Thanh Nien Road on the causeway between West Lake and Truc Bach Lake, with an outdoor pool, The Spa, a fitness centre, the Pacific Club Lounge and five dining venues including the rooftop Summit Bar; serviced suites suit longer stays.',
+    positioningLine: 'Twin-lake views from the causeway between West Lake and Truc Bach Lake.',
+    bestFor: ['Couples wanting lake views', 'Business travelers', 'Long stays in the serviced suites'],
+    notIdealFor: ['Travelers who want to step straight into the Old Quarter', 'Budget travelers'],
+    mainReason: 'The twin-lake setting is unique in Hanoi — lakeview rooms, the rooftop Summit Bar and serviced suites, reserved directly with the hotel.',
+    thingsToCheck: ['Lakeview vs city-view room, as the view is the point here', 'Whether Pacific Club lounge access is included', 'Serviced-suite kitchen setup if staying long'],
+    tags: ['Couple', 'Business', 'Long Stay'],
+    facilities: ['Pool', 'Spa', 'Gym', 'Restaurant', 'Bar', 'Free Wi-Fi', 'Parking'],
+    officialBenefits: ['Book direct on the official website (panpacific.com) — Pan Pacific DISCOVERY member rates', 'Reserve directly with the hotel — enquiry.pphan@panpacific.com · +84 24 3823 8888', '1- and 2-bedroom serviced suites are bookable direct for longer stays'],
+    roomGuide: {
+      couples: 'A Premier Lakeview room — the West Lake sunset view is the reason to stay here.',
+      families: 'A Studio Suite, or the serviced suites with more living space.',
+      longStay: 'The 1–2 bedroom serviced suites are built for exactly this.',
+      checkBeforeBooking: 'Confirm lakeview vs city-view — the two sides are very different experiences.',
+    },
+    locationGuide: {
+      nearby: '1 Thanh Nien Road between West Lake and Truc Bach Lake, beside Tran Quoc Pagoda; the Old Quarter is a short ride south.',
+      airportDistance: '~30 minutes from Noi Bai International Airport (per the official site).',
+      gettingAround: 'Lakeside walks from the door; taxis/Grab reach the Old Quarter in ~10 minutes.',
+      nearbyFood: 'Truc Bach\'s lakeside cafes and pho cuon street (Ngu Xa) are beside the hotel; West Lake dining to the north.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('pan-pacific-hanoi'),
+    officialWebsiteUrl: 'https://www.panpacific.com/en/hotels-and-resorts/pp-hanoi.html',
+    contact: { lang: 'en', email: 'enquiry.pphan@panpacific.com', phone: '+842438238888', messenger: 'panpacifichanoi' },
+    isSponsored: false,
+    similarHotelSlugs: ['intercontinental-hanoi-westlake', 'lotte-hotel-hanoi', 'sofitel-legend-metropole-hanoi'],
+    heroColor: 'from-sky-600 to-blue-700',
+    emoji: '🌅',
+    koreanFriendly: false,
+  },
+  {
+    id: 'hn08',
+    priceTier: 'premium',
+    slug: 'hotel-de-lopera-hanoi-mgallery',
+    name: 'Hotel de l\'Opera Hanoi - MGallery',
+    city: 'Hanoi',
+    area: 'French Quarter',
+    hotelType: 'City hotel',
+    // Content verified against the official site (hoteldelopera.com) and the
+    // Accor MGallery chain page on 2026-07-17.
+    shortDescription:
+      'A five-star Accor MGallery boutique at 29 Trang Tien Street beside the Hanoi Opera House, with 107 French-colonial styled rooms and suites, a heated semi-outdoor pool, Harmonie Spa, a fitness centre and four dining venues including the La Fee Verte wine bar.',
+    positioningLine: 'A theatrical French-colonial boutique steps from the Opera House and Hoan Kiem Lake.',
+    bestFor: ['Couples wanting design and atmosphere', 'First-time visitors basing in the French Quarter', 'Opera House and Trang Tien shopping trips'],
+    notIdealFor: ['Travelers wanting a big resort or large pool', 'Budget travelers'],
+    mainReason: 'The most theatrical stay in the French Quarter — a design boutique beside the Opera House with a heated pool and wine bar, reserved directly with the hotel.',
+    thingsToCheck: ['Room size varies across the 107 rooms — confirm the category', 'Pool is semi-outdoor and heated — check seasonal hours', 'Whether breakfast at Cafe Lautrec is included'],
+    tags: ['Couple'],
+    facilities: ['Pool', 'Spa', 'Gym', 'Restaurant', 'Bar', 'Free Wi-Fi', 'Parking'],
+    officialBenefits: ['Book direct on the official website (hoteldelopera.com) — ALL (Accor Live Limitless) member rates', 'Reserve directly with the hotel — +84 24 6282 5555', 'Direct bookings through Accor earn ALL points and member pricing'],
+    roomGuide: {
+      couples: 'A Grand Deluxe or Suite — the French-colonial design is the reason to stay.',
+      families: 'A Suite for space; as a 107-room boutique it suits couples more than large families.',
+      longStay: 'A Suite; the French Quarter location suits shorter city stays best.',
+      checkBeforeBooking: 'Confirm the room category and view — the boutique layout means rooms differ noticeably.',
+    },
+    locationGuide: {
+      nearby: '29 Trang Tien Street — the Opera House, Trang Tien Plaza and Hoan Kiem Lake are all about a hundred metres away.',
+      airportDistance: '~40–50 minutes from Noi Bai International Airport.',
+      gettingAround: 'The most walkable corner of the French Quarter; the Old Quarter is ~15 minutes on foot around the lake.',
+      nearbyFood: 'French Quarter dining on Trang Tien and around the Opera House, plus the hotel\'s own Lautrec and Son Mai restaurants.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('hotel-de-lopera-hanoi-mgallery'),
+    officialWebsiteUrl: 'https://hoteldelopera.com/',
+    contact: { lang: 'en', phone: '+842462825555', messenger: 'hoteldelopera' },
+    isSponsored: false,
+    similarHotelSlugs: ['sofitel-legend-metropole-hanoi', 'melia-hanoi', 'apricot-hotel-hanoi'],
+    heroColor: 'from-violet-600 to-purple-700',
+    emoji: '🎭',
+    koreanFriendly: false,
+  },
+  {
+    id: 'hn09',
+    priceTier: 'mid',
+    slug: 'solaria-hotel-hanoi',
+    name: 'Solaria Hotel Hanoi',
+    city: 'Hanoi',
+    area: 'Old Quarter',
+    hotelType: 'City hotel',
+    // Content verified against the official site (solariahotel.com) on 2026-07-17.
+    // Independent boutique — NOT affiliated with Japan's Nishitetsu "Solaria" brand.
+    // Star rating is not stated on the official site, so none is claimed.
+    shortDescription:
+      'An independent boutique hotel at 22 Bao Khanh Street beside Hoan Kiem Lake, with boutique rooms across nine levels, family and connecting rooms, Sol Spa, two restaurants and the rooftop Sol Sky Bar.',
+    positioningLine: 'An independent boutique a two-minute walk from Hoan Kiem Lake, with a rooftop sky bar.',
+    bestFor: ['First-time visitors wanting the lake at the doorstep', 'Couples on a mid-range budget', 'Families using the connecting rooms'],
+    notIdealFor: ['Travelers wanting a pool or resort facilities', 'Light sleepers — Bao Khanh is a lively bar street'],
+    mainReason: 'Location is the product: Hoan Kiem Lake, the night market and the cathedral are all a couple of minutes on foot, with a rooftop bar above it all — reserved directly with the hotel.',
+    thingsToCheck: ['Window or balcony room vs an internal room', 'Street-facing rooms can hear Bao Khanh\'s nightlife — ask for a higher floor', 'Whether breakfast is included on your rate'],
+    tags: ['Couple', 'Family'],
+    facilities: ['Spa', 'Restaurant', 'Bar', 'Free Wi-Fi'],
+    officialBenefits: ['Book direct on the official website (solariahotel.com)', 'Reserve directly with the hotel — info@solariahotel.com · +84 24 3926 3456', 'Family and connecting rooms are easiest to arrange directly with the hotel'],
+    roomGuide: {
+      couples: 'A balcony room facing Bao Khanh for the streetlife, or a higher floor for quiet.',
+      families: 'The family rooms or connecting rooms — arrange directly with the hotel.',
+      longStay: 'A balcony room; as a compact Old Quarter boutique it suits shorter city stays.',
+      checkBeforeBooking: 'Confirm whether your room has a window or balcony — internal rooms are darker but quieter.',
+    },
+    locationGuide: {
+      nearby: '22 Bao Khanh, about two minutes on foot to Hoan Kiem Lake, Ngoc Son Temple, the Water Puppet Theatre and St. Joseph\'s Cathedral.',
+      airportDistance: '~40–50 minutes from Noi Bai International Airport.',
+      gettingAround: 'Everything central is walkable; the weekend walking streets start at the door.',
+      nearbyFood: 'Bao Khanh and Hang Trong are lined with cafes, bars and restaurants; Old Quarter street food in every direction.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('solaria-hotel-hanoi'),
+    officialWebsiteUrl: 'https://solariahotel.com/',
+    contact: { lang: 'en', email: 'info@solariahotel.com', phone: '+842439263456', messenger: 'Solariaboutiquehotel' },
+    isSponsored: false,
+    similarHotelSlugs: ['la-siesta-premium-hang-be', 'apricot-hotel-hanoi', 'peridot-grand-hotel-spa-hanoi'],
+    heroColor: 'from-orange-500 to-amber-500',
+    emoji: '🌞',
+    koreanFriendly: false,
+  },
+  {
+    id: 'hn10',
+    priceTier: 'premium',
+    slug: 'peridot-grand-hotel-spa-hanoi',
+    name: 'Peridot Grand Luxury Boutique Hotel',
+    city: 'Hanoi',
+    area: 'Old Quarter',
+    hotelType: 'City hotel',
+    // Content verified against the official site (peridotgrandhotel.com) on 2026-07-17.
+    // Room count is not stated on the official site, so none is claimed.
+    shortDescription:
+      'A five-star luxury boutique hotel at 33 Duong Thanh Street on the edge of the Old Quarter, with a rooftop infinity pool, the Ignite Sky Bar, Peridot Spa with jacuzzi, steam and sauna, a fitness centre and four dining venues.',
+    positioningLine: 'A nature-inspired luxury boutique on the Old Quarter\'s edge, crowned by a rooftop infinity pool.',
+    bestFor: ['Couples wanting a rooftop pool over the Old Quarter', 'Spa-focused stays', 'Travelers wanting luxury at boutique scale'],
+    notIdealFor: ['Travelers wanting a big international chain', 'Budget travelers'],
+    mainReason: 'The rooftop infinity pool over the Old Quarter is the signature — plus a full spa with jacuzzi, steam and sauna, reserved directly with the hotel.',
+    thingsToCheck: ['Room categories range from Chic Deluxe to Grand Suite — confirm size and window', 'Rooftop pool hours and weather policy', 'Whether breakfast is included on your rate'],
+    tags: ['Couple'],
+    facilities: ['Pool', 'Spa', 'Gym', 'Restaurant', 'Bar', 'Free Wi-Fi'],
+    officialBenefits: ['Book direct on the official website (peridotgrandhotel.com)', 'Reserve directly with the hotel — info.grand@peridothotels.com · +84 24 3828 0099', 'Suite and connecting-room requests are easiest to arrange directly'],
+    roomGuide: {
+      couples: 'A Grand Deluxe or Junior Suite, with evenings at the Ignite Sky Bar upstairs.',
+      families: 'The Premier or Grand Connecting Rooms — arrange directly with the hotel.',
+      longStay: 'A suite for space; the Old Quarter-edge location suits city stays of a few days.',
+      checkBeforeBooking: 'Confirm the room category — nine categories differ noticeably in size and light.',
+    },
+    locationGuide: {
+      nearby: '33 Duong Thanh Street beside Hang Da Market, on the western edge of the Old Quarter; Hoan Kiem Lake and St. Joseph\'s Cathedral are a short walk.',
+      airportDistance: '~40–50 minutes from Noi Bai International Airport.',
+      gettingAround: 'The Old Quarter is at the door; the cathedral quarter and the lake are ~10 minutes on foot.',
+      nearbyFood: 'Old Quarter food streets around Duong Thanh and Hang Da, plus the hotel\'s own 1968 and Olivine restaurants.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('peridot-grand-hotel-spa-hanoi'),
+    officialWebsiteUrl: 'https://peridotgrandhotel.com/',
+    contact: { lang: 'en', email: 'info.grand@peridothotels.com', phone: '+842438280099', messenger: 'Peridotgrandhotel' },
+    isSponsored: false,
+    similarHotelSlugs: ['la-siesta-premium-hang-be', 'solaria-hotel-hanoi', 'apricot-hotel-hanoi'],
+    heroColor: 'from-emerald-600 to-teal-600',
+    emoji: '💎',
+    koreanFriendly: false,
+  },
 ]
 
 /**
@@ -1765,8 +2019,14 @@ const EDITORIAL_SCORES: Record<string, number> = {
   // Hanoi — La Siesta, the standout Vietnamese-owned boutique brand.
   'la-siesta-premium-hang-be': 9.3,
   'sofitel-legend-metropole-hanoi': 9.2,
+  'lotte-hotel-hanoi': 9.0,
+  'hotel-de-lopera-hanoi-mgallery': 8.9,
+  'pan-pacific-hanoi': 8.8,
   'apricot-hotel-hanoi': 8.7,
   'intercontinental-hanoi-westlake': 8.6,
+  'melia-hanoi': 8.5,
+  'peridot-grand-hotel-spa-hanoi': 8.4,
+  'solaria-hotel-hanoi': 8.2,
 }
 
 /**
@@ -1814,7 +2074,7 @@ export function deriveConditions(h: Omit<Hotel, 'country' | 'conditions'>): Hote
 }
 
 // Unique photo per hotel: index each slug in sorted order into the verified
-// PHOTO_POOL. With 40 hotels and 44 distinct photos, no two ever collide.
+// PHOTO_POOL. With 46 hotels and 50 distinct photos, no two ever collide.
 const PHOTO_INDEX = new Map([...rawHotels].map((h) => h.slug).sort().map((slug, i) => [slug, i] as const))
 
 export const hotels: Hotel[] = rawHotels.map((h) => ({

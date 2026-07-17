@@ -45,18 +45,18 @@ function shapePaths(obj: unknown, prefix = ''): string[] {
 }
 
 describe('hotel data integrity', () => {
-  it('has 40 hotels across 6 cities with unique ids and slugs', () => {
-    expect(hotels).toHaveLength(40)
-    expect(new Set(hotels.map((h) => h.id)).size).toBe(40)
-    expect(new Set(hotels.map((h) => h.slug)).size).toBe(40)
+  it('has 46 hotels across 6 cities with unique ids and slugs', () => {
+    expect(hotels).toHaveLength(46)
+    expect(new Set(hotels.map((h) => h.id)).size).toBe(46)
+    expect(new Set(hotels.map((h) => h.slug)).size).toBe(46)
     // No two hotels share the same listing photo (stock, but never duplicated).
-    expect(new Set(hotels.map((h) => h.imageUrl)).size).toBe(40)
+    expect(new Set(hotels.map((h) => h.imageUrl)).size).toBe(46)
     expect(hotels.filter((h) => h.city === 'Da Nang')).toHaveLength(20)
     expect(hotels.filter((h) => h.city === 'Ho Chi Minh City')).toHaveLength(4)
     expect(hotels.filter((h) => h.city === 'Nha Trang')).toHaveLength(4)
     expect(hotels.filter((h) => h.city === 'Phu Quoc')).toHaveLength(4)
     expect(hotels.filter((h) => h.city === 'Hoi An')).toHaveLength(4)
-    expect(hotels.filter((h) => h.city === 'Hanoi')).toHaveLength(4)
+    expect(hotels.filter((h) => h.city === 'Hanoi')).toHaveLength(10)
   })
 
   it('every required field is populated', () => {
@@ -481,7 +481,7 @@ describe('back-office data', () => {
 describe('async data repo (mock-backed)', () => {
   it('resolves the full catalogue and a single hotel', async () => {
     const all = await repo.allHotels()
-    expect(all).toHaveLength(40)
+    expect(all).toHaveLength(46)
     const h = await repo.getHotel('olalani-resort-condotel')
     expect(h?.slug).toBe('olalani-resort-condotel')
   })
@@ -632,7 +632,7 @@ describe('hotel counts are derived from the catalogue (no drift)', () => {
   it('Vietnam market hotelCount equals the whole catalogue', () => {
     const vn = countries.find((c) => c.name === 'Vietnam')
     expect(vn?.hotelCount).toBe(hotels.filter((h) => h.country === 'Vietnam').length)
-    expect(vn?.hotelCount).toBe(40)
+    expect(vn?.hotelCount).toBe(46)
   })
 })
 
