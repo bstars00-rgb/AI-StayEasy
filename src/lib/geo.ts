@@ -31,13 +31,20 @@ const AREA: Record<string, LatLng> = {
   // Nha Trang
   'Nha Trang Beach': [12.2388, 109.196],
   'North Nha Trang': [12.265, 109.195],
+  'Bai Dong': [12.134, 109.212],
+  'Ninh Van Bay': [12.359, 109.277],
   // Phu Quoc
   'Long Beach': [10.19, 103.96],
   'Sao Beach': [10.05, 104.03],
+  'Kem Beach': [10.032, 104.028],
+  'Ong Lang': [10.259, 103.936],
+  'Ong Doi Cape': [10.005, 104.052],
   // Hoi An
   'Ancient Town': [15.877, 108.327],
   'An Bang Beach': [15.908, 108.34],
   'Cam Thanh': [15.885, 108.36],
+  'Cua Dai Beach': [15.898, 108.365],
+  'Ha My Beach': [15.929, 108.318],
   // Hanoi
   'Old Quarter': [21.034, 105.85],
   'West Lake': [21.07, 105.82],
@@ -119,6 +126,25 @@ const COORDS: Record<string, LatLng> = {
   'caravelle-saigon': [10.7761, 106.7034],
   'lotte-hotel-saigon': [10.7789, 106.7066],
   'new-world-saigon-hotel': [10.7708, 106.6945],
+  // Nha Trang / Phu Quoc / Hoi An (expansion)
+  'mia-resort-nha-trang': [12.1344, 109.2122],
+  'sheraton-nha-trang': [12.2463, 109.196],
+  'six-senses-ninh-van-bay': [12.3587, 109.2775],
+  'novotel-nha-trang': [12.2378, 109.1965],
+  'havana-nha-trang': [12.2435, 109.1958],
+  'vinpearl-beachfront-nha-trang': [12.2334, 109.1972],
+  'jw-marriott-phu-quoc-emerald-bay': [10.032, 104.0283],
+  'la-veranda-resort-phu-quoc': [10.1931, 103.965],
+  'regent-phu-quoc': [10.1107, 103.9857],
+  'premier-village-phu-quoc': [10.0053, 104.0519],
+  'mango-bay-resort-phu-quoc': [10.2591, 103.9362],
+  'sol-by-melia-phu-quoc': [10.1463, 103.9773],
+  'four-seasons-the-nam-hai-hoi-an': [15.9292, 108.3177],
+  'anantara-hoi-an-resort': [15.8801, 108.338],
+  'hotel-royal-hoi-an': [15.8767, 108.3198],
+  'victoria-hoi-an-beach-resort': [15.8954, 108.37],
+  'la-siesta-hoi-an-resort': [15.88, 108.3163],
+  'palm-garden-beach-resort-hoi-an': [15.9008, 108.3592],
 }
 
 /** [lat, lng] for a hotel — real coordinates when known, else area centre + jitter. */

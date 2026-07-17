@@ -52,13 +52,20 @@ export type Area =
   // Nha Trang
   | 'Nha Trang Beach'
   | 'North Nha Trang'
+  | 'Bai Dong'
+  | 'Ninh Van Bay'
   // Phu Quoc
   | 'Long Beach'
   | 'Sao Beach'
+  | 'Kem Beach'
+  | 'Ong Lang'
+  | 'Ong Doi Cape'
   // Hoi An
   | 'Ancient Town'
   | 'An Bang Beach'
   | 'Cam Thanh'
+  | 'Cua Dai Beach'
+  | 'Ha My Beach'
   // Hanoi
   | 'Old Quarter'
   | 'West Lake'
