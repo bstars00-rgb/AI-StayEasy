@@ -65,6 +65,12 @@ export const ATTRACTIONS: Attraction[] = [
   { id: 'crazy-house-dalat', city: 'Da Lat', lat: 11.9328, lng: 108.4318, category: 'landmark', name: { en: 'Hang Nga Guesthouse (Crazy House)', ko: '크레이지 하우스', vi: 'Biệt thự Hằng Nga', zh: '疯狂屋', ja: 'クレイジーハウス' } },
   { id: 'truc-lam-monastery', city: 'Da Lat', lat: 11.9033, lng: 108.4139, category: 'temple', name: { en: 'Truc Lam Zen Monastery', ko: '쭉럼 선원', vi: 'Thiền viện Trúc Lâm', zh: '竹林禅院', ja: 'チュックラム禅院' } },
   { id: 'tuyen-lam-lake', city: 'Da Lat', lat: 11.8969, lng: 108.4194, category: 'landmark', name: { en: 'Tuyen Lam Lake', ko: '뚜옌럼 호수', vi: 'Hồ Tuyền Lâm', zh: '宣林湖', ja: 'トゥエンラム湖' } },
+  // Sapa
+  { id: 'fansipan-summit', city: 'Sapa', lat: 22.3031, lng: 103.7756, category: 'landmark', name: { en: 'Fansipan Summit', ko: '판시판 정상', vi: 'Đỉnh Fansipan', zh: '番西邦峰', ja: 'ファンシーパン山頂' } },
+  { id: 'sapa-stone-church', city: 'Sapa', lat: 22.3357, lng: 103.8419, category: 'landmark', name: { en: 'Sapa Stone Church', ko: '사파 석조 교회', vi: 'Nhà thờ đá Sa Pa', zh: '沙巴石教堂', ja: 'サパ石の教会' } },
+  { id: 'muong-hoa-valley', city: 'Sapa', lat: 22.3057, lng: 103.8836, category: 'landmark', name: { en: 'Muong Hoa Valley', ko: '므엉호아 계곡', vi: 'Thung lũng Mường Hoa', zh: '孟华山谷', ja: 'ムオンホア渓谷' } },
+  { id: 'cat-cat-village', city: 'Sapa', lat: 22.3282, lng: 103.8322, category: 'landmark', name: { en: 'Cat Cat Village', ko: '깟깟 마을', vi: 'Bản Cát Cát', zh: '猫猫村', ja: 'カットカット村' } },
+  { id: 'sapa-market', city: 'Sapa', lat: 22.3345, lng: 103.8442, category: 'market', name: { en: 'Sapa Market', ko: '사파 시장', vi: 'Chợ Sa Pa', zh: '沙巴市场', ja: 'サパ市場' } },
 ]
 
 /** Attractions for a city, with the name resolved to the active language. */

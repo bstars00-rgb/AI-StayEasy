@@ -13,6 +13,7 @@ export const ko: Locale = {
       'Hoi An': '호이안',
       'Hue': '후에',
       'Da Lat': '달랏',
+      'Sapa': '사파',
     },
     area: {
       'My Khe Beach': '미케 비치',
@@ -48,6 +49,10 @@ export const ko: Locale = {
       'Tuyen Lam Lake': '뚜옌럼 호수',
       'Valley of Love': '러브 밸리',
       'Cam Ly': '껌리',
+      'Sapa Town': '사파 시내',
+      'Muong Hoa Valley': '므엉호아 계곡',
+      'Ham Rong': '함롱산',
+      'Ban Ho': '반호',
     },
     hotelType: {
       'Beach resort': '비치 리조트',

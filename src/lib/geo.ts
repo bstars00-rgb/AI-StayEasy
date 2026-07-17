@@ -18,6 +18,7 @@ const CITY: Record<string, LatLng> = {
   'Hanoi': [21.0278, 105.8342],
   'Hue': [16.4637, 107.5909],
   'Da Lat': [11.9404, 108.4583],
+  'Sapa': [22.3364, 103.8438],
 }
 
 /**
@@ -71,6 +72,11 @@ const AREA: Record<string, LatLng> = {
   'Da Lat|Tuyen Lam Lake': [11.8969, 108.4194],
   'Da Lat|Valley of Love': [11.9776, 108.451],
   'Da Lat|Cam Ly': [11.9442, 108.4236],
+  // Sapa
+  'Sapa|Sapa Town': [22.3357, 103.8419],
+  'Sapa|Muong Hoa Valley': [22.331, 103.846],
+  'Sapa|Ham Rong': [22.3236, 103.8521],
+  'Sapa|Ban Ho': [22.2762, 103.967],
 }
 
 const FALLBACK: LatLng = [16.0544, 108.2022] // Da Nang / Vietnam-ish centre
@@ -189,6 +195,14 @@ const COORDS: Record<string, LatLng> = {
   'colline-hotel-dalat': [11.9439, 108.4381],
   'merperle-dalat-hotel': [11.941, 108.4583],
   'ttc-hotel-da-lat-ngoc-lan': [11.9407, 108.4364],
+  // Sapa — these five publish their own map pin (Accor GPS, a Maps link, or an
+  // initMap marker). The other five publish none at all, so they intentionally
+  // fall back to their area centre rather than a geocoder's guess.
+  'hotel-de-la-coupole-sapa': [22.3347, 103.8404],
+  'topas-ecolodge-sapa': [22.2762, 103.967],
+  'sapa-jade-hill-resort': [22.3236, 103.8521],
+  'paos-sapa-leisure-hotel': [22.3311, 103.8432],
+  'eden-boutique-hotel-sapa': [22.3359, 103.8391],
 }
 
 /** [lat, lng] for a hotel — real coordinates when known, else area centre + jitter. */

@@ -85,7 +85,7 @@ const rawDestinations: Omit<Destination, 'country' | 'hotelCount'>[] = [
   {
     city: 'Sapa',
     slug: 'sapa',
-    available: false,
+    available: true,
     shortDescription: 'Misty northern highlands — terraced rice fields, hill-tribe villages, and Mount Fansipan.',
     description:
       'Cool mountain air, dramatic rice terraces, and ethnic-minority culture. A trekking and homestay base, with a cable car up Fansipan, Indochina’s highest peak.',

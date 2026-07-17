@@ -28,9 +28,9 @@ export type City =
   | 'Hue'
   | 'Hoi An'
   | 'Da Lat'
+  | 'Sapa'
   // Discoverable destinations (onboarding hotel partners)
   | 'Ha Long Bay'
-  | 'Sapa'
   | 'Ninh Binh'
   | 'Mui Ne'
   | 'Can Tho'
@@ -81,6 +81,11 @@ export type Area =
   | 'Tuyen Lam Lake'
   | 'Valley of Love'
   | 'Cam Ly'
+  // Sapa
+  | 'Sapa Town'
+  | 'Muong Hoa Valley'
+  | 'Ham Rong'
+  | 'Ban Ho'
 
 export type HotelType =
   | 'Beach resort'

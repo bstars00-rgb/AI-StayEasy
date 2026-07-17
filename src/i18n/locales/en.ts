@@ -13,6 +13,7 @@ export const en = {
       'Hoi An': 'Hoi An',
       'Hue': 'Hue',
       'Da Lat': 'Da Lat',
+      'Sapa': 'Sapa',
     },
     area: {
       'My Khe Beach': 'My Khe Beach',
@@ -48,6 +49,10 @@ export const en = {
       'Tuyen Lam Lake': 'Tuyen Lam Lake',
       'Valley of Love': 'Valley of Love',
       'Cam Ly': 'Cam Ly',
+      'Sapa Town': 'Sapa Town',
+      'Muong Hoa Valley': 'Muong Hoa Valley',
+      'Ham Rong': 'Ham Rong',
+      'Ban Ho': 'Ban Ho',
     },
     hotelType: {
       'Beach resort': 'Beach resort',

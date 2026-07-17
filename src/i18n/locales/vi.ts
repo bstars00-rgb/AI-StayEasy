@@ -13,6 +13,7 @@ export const vi: Locale = {
       'Hoi An': 'Hội An',
       'Hue': 'Huế',
       'Da Lat': 'Đà Lạt',
+      'Sapa': 'Sa Pa',
     },
     area: {
       'My Khe Beach': 'Bãi biển Mỹ Khê',
@@ -48,6 +49,10 @@ export const vi: Locale = {
       'Tuyen Lam Lake': 'Hồ Tuyền Lâm',
       'Valley of Love': 'Thung lũng Tình Yêu',
       'Cam Ly': 'Cam Ly',
+      'Sapa Town': 'Thị trấn Sa Pa',
+      'Muong Hoa Valley': 'Thung lũng Mường Hoa',
+      'Ham Rong': 'Núi Hàm Rồng',
+      'Ban Ho': 'Bản Hồ',
     },
     hotelType: {
       'Beach resort': 'Resort biển',

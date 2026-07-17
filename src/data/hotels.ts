@@ -47,6 +47,10 @@ const PHOTO_POOL = [
   '1524758631624-e2822e304c36', '1600607687939-ce8a6c25118c', '1600566753086-00f18fb6b3ea',
   '1600585154340-be6161a56a0c', '1600607687920-4e2a09cf159d', '1586023492125-27b2c045efd7',
   '1590073844006-33379778ae09', '1626178793926-22b28830aa30',
+  '1464822759023-fed622ff2c3b', '1483728642387-6c3bdd6c93e5', '1506905925346-21bda4d32df4',
+  '1470071459604-3b5ec3a7fe05', '1447752875215-b2761acb3c5d', '1441974231531-c6227db76b6e',
+  '1426604966848-d7adac402bff', '1501854140801-50d01698950b', '1472214103451-9374bd1c798e',
+  '1500581276021-a4bbcd0050c5', '1418065460487-3e41a6c84dc5',
 ]
 const hashSlug = (s: string) => {
   let h = 0
@@ -3856,6 +3860,455 @@ const rawHotels: RawHotel[] = [
     emoji: '🌸',
     koreanFriendly: false,
   },
+  {
+    id: 'sp01',
+    priceTier: 'premium',
+    slug: 'topas-ecolodge-sapa',
+    name: 'Topas Ecolodge',
+    city: 'Sapa',
+    area: 'Ban Ho',
+    hotelType: 'Family hotel',
+    // Content verified against the official site (topasecolodge.com) on
+    // 2026-07-17. No star rating is published, so none is claimed. The lodge's
+    // National Geographic recognition is the "Traveller Lakes and Mountains
+    // Collection 2024" — NOT the Unique Lodges programme, which its own site
+    // never claims; the copy stays with what the lodge itself says.
+    shortDescription:
+      'A hilltop ecolodge of 50 white-granite bungalows deep inside Hoang Lien National Park, about 45 minutes from Sapa town, with twin saltwater infinity pools cut into the mountainside, the Rice Spa, three restaurants and a team drawn almost entirely from the surrounding Hmong, Dao, Giay and Tay villages.',
+    positioningLine: 'A granite bungalow village on its own hilltop, deep in Hoang Lien National Park.',
+    bestFor: ['Trekkers basing inside the national park', 'Couples wanting mountain silence', 'Travelers who want their money to stay in the valley'],
+    notIdealFor: ['Travelers who want Sapa town at the door', 'Anyone unwilling to plan around the shuttle'],
+    mainReason: 'The most committed stay in Sapa — a lodge built of local granite, run by the neighbouring villages, 45 minutes from town and worth every one of them.',
+    thingsToCheck: ['The lodge is ~45 minutes from Sapa town — plan around the shuttle times', 'Bungalow category, especially if you want a Pool Villa', 'All dining is on-site; there is nothing else nearby'],
+    tags: ['Couple', 'Family'],
+    facilities: ['Pool', 'Spa', 'Restaurant', 'Bar', 'Free Wi-Fi'],
+    officialBenefits: ['Book direct on the official website (topasecolodge.com) — Korean-language option and a dedicated Korean sales contact', 'Reserve directly with the lodge — info@topasecolodge.com · +84 24 7307 0899', 'The Topas Mountain Express coach from Hanoi and the complimentary Sapa shuttle are arranged directly'],
+    roomGuide: {
+      couples: 'A Pool Villa, or a Deluxe Suite Bungalow facing the valley.',
+      families: 'A Garden Suite Bungalow — the lodge provides wooden cribs for infants.',
+      longStay: 'A Premium Executive Bungalow; the park rewards a slow week.',
+      checkBeforeBooking: 'Confirm the bungalow category and outlook — the hillside positions differ a lot.',
+    },
+    locationGuide: {
+      nearby: 'Lech Dao village, Ban Ho commune, on a hilltop inside Hoang Lien National Park, surrounded by rice valleys and Hmong, Dao, Giay and Tay villages.',
+      airportDistance: 'About 5 hours from Hanoi or Noi Bai Airport on the lodge\'s own Topas Mountain Express coach (per the official site).',
+      gettingAround: 'A complimentary shuttle runs to and from Sapa town — about 45 minutes each way, from the lodge\'s office on Le Van Tam Street.',
+      nearbyFood: 'Dining is entirely on-site — the 360, Pavilion and Stilt House restaurants and the Inn Bar; there is nothing else within reach.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('topas-ecolodge-sapa'),
+    officialWebsiteUrl: 'https://topasecolodge.com/',
+    contact: { lang: 'en', email: 'info@topasecolodge.com', phone: '+842473070899', messenger: 'topasecolodge' },
+    isSponsored: false,
+    similarHotelSlugs: ['sapa-jade-hill-resort', 'hotel-de-la-coupole-sapa', 'paos-sapa-leisure-hotel'],
+    heroColor: 'from-emerald-700 to-green-800',
+    emoji: '🏔️',
+    koreanFriendly: true,
+  },
+  {
+    id: 'sp02',
+    priceTier: 'premium',
+    slug: 'hotel-de-la-coupole-sapa',
+    name: 'Hotel de la Coupole - MGallery',
+    city: 'Sapa',
+    area: 'Sapa Town',
+    hotelType: 'City hotel',
+    // Content verified against the official site and Accor's live MGallery
+    // property page (A5V2) on 2026-07-17 — the MGallery affiliation is current,
+    // not lapsed. Official sources disagree on the Fansipan cable car distance
+    // ("direct access" vs 1.4 km) and on the Lao Cai station drive, so the copy
+    // avoids asserting either figure.
+    shortDescription:
+      'A five-star MGallery hotel of 249 rooms in the middle of Sapa town, designed by Bill Bensley in a French Indochine style that borrows from local hill-tribe dress, with the marble-columned Le Grand Bassin indoor pool and Nuages Spa on the seventh floor, the CHIC restaurant and the ABSINTHE rooftop bar.',
+    positioningLine: 'Bill Bensley\'s riot of French Indochine colour, right in the middle of Sapa town.',
+    bestFor: ['Couples who want design over minimalism', 'First-time visitors basing in town', 'Travelers heading for the Fansipan cable car'],
+    notIdealFor: ['Travelers who want a quiet mountain lodge', 'Budget travelers'],
+    mainReason: 'Nothing else in the mountains looks like this — a Bensley fantasia of couture and hill-tribe motifs, with the town at the door.',
+    thingsToCheck: ['Room category and outlook — 33 m² Classic to 116 m² Presidential', 'Official sources differ on the cable-car walk — confirm with the hotel', 'Whether breakfast is included on your rate'],
+    tags: ['Couple', 'Business'],
+    facilities: ['Pool', 'Spa', 'Gym', 'Restaurant', 'Bar', 'Free Wi-Fi'],
+    officialBenefits: ['Book direct on the official website (hoteldelacoupole.com) — full Korean-language site and ALL member rates', 'Reserve directly with the hotel — HA5V2-RE@accor.com · +84 214 362 9999', 'Direct bookings through Accor earn ALL points and member pricing'],
+    roomGuide: {
+      couples: 'A Deluxe Room, or a Deluxe Suite if you want the design to stretch out.',
+      families: 'An Executive Suite; the hotel reads more couple than family.',
+      longStay: 'A suite — the town location suits a few days of trekking day-trips.',
+      checkBeforeBooking: 'Confirm the category and view — the rooms range from 33 to 116 m².',
+    },
+    locationGuide: {
+      nearby: '1 Hoang Lien Street in central Sapa; Accor puts the Sapa Stone Church about 200 m away and Sapa Market roughly 1.5 km.',
+      airportDistance: 'Official sources differ — the hotel says about 5 hours by car from Hanoi, Accor about 4 hours from Noi Bai Airport. Confirm directly.',
+      gettingAround: 'Central Sapa is walkable from the door; the Fansipan cable car is close, though official sources give different figures.',
+      nearbyFood: 'Sapa Market and the town\'s food streets are a walk away; CHIC, CACAO and the ABSINTHE rooftop bar are in-house.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('hotel-de-la-coupole-sapa'),
+    officialWebsiteUrl: 'https://www.hoteldelacoupole.com/',
+    contact: { lang: 'ko', email: 'HA5V2-RE@accor.com', phone: '+842143629999', messenger: 'HoteldelaCoupole' },
+    isSponsored: false,
+    similarHotelSlugs: ['silk-path-grand-sapa', 'paos-sapa-leisure-hotel', 'topas-ecolodge-sapa'],
+    heroColor: 'from-rose-600 to-red-700',
+    emoji: '🎭',
+    koreanFriendly: true,
+  },
+  {
+    id: 'sp03',
+    priceTier: 'premium',
+    slug: 'sapa-jade-hill-resort',
+    name: 'Sapa Jade Hill Resort & Spa',
+    city: 'Sapa',
+    area: 'Ham Rong',
+    hotelType: 'Family hotel',
+    // Content verified against the official site (sapajadehillresort.com) on
+    // 2026-07-17. No star rating and no unit count are published, so neither is
+    // stated. The pool is a retractable-glass-roof infinity pool — not simply
+    // "indoor", and "heated" is never officially claimed.
+    shortDescription:
+      'A bungalow-and-villa resort on the southern slope of Ham Rong mountain among ancient Samu pines, two kilometres from Sapa town, with palm-thatched roofs and hand-laid stone fences, the year-round Tus Dej infinity pool under a retractable glass roof, the Huab Spa\'s Red Dao herbal baths and a kids\' club built entirely from natural wood.',
+    positioningLine: 'Thatched bungalows in the Samu pines, five minutes from town.',
+    bestFor: ['Families — the wooden kids\' club runs weekly workshops', 'Couples wanting a bungalow rather than a hotel room', 'Travelers who want the valley without leaving town behind'],
+    notIdealFor: ['Travelers wanting a compact town hotel', 'Those needing a conventional heated indoor pool'],
+    mainReason: 'A resort built the way the valley builds — palm thatch, stone, Samu pine — with a glass-roofed infinity pool that works whatever Sapa\'s weather does.',
+    thingsToCheck: ['Bungalow vs Nest Villa — quite different stays', 'The pool has a retractable glass roof rather than fixed heating', 'Whether breakfast is included on your rate'],
+    tags: ['Family', 'Couple'],
+    facilities: ['Pool', 'Kids club', 'Spa', 'Gym', 'Restaurant', 'Bar', 'Free Wi-Fi'],
+    officialBenefits: ['Book direct on the official website (sapajadehillresort.com) — full Korean-language site available', 'Reserve directly with the resort — info@sapajadehill.com · +84 214 377 1199', 'Bungalow and villa requests are easiest to arrange directly'],
+    roomGuide: {
+      couples: 'A Bungalow Panorama View over Muong Hoa valley.',
+      families: 'A Nest Villa, with the natural-wood kids\' club and its workshops nearby.',
+      longStay: 'A Nest Villa — the pine slope rewards staying put.',
+      checkBeforeBooking: 'Confirm the bungalow category and outlook — panorama, mountain and valley views differ.',
+    },
+    locationGuide: {
+      nearby: 'The southern slope of Ham Rong mountain in Samu pine forest, facing Muong Hoa valley — two kilometres, about five minutes, from the heart of Sapa town (per the official site).',
+      airportDistance: 'From Hanoi: about 6 hours by car or sleeper bus, or 8–10 hours by train and car via the Noi Bai–Lao Cai expressway (per the official site).',
+      gettingAround: 'Town is five minutes away by car; the resort itself is the destination.',
+      nearbyFood: 'NOJ Restaurant, the BARrel craft-beer bar and the Highland Market dining experience are all on-site.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('sapa-jade-hill-resort'),
+    officialWebsiteUrl: 'https://sapajadehillresort.com/en/',
+    contact: { lang: 'ko', email: 'info@sapajadehill.com', phone: '+842143771199', messenger: 'SapaJadeHillResort' },
+    isSponsored: false,
+    similarHotelSlugs: ['topas-ecolodge-sapa', 'paos-sapa-leisure-hotel', 'bamboo-sapa-hotel'],
+    heroColor: 'from-teal-600 to-emerald-700',
+    emoji: '🌲',
+    koreanFriendly: true,
+  },
+  {
+    id: 'sp04',
+    priceTier: 'premium',
+    slug: 'paos-sapa-leisure-hotel',
+    name: 'Pao\'s Sapa Leisure Hotel',
+    city: 'Sapa',
+    area: 'Sapa Town',
+    hotelType: 'City hotel',
+    // Content verified against the official site (paoshotel.com) on 2026-07-17.
+    // No star rating is published (OTAs say five-star), so none is claimed. The
+    // pool is four-season and indoor per the official wording, but the site
+    // never says "heated" — so neither does this copy.
+    shortDescription:
+      'A 223-room hillside hotel above Sapa town looking out over Muong Hoa valley and the Hoang Lien Son range, with a four-season indoor pool on the third floor, Pao\'s Spa and its Red Dao herbal bathtubs, the A Linh restaurant and the MK Rooftop Bar.',
+    positioningLine: 'A hillside address above the town, with the valley filling the windows.',
+    bestFor: ['Couples wanting a valley view without leaving town', 'Groups — the hotel runs to 223 rooms', 'Travelers who want a rooftop bar over Muong Hoa'],
+    notIdealFor: ['Travelers wanting a small boutique', 'Those who need a kids\' club'],
+    mainReason: 'The view does the work — a hillside hotel over Muong Hoa valley with a four-season indoor pool and a rooftop bar, minutes above the town.',
+    thingsToCheck: ['Garden view vs valley view — the valley side is the point', 'The pool is four-season and indoor; the hotel does not describe it as heated', 'Whether breakfast is included on your rate'],
+    tags: ['Couple', 'Business'],
+    facilities: ['Pool', 'Spa', 'Gym', 'Restaurant', 'Bar', 'Free Wi-Fi'],
+    officialBenefits: ['Book direct on the official website (paoshotel.com)', 'Reserve directly with the hotel — rsvn@paoshotel.com · +84 214 6253 999', 'Suite requests are easiest to arrange directly'],
+    roomGuide: {
+      couples: 'A Deluxe Valley View, or the 157 m² Pao\'s Suite for an occasion.',
+      families: 'A Family Suite; there is no kids\' club.',
+      longStay: 'A Premium Deluxe — the hillside setting suits longer trekking bases.',
+      checkBeforeBooking: 'Confirm valley view vs garden view — the two sides are very different.',
+    },
+    locationGuide: {
+      nearby: 'Cau May 1 on a hillside above Sapa town, facing Muong Hoa valley and the Hoang Lien Son range.',
+      airportDistance: 'The hotel does not publish transfer distances — confirm directly.',
+      gettingAround: 'The town centre is just below; the valley trails start beyond it.',
+      nearbyFood: 'A Linh Restaurant, the Lobby Lounge, the MK Rooftop Bar and the Pool Bar are in-house; the town\'s food is a short walk down.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('paos-sapa-leisure-hotel'),
+    officialWebsiteUrl: 'https://paoshotel.com/',
+    contact: { lang: 'en', email: 'rsvn@paoshotel.com', phone: '+842146253999', messenger: 'paoshotel' },
+    isSponsored: false,
+    similarHotelSlugs: ['hotel-de-la-coupole-sapa', 'silk-path-grand-sapa', 'kk-sapa-hotel'],
+    heroColor: 'from-amber-600 to-orange-700',
+    emoji: '⛰️',
+    koreanFriendly: false,
+  },
+  {
+    id: 'sp05',
+    priceTier: 'premium',
+    slug: 'silk-path-grand-sapa',
+    name: 'Silk Path Grand Sapa Resort & Spa',
+    city: 'Sapa',
+    area: 'Sapa Town',
+    hotelType: 'Family hotel',
+    // Content verified against the official brand site (silkpathhotel.com/sapa)
+    // on 2026-07-17. It is widely called five-star, but no official page states
+    // a class — so none is claimed. Every distance figure that circulates for
+    // this property traces to OTAs, so none is stated. Its site links only the
+    // brand-level Facebook page, so no property messenger is attributed.
+    shortDescription:
+      'A 152-room resort perched on one of Sapa\'s highest hills inside the town, built around the region\'s French hill-station heritage, with a four-season indoor pool that is heated through the winter, the Chi Spa and its Dao herbal baths, a Kidz Club for under-sixes and an hourly buggy down to the town centre.',
+    positioningLine: 'On the town\'s highest hill, with an hourly buggy down to the market.',
+    bestFor: ['Families — a Kidz Club plus a genuinely heated winter pool', 'Couples wanting the view without leaving town', 'Cold-season visitors'],
+    notIdealFor: ['Travelers wanting a small boutique', 'Those who want to step straight onto the street'],
+    mainReason: 'The pool is heated when Sapa turns cold, the Kidz Club takes the under-sixes, and a buggy runs to the market every hour — reserved directly with the resort.',
+    thingsToCheck: ['Garden view vs mountain view — the hill is the reason to be here', 'The buggy to town runs hourly; plan around it', 'Whether breakfast is included on your rate'],
+    tags: ['Family', 'Couple'],
+    facilities: ['Pool', 'Kids club', 'Spa', 'Gym', 'Restaurant', 'Bar', 'Free Wi-Fi'],
+    officialBenefits: ['Book direct on the official website (silkpathhotel.com) — Korean-language site available', 'Reserve directly with the resort — reservation@silkpathhotel.com · +84 214 3788 555', 'Suite and connecting-room requests are easiest to arrange directly'],
+    roomGuide: {
+      couples: 'A Balcony Premium Classic Mountain View, or a Balcony Junior Suite.',
+      families: 'A Family Connecting room, with the Kidz Club for the under-sixes.',
+      longStay: 'A Duplex or Grand Suite for space on the hill.',
+      checkBeforeBooking: 'Confirm mountain view vs garden view — the hilltop position is the draw.',
+    },
+    locationGuide: {
+      nearby: 'Doi Quan 6 on one of Sapa\'s highest hills, inside the town itself.',
+      airportDistance: 'The resort does not publish transfer distances — confirm directly.',
+      gettingAround: 'An hourly buggy runs between the resort and the town centre (per the official site).',
+      nearbyFood: 'Samu, Olivio and Cafe 1500 Then Yard are in-house; the town\'s food is a buggy ride below.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('silk-path-grand-sapa'),
+    officialWebsiteUrl: 'https://silkpathhotel.com/sapa/',
+    contact: { lang: 'ko', email: 'reservation@silkpathhotel.com', phone: '+842143788555' },
+    isSponsored: false,
+    similarHotelSlugs: ['hotel-de-la-coupole-sapa', 'paos-sapa-leisure-hotel', 'sapa-jade-hill-resort'],
+    heroColor: 'from-indigo-600 to-blue-800',
+    emoji: '🚠',
+    koreanFriendly: true,
+  },
+  {
+    id: 'sp06',
+    priceTier: 'premium',
+    slug: 'kk-sapa-hotel',
+    name: 'KK Sapa Hotel',
+    city: 'Sapa',
+    area: 'Muong Hoa Valley',
+    hotelType: 'City hotel',
+    // Content verified against the official site (kksapahotel.com) on
+    // 2026-07-17. No star class and no room count are published — the "5-star"
+    // and "119 rooms" figures circulating are OTA-only. NOTE: the site's footer
+    // address is the operating company's tax registration in Phu Tho province,
+    // NOT the hotel; the property addresses come from its own FAQ. The spa is
+    // called "Royal Spa" in the site nav but "Dao Spa" in the page body, so the
+    // copy leaves it unnamed rather than pick a side.
+    shortDescription:
+      'A Sapa town hotel working from two lobbies — check-in on Violet Road, the second on Muong Hoa Road eight minutes\' walk from the Stone Church — with a four-season heated indoor pool behind glass walls, an eleventh-floor spa, a Kid Club and dining at the Sin Chai and Ta Phin restaurants and the Ban Ho Bar.',
+    positioningLine: 'A heated indoor pool behind glass, with the mist on the other side.',
+    bestFor: ['Cold-season visitors — the pool is heated year-round', 'Families using the Kid Club', 'Travelers wanting Fansipan views from breakfast'],
+    notIdealFor: ['Travelers wanting a small boutique', 'Those who dislike a two-building layout'],
+    mainReason: 'A four-season heated pool wrapped in glass, so you swim warm while Sapa\'s mist rolls past — reserved directly with the hotel.',
+    thingsToCheck: ['The hotel has two lobbies — check in at 025 Violet Road', 'Which building your room is in', 'Whether breakfast at Ta Phin is included'],
+    tags: ['Family', 'Couple'],
+    facilities: ['Pool', 'Kids club', 'Spa', 'Gym', 'Restaurant', 'Bar', 'Free Wi-Fi'],
+    officialBenefits: ['Book direct on the official website (kksapahotel.com)', 'Reserve directly with the hotel — reservation@kksapahotel.com · +84 214 379 8888', 'Suite requests and the station shuttle are easiest to arrange directly'],
+    roomGuide: {
+      couples: 'A Premier or Mountain Suite for the Fansipan outlook.',
+      families: 'A Family or Grand Family room, with the Kid Club downstairs.',
+      longStay: 'A Mountain Suite; the town is at the door either way.',
+      checkBeforeBooking: 'Confirm which lobby and building — check-in is at 025 Violet Road.',
+    },
+    locationGuide: {
+      nearby: 'Two lobbies in Sapa town — 025 Violet Road for check-in and 036 Muong Hoa Road, about eight minutes\' walk from the Stone Church (per the official site).',
+      airportDistance: 'The hotel does not publish transfer distances, but it runs an airport and station shuttle — arrange it directly.',
+      gettingAround: 'Central Sapa is on foot; the Muong Hoa road runs down into the valley.',
+      nearbyFood: 'Sin Chai and Ta Phin restaurants and the Ban Ho Bar are in-house; the town\'s food streets are minutes away.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('kk-sapa-hotel'),
+    officialWebsiteUrl: 'https://kksapahotel.com/en',
+    contact: { lang: 'en', email: 'reservation@kksapahotel.com', phone: '+842143798888', messenger: 'KKSapahotel' },
+    isSponsored: false,
+    similarHotelSlugs: ['bamboo-sapa-hotel', 'paos-sapa-leisure-hotel', 'amazing-hotel-sapa'],
+    heroColor: 'from-sky-600 to-cyan-700',
+    emoji: '🏊',
+    koreanFriendly: false,
+  },
+  {
+    id: 'sp07',
+    priceTier: 'premium',
+    slug: 'aliana-boutique-sapa',
+    name: 'ALIANA Boutique Sapa Hotel & Spa',
+    city: 'Sapa',
+    area: 'Sapa Town',
+    hotelType: 'City hotel',
+    // Content verified against the official site (alianaboutiquesapa.com) on
+    // 2026-07-17. This property formerly traded as Aira Boutique Sapa — that
+    // domain no longer resolves and the AIRA group site no longer lists a Sapa
+    // property, so it is published under its current name with no group claim.
+    // No star class or room count is published, so neither is stated.
+    shortDescription:
+      'A boutique hotel and spa at 30 Hoang Lien Street in Sapa town, a five-minute walk from the stone church, with rooms and terraced suites facing Fansipan and the Muong Hoa valley, plus the ALIANA Spa, the ALIANA Restaurant and a gym.',
+    positioningLine: 'A boutique in the middle of town, with Fansipan out of the balcony.',
+    bestFor: ['Couples wanting a balcony over the valley', 'Travelers who want to walk to everything', 'Suite and terrace stays'],
+    notIdealFor: ['Travelers wanting a resort with grounds', 'Those needing a kids\' club'],
+    mainReason: 'A boutique that puts Fansipan on your balcony and the stone church five minutes away on foot — reserved directly with the hotel.',
+    thingsToCheck: ['Window vs balcony vs terrace — the outlook is the point here', 'The hotel does not state whether the pool is heated — ask if travelling in winter', 'Whether breakfast is included on your rate'],
+    tags: ['Couple'],
+    facilities: ['Pool', 'Spa', 'Gym', 'Restaurant', 'Free Wi-Fi'],
+    officialBenefits: ['Book direct on the official website (alianaboutiquesapa.com)', 'Reserve directly with the hotel — info@alianaboutiquesapa.com · +84 214 377 2268', 'Suite and terrace requests are easiest to arrange directly'],
+    roomGuide: {
+      couples: 'A Premier Deluxe Balcony or a Suite Balcony facing Fansipan.',
+      families: 'A Family Balcony, or the inter-connecting family rooms.',
+      longStay: 'A Duplex Suite Terrace for space in the middle of town.',
+      checkBeforeBooking: 'Confirm the category — window, balcony and terrace rooms differ noticeably.',
+    },
+    locationGuide: {
+      nearby: '30 Hoang Lien Street in Sapa town — the official site puts the stone church a five-minute walk (700 m), Sapa station 500 m, Sapa Lake 1.2 km and the cable car station 6 km.',
+      airportDistance: 'Lao Cai train station is 35 km (per the official site).',
+      gettingAround: 'Everything central is walkable; the cable car is a short drive.',
+      nearbyFood: 'Sapa Market is about 3 km; the town\'s food streets are minutes away, and the ALIANA Restaurant is in-house.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('aliana-boutique-sapa'),
+    officialWebsiteUrl: 'https://alianaboutiquesapa.com/',
+    contact: { lang: 'en', email: 'info@alianaboutiquesapa.com', phone: '+842143772268', messenger: 'alianaboutiquesapa' },
+    isSponsored: false,
+    similarHotelSlugs: ['eden-boutique-hotel-sapa', 'amazing-hotel-sapa', 'hotel-de-la-coupole-sapa'],
+    heroColor: 'from-violet-600 to-purple-700',
+    emoji: '🌾',
+    koreanFriendly: false,
+  },
+  {
+    id: 'sp08',
+    priceTier: 'mid',
+    slug: 'bamboo-sapa-hotel',
+    name: 'Bamboo Sapa Hotel',
+    city: 'Sapa',
+    area: 'Muong Hoa Valley',
+    hotelType: 'City hotel',
+    // Content verified against the official site (bamboosapahotel.com.vn) on
+    // 2026-07-17. The site says its 106 rooms "meet international 4-star
+    // standard" — that describes the rooms, not a classification, so no star is
+    // set. The pool is outdoor; the "indoor pool" claim circulating is OTA-only.
+    shortDescription:
+      'A 106-room hotel at 18 Muong Hoa Road looking straight down Muong Hoa valley toward the Hoang Lien Son range, with what it calls Sapa\'s first infinity pool — outdoors, facing the valley — plus the Bamboo Spa\'s Red Dao herbal treatments and a 250-seat restaurant.',
+    positioningLine: 'An infinity pool pointed straight down Muong Hoa valley.',
+    bestFor: ['Couples wanting the valley view at a mid-range price', 'Photographers — the outlook is the product', 'Groups and events'],
+    notIdealFor: ['Winter visitors who need an indoor pool', 'Travelers wanting a small boutique'],
+    mainReason: 'The valley is the whole point — an outdoor infinity pool and rooms aimed at Muong Hoa and the Hoang Lien Son range, reserved directly with the hotel.',
+    thingsToCheck: ['The infinity pool is outdoors — Sapa gets cold, so check the season', 'Mountain view vs standard room', 'Whether breakfast is included on your rate'],
+    tags: ['Couple', 'Business'],
+    facilities: ['Pool', 'Spa', 'Gym', 'Restaurant', 'Free Wi-Fi'],
+    officialBenefits: ['Book direct on the official website (bamboosapahotel.com.vn)', 'Reserve directly with the hotel — res@bamboosapahotel.com.vn · +84 214 3871 076', 'Suite and connecting-room requests are easiest to arrange directly'],
+    roomGuide: {
+      couples: 'A Deluxe or Grand Mountain View — the valley fills the window.',
+      families: 'A Family Classic or Family Suite Connecting room.',
+      longStay: 'A Bamboo Suite; the Muong Hoa road runs into the valley from the door.',
+      checkBeforeBooking: 'Confirm the mountain-view category — that outlook is the reason to stay.',
+    },
+    locationGuide: {
+      nearby: '18 Muong Hoa Road, overlooking Muong Hoa valley and the Hoang Lien Son range.',
+      airportDistance: 'The hotel does not publish transfer distances — confirm directly.',
+      gettingAround: 'Sapa town is up the road; Muong Hoa runs down into the valley and the trekking villages.',
+      nearbyFood: 'The 250-seat Bamboo Restaurant is in-house; the town\'s food is a short walk up.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('bamboo-sapa-hotel'),
+    officialWebsiteUrl: 'https://www.bamboosapahotel.com.vn/',
+    contact: { lang: 'en', email: 'res@bamboosapahotel.com.vn', phone: '+842143871076', messenger: 'bamboosapa.hotel' },
+    isSponsored: false,
+    similarHotelSlugs: ['kk-sapa-hotel', 'amazing-hotel-sapa', 'paos-sapa-leisure-hotel'],
+    heroColor: 'from-lime-600 to-green-700',
+    emoji: '🎋',
+    koreanFriendly: false,
+  },
+  {
+    id: 'sp09',
+    priceTier: 'mid',
+    slug: 'eden-boutique-hotel-sapa',
+    name: 'Eden Boutique Hotel & Spa',
+    city: 'Sapa',
+    area: 'Sapa Town',
+    hotelType: 'City hotel',
+    // Content verified against the official site (edenboutiquehotelspa.com) on
+    // 2026-07-17. The site's Facebook icon links to a bare placeholder, and no
+    // email is published anywhere, so neither is listed — the phone and the
+    // official site are the only channels. The spa and restaurant are unnamed
+    // officially; the names circulating are OTA-only.
+    shortDescription:
+      'A four-star boutique hotel of 55 rooms on Thac Bac Street, a three-minute walk from the heart of Sapa town, with an outdoor pool, a rooftop terrace, a 24-hour front desk and a spa with sauna and steam room.',
+    positioningLine: 'A three-minute walk from the middle of town, with a rooftop to come back to.',
+    bestFor: ['First-time visitors who want to walk everywhere', 'Couples on a mid-range budget', 'Short Sapa stays'],
+    notIdealFor: ['Winter visitors needing an indoor pool', 'Travelers wanting resort grounds'],
+    mainReason: 'A straightforward, well-placed base — 55 rooms three minutes from the centre, with a rooftop terrace over the town, reserved directly with the hotel.',
+    thingsToCheck: ['Room outlook — the site offers mountain, valley and city view balconies', 'The pool is outdoors; Sapa is cold outside summer', 'Whether breakfast is included on your rate'],
+    tags: ['Couple'],
+    facilities: ['Pool', 'Spa', 'Restaurant', 'Free Wi-Fi'],
+    officialBenefits: ['Book direct on the official website (edenboutiquehotelspa.com)', 'Reserve directly with the hotel — +84 93 467 7388', 'View and connecting-room requests are easiest to arrange directly'],
+    roomGuide: {
+      couples: 'A Premier Deluxe or Junior Suite with a valley-view balcony.',
+      families: 'A Deluxe Family or Family Deluxe Premier room.',
+      longStay: 'A Junior Suite; the central location suits a few days of day-trips.',
+      checkBeforeBooking: 'Confirm the balcony view — mountain, valley and city outlooks are offered separately.',
+    },
+    locationGuide: {
+      nearby: '03B Thac Bac Street — the official site puts the heart of Sapa town a three-minute walk away.',
+      airportDistance: 'The hotel does not publish transfer distances — confirm directly.',
+      gettingAround: 'Everything central is on foot from the door.',
+      nearbyFood: 'The town\'s food streets are a three-minute walk; the hotel has its own restaurant.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('eden-boutique-hotel-sapa'),
+    officialWebsiteUrl: 'https://edenboutiquehotelspa.com/',
+    contact: { lang: 'en', phone: '+84934677388' },
+    isSponsored: false,
+    similarHotelSlugs: ['aliana-boutique-sapa', 'amazing-hotel-sapa', 'bamboo-sapa-hotel'],
+    heroColor: 'from-pink-500 to-rose-600',
+    emoji: '🌿',
+    koreanFriendly: false,
+  },
+  {
+    id: 'sp10',
+    priceTier: 'mid',
+    slug: 'amazing-hotel-sapa',
+    name: 'Amazing Hotel Sapa',
+    city: 'Sapa',
+    area: 'Sapa Town',
+    hotelType: 'City hotel',
+    // Content verified against the official site (amazinghotelsapa.com) on
+    // 2026-07-17. No star class is claimed: the About page states an ambition
+    // to be recognised as a 4.5-star hotel within five years — a goal, not a
+    // rating. The pool is described only as indoor; "heated" is an OTA claim
+    // and is not repeated here.
+    shortDescription:
+      'An 82-room hotel on Dong Loi road in the middle of Sapa, two hundred metres from the Stone Church and the town square and five hundred from Sapa Lake, with an indoor pool, a spa, a gym and karaoke.',
+    positioningLine: 'Two hundred metres from the Stone Church, in the middle of everything.',
+    bestFor: ['First-time visitors who want the centre at the door', 'Couples on a mid-range budget', 'Short stays between treks'],
+    notIdealFor: ['Travelers wanting a valley view', 'Those wanting resort grounds'],
+    mainReason: 'You cannot be much more central — the Stone Church, the square and the market are all a few minutes on foot, reserved directly with the hotel.',
+    thingsToCheck: ['The pool is indoor; the hotel does not describe it as heated', 'Room category — the hotel runs to 82 rooms across several tiers', 'Whether breakfast is included on your rate'],
+    tags: ['Couple', 'Family'],
+    facilities: ['Pool', 'Spa', 'Gym', 'Restaurant', 'Bar', 'Free Wi-Fi'],
+    officialBenefits: ['Book direct on the official website (amazinghotelsapa.com)', 'Reserve directly with the hotel — reservations@amazinghotelsapa.com · +84 214 3865 888', 'Family and connecting-room requests are easiest to arrange directly'],
+    roomGuide: {
+      couples: 'A Deluxe Room in the centre of town.',
+      families: 'A Deluxe Family or a Connecting Room.',
+      longStay: 'A Deluxe Room; the central position suits a trekking base.',
+      checkBeforeBooking: 'Confirm the room category — Superior and Deluxe differ in size and outlook.',
+    },
+    locationGuide: {
+      nearby: 'Dong Loi road in central Sapa — the official site puts the Stone Church and Sapa Square 200 m away and Sapa Lake 500 m.',
+      airportDistance: 'The hotel does not publish transfer distances — confirm directly.',
+      gettingAround: 'The whole centre is walkable; tours are booked at the in-house desk.',
+      nearbyFood: 'Sapa\'s food streets and market are all within a few minutes\' walk.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('amazing-hotel-sapa'),
+    officialWebsiteUrl: 'https://amazinghotelsapa.com/',
+    contact: { lang: 'en', email: 'reservations@amazinghotelsapa.com', phone: '+842143865888', messenger: 'amazinghotelsapa' },
+    isSponsored: false,
+    similarHotelSlugs: ['eden-boutique-hotel-sapa', 'aliana-boutique-sapa', 'kk-sapa-hotel'],
+    heroColor: 'from-orange-500 to-amber-600',
+    emoji: '⛪',
+    koreanFriendly: false,
+  },
 ]
 
 /**
@@ -3958,6 +4411,19 @@ const EDITORIAL_SCORES: Record<string, number> = {
   'merperle-dalat-hotel': 8.3,
   'dalat-wonder-resort': 8.2,
   'ttc-hotel-da-lat-ngoc-lan': 8.1,
+  // Sapa — Topas, the independent hilltop ecolodge staffed almost entirely
+  // from the surrounding villages, is the city's standout; the Bensley-designed
+  // de la Coupole is the runner-up.
+  'topas-ecolodge-sapa': 9.3,
+  'hotel-de-la-coupole-sapa': 9.2,
+  'sapa-jade-hill-resort': 9.0,
+  'paos-sapa-leisure-hotel': 8.8,
+  'silk-path-grand-sapa': 8.6,
+  'kk-sapa-hotel': 8.5,
+  'aliana-boutique-sapa': 8.4,
+  'bamboo-sapa-hotel': 8.3,
+  'eden-boutique-hotel-sapa': 8.2,
+  'amazing-hotel-sapa': 8.1,
   // Hanoi — La Siesta, the standout Vietnamese-owned boutique brand.
   'la-siesta-premium-hang-be': 9.3,
   'sofitel-legend-metropole-hanoi': 9.2,
@@ -4016,7 +4482,7 @@ export function deriveConditions(h: Omit<Hotel, 'country' | 'conditions'>): Hote
 }
 
 // Unique photo per hotel: index each slug in sorted order into the verified
-// PHOTO_POOL. With 90 hotels and 92 distinct photos, no two ever collide.
+// PHOTO_POOL. With 100 hotels and 103 distinct photos, no two ever collide.
 const PHOTO_INDEX = new Map([...rawHotels].map((h) => h.slug).sort().map((slug, i) => [slug, i] as const))
 
 export const hotels: Hotel[] = rawHotels.map((h) => ({
