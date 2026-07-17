@@ -112,6 +112,13 @@ const COORDS: Record<string, LatLng> = {
   'hotel-de-lopera-hanoi-mgallery': [21.0244, 105.8583],
   'solaria-hotel-hanoi': [21.0313, 105.8514],
   'peridot-grand-hotel-spa-hanoi': [21.033, 105.8465],
+  // Ho Chi Minh City (expansion)
+  'park-hyatt-saigon': [10.7769, 106.704],
+  'the-reverie-saigon': [10.7738, 106.7046],
+  'hotel-majestic-saigon': [10.7731, 106.7061],
+  'caravelle-saigon': [10.7761, 106.7034],
+  'lotte-hotel-saigon': [10.7789, 106.7066],
+  'new-world-saigon-hotel': [10.7708, 106.6945],
 }
 
 /** [lat, lng] for a hotel — real coordinates when known, else area centre + jitter. */

@@ -32,7 +32,9 @@ const PHOTO_POOL = [
   '1613490493576-7fde63acd811', '1566665797739-1674de7a421a', '1600011689032-8b628b8a8747',
   '1615529182904-14819c35db37', '1590073242678-70ee3fc28e8e', '1618221195710-dd6b41faaea6',
   '1596394516093-501ba68a0ba6', '1631049421450-348ccd7f8949', '1610641818989-c2051b5e2cfd',
-  '1631049552057-403cdb8f0658', '1578898887932-dce23a595ad4',
+  '1631049552057-403cdb8f0658', '1578898887932-dce23a595ad4', '1582719508461-905c673771fd',
+  '1519449556851-5720b33024e7', '1444201983204-c43cbd584d93', '1533929736458-ca588d08c8be',
+  '1551918120-9739cb430c6d', '1559599189-fe84dea4eb79',
 ]
 const hashSlug = (s: string) => {
   let h = 0
@@ -1964,6 +1966,260 @@ const rawHotels: RawHotel[] = [
     emoji: '💎',
     koreanFriendly: false,
   },
+  {
+    id: 'hc05',
+    priceTier: 'premium',
+    slug: 'park-hyatt-saigon',
+    name: 'Park Hyatt Saigon',
+    city: 'Ho Chi Minh City',
+    area: 'District 1',
+    hotelType: 'City hotel',
+    // Content verified against Hyatt's official newsroom and the official
+    // restaurants microsite on 2026-07-17. hyatt.com hard-blocks fetches, so
+    // the room count and star class are deliberately not stated.
+    shortDescription:
+      'A French colonial-style luxury hotel on Lam Son Square beside the Saigon Opera House, with the Michelin-recognized Square One and Opera restaurants, Park Lounge afternoon tea, the 2 Lam Son bar, Xuan Spa and a 20-metre outdoor pool.',
+    positioningLine: 'A colonial-mansion luxury address on Lam Son Square, beside the Opera House.',
+    bestFor: ['Couples wanting classic luxury', 'Business travelers basing on Lam Son Square', 'Fine-dining focused stays'],
+    notIdealFor: ['Budget travelers', 'Travelers wanting a big pool-and-kids resort'],
+    mainReason: 'The city\'s classic luxury address — a colonial-style mansion beside the Opera House with Xuan Spa and Michelin-listed dining, reserved directly with the hotel.',
+    thingsToCheck: ['Room category and view — the mansion layout varies', 'Restaurant reservations (Square One books out)', 'Whether breakfast is included on your rate'],
+    tags: ['Couple', 'Business'],
+    facilities: ['Pool', 'Spa', 'Restaurant', 'Bar', 'Free Wi-Fi'],
+    officialBenefits: ['Book direct on the official website (hyatt.com) — World of Hyatt member rates', 'Reserve directly with the hotel — +84 28 3824 1234', 'Direct bookings earn World of Hyatt points and member pricing'],
+    roomGuide: {
+      couples: 'A Park Suite, or the Lam Son Suite for the full mansion experience.',
+      families: 'A suite for space — as a classic luxury house it suits couples more than large families.',
+      longStay: 'A suite; the Lam Son Square location suits shorter city stays best.',
+      checkBeforeBooking: 'Confirm the room category and outlook — square-facing rooms overlook the Opera House.',
+    },
+    locationGuide: {
+      nearby: '2 Lam Son Square, directly beside the Saigon Opera House; Dong Khoi and the Nguyen Hue boulevard are steps away.',
+      airportDistance: '~20–30 minutes from Tan Son Nhat International Airport.',
+      gettingAround: 'The most walkable corner of District 1 — Opera House, Dong Khoi shopping and Nguyen Hue on foot.',
+      nearbyFood: 'The Dong Khoi dining district surrounds the hotel, plus its own Opera, Square One and Park Lounge.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('park-hyatt-saigon'),
+    officialWebsiteUrl: 'https://www.hyatt.com/park-hyatt/en-US/saiph-park-hyatt-saigon',
+    contact: { lang: 'en', phone: '+842838241234', messenger: 'ParkHyattSaigon' },
+    isSponsored: false,
+    similarHotelSlugs: ['caravelle-saigon', 'the-reverie-saigon', 'rex-hotel-saigon'],
+    heroColor: 'from-stone-600 to-neutral-700',
+    emoji: '🏛️',
+    koreanFriendly: false,
+  },
+  {
+    id: 'hc06',
+    priceTier: 'premium',
+    slug: 'the-reverie-saigon',
+    name: 'The Reverie Saigon',
+    city: 'Ho Chi Minh City',
+    area: 'District 1',
+    hotelType: 'City hotel',
+    // Content verified against the official site (thereveriesaigon.com) on
+    // 2026-07-17. The site prints no numeric star class, so none is claimed.
+    shortDescription:
+      'An ultra-luxury Italian-designed hotel in the Times Square tower on Nguyen Hue walking boulevard, with 286 guestrooms plus residential-style suites, interiors by Giorgetti, Provasi and Visionnaire, the Cantonese Long Trieu, Cafe Cardinal, The Spa at The Reverie, an outdoor pool and a fitness centre.',
+    positioningLine: 'Saigon\'s most opulent interiors, high in the Times Square tower on Nguyen Hue boulevard.',
+    bestFor: ['Couples wanting maximal luxury', 'Design lovers', 'Special-occasion stays'],
+    notIdealFor: ['Budget travelers', 'Travelers wanting understated minimalism'],
+    mainReason: 'Nothing else in Vietnam looks like this — Italian-designed opulence over Nguyen Hue, with river-and-city views and a full spa, reserved directly with the hotel.',
+    thingsToCheck: ['Room view — river vs city changes the experience', 'Which designer suite style you are assigned', 'Whether breakfast at Cafe Cardinal is included'],
+    tags: ['Couple'],
+    facilities: ['Pool', 'Spa', 'Gym', 'Restaurant', 'Bar', 'Free Wi-Fi'],
+    officialBenefits: ['Book direct on the official website (thereveriesaigon.com)', 'Reserve directly with the hotel — info@thereveriesaigon.com · +84 28 3823 6688', 'Suite and residence requests are easiest to arrange directly'],
+    roomGuide: {
+      couples: 'A Panorama Deluxe for the view, or a Designer Suite for the full spectacle.',
+      families: 'A Junior Suite or larger — connecting options are arranged directly.',
+      longStay: 'The residential-style suites are made for longer stays.',
+      checkBeforeBooking: 'Confirm the view direction and floor — the tower faces both the river and the city.',
+    },
+    locationGuide: {
+      nearby: 'The Times Square building on Nguyen Hue walking boulevard; the Opera House, Central Post Office and the riverfront are a short stroll.',
+      airportDistance: '~20–30 minutes from Tan Son Nhat International Airport.',
+      gettingAround: 'Nguyen Hue is car-free — walk the boulevard from the river to the People\'s Committee building; Dong Khoi runs parallel.',
+      nearbyFood: 'Cafes and restaurants along Nguyen Hue and Ngo Duc Ke, with Dong Khoi\'s dining strip one block over.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('the-reverie-saigon'),
+    officialWebsiteUrl: 'https://www.thereveriesaigon.com/',
+    contact: { lang: 'en', email: 'info@thereveriesaigon.com', phone: '+842838236688', messenger: 'TheReverieSaigon' },
+    isSponsored: false,
+    similarHotelSlugs: ['park-hyatt-saigon', 'hotel-majestic-saigon', 'rex-hotel-saigon'],
+    heroColor: 'from-indigo-600 to-blue-800',
+    emoji: '🌟',
+    koreanFriendly: false,
+  },
+  {
+    id: 'hc07',
+    priceTier: 'premium',
+    slug: 'hotel-majestic-saigon',
+    name: 'Hotel Majestic Saigon',
+    city: 'Ho Chi Minh City',
+    area: 'District 1',
+    hotelType: 'City hotel',
+    // Content verified against the official site (majesticsaigon.com) on
+    // 2026-07-17. Open and operating; the adjacent Saigontourist tower
+    // expansion is separate construction, not a closure.
+    shortDescription:
+      'Saigon\'s colonial-era riverfront grande dame — a five-star heritage hotel operating since 1925 at No. 1 Dong Khoi Street, owned by Saigontourist, with 175 rooms and suites, the rooftop Breeze Sky Bar and M Bar over the river, Spa Majestic, a pool and Saigon House Restaurant.',
+    positioningLine: 'The 1925 riverfront grande dame at No. 1 Dong Khoi — Vietnamese-run heritage.',
+    bestFor: ['Heritage lovers', 'Couples wanting river views with history', 'First-time visitors basing on Dong Khoi'],
+    notIdealFor: ['Travelers wanting a brand-new tower', 'Budget travelers'],
+    mainReason: 'A century of Saigon history at the foot of Dong Khoi — Vietnamese-owned, river-facing, with a rooftop bar over the water, reserved directly with the hotel.',
+    thingsToCheck: ['River-facing vs city-facing room — the river side is the point', 'Possible construction next door (the separate Saigontourist expansion)', 'Whether breakfast is included on your rate'],
+    tags: ['Couple', 'Business'],
+    facilities: ['Pool', 'Spa', 'Gym', 'Restaurant', 'Bar', 'Free Wi-Fi'],
+    officialBenefits: ['Book direct on the official website (majesticsaigon.com)', 'Reserve directly with the hotel — majestic@majesticsaigon.com · +84 28 3829 5517', 'Heritage-wing and river-view requests are easiest to arrange directly'],
+    roomGuide: {
+      couples: 'A Century River Deluxe or the Century Suite facing the Saigon River.',
+      families: 'A Century Suite for space — confirm the extra-bed policy directly.',
+      longStay: 'A Century Suite; the Dong Khoi location suits shorter city stays best.',
+      checkBeforeBooking: 'Confirm river-facing vs city/pool-facing — the categories differ noticeably.',
+    },
+    locationGuide: {
+      nearby: 'No. 1 Dong Khoi Street at the riverfront; a straight walk up Dong Khoi to the Opera House, with Nguyen Hue one block west.',
+      airportDistance: '~25–35 minutes from Tan Son Nhat International Airport.',
+      gettingAround: 'Dong Khoi is the classic walking spine — Opera House, Post Office and the cathedral quarter on foot.',
+      nearbyFood: 'The Dong Khoi / Ngo Duc Ke riverfront dining strip is at the door, plus the hotel\'s own rooftop bars.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('hotel-majestic-saigon'),
+    officialWebsiteUrl: 'https://www.majesticsaigon.com/',
+    contact: { lang: 'en', email: 'majestic@majesticsaigon.com', phone: '+842838295517', messenger: 'hotelmajesticsaigon' },
+    isSponsored: false,
+    similarHotelSlugs: ['rex-hotel-saigon', 'caravelle-saigon', 'the-reverie-saigon'],
+    heroColor: 'from-amber-700 to-yellow-800',
+    emoji: '🏰',
+    koreanFriendly: false,
+  },
+  {
+    id: 'hc08',
+    priceTier: 'premium',
+    slug: 'caravelle-saigon',
+    name: 'Caravelle Saigon',
+    city: 'Ho Chi Minh City',
+    area: 'District 1',
+    hotelType: 'City hotel',
+    // Content verified against the official site (caravellehotel.com) on
+    // 2026-07-17. Room count is not published, so none is stated.
+    shortDescription:
+      'A historic five-star landmark opened on Christmas Eve 1959 on Lam Son Square beside the Opera House — the wartime home of the foreign press — with Opera-view rooms and suites, Kara Spa, an outdoor pool, Reflections fine dining and the famous Saigon Saigon Rooftop Bar.',
+    positioningLine: 'The 1959 press-corps legend on Lam Son Square, beside the Opera House.',
+    bestFor: ['History-minded travelers', 'Couples wanting Opera House views', 'Business travelers on Lam Son Square'],
+    notIdealFor: ['Travelers wanting a resort feel', 'Budget travelers'],
+    mainReason: 'Saigon\'s storied address — the 1959 hotel where the war correspondents filed their stories, with Opera-view suites and a rooftop bar, reserved directly with the hotel.',
+    thingsToCheck: ['Whether the Saigon Saigon Rooftop Bar has reopened (flagged "coming soon" on the official site)', 'Opera-view vs city-view room', 'Whether breakfast at Nineteen is included'],
+    tags: ['Couple', 'Business'],
+    facilities: ['Pool', 'Spa', 'Gym', 'Restaurant', 'Bar', 'Free Wi-Fi'],
+    officialBenefits: ['Book direct on the official website (caravellehotel.com)', 'Reserve directly with the hotel — hotel@caravellehotel.com · +84 28 3823 4999', 'Opera-view room requests are easiest to arrange directly'],
+    roomGuide: {
+      couples: 'An Opera room or Opera View Suite — soundproofed windows over the Opera House.',
+      families: 'A Signature Studio or Executive Suite for space.',
+      longStay: 'A Signature Studio; the Lam Son Square location suits shorter city stays.',
+      checkBeforeBooking: 'Confirm the view category — Opera-facing rooms are the reason to stay here.',
+    },
+    locationGuide: {
+      nearby: '19–23 Lam Son Square beside the Saigon Opera House; Dong Khoi at the door and Nguyen Hue a five-minute walk.',
+      airportDistance: '~25–40 minutes from Tan Son Nhat International Airport.',
+      gettingAround: 'The Opera House corner of District 1 — everything central is walkable.',
+      nearbyFood: 'The Dong Khoi / Nguyen Hue cafe and dining district surrounds the hotel.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('caravelle-saigon'),
+    officialWebsiteUrl: 'https://www.caravellehotel.com/',
+    contact: { lang: 'en', email: 'hotel@caravellehotel.com', phone: '+842838234999', messenger: 'caravellesaigon' },
+    isSponsored: false,
+    similarHotelSlugs: ['park-hyatt-saigon', 'rex-hotel-saigon', 'hotel-majestic-saigon'],
+    heroColor: 'from-red-700 to-rose-800',
+    emoji: '🍸',
+    koreanFriendly: false,
+  },
+  {
+    id: 'hc09',
+    priceTier: 'premium',
+    slug: 'lotte-hotel-saigon',
+    name: 'Lotte Hotel Saigon',
+    city: 'Ho Chi Minh City',
+    area: 'District 1',
+    hotelType: 'City hotel',
+    // Content verified against the official site (lottehotel.com/saigon-hotel)
+    // on 2026-07-17, read via a real browser session (site bot-blocks fetches).
+    shortDescription:
+      'A five-star Korean-run hotel of the Lotte chain on the bank of the Saigon River, with 283 rooms and suites, a garden swimming pool with a dedicated children\'s pool, Legend Healing Spa, an executive lounge and dining including The Canvas buffet and Ottimo House Trattoria.',
+    positioningLine: 'Korea\'s Lotte on the Saigon riverbank — garden pool, kids\' pool and river-view rooms.',
+    bestFor: ['Korean travelers wanting Korean-language service', 'Families using the garden and children\'s pool', 'Business travelers near the riverfront'],
+    notIdealFor: ['Travelers wanting to be on Nguyen Hue itself', 'Budget travelers'],
+    mainReason: 'The Korean-run five-star by the river — garden pools for the kids, river-view rooms, and full Korean-language booking, reserved directly with the hotel.',
+    thingsToCheck: ['River-view vs city-view room', 'Whether executive-lounge access is included on your rate', 'Whether breakfast at The Canvas is included'],
+    tags: ['Family', 'Business', 'Korean-friendly'],
+    facilities: ['Pool', 'Kids pool', 'Spa', 'Restaurant', 'Bar', 'Free Wi-Fi'],
+    officialBenefits: ['Book direct on the official website (lottehotel.com) for member rates', 'Korean-language booking and service through the Lotte Hotels site', 'Reserve directly with the hotel — reservation.saigon@lotte.net · +84 28 3823 3333'],
+    roomGuide: {
+      couples: 'A Deluxe or Executive River View room facing the Saigon River.',
+      families: 'A Deluxe Suite, with the garden pool and children\'s pool below.',
+      longStay: 'Executive rooms with lounge access make longer business stays easier.',
+      checkBeforeBooking: 'Confirm river-view vs city-view — the river side is the draw.',
+    },
+    locationGuide: {
+      nearby: '2A–4A Ton Duc Thang Street on the Saigon riverbank; the Opera House and Nguyen Hue are a 10–12 minute walk.',
+      airportDistance: '~30 minutes from Tan Son Nhat International Airport.',
+      gettingAround: 'Riverside northern District 1 — walk south to the center or take a quick taxi/Grab.',
+      nearbyFood: 'Riverside dining nearby and the Dong Khoi / Nguyen Hue district a short walk south.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('lotte-hotel-saigon'),
+    officialWebsiteUrl: 'https://www.lottehotel.com/saigon-hotel/en.html',
+    contact: { lang: 'ko', email: 'reservation.saigon@lotte.net', phone: '+842838233333', messenger: 'LOTTEHOTELSAIGON' },
+    isSponsored: false,
+    similarHotelSlugs: ['hotel-nikko-saigon', 'new-world-saigon-hotel', 'rex-hotel-saigon'],
+    heroColor: 'from-red-600 to-orange-600',
+    emoji: '🗼',
+    koreanFriendly: true,
+  },
+  {
+    id: 'hc10',
+    priceTier: 'premium',
+    slug: 'new-world-saigon-hotel',
+    name: 'New World Saigon Hotel',
+    city: 'Ho Chi Minh City',
+    area: 'District 1',
+    hotelType: 'Family hotel',
+    // Content verified against the official site (saigon.newworldhotels.com)
+    // on 2026-07-17. Its pages print no numeric star class, so none is claimed.
+    shortDescription:
+      'A 530-room New World / Rosewood Hotel Group flagship steps from Ben Thanh Metro Station and opposite the 23/9 Park, with a resort-style pool, fitness centre, pickleball court, Coco Spa and five restaurants and bars including the Japanese iBuki.',
+    positioningLine: 'The big central all-rounder — 530 rooms beside Ben Thanh Metro and the market.',
+    bestFor: ['Families wanting a central pool hotel', 'Business travelers using the metro', 'First-time visitors near Ben Thanh Market'],
+    notIdealFor: ['Travelers wanting a boutique feel', 'Travelers who want the riverfront'],
+    mainReason: 'The easiest central base — Ben Thanh Market and the metro at the door, a resort-style pool above the city, reserved directly with the hotel.',
+    thingsToCheck: ['Room category — Residence Club rooms add lounge benefits', 'Pool-facing vs city-facing room', 'Whether breakfast is included on your rate'],
+    tags: ['Family', 'Business'],
+    facilities: ['Pool', 'Spa', 'Gym', 'Restaurant', 'Bar', 'Free Wi-Fi'],
+    officialBenefits: ['Book direct on the official website (saigon.newworldhotels.com)', 'Reserve directly with the hotel — reservations.saigon@newworldhotels.com · +84 28 3822 8888', 'Residence Club upgrades are easiest to arrange directly'],
+    roomGuide: {
+      couples: 'A high-floor Premier room, or Residence Club for lounge access.',
+      families: 'Premier Twin rooms, with the resort-style pool for the kids.',
+      longStay: 'Residence Club rooms with lounge benefits suit multi-day stays.',
+      checkBeforeBooking: 'Confirm the room category — Residence Club changes the experience.',
+    },
+    locationGuide: {
+      nearby: '76 Le Lai Street opposite the 23/9 Park, steps from Ben Thanh Metro Station; Ben Thanh Market is a 5–7 minute walk.',
+      airportDistance: '~20–30 minutes from Tan Son Nhat International Airport (per the official site).',
+      gettingAround: 'The metro at the door reaches the Opera House in one stop; Ben Thanh and Bui Vien on foot.',
+      nearbyFood: 'Ben Thanh Market street food and the Bui Vien walking street are both a short walk.',
+    },
+    cancellationChecklist: ['Check the cancellation deadline on your rate', 'Confirm the deposit/prepayment policy', 'Confirm the child & extra-bed policy', 'Confirm whether breakfast is included', 'Check taxes & service fees on the final price'],
+    imageUrl: img('new-world-saigon-hotel'),
+    officialWebsiteUrl: 'https://saigon.newworldhotels.com/en/',
+    contact: { lang: 'en', email: 'reservations.saigon@newworldhotels.com', phone: '+842838228888', messenger: 'Saigon.NewWorldHotel' },
+    isSponsored: false,
+    similarHotelSlugs: ['hotel-nikko-saigon', 'lotte-hotel-saigon', 'rex-hotel-saigon'],
+    heroColor: 'from-teal-600 to-cyan-700',
+    emoji: '🌆',
+    koreanFriendly: false,
+  },
 ]
 
 /**
@@ -1996,10 +2252,17 @@ const EDITORIAL_SCORES: Record<string, number> = {
   'muong-thanh-luxury-danang': 8.1,
   'grandvrio-city-danang': 8.1,
   'wink-hotel-danang-centre': 8.0,
-  // Ho Chi Minh City — the Rex's Vietnamese-run heritage over global chains.
+  // Ho Chi Minh City — the Rex's Vietnamese-run heritage over global chains;
+  // the Majestic's 1925 riverfront heritage (also Vietnamese-run) is runner-up.
   'rex-hotel-saigon': 9.2,
+  'hotel-majestic-saigon': 9.0,
   'hotel-nikko-saigon': 8.9,
+  'park-hyatt-saigon': 8.8,
+  'the-reverie-saigon': 8.7,
+  'caravelle-saigon': 8.6,
+  'lotte-hotel-saigon': 8.5,
   'sq-saigon-thao-dien': 8.4,
+  'new-world-saigon-hotel': 8.3,
   'the-airport-hotel-saigon': 8.0,
   // Nha Trang — Amiana's independent bayfront setting is the pick.
   'amiana-resort-nha-trang': 9.3,
@@ -2074,7 +2337,7 @@ export function deriveConditions(h: Omit<Hotel, 'country' | 'conditions'>): Hote
 }
 
 // Unique photo per hotel: index each slug in sorted order into the verified
-// PHOTO_POOL. With 46 hotels and 50 distinct photos, no two ever collide.
+// PHOTO_POOL. With 52 hotels and 56 distinct photos, no two ever collide.
 const PHOTO_INDEX = new Map([...rawHotels].map((h) => h.slug).sort().map((slug, i) => [slug, i] as const))
 
 export const hotels: Hotel[] = rawHotels.map((h) => ({
