@@ -71,6 +71,11 @@ export type Area =
   | 'West Lake'
   | 'French Quarter'
   | 'Ba Dinh'
+  // Hue
+  | 'Perfume River'
+  | 'Thuy Xuan'
+  | 'Lang Co'
+  | 'Phong Dien'
 
 export type HotelType =
   | 'Beach resort'

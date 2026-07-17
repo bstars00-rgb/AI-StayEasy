@@ -16,6 +16,7 @@ const CITY: Record<string, LatLng> = {
   'Phu Quoc': [10.227, 103.984],
   'Hoi An': [15.8801, 108.338],
   'Hanoi': [21.0278, 105.8342],
+  'Hue': [16.4637, 107.5909],
 }
 
 const AREA: Record<string, LatLng> = {
@@ -50,6 +51,11 @@ const AREA: Record<string, LatLng> = {
   'West Lake': [21.07, 105.82],
   'French Quarter': [21.023, 105.848],
   'Ba Dinh': [21.035, 105.814],
+  // Hue
+  'Perfume River': [16.463, 107.585],
+  'Thuy Xuan': [16.425, 107.579],
+  'Lang Co': [16.27, 108.077],
+  'Phong Dien': [16.578, 107.437],
 }
 
 const FALLBACK: LatLng = [16.0544, 108.2022] // Da Nang / Vietnam-ish centre
@@ -145,6 +151,20 @@ const COORDS: Record<string, LatLng> = {
   'victoria-hoi-an-beach-resort': [15.8954, 108.37],
   'la-siesta-hoi-an-resort': [15.88, 108.3163],
   'palm-garden-beach-resort-hoi-an': [15.9008, 108.3592],
+  // Hue
+  'azerai-la-residence-hue': [16.4591, 107.5802],
+  'pilgrimage-village-hue': [16.4251, 107.5795],
+  'indochine-palace-hue': [16.4614, 107.5979],
+  'silk-path-grand-hue': [16.4577, 107.5799],
+  'melia-vinpearl-hue': [16.4634, 107.5942],
+  'eldora-hotel-hue': [16.4647, 107.5945],
+  'alba-wellness-valley-hue': [16.4906, 107.3824],
+  // NOTE: every Hue "City Center" hotel MUST be listed here — the shared
+  // 'City Center' AREA key resolves to Da Nang, so a missing entry would pin
+  // the hotel in the wrong city.
+  'senna-hue-hotel': [16.4637, 107.5909],
+  'banyan-tree-lang-co': [16.2892, 108.0247],
+  'angsana-lang-co': [16.2953, 108.0195],
 }
 
 /** [lat, lng] for a hotel — real coordinates when known, else area centre + jitter. */

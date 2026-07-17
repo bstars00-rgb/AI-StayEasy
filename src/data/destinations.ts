@@ -111,7 +111,7 @@ const rawDestinations: Omit<Destination, 'country' | 'hotelCount'>[] = [
   {
     city: 'Hue',
     slug: 'hue',
-    available: false,
+    available: true,
     shortDescription: 'The former imperial capital — a riverside Citadel, royal tombs, and refined cuisine.',
     description:
       'Hue’s Imperial Citadel, royal tombs along the Perfume River, and a distinctive court cuisine make it Vietnam’s heritage heart. An easy add-on to Da Nang/Hoi An.',

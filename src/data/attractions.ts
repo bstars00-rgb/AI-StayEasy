@@ -53,6 +53,12 @@ export const ATTRACTIONS: Attraction[] = [
   { id: 'temple-of-literature', city: 'Hanoi', lat: 21.0294, lng: 105.8355, category: 'temple', name: { en: 'Temple of Literature', ko: '문묘(반미에우)', vi: 'Văn Miếu', zh: '文庙', ja: '文廟' } },
   { id: 'hcm-mausoleum', city: 'Hanoi', lat: 21.0367, lng: 105.8347, category: 'landmark', name: { en: 'Ho Chi Minh Mausoleum', ko: '호치민 묘소', vi: 'Lăng Chủ tịch Hồ Chí Minh', zh: '胡志明陵', ja: 'ホーチミン廟' } },
   { id: 'west-lake-hanoi', city: 'Hanoi', lat: 21.058, lng: 105.82, category: 'nature', name: { en: 'West Lake (Ho Tay)', ko: '서호(호떠이)', vi: 'Hồ Tây', zh: '西湖', ja: '西湖(タイ湖)' } },
+  // ── Hue ──────────────────────────────────────────────────
+  { id: 'imperial-city-hue', city: 'Hue', lat: 16.4695, lng: 107.5792, category: 'landmark', name: { en: 'Imperial City (Citadel)', ko: '후에 왕궁(황성)', vi: 'Đại Nội Huế', zh: '顺化皇城', ja: 'フエ王宮(阮朝王宮)' } },
+  { id: 'thien-mu-pagoda', city: 'Hue', lat: 16.4534, lng: 107.5445, category: 'temple', name: { en: 'Thien Mu Pagoda', ko: '티엔무 사원', vi: 'Chùa Thiên Mụ', zh: '天姥寺', ja: 'ティエンムー寺' } },
+  { id: 'khai-dinh-tomb', city: 'Hue', lat: 16.3987, lng: 107.5904, category: 'landmark', name: { en: 'Tomb of Khai Dinh', ko: '카이딘 황릉', vi: 'Lăng Khải Định', zh: '启定陵', ja: 'カイディン帝陵' } },
+  { id: 'tu-duc-tomb', city: 'Hue', lat: 16.4361, lng: 107.5546, category: 'landmark', name: { en: 'Tomb of Tu Duc', ko: '뜨득 황릉', vi: 'Lăng Tự Đức', zh: '嗣德陵', ja: 'トゥドゥック帝陵' } },
+  { id: 'dong-ba-market', city: 'Hue', lat: 16.4713, lng: 107.588, category: 'market', name: { en: 'Dong Ba Market', ko: '동바 시장', vi: 'Chợ Đông Ba', zh: '东巴市场', ja: 'ドンバ市場' } },
 ]
 
 /** Attractions for a city, with the name resolved to the active language. */
