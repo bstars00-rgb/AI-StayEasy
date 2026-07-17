@@ -7,6 +7,7 @@ import { ja } from '../i18n/locales/ja'
 import { hotels, getHotel } from '../data/hotels'
 import { localizeHotel } from '../i18n'
 import { recommend, COMING_SOON } from '../lib/searchEngine'
+import { hotelLatLng, AREA, COORDS } from '../lib/geo'
 import { partners, campaigns, inquiries, overviewKpis, clicksByCity } from '../data/adminData'
 import { endpoints, API_BASE } from '../api/contract'
 import { repo } from '../data/repo'
@@ -357,6 +358,37 @@ describe('i18n locale parity', () => {
       const missing = destinations.map((d) => d.city).filter((c) => !labels[c])
       expect(missing, `locale "${name}" is missing city labels for`).toEqual([])
     }
+  })
+})
+
+describe('map pins', () => {
+  // These assert on the AREA axis, not the city axis. A city-axis check
+  // ("is the pin inside its own city?") is structurally incapable of failing
+  // when the area lookup breaks, because the fallback IS the city centre —
+  // which is how `AREA[h.area]` shipped against a `"<City>|<Area>"` table with
+  // every entry unreachable and a scripted city-box check reporting success.
+  const km = (a: [number, number], b: [number, number]) => {
+    const dLat = (a[0] - b[0]) * 111
+    const dLng = (a[1] - b[1]) * 111 * Math.cos((a[0] * Math.PI) / 180)
+    return Math.hypot(dLat, dLng)
+  }
+
+  it('every area a hotel lives in has a centre defined', () => {
+    const missing = [...new Set(hotels.map((h) => `${h.city}|${h.area}` as const))].filter((k) => !AREA[k])
+    expect(missing).toEqual([])
+  })
+
+  it('a hotel without real coordinates lands on its area centre, not its city centre', () => {
+    // Only the fallback path is asserted: a hotel WITH real coordinates may sit
+    // kilometres from its area centre and that's correct (Da Nang's 'Resort
+    // Area' is a long stretch of coast). The fallback path is where the bug
+    // lives, and there the pin must be area centre + jitter (±350m).
+    const strays = hotels
+      .filter((h) => !COORDS[h.slug])
+      .map((h) => ({ slug: h.slug, area: `${h.city}|${h.area}` as const, d: km(hotelLatLng(h), AREA[`${h.city}|${h.area}`]!) }))
+      .filter((x) => x.d > 0.6)
+      .map((x) => `${x.slug} is ${x.d.toFixed(1)}km from ${x.area}`)
+    expect(strays).toEqual([])
   })
 })
 

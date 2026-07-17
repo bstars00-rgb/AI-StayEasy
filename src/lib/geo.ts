@@ -1,4 +1,4 @@
-import type { Hotel } from '../types'
+import type { Area, City, Hotel } from '../types'
 
 /**
  * Approximate map coordinates. StayEasy doesn't hold verified GPS for every
@@ -9,7 +9,7 @@ import type { Hotel } from '../types'
  */
 export type LatLng = [number, number]
 
-const CITY: Record<string, LatLng> = {
+const CITY: Partial<Record<City, LatLng>> = {
   'Da Nang': [16.0544, 108.2022],
   'Ho Chi Minh City': [10.7769, 106.7009],
   'Nha Trang': [12.2388, 109.1967],
@@ -28,8 +28,15 @@ const CITY: Record<string, LatLng> = {
  * The key MUST include the city: several area names are reused across cities
  * ('City Center' exists in Da Nang, Hue and Da Lat), so a city-blind lookup
  * silently pinned Hue/Da Lat hotels in Da Nang.
+ *
+ * The template-literal key type is load-bearing, not decoration. When this was
+ * `Record<string, LatLng>`, the table was re-keyed to include the city but the
+ * reader below kept doing `AREA[h.area]` — every entry became unreachable and
+ * all 10 fallback hotels silently dropped to their city centre (Paradise Suites
+ * landed 21km from Tuan Chau) while tsc stayed clean. With this type a bare
+ * `AREA[h.area]` is a compile error, because Area isn't a `${City}|${Area}`.
  */
-const AREA: Record<string, LatLng> = {
+export const AREA: Partial<Record<`${City}|${Area}`, LatLng>> = {
   // Da Nang
   'Da Nang|My Khe Beach': [16.06, 108.247],
   'Da Nang|Han River': [16.07, 108.224],
@@ -101,7 +108,7 @@ function hash(s: string): number {
  * map still labels the pin "approximate — confirm on the official site"). Any
  * hotel not listed here falls back to its area centre + jitter.
  */
-const COORDS: Record<string, LatLng> = {
+export const COORDS: Record<string, LatLng> = {
   // Da Nang — Vo Nguyen Giap beach road (north→south), Han River city, southern resort strip
   'olalani-resort-condotel': [16.037, 108.25],
   'dlg-hotel-danang': [16.055, 108.247],
@@ -227,10 +234,14 @@ const COORDS: Record<string, LatLng> = {
 /** [lat, lng] for a hotel — real coordinates when known, else area centre + jitter. */
 export function hotelLatLng(h: Hotel): LatLng {
   if (COORDS[h.slug]) return COORDS[h.slug]
-  const base = AREA[h.area] ?? CITY[h.city] ?? FALLBACK
+  const base = AREA[`${h.city}|${h.area}`] ?? CITY[h.city] ?? FALLBACK
   const seed = hash(h.slug)
   // ±~0.0035° (~350 m) so co-located hotels separate on the map.
+  // `>>>`, not `>>`: hash() returns a uint32, and a signed shift reinterprets
+  // any seed past 2^31 as negative — which made `% 71` negative and dragged 45
+  // of 110 hotels up to 1.15km WEST, never east, under a comment promising
+  // ±350m. The tests below pin the real spread.
   const dLat = (((seed % 71) / 71) - 0.5) * 0.007
-  const dLng = ((((seed >> 8) % 71) / 71) - 0.5) * 0.007
+  const dLng = ((((seed >>> 8) % 71) / 71) - 0.5) * 0.007
   return [base[0] + dLat, base[1] + dLng]
 }
