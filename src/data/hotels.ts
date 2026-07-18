@@ -4772,78 +4772,76 @@ const rawHotels: RawHotel[] = [
   },
 ]
 
+/** Why a hotel's card earns a benefit box. Typed so the roadmap metric can be
+ *  reported by kind instead of one inflatable number. */
+export type BenefitKind = 'discount' | 'perk' | 'guarantee'
+
 /**
  * The one benefit line worth putting on a hotel's card, as an index into that
- * hotel's `officialBenefits` — or absent, which means the card shows NO benefit
- * box at all.
+ * hotel's `officialBenefits` plus the KIND of claim it makes — or absent,
+ * which means the card shows NO benefit box at all.
  *
  * Absence is the honest default. Most entries' benefit lists open with "Book
  * direct on the official website" and "Reserve directly — phone/email", which
  * are how-to-contact lines, not benefits; the R7 review found 84 of 110 cards
  * dressing that tautology in the same UI as a genuinely verified perk. A hotel
- * earns a card headline only for something substantive on its own site: a
+ * earns a card headline only for something HOTEL-SPECIFIC on its own site: a
  * discount code or % offer, a free perk (shuttle, breakfast, bicycles, yoga),
- * a named programme, a best-price guarantee, or chain member pricing.
- * "Korean-language site" lines don't qualify — that's `koreanFriendly`, not a
- * booking benefit.
+ * a named programme, or a best-price guarantee it promotes itself.
+ *
+ * Two things deliberately do NOT qualify:
+ * - "Korean-language site" lines — that's `koreanFriendly`, not a booking
+ *   benefit.
+ * - Chain member rates (Bonvoy, ALL, IHG One, ...). They are real, but they
+ *   are a property of the CHAIN, and headlining them turned on whether the
+ *   data author happened to write "— member rates" into a hotel's first line:
+ *   Novotel Nha Trang was in while Novotel Phu Quoc was out, and Accor's own
+ *   flagship Metropole was out (the R8 review's inconsistency finding).
+ *   Making them qualify consistently would mean ASSERTING the programme for
+ *   every chain property without per-hotel verification — a derived claim.
+ *   So no hotel headlines on member rates alone; the lines stay visible as
+ *   check-marked perks on the detail page, where they were verified.
  *
  * An INDEX, not a copied string, so the card stays in sync with the entry and
- * the four locale translations (arrays are index-parallel; a test enforces
- * both the index and that the chosen line isn't boilerplate).
+ * the four locale translations (arrays are index-parallel; tests enforce the
+ * index, the length parity, and that the chosen line isn't boilerplate).
  */
-export const HEADLINE_BENEFIT: Record<string, number> = {
+export const HEADLINE_BENEFIT: Record<string, { line: number; kind: BenefitKind }> = {
   // Discount codes / % offers stated on the official site
-  'brilliant-hotel-danang': 0,
-  'sanouva-danang': 0,
-  'pullman-danang-beach-resort': 0,
-  'naman-retreat': 0,
-  'fusion-resort-villas-danang': 0,
-  'amiana-resort-nha-trang': 0,
-  'liberty-central-nha-trang': 0,
-  'intercontinental-phu-quoc-long-beach-resort': 0,
-  'cassia-cottage-phu-quoc': 0,
-  'hoi-an-eco-lodge-spa': 0,
-  'la-siesta-premium-hang-be': 1,
+  'brilliant-hotel-danang': { line: 0, kind: 'discount' },
+  'sanouva-danang': { line: 0, kind: 'discount' },
+  'pullman-danang-beach-resort': { line: 0, kind: 'discount' },
+  'naman-retreat': { line: 0, kind: 'discount' },
+  'fusion-resort-villas-danang': { line: 0, kind: 'discount' },
+  'amiana-resort-nha-trang': { line: 0, kind: 'discount' },
+  'liberty-central-nha-trang': { line: 0, kind: 'discount' },
+  'intercontinental-phu-quoc-long-beach-resort': { line: 0, kind: 'discount' },
+  'cassia-cottage-phu-quoc': { line: 0, kind: 'discount' },
+  'hoi-an-eco-lodge-spa': { line: 0, kind: 'discount' },
+  'la-siesta-premium-hang-be': { line: 1, kind: 'discount' },
   // Named programmes and free perks
-  'haian-beach-hotel-spa': 0,
-  'wink-hotel-danang-centre': 0,
-  'silk-sense-hoi-an-river-resort': 1,
-  'la-veranda-resort-phu-quoc': 2,
-  'sol-by-melia-phu-quoc': 2,
-  'victoria-hoi-an-beach-resort': 2,
-  'palm-garden-beach-resort-hoi-an': 2,
-  'topas-ecolodge-sapa': 2,
-  'tru-by-hilton-ha-long-hon-gai': 2,
+  'haian-beach-hotel-spa': { line: 0, kind: 'perk' },
+  'wink-hotel-danang-centre': { line: 0, kind: 'perk' },
+  'silk-sense-hoi-an-river-resort': { line: 1, kind: 'perk' },
+  'la-veranda-resort-phu-quoc': { line: 2, kind: 'perk' },
+  'sol-by-melia-phu-quoc': { line: 2, kind: 'perk' },
+  'victoria-hoi-an-beach-resort': { line: 2, kind: 'perk' },
+  'palm-garden-beach-resort-hoi-an': { line: 2, kind: 'perk' },
+  'topas-ecolodge-sapa': { line: 2, kind: 'perk' },
+  'tru-by-hilton-ha-long-hon-gai': { line: 2, kind: 'perk' },
   // Best-price / best-rate guarantees the hotel itself promotes
-  'a-la-carte-danang-beach': 0,
-  'muong-thanh-luxury-danang': 0,
-  'rex-hotel-saigon': 0,
-  'sunrise-nha-trang-beach-hotel-spa': 0,
-  'apricot-hotel-hanoi': 0,
-  // Chain member pricing (the chain's own published direct-booking advantage)
-  'intercontinental-nha-trang': 0,
-  'lotte-hotel-hanoi': 0,
-  'lotte-hotel-saigon': 0,
-  'melia-hanoi': 0,
-  'pan-pacific-hanoi': 0,
-  'hotel-de-lopera-hanoi-mgallery': 0,
-  'park-hyatt-saigon': 0,
-  'sheraton-nha-trang': 0,
-  'six-senses-ninh-van-bay': 0,
-  'novotel-nha-trang': 0,
-  'jw-marriott-phu-quoc-emerald-bay': 0,
-  'regent-phu-quoc': 0,
-  'melia-vinpearl-hue': 0,
-  'hotel-de-la-coupole-sapa': 0,
-  'hilton-quang-hanh-onsen-resort': 0,
-  'novotel-ha-long-bay': 0,
+  'a-la-carte-danang-beach': { line: 0, kind: 'guarantee' },
+  'muong-thanh-luxury-danang': { line: 0, kind: 'guarantee' },
+  'rex-hotel-saigon': { line: 0, kind: 'guarantee' },
+  'sunrise-nha-trang-beach-hotel-spa': { line: 0, kind: 'guarantee' },
+  'apricot-hotel-hanoi': { line: 0, kind: 'guarantee' },
 }
 
 /** The card-worthy benefit line for a hotel (localized, since the locale
  *  arrays are index-parallel) — or undefined, meaning: show no benefit box. */
 export function headlineBenefit(h: Pick<Hotel, 'slug' | 'officialBenefits'>): string | undefined {
-  const idx = HEADLINE_BENEFIT[h.slug]
-  return idx === undefined ? undefined : h.officialBenefits[idx]
+  const entry = HEADLINE_BENEFIT[h.slug]
+  return entry === undefined ? undefined : h.officialBenefits[entry.line]
 }
 
 /**
@@ -4875,7 +4873,7 @@ export function splitBenefitIndices(slug: string): { perks: number[]; howTo: num
   const perks: number[] = []
   const howTo: number[] = []
   h?.officialBenefits.forEach((line, i) => {
-    const isHowTo = HEADLINE_BENEFIT[slug] !== i && HOW_TO_BOOK_SHAPES.some((re) => re.test(line))
+    const isHowTo = HEADLINE_BENEFIT[slug]?.line !== i && HOW_TO_BOOK_SHAPES.some((re) => re.test(line))
     ;(isHowTo ? howTo : perks).push(i)
   })
   return { perks, howTo }

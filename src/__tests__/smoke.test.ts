@@ -83,23 +83,29 @@ describe('hotel data integrity', () => {
     // honest: every entry must resolve, and the line it selects must carry
     // more than the two boilerplate shapes every entry has (a "book direct
     // on the official website" opener and a "reserve directly" contact line).
-    for (const [slug, idx] of Object.entries(HEADLINE_BENEFIT)) {
+    for (const [slug, entry] of Object.entries(HEADLINE_BENEFIT)) {
       const h = getHotel(slug)
       expect(h, `${slug} in HEADLINE_BENEFIT is not in the catalogue`).toBeDefined()
-      const line = h!.officialBenefits[idx]
-      expect(line, `${slug}[${idx}] is out of range`).toBeDefined()
+      const line = h!.officialBenefits[entry.line]
+      expect(line, `${slug}[${entry.line}] is out of range`).toBeDefined()
       expect(line, `${slug} headline is a bare book-direct line`).not.toMatch(
-        // "for member rates" is NOT in this pattern: that suffix carries the
-        // chain's member-pricing claim (Lotte phrases it without a dash).
         /^Book direct (on|with) the (property's )?official (website|site)( \([^)]+\))?( at [\w.]+)?('s booking page)?( for the best available rate)?$/,
       )
       expect(line, `${slug} headline is a contact line, not a benefit`).not.toMatch(/^Reserve directly/)
+      // Member rates are chain-generic and deliberately never headline (see
+      // the map's doc comment); a 'memberRate' kind must not reappear.
+      expect(['discount', 'perk', 'guarantee'], `${slug} kind`).toContain(entry.kind)
     }
-    // The roadmap metric: hotels with a verified direct-booking advantage.
-    // Raising this number (via real partner benefits) is the goal — a new
-    // city that only adds tautology hotels should not move it.
-    expect(Object.keys(HEADLINE_BENEFIT)).toHaveLength(41)
-    expect(hotels.filter((h) => headlineBenefit(h)).length).toBe(41)
+    // The roadmap metric, reported BY KIND so it can't quietly inflate: only
+    // hotel-specific verified advantages count, and raising these numbers
+    // (via real partner benefits) is the goal — a new city that only adds
+    // tautology or chain-generic hotels should not move them.
+    const byKind = Object.values(HEADLINE_BENEFIT).reduce(
+      (acc, e) => ({ ...acc, [e.kind]: (acc[e.kind] ?? 0) + 1 }),
+      {} as Record<string, number>,
+    )
+    expect(byKind).toEqual({ discount: 11, perk: 9, guarantee: 5 })
+    expect(hotels.filter((h) => headlineBenefit(h)).length).toBe(25)
   })
 
   it('splits every benefit line into exactly one of perks / how-to-book', () => {
@@ -116,7 +122,7 @@ describe('hotel data integrity', () => {
       }
       const headline = HEADLINE_BENEFIT[h.slug]
       if (headline !== undefined) {
-        expect(perks, `${h.slug} headline must be a perk`).toContain(headline)
+        expect(perks, `${h.slug} headline must be a perk`).toContain(headline.line)
       }
     }
     // Every hotel keeps at least its how-to lines — the section never renders empty.
