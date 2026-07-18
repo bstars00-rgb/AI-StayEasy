@@ -142,7 +142,6 @@ export const ja: Locale = {
   common: {
     bestFor: 'おすすめの方',
     officialBenefit: '公式予約特典',
-    directRate: '公式直販レート',
     viewGuide: 'ガイドを見る',
     officialWebsite: '公式サイト',
     bookOfficial: '公式サイトで予約する',

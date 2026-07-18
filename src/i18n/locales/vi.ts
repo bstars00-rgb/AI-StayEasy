@@ -142,7 +142,6 @@ export const vi: Locale = {
   common: {
     bestFor: 'Phù hợp nhất cho',
     officialBenefit: 'Ưu đãi đặt phòng chính thức',
-    directRate: 'Giá đặt trực tiếp',
     viewGuide: 'Xem hướng dẫn',
     officialWebsite: 'Website chính thức',
     bookOfficial: 'Đặt phòng trên website chính thức',

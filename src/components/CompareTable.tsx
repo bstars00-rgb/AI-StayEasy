@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import type { Hotel } from '../types'
 import { useLang, useT, localizeHotel } from '../i18n'
 import { facilityIcon } from '../lib/facilities'
+import { headlineBenefit } from '../data/hotels'
 import { officialLink } from '../lib/officialLink'
 import { HotelImage } from './HotelImage'
 import { WishlistButton } from './WishlistButton'
@@ -71,7 +72,8 @@ export function CompareTable({ hotels: raws }: { hotels: Hotel[] }) {
           ))}
           <Row label={`🏷️ ${t.common.officialBenefit}`}>
             {hotels.map((h) => (
-              <td key={h.id} className="p-3 text-sm text-ink-800">{h.officialBenefits[0]}</td>
+              // An honest dash beats restating "book on the official website".
+              <td key={h.id} className="p-3 text-sm text-ink-800">{headlineBenefit(h) ?? <span className="text-ink-700/30">—</span>}</td>
             ))}
           </Row>
           <tr className="border-t border-black/5">

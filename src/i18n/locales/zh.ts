@@ -142,7 +142,6 @@ export const zh: Locale = {
   common: {
     bestFor: '适合',
     officialBenefit: '官网预订权益',
-    directRate: '官网直订价',
     viewGuide: '查看指南',
     officialWebsite: '官方网站',
     bookOfficial: '前往官网预订',

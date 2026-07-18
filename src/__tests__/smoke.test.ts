@@ -4,7 +4,7 @@ import { ko } from '../i18n/locales/ko'
 import { vi } from '../i18n/locales/vi'
 import { zh } from '../i18n/locales/zh'
 import { ja } from '../i18n/locales/ja'
-import { hotels, getHotel } from '../data/hotels'
+import { hotels, getHotel, HEADLINE_BENEFIT, headlineBenefit } from '../data/hotels'
 import { localizeHotel } from '../i18n'
 import { recommend, COMING_SOON } from '../lib/searchEngine'
 import { hotelLatLng, AREA, COORDS } from '../lib/geo'
@@ -74,6 +74,32 @@ describe('hotel data integrity', () => {
       expect(h.officialBenefits.length).toBeGreaterThan(0)
       expect(h.cancellationChecklist.length).toBeGreaterThan(0)
     }
+  })
+
+  it('headline benefits point at substantive lines, never boilerplate', () => {
+    // The card shows a benefit box ONLY for hotels in HEADLINE_BENEFIT. The
+    // R7 review found 84 of 110 cards presenting "book on the official
+    // website" in the same UI as a verified perk. These guards keep the map
+    // honest: every entry must resolve, and the line it selects must carry
+    // more than the two boilerplate shapes every entry has (a "book direct
+    // on the official website" opener and a "reserve directly" contact line).
+    for (const [slug, idx] of Object.entries(HEADLINE_BENEFIT)) {
+      const h = getHotel(slug)
+      expect(h, `${slug} in HEADLINE_BENEFIT is not in the catalogue`).toBeDefined()
+      const line = h!.officialBenefits[idx]
+      expect(line, `${slug}[${idx}] is out of range`).toBeDefined()
+      expect(line, `${slug} headline is a bare book-direct line`).not.toMatch(
+        // "for member rates" is NOT in this pattern: that suffix carries the
+        // chain's member-pricing claim (Lotte phrases it without a dash).
+        /^Book direct (on|with) the (property's )?official (website|site)( \([^)]+\))?( at [\w.]+)?('s booking page)?( for the best available rate)?$/,
+      )
+      expect(line, `${slug} headline is a contact line, not a benefit`).not.toMatch(/^Reserve directly/)
+    }
+    // The roadmap metric: hotels with a verified direct-booking advantage.
+    // Raising this number (via real partner benefits) is the goal — a new
+    // city that only adds tautology hotels should not move it.
+    expect(Object.keys(HEADLINE_BENEFIT)).toHaveLength(41)
+    expect(hotels.filter((h) => headlineBenefit(h)).length).toBe(41)
   })
 
   it('every similarHotelSlugs entry resolves to a real hotel', () => {

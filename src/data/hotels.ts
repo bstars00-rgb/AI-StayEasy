@@ -4773,6 +4773,80 @@ const rawHotels: RawHotel[] = [
 ]
 
 /**
+ * The one benefit line worth putting on a hotel's card, as an index into that
+ * hotel's `officialBenefits` — or absent, which means the card shows NO benefit
+ * box at all.
+ *
+ * Absence is the honest default. Most entries' benefit lists open with "Book
+ * direct on the official website" and "Reserve directly — phone/email", which
+ * are how-to-contact lines, not benefits; the R7 review found 84 of 110 cards
+ * dressing that tautology in the same UI as a genuinely verified perk. A hotel
+ * earns a card headline only for something substantive on its own site: a
+ * discount code or % offer, a free perk (shuttle, breakfast, bicycles, yoga),
+ * a named programme, a best-price guarantee, or chain member pricing.
+ * "Korean-language site" lines don't qualify — that's `koreanFriendly`, not a
+ * booking benefit.
+ *
+ * An INDEX, not a copied string, so the card stays in sync with the entry and
+ * the four locale translations (arrays are index-parallel; a test enforces
+ * both the index and that the chosen line isn't boilerplate).
+ */
+export const HEADLINE_BENEFIT: Record<string, number> = {
+  // Discount codes / % offers stated on the official site
+  'brilliant-hotel-danang': 0,
+  'sanouva-danang': 0,
+  'pullman-danang-beach-resort': 0,
+  'naman-retreat': 0,
+  'fusion-resort-villas-danang': 0,
+  'amiana-resort-nha-trang': 0,
+  'liberty-central-nha-trang': 0,
+  'intercontinental-phu-quoc-long-beach-resort': 0,
+  'cassia-cottage-phu-quoc': 0,
+  'hoi-an-eco-lodge-spa': 0,
+  'la-siesta-premium-hang-be': 1,
+  // Named programmes and free perks
+  'haian-beach-hotel-spa': 0,
+  'wink-hotel-danang-centre': 0,
+  'silk-sense-hoi-an-river-resort': 1,
+  'la-veranda-resort-phu-quoc': 2,
+  'sol-by-melia-phu-quoc': 2,
+  'victoria-hoi-an-beach-resort': 2,
+  'palm-garden-beach-resort-hoi-an': 2,
+  'topas-ecolodge-sapa': 2,
+  'tru-by-hilton-ha-long-hon-gai': 2,
+  // Best-price / best-rate guarantees the hotel itself promotes
+  'a-la-carte-danang-beach': 0,
+  'muong-thanh-luxury-danang': 0,
+  'rex-hotel-saigon': 0,
+  'sunrise-nha-trang-beach-hotel-spa': 0,
+  'apricot-hotel-hanoi': 0,
+  // Chain member pricing (the chain's own published direct-booking advantage)
+  'intercontinental-nha-trang': 0,
+  'lotte-hotel-hanoi': 0,
+  'lotte-hotel-saigon': 0,
+  'melia-hanoi': 0,
+  'pan-pacific-hanoi': 0,
+  'hotel-de-lopera-hanoi-mgallery': 0,
+  'park-hyatt-saigon': 0,
+  'sheraton-nha-trang': 0,
+  'six-senses-ninh-van-bay': 0,
+  'novotel-nha-trang': 0,
+  'jw-marriott-phu-quoc-emerald-bay': 0,
+  'regent-phu-quoc': 0,
+  'melia-vinpearl-hue': 0,
+  'hotel-de-la-coupole-sapa': 0,
+  'hilton-quang-hanh-onsen-resort': 0,
+  'novotel-ha-long-bay': 0,
+}
+
+/** The card-worthy benefit line for a hotel (localized, since the locale
+ *  arrays are index-parallel) — or undefined, meaning: show no benefit box. */
+export function headlineBenefit(h: Pick<Hotel, 'slug' | 'officialBenefits'>): string | undefined {
+  const idx = HEADLINE_BENEFIT[h.slug]
+  return idx === undefined ? undefined : h.officialBenefits[idx]
+}
+
+/**
  * StayEasy editorial scores — explicit judgments per hotel, assigned by our
  * editorial review (suitability, location, direct-booking value; we champion
  * characterful local/independent hotels over big chains). These are OPINIONS

@@ -142,7 +142,6 @@ export const en = {
   common: {
     bestFor: 'Best for',
     officialBenefit: 'Official booking benefit',
-    directRate: 'Direct rate',
     viewGuide: 'View Guide',
     officialWebsite: 'Official Website',
     bookOfficial: 'Book on Official Website',

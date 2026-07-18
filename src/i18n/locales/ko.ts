@@ -142,7 +142,6 @@ export const ko: Locale = {
   common: {
     bestFor: '이런 분께 추천',
     officialBenefit: '공식 예약 혜택',
-    directRate: '공식 직접가',
     viewGuide: '가이드 보기',
     officialWebsite: '공식 웹사이트',
     bookOfficial: '공식 웹사이트에서 예약',

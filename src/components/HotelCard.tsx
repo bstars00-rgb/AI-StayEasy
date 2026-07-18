@@ -11,6 +11,7 @@ import { IconPin, IconTag } from './icons'
 import { BM_ENABLED } from '../lib/bm'
 import { imageNotice } from '../lib/imageNoticeI18n'
 import { distinctionOf } from '../lib/distinction'
+import { headlineBenefit } from '../data/hotels'
 import { StarRating, DistinctionBadge } from './HotelRating'
 
 /**
@@ -26,6 +27,7 @@ export function HotelCard({ hotel: raw }: { hotel: Hotel }) {
   const city = (t.enums.city as Record<string, string>)[hotel.city] ?? hotel.city
   const type = (t.enums.hotelType as Record<string, string>)[hotel.hotelType] ?? hotel.hotelType
   const dist = distinctionOf(raw.slug)
+  const benefit = headlineBenefit(hotel)
 
   return (
     <div className="group relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-black/5 transition-all hover:-translate-y-0.5 hover:shadow-card-hover">
@@ -45,7 +47,6 @@ export function HotelCard({ hotel: raw }: { hotel: Hotel }) {
           {BM_ENABLED && raw.voucher && (
             <span className="pill bg-brand-600 text-white"><IconTag className="h-3.5 w-3.5" /> {voucherStrings[lang].badge}</span>
           )}
-          <span className="pill bg-white/90 text-brand-700 backdrop-blur"><IconTag className="h-3.5 w-3.5" /> {t.common.directRate}</span>
         </div>
         <div className="absolute bottom-3 right-3">
           <span className="pill bg-white/90 text-ink-900 backdrop-blur">{type}</span>
@@ -84,10 +85,16 @@ export function HotelCard({ hotel: raw }: { hotel: Hotel }) {
           <FacilityChips items={hotel.facilities} limit={3} />
         </div>
 
-        <div className="rounded-xl bg-brand-50 px-3 py-2">
-          <p className="flex items-center gap-1 text-xs font-semibold text-brand-700"><IconTag className="h-3.5 w-3.5" /> {t.common.officialBenefit}</p>
-          <p className="line-clamp-1 text-sm text-ink-800">{hotel.officialBenefits[0]}</p>
-        </div>
+        {/* Only a substantive, site-verified perk earns this box (HEADLINE_BENEFIT).
+            Most hotels have nothing beyond "book on the official website", and
+            rendering that here dressed a non-answer as an answer — so they get
+            no box at all. */}
+        {benefit && (
+          <div className="rounded-xl bg-brand-50 px-3 py-2">
+            <p className="flex items-center gap-1 text-xs font-semibold text-brand-700"><IconTag className="h-3.5 w-3.5" /> {t.common.officialBenefit}</p>
+            <p className="line-clamp-1 text-sm text-ink-800">{benefit}</p>
+          </div>
+        )}
 
         <div className="mt-auto grid grid-cols-2 gap-2 pt-1">
           <Link
