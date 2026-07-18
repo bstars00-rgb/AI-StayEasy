@@ -79,29 +79,29 @@ export function getPartnerAnalytics(slug: string, baseClicks: number, koreanFrie
   const trend = Array.from({ length: 14 }, (_, i) => {
     const hv = hash(`${slug}-v${i}`)
     const dayViews = Math.max(1, Math.round(perDay * (0.6 + (hv % 90) / 100)))
-    const rate = 0.13 + ((hv >> 4) % 8) / 100
+    const rate = 0.13 + ((hv >>> 4) % 8) / 100
     return { views: dayViews, clicks: Math.max(0, Math.round(dayViews * rate)) }
   })
 
   const byLanguage = toPct([
     { key: 'ko', w: (koreanFriendly ? 42 : 14) + (h % 12) },
-    { key: 'en', w: 30 + ((h >> 2) % 12) },
-    { key: 'vi', w: 18 + ((h >> 4) % 10) },
-    { key: 'zh', w: 10 + ((h >> 6) % 8) },
-    { key: 'ja', w: 7 + ((h >> 8) % 7) },
+    { key: 'en', w: 30 + ((h >>> 2) % 12) },
+    { key: 'vi', w: 18 + ((h >>> 4) % 10) },
+    { key: 'zh', w: 10 + ((h >>> 6) % 8) },
+    { key: 'ja', w: 7 + ((h >>> 8) % 7) },
   ])
 
   const bySource = toPct([
     { key: 'organic', w: 48 + (h % 12) },
-    { key: 'direct', w: 26 + ((h >> 3) % 8) },
-    { key: 'referral', w: 12 + ((h >> 5) % 8) },
-    { key: 'social', w: 6 + ((h >> 7) % 6) },
+    { key: 'direct', w: 26 + ((h >>> 3) % 8) },
+    { key: 'referral', w: 12 + ((h >>> 5) % 8) },
+    { key: 'social', w: 6 + ((h >>> 7) % 6) },
   ])
 
   const byDevice = toPct([
     { key: 'mobile', w: 60 + (h % 12) },
-    { key: 'desktop', w: 26 + ((h >> 3) % 10) },
-    { key: 'tablet', w: 5 + ((h >> 6) % 5) },
+    { key: 'desktop', w: 26 + ((h >>> 3) % 10) },
+    { key: 'tablet', w: 5 + ((h >>> 6) % 5) },
   ])
 
   const k = (value: number, metric: string): KpiDelta => ({ value, deltaPct: delta(slug, metric) })

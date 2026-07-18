@@ -6,7 +6,7 @@ import { zh } from '../i18n/locales/zh'
 import { ja } from '../i18n/locales/ja'
 import { hotels, getHotel, HEADLINE_BENEFIT, headlineBenefit } from '../data/hotels'
 import { localizeHotel } from '../i18n'
-import { recommend, COMING_SOON } from '../lib/searchEngine'
+import { recommend, COMING_SOON, CITY_SIGNALS } from '../lib/searchEngine'
 import { hotelLatLng, AREA, COORDS } from '../lib/geo'
 import { partners, campaigns, inquiries, overviewKpis, clicksByCity } from '../data/adminData'
 import { endpoints, API_BASE } from '../api/contract'
@@ -385,6 +385,17 @@ describe('i18n locale parity', () => {
       expect(missing, `locale "${name}" is missing city labels for`).toEqual([])
     }
   })
+
+  it('every roadmap country has a translated name in every locale', () => {
+    // Same catalogue-axis rule as the city test: AsiaMap falls back `?? name`
+    // to English, so a country added to countries.ts without labels renders
+    // in English on all four translated pages while the suite stays green.
+    for (const [name, loc] of Object.entries(allLocales)) {
+      const labels = (loc as unknown as { enums: { country: Record<string, string> } }).enums.country
+      const missing = countries.map((c) => c.name).filter((n) => !labels[n])
+      expect(missing, `locale "${name}" is missing country labels for`).toEqual([])
+    }
+  })
 })
 
 describe('map pins', () => {
@@ -457,17 +468,25 @@ describe('AI search engine', () => {
   })
 
   it('city intents are hard filters across all live cities', () => {
+    // Derived from CITY_SIGNALS and the catalogue, not a hand-picked sample:
+    // the old version queried 3 fixed cities, so city #11 could ship with its
+    // signal entirely unwired and this test would stay green. Same wrong-axis
+    // trap as the i18n and geo tests — iterate the thing that grows.
+    const liveCities = new Set(hotels.map((h) => h.city))
+    expect(Object.keys(CITY_SIGNALS).length).toBe(liveCities.size)
+    for (const [signal, city] of Object.entries(CITY_SIGNALS)) {
+      expect(liveCities.has(city), `${signal} maps to non-live city ${city}`).toBe(true)
+      const rec = recommend(`${city} hotel`, hotels)
+      expect(rec.detected, `"${city} hotel" should detect ${signal}`).toContain(signal)
+      expect(rec.results.length, `"${city} hotel" returned nothing`).toBeGreaterThan(0)
+      expect(rec.results.every((r) => r.hotel.city === city), `"${city} hotel" leaked another city`).toBe(true)
+    }
+
+    // Non-English names keep working (spot checks on top of the sweep).
     const hanoi = recommend('하노이 시내 호텔', hotels)
     expect(hanoi.detected).toEqual(expect.arrayContaining(['hanoi', 'city']))
-    expect(hanoi.results.length).toBeGreaterThan(0)
     expect(hanoi.results.every((r) => r.hotel.city === 'Hanoi')).toBe(true)
-
-    const pq = recommend('phu quoc beach resort', hotels)
-    expect(pq.results.length).toBeGreaterThan(0)
-    expect(pq.results.every((r) => r.hotel.city === 'Phu Quoc')).toBe(true)
-
     const saigon = recommend('サイゴンのビジネスホテル', hotels)
-    expect(saigon.results.length).toBeGreaterThan(0)
     expect(saigon.results.every((r) => r.hotel.city === 'Ho Chi Minh City')).toBe(true)
   })
 
@@ -640,6 +659,27 @@ describe('search insights (mock)', () => {
     expect(a.totals.clicks).toBe(a.topQueries.reduce((n, q) => n + q.clicks, 0))
     expect(a.totals.impressions).toBe(a.topQueries.reduce((n, q) => n + q.impressions, 0))
   })
+
+  it('never renders a negative CTR, position or split weight for any hotel', async () => {
+    // hash() returns a uint32; a SIGNED shift (`h >> 3`) reinterprets seeds
+    // past 2^31 as negative, making `% n` negative too — geo.ts shipped this
+    // exact bug as a ~1km westward pin bias, and the same pattern lived here
+    // as a negative CTR for roughly half of all slugs. The sweep is `>>>`
+    // everywhere; this iterates every hotel because the sign flip only shows
+    // on seeds past 2^31 — a single-hotel spot check can silently miss it.
+    const { getSearchInsights } = await import('../lib/searchInsights')
+    for (const h of hotels) {
+      const ins = await getSearchInsights(h.slug, h)
+      for (const q of ins.topQueries) {
+        expect(q.ctr, `${h.slug} "${q.query}" ctr`).toBeGreaterThanOrEqual(0)
+        expect(q.position, `${h.slug} "${q.query}" position`).toBeGreaterThan(0)
+      }
+      const pa = getPartnerAnalytics(h.slug, 300, h.koreanFriendly)
+      for (const split of [pa.byLanguage, pa.bySource, pa.byDevice]) {
+        for (const row of split) expect(row.pct, `${h.slug} ${row.key}`).toBeGreaterThanOrEqual(0)
+      }
+    }
+  })
 })
 
 describe('partner insights (benchmark / completeness / actions)', () => {
@@ -763,7 +803,11 @@ describe('hotel content locale parity (regression guard)', () => {
         expect(c.shortDescription.trim().length, `${name} ${h.id} shortDescription empty`).toBeGreaterThan(10)
         expect(c.positioningLine.trim().length, `${name} ${h.id} positioningLine empty`).toBeGreaterThan(5)
         expect(c.bestFor.length, `${name} ${h.id} bestFor empty`).toBeGreaterThan(0)
-        expect(c.officialBenefits.length, `${name} ${h.id} officialBenefits empty`).toBeGreaterThan(0)
+        // Exact length, not just non-empty: headlineBenefit() selects a card
+        // line BY INDEX into the localized array, so a locale that drops one
+        // line shifts every index after it and silently shows the wrong
+        // benefit (e.g. a phone number) in that language only.
+        expect(c.officialBenefits.length, `${name} ${h.id} officialBenefits length differs from English`).toBe(h.officialBenefits.length)
         expect(c.cancellationChecklist.length, `${name} ${h.id} cancellationChecklist`).toBeGreaterThan(0)
       }
     }

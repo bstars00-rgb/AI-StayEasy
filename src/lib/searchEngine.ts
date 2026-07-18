@@ -49,11 +49,6 @@ export type Signal =
   | 'sapa'
   | 'halong'
 
-export const ALL_SIGNALS: Signal[] = [
-  'family', 'couple', 'business', 'beach', 'longstay', 'korean', 'pool', 'breakfast',
-  'kids', 'spa', 'gym', 'airport', 'kitchen', 'city', 'quiet', 'golf', 'luxury', 'budget', 'firsttime',
-  'hoian', 'danang', 'hcmc', 'nhatrang', 'phuquoc', 'hanoi', 'hue', 'dalat', 'sapa', 'halong',
-]
 
 /**
  * Cities that exist as destinations but have no hotels onboarded yet. Detected
@@ -72,7 +67,7 @@ export const COMING_SOON: { name: string; triggers: string[] }[] = [
 ]
 
 /** Destination signals act as hard filters: asking for Hanoi means Hanoi. */
-const CITY_SIGNALS: Partial<Record<Signal, Hotel['city']>> = {
+export const CITY_SIGNALS: Partial<Record<Signal, Hotel['city']>> = {
   danang: 'Da Nang',
   hcmc: 'Ho Chi Minh City',
   nhatrang: 'Nha Trang',
@@ -92,6 +87,15 @@ const WEIGHT: Record<Signal, number> = {
   hoian: 2, danang: 2, hcmc: 2, nhatrang: 2, phuquoc: 2, hanoi: 2, hue: 2, dalat: 2, sapa: 2, halong: 2,
   pool: 1, breakfast: 1, kids: 2, spa: 1, gym: 1, airport: 1, kitchen: 1,
 }
+
+/**
+ * Derived from WEIGHT, never hand-listed. WEIGHT is a full
+ * `Record<Signal, number>`, so extending the Signal union without wiring the
+ * new signal is a compile error there — whereas the hand-maintained array
+ * this replaces would just silently never detect it: recommend() iterates
+ * ALL_SIGNALS, and a signal missing from the list doesn't exist at runtime.
+ */
+export const ALL_SIGNALS = Object.keys(WEIGHT) as Signal[]
 
 // Multilingual trigger words (en/ko/vi/zh/ja). Matched as substrings of the
 // lowercased query, so CJK works without tokenization.

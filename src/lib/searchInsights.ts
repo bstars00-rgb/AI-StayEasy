@@ -54,9 +54,9 @@ function mockInsights(hotel: Hotel): PartnerSearchInsightsResponse {
     const h = hash(`${hotel.slug}:${query}`)
     // Brand/early terms get more impressions; deeper terms taper off.
     const impressions = Math.max(8, Math.round((1200 / (i + 1.4)) * (0.6 + (h % 80) / 100)))
-    const ctr = Math.min(0.42, 0.04 + ((h >> 3) % 30) / 100 + (i === 0 ? 0.12 : 0))
+    const ctr = Math.min(0.42, 0.04 + ((h >>> 3) % 30) / 100 + (i === 0 ? 0.12 : 0))
     const clicks = Math.max(0, Math.round(impressions * ctr))
-    const position = Math.round((1.5 + i * 1.3 + ((h >> 5) % 25) / 10) * 10) / 10
+    const position = Math.round((1.5 + i * 1.3 + ((h >>> 5) % 25) / 10) * 10) / 10
     return { query, clicks, impressions, ctr: Math.round(ctr * 1000) / 1000, position }
   })
   const totalClicks = rows.reduce((n, r) => n + r.clicks, 0)

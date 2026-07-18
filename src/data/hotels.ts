@@ -11,7 +11,7 @@ import type { Hotel, HotelConditions } from '../types'
  *  hotels — removes the "demo placeholder" look on the most visible listings. */
 const u = (id: string, w = 800) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=70`
 
-// 44 distinct, HTTP-verified (200) Unsplash hotel/resort/travel photos. Every
+// 114 distinct, HTTP-verified (200) Unsplash hotel/resort/travel photos. Every
 // listing gets a UNIQUE one (assigned by sorted-slug index in the hotels map
 // below), so no two hotels ever share the same image. These are illustrative
 // stock photos, clearly labelled "Sample photo" in the UI — see imageNoticeI18n.

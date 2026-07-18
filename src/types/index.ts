@@ -249,7 +249,6 @@ export interface Destination {
   recommendedTraveler: string
   heroColor: string
   emoji: string
-  highlights: string[]
   hotelCount: number
 }
 
