@@ -10,6 +10,7 @@ import { VoucherCard } from '../components/VoucherCard'
 import { JsonLd } from '../components/JsonLd'
 import { HotelCard } from '../components/HotelCard'
 import { repo } from '../data/repo'
+import { splitBenefitIndices } from '../data/hotels'
 import { destinations } from '../data/destinations'
 import { useAsync } from '../lib/useAsync'
 import { Spinner } from '../components/Loading'
@@ -232,18 +233,39 @@ export default function HotelDetailPage() {
             </div>
           </div>
 
-          {/* 3. Official booking benefits */}
-          <Card title={t.detail.benefitsTitle} icon="🏷️">
-            <p className="text-sm text-ink-700/80">{t.detail.benefitsSub}</p>
-            <div className="mt-3 grid gap-2 sm:grid-cols-2">
-              {hotel.officialBenefits.map((b) => (
-                <div key={b} className="flex items-start gap-2 rounded-xl bg-sand-50 p-3 ring-1 ring-black/5">
-                  <span className="text-brand-600">✓</span>
-                  <span className="text-sm font-medium text-ink-800">{b}</span>
-                </div>
-              ))}
-            </div>
-          </Card>
+          {/* 3. Official booking benefits — split so booking INSTRUCTIONS never
+              wear the check-marked perk chrome. Classification runs on the
+              English catalogue (splitBenefitIndices); the indices select the
+              localized lines. A hotel with no real perk shows only the how-to
+              section — an honest absence, same rule as the card. */}
+          {(() => {
+            const { perks, howTo } = splitBenefitIndices(hotel.slug)
+            return (
+              <Card title={t.detail.benefitsTitle} icon="🏷️">
+                {perks.length > 0 && (
+                  <>
+                    <p className="text-sm text-ink-700/80">{t.detail.benefitsSub}</p>
+                    <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                      {perks.map((i) => (
+                        <div key={i} className="flex items-start gap-2 rounded-xl bg-sand-50 p-3 ring-1 ring-black/5">
+                          <span className="text-brand-600">✓</span>
+                          <span className="text-sm font-medium text-ink-800">{hotel.officialBenefits[i]}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
+                {howTo.length > 0 && (
+                  <div className={perks.length > 0 ? 'mt-5' : ''}>
+                    <p className="text-xs font-bold uppercase tracking-wide text-ink-700/50">{t.detail.howToBookTitle}</p>
+                    <ul className="mt-1.5 space-y-1 text-sm text-ink-700/85">
+                      {howTo.map((i) => <li key={i}>• {hotel.officialBenefits[i]}</li>)}
+                    </ul>
+                  </div>
+                )}
+              </Card>
+            )
+          })()}
 
           {/* 4. Room choice guide */}
           <Card title={t.detail.roomTitle} icon="🛏️">

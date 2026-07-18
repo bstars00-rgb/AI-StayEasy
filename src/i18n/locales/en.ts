@@ -319,6 +319,7 @@ export const en = {
     thingsToCheck: 'Things to check first',
     benefitsTitle: 'Official booking benefits',
     benefitsSub: 'Perks you get by booking on this hotel’s official website — not through a booking site like Agoda or Booking.com.',
+    howToBookTitle: 'How to book direct',
     roomTitle: 'Room choice guide',
     roomCouples: 'Best for couples',
     roomFamilies: 'Best for families',

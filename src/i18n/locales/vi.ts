@@ -319,6 +319,7 @@ export const vi: Locale = {
     thingsToCheck: 'Những điều cần kiểm tra trước',
     benefitsTitle: 'Ưu đãi đặt phòng chính thức',
     benefitsSub: 'Những ưu đãi bạn nhận được khi đặt trên website chính thức của khách sạn này — không qua trang đặt phòng trung gian.',
+    howToBookTitle: 'Cách đặt phòng trực tiếp',
     roomTitle: 'Hướng dẫn chọn phòng',
     roomCouples: 'Phù hợp nhất cho cặp đôi',
     roomFamilies: 'Phù hợp nhất cho gia đình',

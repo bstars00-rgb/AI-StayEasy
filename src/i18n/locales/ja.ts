@@ -319,6 +319,7 @@ export const ja: Locale = {
     thingsToCheck: 'まず確認すべきこと',
     benefitsTitle: '公式予約特典',
     benefitsSub: 'アゴダやBooking.comのような予約サイトではなく、このホテルの公式サイトで予約することで得られる特典。',
+    howToBookTitle: '直接予約の方法',
     roomTitle: '客室選びガイド',
     roomCouples: 'カップルにおすすめ',
     roomFamilies: 'ファミリーにおすすめ',

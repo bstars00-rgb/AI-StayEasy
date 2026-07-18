@@ -319,6 +319,7 @@ export const zh: Locale = {
     thingsToCheck: '需先核对的事项',
     benefitsTitle: '官网预订权益',
     benefitsSub: '在该酒店官方网站预订才能享有的礼遇——而非通过 Agoda、Booking.com 那样的预订网站。',
+    howToBookTitle: '如何直接预订',
     roomTitle: '选房指南',
     roomCouples: '最适合情侣',
     roomFamilies: '最适合家庭',

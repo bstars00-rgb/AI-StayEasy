@@ -4,7 +4,7 @@ import { ko } from '../i18n/locales/ko'
 import { vi } from '../i18n/locales/vi'
 import { zh } from '../i18n/locales/zh'
 import { ja } from '../i18n/locales/ja'
-import { hotels, getHotel, HEADLINE_BENEFIT, headlineBenefit } from '../data/hotels'
+import { hotels, getHotel, HEADLINE_BENEFIT, headlineBenefit, splitBenefitIndices } from '../data/hotels'
 import { localizeHotel } from '../i18n'
 import { recommend, COMING_SOON, CITY_SIGNALS } from '../lib/searchEngine'
 import { hotelLatLng, AREA, COORDS } from '../lib/geo'
@@ -100,6 +100,27 @@ describe('hotel data integrity', () => {
     // city that only adds tautology hotels should not move it.
     expect(Object.keys(HEADLINE_BENEFIT)).toHaveLength(41)
     expect(hotels.filter((h) => headlineBenefit(h)).length).toBe(41)
+  })
+
+  it('splits every benefit line into exactly one of perks / how-to-book', () => {
+    // The detail page renders perks as check-marked tiles under an "OTA can't
+    // give you this" heading and how-to lines as a neutral list. A contact
+    // line leaking into perks re-creates the R8 finding (a phone number
+    // dressed as a perk); a line in neither section silently disappears.
+    for (const h of hotels) {
+      const { perks, howTo } = splitBenefitIndices(h.slug)
+      const all = [...perks, ...howTo].sort((a, b) => a - b)
+      expect(all, `${h.slug} split is not a partition`).toEqual(h.officialBenefits.map((_, i) => i))
+      for (const i of perks) {
+        expect(h.officialBenefits[i], `${h.slug}[${i}] contact line classified as perk`).not.toMatch(/^Reserve directly/)
+      }
+      const headline = HEADLINE_BENEFIT[h.slug]
+      if (headline !== undefined) {
+        expect(perks, `${h.slug} headline must be a perk`).toContain(headline)
+      }
+    }
+    // Every hotel keeps at least its how-to lines — the section never renders empty.
+    expect(hotels.every((h) => splitBenefitIndices(h.slug).howTo.length + splitBenefitIndices(h.slug).perks.length > 0)).toBe(true)
   })
 
   it('every similarHotelSlugs entry resolves to a real hotel', () => {

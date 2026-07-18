@@ -4847,6 +4847,41 @@ export function headlineBenefit(h: Pick<Hotel, 'slug' | 'officialBenefits'>): st
 }
 
 /**
+ * Line shapes that are booking INSTRUCTIONS, not benefits: the "book on the
+ * official website" opener, the "reserve directly — phone/email" contact line,
+ * and the templated "X requests are easiest to arrange directly" advice. The
+ * detail page used to render all of these as check-marked tiles under a
+ * heading promising "perks you get by booking direct — not through Agoda or
+ * Booking.com", which dressed a how-to as a perk (the R8 review's top finding).
+ *
+ * Presentation routing only — it decides which SECTION a line renders in,
+ * never invents or removes a claim. It matches the ENGLISH catalogue text;
+ * the caller applies the resulting indices to the localized array (the locale
+ * arrays are index-parallel, enforced by the length-parity test).
+ */
+const HOW_TO_BOOK_SHAPES = [
+  /^Reserve directly/,
+  // Bare book-direct openers — the same shape the HEADLINE_BENEFIT test bans.
+  // A "— MeliaRewards member rates" suffix carries a claim and stays a perk.
+  /^Book direct (on|with) the (property's )?official (website|site)( \([^)]+\))?( at [\w.]+)?('s booking page)?( for the best available rate)?$/,
+  /easiest to arrange directly|easiest to make directly|are arranged directly|booked through a separate direct engine/,
+]
+
+/** Split a hotel's benefit-line indices into real perks vs booking how-to.
+ *  The HEADLINE_BENEFIT pick is always a perk (e.g. Topas's line mentions
+ *  "arranged directly" but leads with a complimentary shuttle). */
+export function splitBenefitIndices(slug: string): { perks: number[]; howTo: number[] } {
+  const h = hotels.find((x) => x.slug === slug)
+  const perks: number[] = []
+  const howTo: number[] = []
+  h?.officialBenefits.forEach((line, i) => {
+    const isHowTo = HEADLINE_BENEFIT[slug] !== i && HOW_TO_BOOK_SHAPES.some((re) => re.test(line))
+    ;(isHowTo ? howTo : perks).push(i)
+  })
+  return { perks, howTo }
+}
+
+/**
  * StayEasy editorial scores — explicit judgments per hotel, assigned by our
  * editorial review (suitability, location, direct-booking value; we champion
  * characterful local/independent hotels over big chains). These are OPINIONS

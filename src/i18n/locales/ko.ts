@@ -319,6 +319,7 @@ export const ko: Locale = {
     thingsToCheck: '먼저 확인할 사항',
     benefitsTitle: '공식 예약 혜택',
     benefitsSub: '아고다·부킹닷컴 같은 예약 사이트가 아니라, 이 호텔 공식 웹사이트에서 예약할 때 받는 혜택입니다.',
+    howToBookTitle: '직접 예약 방법',
     roomTitle: '객실 선택 가이드',
     roomCouples: '커플에게 추천',
     roomFamilies: '가족에게 추천',
