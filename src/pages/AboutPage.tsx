@@ -15,7 +15,7 @@ export default function AboutPage() {
       <section className="bg-gradient-to-br from-ink-900 to-brand-800 py-14 text-white">
         <div className="container-page">
           <nav className="mb-3 text-sm text-white/60">
-            <Link to="/" className="hover:text-white">Home</Link> <span className="px-1">/</span> About
+            <Link to="/" className="hover:text-white">{t.common.home}</Link> <span className="px-1">/</span> {t.footer.about}
           </nav>
           <h1 className="max-w-2xl text-4xl font-extrabold tracking-tight sm:text-5xl">{t.about.heroTitle}</h1>
           <p className="mt-4 max-w-2xl text-lg text-white/85">

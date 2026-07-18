@@ -4,6 +4,24 @@ export const en = {
   langName: 'English',
 
   enums: {
+    country: {
+      'Vietnam': 'Vietnam',
+      'Thailand': 'Thailand',
+      'Japan': 'Japan',
+      'South Korea': 'South Korea',
+      'Indonesia': 'Indonesia',
+      'Singapore': 'Singapore',
+      'Malaysia': 'Malaysia',
+      'Philippines': 'Philippines',
+      'Cambodia': 'Cambodia',
+      'Laos': 'Laos',
+      'Taiwan': 'Taiwan',
+      'Hong Kong': 'Hong Kong',
+      'China': 'China',
+      'India': 'India',
+      'Sri Lanka': 'Sri Lanka',
+      'Maldives': 'Maldives',
+    },
     city: {
       'Da Nang': 'Da Nang',
       'Ho Chi Minh City': 'Ho Chi Minh City',
@@ -140,6 +158,7 @@ export const en = {
   },
 
   common: {
+    home: 'Home',
     bestFor: 'Best for',
     officialBenefit: 'Official booking benefit',
     viewGuide: 'View Guide',

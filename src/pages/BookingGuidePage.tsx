@@ -25,7 +25,7 @@ export default function BookingGuidePage() {
       <section className="bg-gradient-to-br from-brand-700 to-ink-900 py-14 text-white">
         <div className="container-page">
           <nav className="mb-3 text-sm text-white/60">
-            <Link to="/" className="hover:text-white">Home</Link> <span className="px-1">/</span> Guides / Direct booking
+            <Link to="/" className="hover:text-white">{t.common.home}</Link> <span className="px-1">/</span> {t.nav.guide}
           </nav>
           <span className="pill bg-white/15 text-white ring-1 ring-white/25">{t.guide.heroBadge}</span>
           <h1 className="mt-4 max-w-3xl text-4xl font-extrabold tracking-tight sm:text-5xl">{t.guide.heroTitle}</h1>

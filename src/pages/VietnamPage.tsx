@@ -98,7 +98,7 @@ export default function VietnamPage() {
       <section className="bg-gradient-to-br from-ink-900 to-brand-800 py-14 text-white">
         <div className="container-page">
           <nav className="mb-4 text-sm text-white/60">
-            <Link to="/" className="hover:text-white">Home</Link> <span className="px-1">/</span> Destinations / Vietnam
+            <Link to="/" className="hover:text-white">{t.common.home}</Link> <span className="px-1">/</span> {t.nav.destinations} / {(t.enums.country as Record<string, string>)['Vietnam']}
           </nav>
           <h1 className="max-w-2xl whitespace-pre-line text-4xl font-extrabold tracking-tight sm:text-5xl">
             {t.vietnam.heroTitle}

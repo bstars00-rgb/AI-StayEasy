@@ -4,6 +4,24 @@ export const ja: Locale = {
   langName: '日本語',
 
   enums: {
+    country: {
+      'Vietnam': 'ベトナム',
+      'Thailand': 'タイ',
+      'Japan': '日本',
+      'South Korea': '韓国',
+      'Indonesia': 'インドネシア',
+      'Singapore': 'シンガポール',
+      'Malaysia': 'マレーシア',
+      'Philippines': 'フィリピン',
+      'Cambodia': 'カンボジア',
+      'Laos': 'ラオス',
+      'Taiwan': '台湾',
+      'Hong Kong': '香港',
+      'China': '中国',
+      'India': 'インド',
+      'Sri Lanka': 'スリランカ',
+      'Maldives': 'モルディブ',
+    },
     city: {
       'Da Nang': 'ダナン',
       'Ho Chi Minh City': 'ホーチミン',
@@ -140,6 +158,7 @@ export const ja: Locale = {
   },
 
   common: {
+    home: 'ホーム',
     bestFor: 'おすすめの方',
     officialBenefit: '公式予約特典',
     viewGuide: 'ガイドを見る',

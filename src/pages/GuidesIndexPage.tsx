@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { guides } from '../data/guides'
 import type { GuideCategory } from '../data/guides'
 import { HotelImage } from '../components/HotelImage'
-import { useLang } from '../i18n'
+import { useLang, useT } from '../i18n'
 import { guideStrings } from '../lib/guideI18n'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 
@@ -10,6 +10,7 @@ const CATEGORIES: GuideCategory[] = ['Direct booking', 'City guide', 'Planning']
 
 export default function GuidesIndexPage() {
   const { lang } = useLang()
+  const t = useT()
   const s = guideStrings[lang]
   useDocumentMeta(
     'Travel & booking guides — StayEasy',
@@ -21,7 +22,7 @@ export default function GuidesIndexPage() {
       <section className="bg-gradient-to-br from-ink-900 to-brand-800 py-14 text-white">
         <div className="container-page">
           <nav className="mb-4 text-sm text-white/60">
-            <Link to="/" className="hover:text-white">Home</Link> <span className="px-1">/</span> {s.nav}
+            <Link to="/" className="hover:text-white">{t.common.home}</Link> <span className="px-1">/</span> {s.nav}
           </nav>
           <h1 className="max-w-2xl text-4xl font-extrabold tracking-tight sm:text-5xl">{s.indexTitle}</h1>
           <p className="mt-4 max-w-2xl text-lg text-white/85">{s.indexSubtitle}</p>

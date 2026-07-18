@@ -40,7 +40,7 @@ export default function PartnerPage() {
       <section className="bg-gradient-to-br from-ink-900 via-ink-800 to-brand-800 py-16 text-white">
         <div className="container-page">
           <nav className="mb-3 text-sm text-white/60">
-            <Link to="/" className="hover:text-white">Home</Link> <span className="px-1">/</span> Partners
+            <Link to="/" className="hover:text-white">{t.common.home}</Link> <span className="px-1">/</span> {t.nav.forHotels}
           </nav>
           <div className="grid items-center gap-8 lg:grid-cols-2">
             <div>

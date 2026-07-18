@@ -4,6 +4,24 @@ export const vi: Locale = {
   langName: 'Tiếng Việt',
 
   enums: {
+    country: {
+      'Vietnam': 'Việt Nam',
+      'Thailand': 'Thái Lan',
+      'Japan': 'Nhật Bản',
+      'South Korea': 'Hàn Quốc',
+      'Indonesia': 'Indonesia',
+      'Singapore': 'Singapore',
+      'Malaysia': 'Malaysia',
+      'Philippines': 'Philippines',
+      'Cambodia': 'Campuchia',
+      'Laos': 'Lào',
+      'Taiwan': 'Đài Loan',
+      'Hong Kong': 'Hồng Kông',
+      'China': 'Trung Quốc',
+      'India': 'Ấn Độ',
+      'Sri Lanka': 'Sri Lanka',
+      'Maldives': 'Maldives',
+    },
     city: {
       'Da Nang': 'Đà Nẵng',
       'Ho Chi Minh City': 'TP. Hồ Chí Minh',
@@ -140,6 +158,7 @@ export const vi: Locale = {
   },
 
   common: {
+    home: 'Trang chủ',
     bestFor: 'Phù hợp nhất cho',
     officialBenefit: 'Ưu đãi đặt phòng chính thức',
     viewGuide: 'Xem hướng dẫn',

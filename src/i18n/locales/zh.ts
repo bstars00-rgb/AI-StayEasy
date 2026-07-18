@@ -4,6 +4,24 @@ export const zh: Locale = {
   langName: '中文',
 
   enums: {
+    country: {
+      'Vietnam': '越南',
+      'Thailand': '泰国',
+      'Japan': '日本',
+      'South Korea': '韩国',
+      'Indonesia': '印度尼西亚',
+      'Singapore': '新加坡',
+      'Malaysia': '马来西亚',
+      'Philippines': '菲律宾',
+      'Cambodia': '柬埔寨',
+      'Laos': '老挝',
+      'Taiwan': '台湾',
+      'Hong Kong': '香港',
+      'China': '中国',
+      'India': '印度',
+      'Sri Lanka': '斯里兰卡',
+      'Maldives': '马尔代夫',
+    },
     city: {
       'Da Nang': '岘港',
       'Ho Chi Minh City': '胡志明市',
@@ -140,6 +158,7 @@ export const zh: Locale = {
   },
 
   common: {
+    home: '首页',
     bestFor: '适合',
     officialBenefit: '官网预订权益',
     viewGuide: '查看指南',

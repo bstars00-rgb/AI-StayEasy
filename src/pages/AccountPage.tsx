@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useLang } from '../i18n'
+import { useLang, useT } from '../i18n'
 import { accountStrings } from '../lib/accountI18n'
 import { voucherStrings } from '../lib/voucherI18n'
 import { guestAuth, useGuest } from '../lib/guestAuth'
@@ -8,6 +8,7 @@ import { useDocumentMeta } from '../lib/useDocumentMeta'
 
 export default function AccountPage() {
   const { lang } = useLang()
+  const t = useT()
   const s = accountStrings[lang]
   useDocumentMeta('My account — StayEasy', 'Your StayEasy member account and voucher.')
   const guest = useGuest()
@@ -23,7 +24,7 @@ export default function AccountPage() {
   return (
     <div className="container-page max-w-xl py-12">
       <nav className="mb-4 text-sm text-ink-700/60">
-        <Link to="/" className="hover:text-brand-700">Home</Link> <span className="px-1">/</span> {s.accountTitle}
+        <Link to="/" className="hover:text-brand-700">{t.common.home}</Link> <span className="px-1">/</span> {s.accountTitle}
       </nav>
 
       {!guest ? (

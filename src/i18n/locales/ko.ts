@@ -4,6 +4,24 @@ export const ko: Locale = {
   langName: '한국어',
 
   enums: {
+    country: {
+      'Vietnam': '베트남',
+      'Thailand': '태국',
+      'Japan': '일본',
+      'South Korea': '대한민국',
+      'Indonesia': '인도네시아',
+      'Singapore': '싱가포르',
+      'Malaysia': '말레이시아',
+      'Philippines': '필리핀',
+      'Cambodia': '캄보디아',
+      'Laos': '라오스',
+      'Taiwan': '대만',
+      'Hong Kong': '홍콩',
+      'China': '중국',
+      'India': '인도',
+      'Sri Lanka': '스리랑카',
+      'Maldives': '몰디브',
+    },
     city: {
       'Da Nang': '다낭',
       'Ho Chi Minh City': '호치민',
@@ -140,6 +158,7 @@ export const ko: Locale = {
   },
 
   common: {
+    home: '홈',
     bestFor: '이런 분께 추천',
     officialBenefit: '공식 예약 혜택',
     viewGuide: '가이드 보기',

@@ -137,7 +137,7 @@ export default function HotelDetailPage() {
       {/* Gallery */}
       <section className="container-page pt-6">
         <nav className="mb-4 text-sm text-ink-700/60">
-          <Link to="/" className="hover:text-brand-700">Home</Link> <span className="px-1">/</span>
+          <Link to="/" className="hover:text-brand-700">{t.common.home}</Link> <span className="px-1">/</span>
           <Link to={`/destinations/${citySlug}`} className="hover:text-brand-700"> {city}</Link> <span className="px-1">/</span>
           <span className="text-ink-800"> {hotel.name}</span>
         </nav>

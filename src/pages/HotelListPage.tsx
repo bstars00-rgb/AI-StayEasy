@@ -184,8 +184,8 @@ export default function HotelListPage() {
       <section className="bg-gradient-to-br from-sky-600 to-brand-600 py-12 text-white">
         <div className="container-page">
           <nav className="mb-3 text-sm text-white/70">
-            <Link to="/" className="hover:text-white">Home</Link> <span className="px-1">/</span>
-            <Link to="/destinations/vietnam" className="hover:text-white"> Vietnam</Link> <span className="px-1">/</span> {cityName}
+            <Link to="/" className="hover:text-white">{t.common.home}</Link> <span className="px-1">/</span>
+            <Link to="/destinations/vietnam" className="hover:text-white"> {(t.enums.country as Record<string, string>)['Vietnam']}</Link> <span className="px-1">/</span> {cityName}
           </nav>
           <h1 className="text-4xl font-extrabold tracking-tight">{isDaNang ? t.list.heroTitle : cityName}</h1>
           <p className="mt-2 max-w-2xl text-white/85">{t.list.heroSubtitle}</p>

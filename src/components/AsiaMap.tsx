@@ -1,4 +1,5 @@
 import { countries } from '../data/countries'
+import { useT } from '../i18n'
 
 /**
  * Asia expansion map — instead of listing every country, plot them geographically
@@ -19,6 +20,8 @@ const x = (lng: number) => ((lng - 68) / (150 - 68)) * W
 const y = (lat: number) => ((46 - lat) / (46 + 10)) * H
 
 export function AsiaMap({ live, coming }: { live: string; coming: string }) {
+  const t = useT()
+  const countryName = (n: string) => (t.enums.country as Record<string, string>)[n] ?? n
   const pts = countries
     .map((c) => ({ c, xy: COORD[c.code] }))
     .filter((p) => p.xy)
@@ -61,7 +64,7 @@ export function AsiaMap({ live, coming }: { live: string; coming: string }) {
                 fill="#ffffff"
                 fillOpacity={isLive ? 1 : 0.7}
               >
-                {p.c.flag} {p.c.name}
+                {p.c.flag} {countryName(p.c.name)}
               </text>
             </g>
           )

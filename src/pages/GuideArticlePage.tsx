@@ -4,13 +4,14 @@ import { HotelImage } from '../components/HotelImage'
 import { AdSlot } from '../components/AdSlot'
 import { JsonLd } from '../components/JsonLd'
 import Button from '../components/Button'
-import { useLang } from '../i18n'
+import { useLang, useT } from '../i18n'
 import { guideStrings } from '../lib/guideI18n'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 
 export default function GuideArticlePage() {
   const { slug } = useParams()
   const { lang } = useLang()
+  const t = useT()
   const s = guideStrings[lang]
   const guide = slug ? getGuide(slug) : undefined
 
@@ -57,7 +58,7 @@ export default function GuideArticlePage() {
       />
       <section className="container-page pt-6">
         <nav className="mb-4 text-sm text-ink-700/60">
-          <Link to="/" className="hover:text-brand-700">Home</Link> <span className="px-1">/</span>
+          <Link to="/" className="hover:text-brand-700">{t.common.home}</Link> <span className="px-1">/</span>
           <Link to="/guides" className="hover:text-brand-700"> {s.nav}</Link> <span className="px-1">/</span>
           <span className="text-ink-800"> {s.category[guide.category]}</span>
         </nav>
