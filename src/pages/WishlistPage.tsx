@@ -112,7 +112,7 @@ export default function WishlistPage() {
             ) : view === 'compare' && count > 1 ? (
               <CompareTable hotels={hotels} />
             ) : (
-              <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid auto-rows-fr gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {hotels.map((h) => (
                   <HotelCard key={h.id} hotel={h} />
                 ))}

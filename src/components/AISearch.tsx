@@ -122,9 +122,9 @@ export function AISearch({ autoFocus = false }: { autoFocus?: boolean }) {
               <p className="mt-1 text-sm text-ink-700/70">{s.noMatchText}</p>
             </div>
           ) : (
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid auto-rows-fr gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {rec.results.map((r) => (
-                <div key={r.hotel.id} className="space-y-2">
+                <div key={r.hotel.id} className="flex flex-col gap-2 [&>:last-child]:flex-1">
                   {!rec.generic && (
                     <div className="flex flex-wrap items-center gap-1.5">
                       <span className="pill bg-brand-600 text-white">{r.pct}% {s.matchSuffix}</span>

@@ -370,7 +370,7 @@ export default function HotelDetailPage() {
       {/* 9. Similar hotels */}
       <section className="container-page mt-16">
         <h2 className="mb-5 text-2xl font-extrabold text-ink-900">{t.detail.similarTitle}</h2>
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid auto-rows-fr gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {similar.map((h) => (
             <HotelCard key={h.id} hotel={h} />
           ))}
