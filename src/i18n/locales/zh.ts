@@ -222,7 +222,7 @@ export const zh: Locale = {
     partnerCtaText:
       '通过值得信赖的内容与赞助位推广您的官网预订权益——并保留 100% 的预订收入。',
     partnerCtaBtn: '与 StayEasy 合作',
-    partnerCtaBtn2: '查看酒店后台',
+    partnerCtaBtn2: '查看后台示例',
   },
 
   vietnam: {
@@ -263,7 +263,7 @@ export const zh: Locale = {
     compare3: '是否含早餐',
     compare4: '押金与退款条款',
     neutralNote:
-      'StayEasy 保持中立：我们说明各项利弊，由您来决定。OTA 同样便利——正确的选择取决于您的行程。',
+      'StayEasy 保持中立：我们说明各项利弊，由您来决定。OTA(在线旅行社)同样便利——正确的选择取决于您的行程。',
     ctaTitle: '准备好开始规划了吗？',
     ctaText: '岘港已上线 20 家真实且经验证的酒店，按出行风格与官网预订权益精选。',
     ctaBtn: '从岘港酒店开始',
@@ -339,7 +339,7 @@ export const zh: Locale = {
     rail2: '含官网专属礼遇',
     rail3: '由酒店处理您的预订与支持',
     saveTitle: '直接预订的优势',
-    saveText: '您在酒店官网预订——中间没有 OTA 佣金。许多酒店把最优价格和权益留给直接预订的客人。',
+    saveText: '您在酒店官网预订——中间没有 OTA(在线旅行社)佣金。许多酒店把最优价格和权益留给直接预订的客人。',
     railGuideTitle: '第一次官网直订？🤔',
     railGuideText: '阅读官网直订指南',
     ctaTitle: '准备好官网直订了吗？',
@@ -353,11 +353,19 @@ export const zh: Locale = {
   guide: {
     metaTitle: '官网直订指南——StayEasy',
     metaDesc:
-      '该直接向酒店预订吗？一份中立、实用的指南，比较 OTA 与官网直订，并附预订前核对清单。',
+      '该直接向酒店预订吗？一份中立、实用的指南，比较 OTA(在线旅行社)与官网直订，并附预订前核对清单。',
     heroBadge: '中立且实用',
     heroTitle: '该直接向酒店预订吗？',
     heroSubtitle:
       '官网直订能带来更顺畅的沟通与官网权益，但您始终应核对价格、取消与付款条款。',
+    defEyebrow: '比较之前',
+    defTitle: '订酒店的两种方式',
+    defOtaTitle: '什么是 OTA？',
+    defOtaText:
+      'OTA(在线旅行社)是像携程、Booking.com、Agoda 这样的订房网站或应用，把许多酒店汇集在一处，代为接受预订。预订成功后，酒店会按房价的一定比例向 OTA 支付佣金。',
+    defDirectTitle: '什么是官网直订？',
+    defDirectText:
+      '不经过中间订房平台，直接在酒店官网预订。预订与特殊需求由酒店自行处理。StayEasy 不接受预订，只负责把您引导到酒店官网。',
     cmpEyebrow: '逐项对比',
     cmpTitle: 'OTA 与官网直订',
     cmpSubtitle: 'OTA 很便利。官网直订也有自身优势。以下是一份诚实的对比。',

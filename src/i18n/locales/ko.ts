@@ -222,7 +222,7 @@ export const ko: Locale = {
     partnerCtaText:
       '신뢰할 수 있는 콘텐츠와 스폰서 노출로 공식 예약 혜택을 알리고, 예약 매출은 100% 그대로 가져가세요.',
     partnerCtaBtn: 'StayEasy 파트너 되기',
-    partnerCtaBtn2: '호텔 대시보드 보기',
+    partnerCtaBtn2: '대시보드 샘플 보기',
   },
 
   vietnam: {
@@ -263,7 +263,7 @@ export const ko: Locale = {
     compare3: '조식 포함 여부',
     compare4: '보증금 및 환불 조건',
     neutralNote:
-      'StayEasy는 중립적입니다. 장단점을 설명해 드리면 결정은 여러분이 합니다. OTA도 편리합니다 — 알맞은 선택은 여행에 따라 다릅니다.',
+      'StayEasy는 중립적입니다. 장단점을 설명해 드리면 결정은 여러분이 합니다. OTA(온라인 여행사)도 편리합니다 — 알맞은 선택은 여행에 따라 다릅니다.',
     ctaTitle: '여행 계획을 시작할 준비가 되셨나요?',
     ctaText: '다낭에는 여행 스타일과 공식 예약 혜택으로 고른 실제 검증 호텔 20곳이 준비되어 있습니다.',
     ctaBtn: '다낭 호텔로 시작하기',
@@ -339,7 +339,7 @@ export const ko: Locale = {
     rail2: '직접 예약 전용 혜택 포함',
     rail3: '예약과 응대는 호텔이 직접 처리',
     saveTitle: '직접예약의 이점',
-    saveText: '호텔 공식 사이트에서 예약해요 — 중간에 OTA 수수료가 붙지 않아요. 많은 호텔이 직접 예약하는 손님에게 가장 좋은 요금과 혜택을 줍니다.',
+    saveText: '호텔 공식 사이트에서 예약해요 — 중간에 OTA(온라인 여행사) 수수료가 붙지 않아요. 많은 호텔이 직접 예약하는 손님에게 가장 좋은 요금과 혜택을 줍니다.',
     railGuideTitle: '직접 예약이 처음이신가요? 🤔',
     railGuideText: '직접 예약 가이드 읽기',
     ctaTitle: '직접 예약할 준비가 되셨나요?',
@@ -353,11 +353,19 @@ export const ko: Locale = {
   guide: {
     metaTitle: '직접 예약 가이드 — StayEasy',
     metaDesc:
-      '호텔에 직접 예약해야 할까요? OTA와 직접 예약을 비교하는 중립적이고 실용적인 가이드와 예약 전 체크리스트를 제공합니다.',
+      '호텔에 직접 예약해야 할까요? OTA(온라인 여행사)와 직접 예약을 비교하는 중립적이고 실용적인 가이드와 예약 전 체크리스트를 제공합니다.',
     heroBadge: '중립적이고 실용적',
     heroTitle: '호텔에 직접 예약해야 할까요?',
     heroSubtitle:
       '직접 예약은 더 원활한 소통과 공식 혜택을 줄 수 있지만, 가격, 취소, 결제 조건은 항상 확인해야 합니다.',
+    defEyebrow: '먼저 알아두세요',
+    defTitle: '호텔 예약 방법 두 가지',
+    defOtaTitle: 'OTA란?',
+    defOtaText:
+      'OTA(온라인 여행사)는 아고다, 부킹닷컴, 트립닷컴처럼 여러 호텔을 한곳에 모아 두고 대신 예약을 받아 주는 사이트와 앱입니다. 예약이 이뤄지면 호텔이 요금의 일부를 수수료로 냅니다.',
+    defDirectTitle: '직접 예약이란?',
+    defDirectText:
+      '중간 사이트 없이 호텔 공식 웹사이트에서 바로 예약하는 방법입니다. 예약 조건과 응대는 호텔이 직접 맡습니다. StayEasy는 예약을 받지 않고 호텔 공식 사이트로 연결만 해 드립니다.',
     cmpEyebrow: '나란히 비교',
     cmpTitle: 'OTA vs 직접 예약',
     cmpSubtitle: 'OTA는 편리합니다. 직접 예약에는 나름의 강점이 있습니다. 솔직하게 비교해 드립니다.',
@@ -490,7 +498,7 @@ export const ko: Locale = {
       market: '주요 유입 시장',
       traveler: '주요 여행자 유형',
     },
-    reportLink: '전체 호텔 대시보드 보기',
+    reportLink: '대시보드 샘플 전체 보기',
     plansEyebrow: '요금제',
     plansTitle: '간단하고 수수료 없는 요금제',
     plans: {

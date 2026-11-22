@@ -222,7 +222,7 @@ export const vi: Locale = {
     partnerCtaText:
       'Quảng bá ưu đãi đặt phòng chính thức của bạn qua nội dung đáng tin cậy và các vị trí tài trợ — và giữ 100% doanh thu đặt phòng của bạn.',
     partnerCtaBtn: 'Hợp tác với StayEasy',
-    partnerCtaBtn2: 'Xem bảng điều khiển khách sạn',
+    partnerCtaBtn2: 'Xem bảng điều khiển mẫu',
   },
 
   vietnam: {
@@ -263,7 +263,7 @@ export const vi: Locale = {
     compare3: 'Bữa sáng có được bao gồm hay không',
     compare4: 'Điều khoản đặt cọc và hoàn tiền',
     neutralNote:
-      'StayEasy giữ quan điểm trung lập: chúng tôi giải thích các đánh đổi để bạn tự quyết định. OTA cũng tiện lợi — lựa chọn đúng tùy thuộc vào chuyến đi của bạn.',
+      'StayEasy giữ quan điểm trung lập: chúng tôi giải thích các đánh đổi để bạn tự quyết định. OTA (đại lý du lịch trực tuyến) cũng tiện lợi — lựa chọn đúng tùy thuộc vào chuyến đi của bạn.',
     ctaTitle: 'Sẵn sàng bắt đầu lên kế hoạch?',
     ctaText: 'Đà Nẵng dẫn đầu với 20 khách sạn thật đã xác minh, chọn theo phong cách du lịch và ưu đãi đặt phòng chính thức.',
     ctaBtn: 'Bắt đầu với khách sạn Đà Nẵng',
@@ -339,7 +339,7 @@ export const vi: Locale = {
     rail2: 'Bao gồm các ưu đãi chỉ dành cho khách đặt trực tiếp',
     rail3: 'Khách sạn xử lý việc đặt phòng & hỗ trợ của bạn',
     saveTitle: 'Lợi thế khi đặt trực tiếp',
-    saveText: 'Bạn đặt trên chính website của khách sạn — không có hoa hồng OTA ở giữa. Nhiều khách sạn dành mức giá và ưu đãi tốt nhất cho khách đặt trực tiếp.',
+    saveText: 'Bạn đặt trên chính website của khách sạn — không có hoa hồng OTA (đại lý du lịch trực tuyến) ở giữa. Nhiều khách sạn dành mức giá và ưu đãi tốt nhất cho khách đặt trực tiếp.',
     railGuideTitle: 'Mới đặt phòng trực tiếp? 🤔',
     railGuideText: 'Đọc hướng dẫn đặt phòng trực tiếp',
     ctaTitle: 'Sẵn sàng đặt phòng trực tiếp?',
@@ -353,11 +353,19 @@ export const vi: Locale = {
   guide: {
     metaTitle: 'Hướng dẫn đặt phòng trực tiếp — StayEasy',
     metaDesc:
-      'Bạn có nên đặt phòng trực tiếp với khách sạn? Một hướng dẫn trung lập, thiết thực so sánh OTA và đặt phòng trực tiếp, kèm danh sách kiểm tra trước khi đặt.',
+      'Bạn có nên đặt phòng trực tiếp với khách sạn? Một hướng dẫn trung lập, thiết thực so sánh OTA (đại lý du lịch trực tuyến) và đặt phòng trực tiếp, kèm danh sách kiểm tra trước khi đặt.',
     heroBadge: 'Trung lập & thiết thực',
     heroTitle: 'Bạn có nên đặt phòng trực tiếp với khách sạn?',
     heroSubtitle:
       'Đặt phòng trực tiếp có thể mang lại liên lạc tốt hơn và các ưu đãi chính thức, nhưng bạn nên luôn kiểm tra giá, chính sách hủy và điều khoản thanh toán.',
+    defEyebrow: 'Trước khi so sánh',
+    defTitle: 'Hai cách đặt phòng khách sạn',
+    defOtaTitle: 'OTA là gì?',
+    defOtaText:
+      'OTA (đại lý du lịch trực tuyến) là trang web hoặc ứng dụng đặt phòng như Agoda, Booking.com hay Traveloka. OTA gom nhiều khách sạn vào một nơi và nhận đặt phòng thay cho khách sạn. Khi có đặt phòng, khách sạn trả cho OTA một phần giá phòng dưới dạng hoa hồng.',
+    defDirectTitle: 'Đặt phòng trực tiếp là gì?',
+    defDirectText:
+      'Bạn đặt thẳng trên website chính thức của khách sạn, không qua trang đặt phòng trung gian. Khách sạn tự xử lý đặt phòng và các yêu cầu của bạn. StayEasy không nhận đặt phòng, chỉ dẫn bạn tới website chính thức.',
     cmpEyebrow: 'So sánh trực tiếp',
     cmpTitle: 'OTA và đặt phòng trực tiếp',
     cmpSubtitle: 'OTA thì tiện lợi. Đặt phòng trực tiếp có thế mạnh riêng. Dưới đây là một so sánh trung thực.',
