@@ -5,7 +5,7 @@ import { useLang, useT } from '../i18n'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 import { trackEvent } from '../lib/analytics'
 import { planInterest } from '../lib/planInterest'
-import { PLAN_IDS, plansStrings, type PlanId } from '../lib/plansI18n'
+import { PLAN_IDS, PERIOD_IDS, plansStrings, type PlanId, type PeriodId } from '../lib/plansI18n'
 
 /**
  * Traveler subscription plans — PROTOTYPE. Explains the model and lets a visitor
@@ -18,13 +18,24 @@ export default function PlansPage() {
   const t = useT()
   const s = plansStrings[lang]
   useDocumentMeta(s.metaTitle, s.metaDesc)
-  const [chosen, setChosen] = useState<PlanId | null>(() => planInterest.get())
+  const saved = planInterest.get()
+  const [period, setPeriod] = useState<PeriodId>(saved?.period ?? 'monthly')
+  const [chosen, setChosen] = useState<PlanId | null>(saved?.plan ?? null)
 
   const toggle = (id: PlanId) => {
     const next = chosen === id ? null : id
-    planInterest.set(next)
+    planInterest.set(next ? { plan: next, period } : null)
     setChosen(next)
-    if (next) trackEvent('plan_interest', { plan: next, lang })
+    if (next) trackEvent('plan_interest', { plan: next, period, lang })
+  }
+
+  // Changing the period while a plan is registered keeps the registration in sync.
+  const pickPeriod = (p: PeriodId) => {
+    setPeriod(p)
+    if (chosen) {
+      planInterest.set({ plan: chosen, period: p })
+      trackEvent('plan_interest', { plan: chosen, period: p, lang })
+    }
   }
 
   return (
@@ -65,6 +76,27 @@ export default function PlansPage() {
       {/* The three plans */}
       <section className="container-page mt-16">
         <SectionHeading title={s.plansTitle} />
+
+        {/* Billing period — same features in each; only the monthly cost order differs. */}
+        <div className="mb-6">
+          <p className="text-xs font-bold uppercase tracking-wide text-ink-700/50">{s.periodTitle}</p>
+          <div role="radiogroup" aria-label={s.periodTitle} className="mt-2 inline-flex rounded-full bg-white p-1 shadow-card ring-1 ring-black/5">
+            {PERIOD_IDS.map((p) => (
+              <button
+                key={p}
+                type="button"
+                role="radio"
+                aria-checked={period === p}
+                onClick={() => pickPeriod(p)}
+                className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${period === p ? 'bg-ink-900 text-white' : 'text-ink-700 hover:bg-sand-100'}`}
+              >
+                {s.periods[p].label}
+              </button>
+            ))}
+          </div>
+          <p className="mt-2 text-xs text-ink-700/60">{s.periodNote}</p>
+        </div>
+
         <div className="grid gap-5 lg:grid-cols-3">
           {PLAN_IDS.map((id) => {
             const p = s.plans[id]
@@ -75,7 +107,10 @@ export default function PlansPage() {
                 <h3 className="mt-1 text-3xl font-extrabold tracking-tight text-ink-900">{p.name}</h3>
                 <p className="mt-3 text-xs font-bold uppercase tracking-wide text-ink-700/50">{s.forWho}</p>
                 <p className="mt-0.5 text-sm text-ink-700/90">{p.forWho}</p>
-                <p className="mt-4 rounded-lg bg-sand-100 px-3 py-2 text-xs font-semibold text-ink-700/80">{s.priceTbd}</p>
+                <div className="mt-4 rounded-lg bg-sand-100 px-3 py-2 text-xs text-ink-700/80">
+                  <p className="font-semibold">{s.periods[period].label} · {s.priceTbd}</p>
+                  <p className="mt-0.5 text-ink-700/70">{s.periods[period].hint}</p>
+                </div>
                 <ul className="mt-4 flex-1 space-y-2">
                   {p.features.map((f) => (
                     <li key={f} className="flex items-start gap-2 text-sm text-ink-800">

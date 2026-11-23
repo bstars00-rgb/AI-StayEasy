@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { plansStrings, PLAN_IDS } from '../lib/plansI18n'
+import { plansStrings, PLAN_IDS, PERIOD_IDS } from '../lib/plansI18n'
 import type { Lang } from '../i18n'
 
 const LANGS: Lang[] = ['en', 'ko', 'vi', 'zh', 'ja']
@@ -25,6 +25,16 @@ describe('plans copy', () => {
       }
       for (const r of s.rows) expect(r.values.length, `${l} row ${r.label}`).toBe(PLAN_IDS.length)
       for (const str of allStrings(s)) expect(str.trim(), l).not.toBe('')
+    }
+  })
+
+  it('covers every billing period, with a label and a hint, in every language', () => {
+    for (const l of LANGS) {
+      expect(Object.keys(plansStrings[l].periods).sort(), l).toEqual([...PERIOD_IDS].sort())
+      for (const p of PERIOD_IDS) {
+        expect(plansStrings[l].periods[p].label.trim(), `${l}/${p}`).toBeTruthy()
+        expect(plansStrings[l].periods[p].hint.trim(), `${l}/${p}`).toBeTruthy()
+      }
     }
   })
 

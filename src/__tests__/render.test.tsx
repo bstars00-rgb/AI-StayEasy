@@ -355,15 +355,61 @@ describe('subscription plans preview (/plans)', () => {
     const buttons = screen.getAllByRole('button', { name: /notify me at launch/i })
     expect(buttons.length).toBe(3)
     fireEvent.click(buttons[1])
-    expect(planInterest.get()).toBe('voyager')
-    expect(spy).toHaveBeenCalledWith('plan_interest', expect.objectContaining({ plan: 'voyager' }))
+    expect(planInterest.get()).toEqual({ plan: 'voyager', period: 'monthly' })
+    expect(spy).toHaveBeenCalledWith('plan_interest', expect.objectContaining({ plan: 'voyager', period: 'monthly' }))
     expect(screen.getByRole('button', { name: /you’re on the list/i }).getAttribute('aria-pressed')).toBe('true')
 
     // Choosing another plan moves the selection; choosing the same one clears it.
     fireEvent.click(screen.getAllByRole('button', { name: /notify me at launch/i })[0])
-    expect(planInterest.get()).toBe('getaway')
+    expect(planInterest.get()).toEqual({ plan: 'getaway', period: 'monthly' })
     fireEvent.click(screen.getByRole('button', { name: /you’re on the list/i }))
     expect(planInterest.get()).toBeNull()
     spy.mockRestore()
+  })
+
+  it('offers 1 month, 6 months and 1 year, and keeps a registered plan in sync with the period', async () => {
+    planInterest.set(null)
+    wrap('/plans')
+    await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
+
+    const radios = screen.getAllByRole('radio')
+    expect(radios.map((r) => r.textContent)).toEqual(['1 month', '6 months', '1 year'])
+    expect(radios[0].getAttribute('aria-checked')).toBe('true')
+    expect(screen.getAllByText(/Highest monthly cost/).length).toBe(3)
+
+    fireEvent.click(screen.getAllByRole('button', { name: /notify me at launch/i })[2])
+    fireEvent.click(radios[2])
+    expect(radios[2].getAttribute('aria-checked')).toBe('true')
+    expect(planInterest.get()).toEqual({ plan: 'nomad', period: 'annual' })
+    expect(screen.getAllByText(/Lowest monthly cost/).length).toBe(3)
+    planInterest.set(null)
+  })
+})
+
+describe('official-benefit numbers', () => {
+  it('shows the stated percentage and turns the visitor’s own rate into money', async () => {
+    wrap('/hotels/amiana-resort-nha-trang')
+    await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
+    expect((await screen.findAllByText('10% off')).length).toBeGreaterThan(0)
+
+    fireEvent.change(screen.getByLabelText(/nightly rate/i), { target: { value: '1,000' } })
+    fireEvent.change(screen.getByLabelText(/nights/i), { target: { value: '2' } })
+    const result = await screen.findByTestId('savings-result')
+    expect(result.textContent).toContain('$200')
+    expect(result.textContent).toContain('at 10% off')
+  })
+
+  it('shows no figure and no calculator for a hotel that states no percentage', async () => {
+    wrap('/hotels/olalani-resort-condotel')
+    await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
+    await screen.findByRole('heading', { name: /places worth visiting nearby/i })
+    expect(screen.queryByLabelText(/nightly rate/i)).toBeNull()
+    expect(screen.queryByText(/% off/)).toBeNull()
+  })
+
+  it('puts the number on the hotel card too', async () => {
+    wrap('/destinations/nha-trang')
+    await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
+    expect((await screen.findAllByText('10% off')).length).toBeGreaterThan(0)
   })
 })

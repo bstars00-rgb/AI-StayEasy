@@ -29,6 +29,9 @@ import { mapStrings } from '../lib/mapI18n'
 import { nearbyAttractions } from '../lib/nearby'
 import { nearbyStrings } from '../lib/nearbyI18n'
 import { NearbyPlaces } from '../components/NearbyPlaces'
+import { GoogleReviewSummary } from '../components/GoogleReviewSummary'
+import { BenefitSavings } from '../components/BenefitSavings'
+import { benefitValue } from '../data/benefitValue'
 import { HotelCommunity } from '../components/HotelCommunity'
 import { poolPhoto } from '../lib/cityPhotos'
 import { imageNotice } from '../lib/imageNoticeI18n'
@@ -241,6 +244,9 @@ export default function HotelDetailPage() {
             </div>
           </div>
 
+          {/* 2b. Google's AI review summary — added under, never instead of, the verified summary. */}
+          <GoogleReviewSummary slug={hotel.slug} />
+
           {/* 3. Official booking benefits — split so booking INSTRUCTIONS never
               wear the check-marked perk chrome. Classification runs on the
               English catalogue (splitBenefitIndices); the indices select the
@@ -250,6 +256,10 @@ export default function HotelDetailPage() {
             const { perks, howTo } = splitBenefitIndices(hotel.slug)
             return (
               <Card title={t.detail.benefitsTitle} icon="🏷️">
+                {(() => {
+                  const bv = benefitValue(hotel.slug)
+                  return bv ? <BenefitSavings value={bv} line={hotel.officialBenefits[bv.line]} /> : null
+                })()}
                 {perks.length > 0 && (
                   <>
                     <p className="text-sm text-ink-700/80">{t.detail.benefitsSub}</p>
