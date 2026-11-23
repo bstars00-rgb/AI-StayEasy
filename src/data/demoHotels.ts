@@ -32,7 +32,7 @@ interface Spec {
   cityName: L5
   /** The hotel's benefit statement — officialBenefits[0]. */
   benefit: L5
-  voucher: { code: string; redeem: 'online' | 'onsite'; label: L5 }
+  voucher: { code: string; redeem: 'online' | 'onsite'; label: L5; eligibility?: 'guests' | 'anyone' }
   value: BenefitValue
 }
 
@@ -62,7 +62,7 @@ const SPECS: Spec[] = [
       'Thành viên được tặng bữa sáng cho 2 người mỗi sáng, trị giá USD 20 mỗi đêm — xuất trình voucher khi nhận phòng',
       '会员每天早晨赠送双人早餐，每晚价值USD 20——入住时出示优惠券',
     ),
-    voucher: { code: 'LUNAS-SG-BKFST', redeem: 'onsite', label: l5('2 breakfasts a day, worth USD 20 a night', '매일 2인 조식, 1박당 USD 20 상당', '毎日2名分の朝食、1泊USD 20相当', 'Bữa sáng cho 2 người mỗi ngày, trị giá USD 20 mỗi đêm', '每日双人早餐，每晚价值USD 20') },
+    voucher: { code: 'LUNAS-SG-BKFST', redeem: 'onsite', eligibility: 'guests', label: l5('2 breakfasts a day, worth USD 20 a night', '매일 2인 조식, 1박당 USD 20 상당', '毎日2名分の朝食、1泊USD 20相当', 'Bữa sáng cho 2 người mỗi ngày, trị giá USD 20 mỗi đêm', '每日双人早餐，每晚价值USD 20') },
     value: { kind: 'amount', line: 0, amount: 20, currency: 'USD', perNight: true },
   },
   {
@@ -90,7 +90,7 @@ const SPECS: Spec[] = [
       'Thành viên được đưa đón sân bay riêng một chiều, trị giá USD 25 — xuất trình voucher khi nhận phòng',
       '会员赠送单程机场专车接送，价值USD 25——入住时出示优惠券',
     ),
-    voucher: { code: 'LUNAS-PQ-XFER', redeem: 'onsite', label: l5('Airport transfer, worth USD 25', '공항 픽업, USD 25 상당', '空港送迎、USD 25相当', 'Đưa đón sân bay, trị giá USD 25', '机场接送，价值USD 25') },
+    voucher: { code: 'LUNAS-PQ-XFER', redeem: 'onsite', eligibility: 'guests', label: l5('Airport transfer, worth USD 25', '공항 픽업, USD 25 상당', '空港送迎、USD 25相当', 'Đưa đón sân bay, trị giá USD 25', '机场接送，价值USD 25') },
     value: { kind: 'amount', line: 0, amount: 25, currency: 'USD' },
   },
   {
@@ -104,7 +104,7 @@ const SPECS: Spec[] = [
       'Thành viên được tặng lớp học nấu ăn cho 2 người cùng đầu bếp địa phương, trị giá USD 60 — xuất trình voucher khi nhận phòng',
       '会员赠送与当地厨师同行的双人烹饪课，价值USD 60——入住时出示优惠券',
     ),
-    voucher: { code: 'LUNAS-HA-COOK', redeem: 'onsite', label: l5('Cooking class for two, worth USD 60', '2인 쿠킹 클래스, USD 60 상당', '2名クッキングクラス、USD 60相当', 'Lớp nấu ăn cho 2 người, trị giá USD 60', '双人烹饪课，价值USD 60') },
+    voucher: { code: 'LUNAS-HA-COOK', redeem: 'onsite', eligibility: 'anyone', label: l5('Cooking class for two, worth USD 60', '2인 쿠킹 클래스, USD 60 상당', '2名クッキングクラス、USD 60相当', 'Lớp nấu ăn cho 2 người, trị giá USD 60', '双人烹饪课，价值USD 60') },
     value: { kind: 'amount', line: 0, amount: 60, currency: 'USD' },
   },
   {
@@ -132,7 +132,7 @@ const SPECS: Spec[] = [
       'Thành viên được tặng liệu trình spa 60 phút cho 2 người, trị giá USD 80 — xuất trình voucher khi nhận phòng',
       '会员赠送双人60分钟水疗，价值USD 80——入住时出示优惠券',
     ),
-    voucher: { code: 'LUNAS-HUE-SPA', redeem: 'onsite', label: l5('Spa for two, worth USD 80', '2인 스파, USD 80 상당', '2名スパ、USD 80相当', 'Spa cho 2 người, trị giá USD 80', '双人水疗，价值USD 80') },
+    voucher: { code: 'LUNAS-HUE-SPA', redeem: 'onsite', eligibility: 'anyone', label: l5('Spa for two, worth USD 80', '2인 스파, USD 80 상당', '2名スパ、USD 80相当', 'Spa cho 2 người, trị giá USD 80', '双人水疗，价值USD 80') },
     value: { kind: 'amount', line: 0, amount: 80, currency: 'USD' },
   },
   {
@@ -160,7 +160,7 @@ const SPECS: Spec[] = [
       'Thành viên được tặng nửa ngày đi bộ thăm bản có hướng dẫn cho 2 người, trị giá USD 35 — xuất trình voucher khi nhận phòng',
       '会员赠送双人半日村落徒步向导，价值USD 35——入住时出示优惠券',
     ),
-    voucher: { code: 'LUNAS-SP-TREK', redeem: 'onsite', label: l5('Guided trek for two, worth USD 35', '2인 가이드 트레킹, USD 35 상당', '2名ガイド付きトレッキング、USD 35相当', 'Đi bộ có hướng dẫn cho 2 người, trị giá USD 35', '双人向导徒步，价值USD 35') },
+    voucher: { code: 'LUNAS-SP-TREK', redeem: 'onsite', eligibility: 'guests', label: l5('Guided trek for two, worth USD 35', '2인 가이드 트레킹, USD 35 상당', '2名ガイド付きトレッキング、USD 35相当', 'Đi bộ có hướng dẫn cho 2 người, trị giá USD 35', '双人向导徒步，价值USD 35') },
     value: { kind: 'amount', line: 0, amount: 35, currency: 'USD' },
   },
   {
@@ -174,7 +174,7 @@ const SPECS: Spec[] = [
       'Thành viên nhận tín dụng ăn uống USD 50 tại nhà hàng của khách sạn trong thời gian lưu trú',
       '会员在住宿期间可在酒店餐厅使用USD 50餐饮额度',
     ),
-    voucher: { code: 'LUNAS-HL-DINE', redeem: 'onsite', label: l5('USD 50 dining credit', 'USD 50 식사 크레딧', 'USD 50のお食事クレジット', 'Tín dụng ăn uống USD 50', 'USD 50餐饮额度') },
+    voucher: { code: 'LUNAS-HL-DINE', redeem: 'onsite', eligibility: 'anyone', label: l5('USD 50 dining credit', 'USD 50 식사 크레딧', 'USD 50のお食事クレジット', 'Tín dụng ăn uống USD 50', 'USD 50餐饮额度') },
     value: { kind: 'amount', line: 0, amount: 50, currency: 'USD' },
   },
 ]
@@ -268,6 +268,7 @@ const voucherFor = (lang: Lang, s: Spec): Voucher => ({
   terms: TERMS[lang],
   validUntil: VALID_UNTIL,
   redeem: s.voucher.redeem,
+  ...(s.voucher.eligibility ? { eligibility: s.voucher.eligibility } : {}),
 })
 
 function build(s: Spec): Hotel {

@@ -12,6 +12,8 @@ export interface Subscription {
   period: PeriodId
   /** ISO date (YYYY-MM-DD) the request was made or last changed. */
   requestedAt: string
+  /** ISO date the member first subscribed. Changing plan or period keeps it, so it cannot restart the voucher periods. */
+  startedAt: string
 }
 
 const key = (email: string) => `stayeasy-sub:${email.trim().toLowerCase()}`
@@ -21,7 +23,7 @@ function read(email: string): Subscription | null {
   try {
     const v = JSON.parse(localStorage.getItem(key(email)) ?? 'null') as Partial<Subscription> | null
     return v && PLAN_IDS.includes(v.plan as PlanId) && PERIOD_IDS.includes(v.period as PeriodId)
-      ? { plan: v.plan as PlanId, period: v.period as PeriodId, requestedAt: v.requestedAt ?? '' }
+      ? { plan: v.plan as PlanId, period: v.period as PeriodId, requestedAt: v.requestedAt ?? '', startedAt: v.startedAt ?? v.requestedAt ?? '' }
       : null
   } catch {
     return null
@@ -36,7 +38,8 @@ export const subscription = {
   /** Request (or change to) a plan and period. */
   request(email: string, plan: PlanId, period: PeriodId): void {
     if (typeof localStorage === 'undefined') return
-    const value: Subscription = { plan, period, requestedAt: new Date().toISOString().slice(0, 10) }
+    const today = new Date().toISOString().slice(0, 10)
+    const value: Subscription = { plan, period, requestedAt: today, startedAt: read(email)?.startedAt || today }
     try {
       localStorage.setItem(key(email), JSON.stringify(value))
     } catch {

@@ -8,6 +8,8 @@ import { guestAuth, useGuest } from '../lib/guestAuth'
 import { subscription, useSubscription } from '../lib/subscription'
 import { useWishlist } from '../lib/wishlist'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
+import { VoucherWallet } from '../components/VoucherWallet'
+import { perkHotels } from '../lib/voucherWallet'
 
 const Card = ({ title, children, id }: { title: string; children: React.ReactNode; id?: string }) => (
   <section id={id} className="rounded-2xl bg-white p-5 shadow-card ring-1 ring-black/5 sm:p-6">
@@ -125,10 +127,16 @@ export default function AccountPage() {
         </Card>
 
         {/* Member-only vouchers — hotels supply these; none exist yet, and none are invented. */}
-        <Card title={m.voucherTitle}>
-          <p className="text-sm text-ink-700/80">{m.voucherEmpty}</p>
-          <Link to="/destinations/da-nang" className="mt-3 inline-block text-sm font-semibold text-brand-700 hover:underline">{m.voucherCta} →</Link>
-        </Card>
+        {perkHotels().length > 0 ? (
+          <Card id="vouchers" title={m.voucherTitle}>
+            <VoucherWallet email={guest.email} name={guest.name} sub={sub} />
+          </Card>
+        ) : (
+          <Card title={m.voucherTitle}>
+            <p className="text-sm text-ink-700/80">{m.voucherEmpty}</p>
+            <Link to="/destinations/da-nang" className="mt-3 inline-block text-sm font-semibold text-brand-700 hover:underline">{m.voucherCta} →</Link>
+          </Card>
+        )}
 
         <Card title={m.wishlist}>
           <Link to="/wishlist" className="text-sm font-semibold text-brand-700 hover:underline">{m.wishlist} ({count}) →</Link>
