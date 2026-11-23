@@ -108,7 +108,7 @@ export default function PartnerPortalPage() {
     <div className="min-h-screen bg-sand-50">
       <header className="sticky top-0 z-20 flex h-16 items-center justify-between gap-3 border-b border-black/5 bg-white/90 px-4 backdrop-blur sm:px-6 print:hidden">
         <Link to="/" aria-label="StayEasy home" className="rounded-lg hover:opacity-80">
-          <Logo size={32} textClass="text-base" />
+          <Logo size={32} />
         </Link>
         <div className="flex items-center gap-3">
           <span className="hidden text-sm text-ink-700/70 sm:inline">{session.propertyName}</span>

@@ -177,7 +177,7 @@ export default function PartnerEditPage() {
         <div className="flex items-center gap-3">
           <LanguageSwitcher />
           <Link to="/" aria-label="StayEasy home" className="rounded-lg hover:opacity-80">
-            <Logo size={30} textClass="text-base" />
+            <Logo size={30} />
           </Link>
         </div>
       </header>
