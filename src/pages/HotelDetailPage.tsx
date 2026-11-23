@@ -26,6 +26,9 @@ import { propertyTypeOf } from '../lib/propertyType'
 import { propertyTypeStrings } from '../lib/propertyTypeI18n'
 import { HotelMap } from '../components/HotelMap'
 import { mapStrings } from '../lib/mapI18n'
+import { nearbyAttractions } from '../lib/nearby'
+import { nearbyStrings } from '../lib/nearbyI18n'
+import { NearbyPlaces } from '../components/NearbyPlaces'
 import { HotelCommunity } from '../components/HotelCommunity'
 import { poolPhoto } from '../lib/cityPhotos'
 import { imageNotice } from '../lib/imageNoticeI18n'
@@ -75,6 +78,11 @@ export default function HotelDetailPage() {
   // Stable array for the map — an inline [rawHotel] would churn markers on
   // every re-render (Round 2 QA finding m-1).
   const mapHotels = useMemo(() => (rawHotel ? [rawHotel] : []), [rawHotel])
+
+  // The city's recommended places, nearest first, measured from this hotel's pin.
+  // Memoized so the map isn't handed a fresh attractions array on every render.
+  const nearby = useMemo(() => (rawHotel ? nearbyAttractions(rawHotel, lang) : null), [rawHotel, lang])
+  const mapAttractions = useMemo(() => (nearby ? nearby.items.map(({ name, lat, lng }) => ({ name, lat, lng })) : []), [nearby])
 
   // Record the hotel view (canonical, un-localized dimensions) for partner insights.
   useEffect(() => {
@@ -300,10 +308,23 @@ export default function HotelDetailPage() {
               ))}
             </div>
             <div className="mt-4">
-              <HotelMap hotels={mapHotels} height={280} lang={lang} />
+              <HotelMap hotels={mapHotels} attractions={mapAttractions} height={280} lang={lang} />
+              {mapAttractions.length > 0 && (
+                <div className="mt-1.5 flex gap-4 text-xs text-ink-700/70">
+                  <span className="inline-flex items-center gap-1.5"><span className="inline-block h-2.5 w-2.5 rounded-full bg-teal-600" /> {mapStrings[lang].hotels}</span>
+                  <span className="inline-flex items-center gap-1.5"><span className="inline-block h-2.5 w-2.5 rounded-full bg-amber-500" /> {mapStrings[lang].attractions}</span>
+                </div>
+              )}
               <p className="mt-1.5 text-xs text-ink-700/55">{mapStrings[lang].approx}</p>
             </div>
           </Card>
+
+          {/* 5b. Places worth visiting near this hotel (city attractions, nearest first) */}
+          {nearby && nearby.items.length > 0 && (
+            <Card title={nearbyStrings[lang].title} icon="🗺️">
+              <NearbyPlaces result={nearby} lang={lang} />
+            </Card>
+          )}
 
           {/* 6. Facilities guide — at-a-glance amenity icon grid */}
           <Card title={t.detail.facilitiesTitle} icon="✨">

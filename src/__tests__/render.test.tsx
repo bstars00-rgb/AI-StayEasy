@@ -320,3 +320,16 @@ describe('interaction: member-gated hotel voucher', () => {
     guestAuth.signOut()
   })
 })
+
+describe('hotel detail: nearby places', () => {
+  it('lists the city’s recommended places nearest-first with distances', async () => {
+    wrap('/hotels/olalani-resort-condotel')
+    await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
+    expect(await screen.findByRole('heading', { name: /places worth visiting nearby/i })).toBeTruthy()
+    const items = screen.getAllByRole('listitem').filter((li) => /about [\d.]+ (m|km)/.test(li.textContent ?? ''))
+    expect(items.length).toBe(5)
+    // Olalani sits on the southern beach strip: My Khe is nearest, Ba Na Hills (inland) farthest.
+    expect(items[0].textContent).toContain('My Khe Beach')
+    expect(items[items.length - 1].textContent).toContain('Ba Na Hills')
+  })
+})
