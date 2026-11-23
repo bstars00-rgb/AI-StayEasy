@@ -23,6 +23,7 @@ const SearchPage = lazy(() => import('./pages/SearchPage'))
 const WishlistPage = lazy(() => import('./pages/WishlistPage'))
 const AccountPage = lazy(() => import('./pages/AccountPage'))
 const PlansPage = lazy(() => import('./pages/PlansPage'))
+const DemoHotelPage = lazy(() => import('./pages/DemoHotelPage'))
 const SignInPage = lazy(() => import('./pages/SignInPage'))
 const SignUpPage = lazy(() => import('./pages/SignUpPage'))
 const AdminPage = lazy(() => import('./pages/AdminPage'))
@@ -109,6 +110,7 @@ export default function App() {
         <Route path="/signin" element={<SignInPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/plans" element={<PlansPage />} />
+        <Route path="/demo-hotel" element={<DemoHotelPage />} />
         <Route path="/destinations/vietnam" element={<VietnamPage />} />
         <Route path="/destinations/:citySlug" element={<HotelListPage />} />
         <Route path="/hotels/:slug" element={<HotelDetailPage />} />

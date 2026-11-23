@@ -27,3 +27,9 @@ export function savingsFor(rate: number, nights: number, pct: number): number {
 export function formatMoney(amount: number, currency: Currency, lang: Lang): string {
   return new Intl.NumberFormat(LOCALE[lang], { style: 'currency', currency, maximumFractionDigits: 0 }).format(amount)
 }
+
+/** Free nights are worth the rate for each free night, and only once the stay is long enough. */
+export function freeNightsSaving(rate: number, nights: number, minNights: number, freeNights: number): number {
+  if (!(rate > 0) || nights < minNights) return 0
+  return Math.round(rate * freeNights)
+}

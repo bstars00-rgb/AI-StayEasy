@@ -27,6 +27,6 @@ export default defineConfig({
   test: {
     // Tests assume the business-model switch is OFF (its default) no matter what a
     // developer's local .env says; cases that need it ON stub it themselves.
-    env: { VITE_ENABLE_BM: '' },
+    env: { VITE_ENABLE_BM: '', VITE_DEMO_HOTELS: '' },
   },
 })

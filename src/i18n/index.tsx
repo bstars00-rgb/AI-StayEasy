@@ -1,3 +1,4 @@
+import { DEMO_TEXT } from '../data/demoHotels'
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 import type { Hotel } from '../types'
 import { en, type Locale } from './locales/en'
@@ -111,6 +112,11 @@ export function useLang() {
  */
 export function localizeHotel(hotel: Hotel, lang: Lang): Hotel {
   if (lang === 'en') return hotel
+  if (hotel.isDemo) {
+    // The fictional demo chain carries its own translations (data/demoHotels.ts).
+    const d = DEMO_TEXT[lang]?.[hotel.id]
+    return d ? { ...hotel, ...d } : hotel
+  }
   const tx = hotelCache[lang]?.[hotel.id]
   return tx ? { ...hotel, ...tx } : hotel
 }

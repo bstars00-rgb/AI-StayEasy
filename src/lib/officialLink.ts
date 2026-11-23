@@ -12,6 +12,8 @@ export interface OfficialLinkInput {
   officialWebsiteUrl?: string
   name: string
   city: string
+  /** Fictional demo hotel: there is no official site, so link to the explanation page instead. */
+  isDemo?: boolean
 }
 
 export function isPlaceholderUrl(url?: string): boolean {
@@ -19,6 +21,7 @@ export function isPlaceholderUrl(url?: string): boolean {
 }
 
 export function officialLink(hotel: OfficialLinkInput): string {
+  if (hotel.isDemo) return `${import.meta.env.BASE_URL}demo-hotel`
   if (!isPlaceholderUrl(hotel.officialWebsiteUrl)) return hotel.officialWebsiteUrl as string
   const q = encodeURIComponent(`${hotel.name} ${hotel.city} hotel official website`)
   return `https://www.google.com/search?q=${q}`

@@ -13,7 +13,8 @@ import { imageNotice } from '../lib/imageNoticeI18n'
 import { distinctionOf } from '../lib/distinction'
 import { headlineBenefit } from '../data/hotels'
 import { benefitValue } from '../data/benefitValue'
-import { benefitValueStrings, withPct } from '../lib/benefitValueI18n'
+import { benefitHeadline } from './BenefitSavings'
+import { demoStrings } from '../lib/demoI18n'
 import { StarRating, DistinctionBadge } from './HotelRating'
 
 /**
@@ -29,9 +30,11 @@ export function HotelCard({ hotel: raw }: { hotel: Hotel }) {
   const city = (t.enums.city as Record<string, string>)[hotel.city] ?? hotel.city
   const type = (t.enums.hotelType as Record<string, string>)[hotel.hotelType] ?? hotel.hotelType
   const dist = distinctionOf(raw.slug)
-  const benefit = headlineBenefit(hotel)
+  // The fictional demo chain isn't in HEADLINE_BENEFIT (that table is the real catalogue's);
+  // its card shows its own benefit line so the figure beside it has something to qualify.
+  const benefit = headlineBenefit(hotel) ?? (raw.isDemo ? hotel.officialBenefits[0] : undefined)
   const bv = benefitValue(raw.slug)
-  const bvText = bv ? withPct((bv.upTo ? benefitValueStrings[lang].upTo : benefitValueStrings[lang].save), bv.pct) : null
+  const bvText = bv ? benefitHeadline(bv, lang) : null
 
   return (
     <div className="group relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-black/5 transition-all hover:-translate-y-0.5 hover:shadow-card-hover">
@@ -63,6 +66,9 @@ export function HotelCard({ hotel: raw }: { hotel: Hotel }) {
 
       <div className="flex flex-1 flex-col gap-3 p-4">
         <div>
+          {raw.isDemo && (
+            <p className="mb-1 inline-block rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-bold text-amber-900 ring-1 ring-amber-300">{demoStrings[lang].chip}</p>
+          )}
           <Link to={`/hotels/${hotel.slug}`}>
             <h3 className="line-clamp-2 min-h-[2.75rem] font-bold leading-snug text-ink-900 group-hover:text-brand-700">{hotel.name}</h3>
           </Link>

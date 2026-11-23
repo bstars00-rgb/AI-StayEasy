@@ -32,6 +32,7 @@ import { plansStrings } from '../lib/plansI18n'
 import { NearbyPlaces } from '../components/NearbyPlaces'
 import { GoogleReviewSummary } from '../components/GoogleReviewSummary'
 import { BenefitSavings } from '../components/BenefitSavings'
+import { demoStrings } from '../lib/demoI18n'
 import { benefitValue } from '../data/benefitValue'
 import { HotelCommunity } from '../components/HotelCommunity'
 import { poolPhoto } from '../lib/cityPhotos'
@@ -211,6 +212,16 @@ export default function HotelDetailPage() {
           </div>
         </div>
       </section>
+
+      {/* Fictional demo hotel — say so before anything else. */}
+      {rawHotel.isDemo && (
+        <section className="container-page mt-4">
+          <div role="alert" className="rounded-2xl bg-amber-50 p-4 ring-1 ring-amber-300">
+            <p className="text-sm font-bold text-amber-900">{demoStrings[lang].bannerTitle}</p>
+            <p className="mt-0.5 text-sm text-amber-900/85">{demoStrings[lang].bannerText}</p>
+          </div>
+        </section>
+      )}
 
       {/* Body */}
       <section className="container-page mt-6 grid gap-5 lg:grid-cols-[1fr_340px]">
