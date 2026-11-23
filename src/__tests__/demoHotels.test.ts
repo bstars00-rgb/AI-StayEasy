@@ -73,6 +73,19 @@ describe('each demo hotel has its own voucher and benefit', () => {
     expect(new Set(lines).size).toBe(10)
   })
 
+  it('keeps the voucher code out of every public text, so only signing in reveals it', () => {
+    // The code is the member-only part. If a benefit line or summary prints it, the
+    // lock on the voucher card unlocks nothing.
+    for (const h of DEMO_HOTELS) {
+      const code = h.voucher!.code
+      for (const l of LANGS) {
+        const t = localizeHotel(h, l)
+        const everyPublicString = JSON.stringify({ ...t, voucher: undefined })
+        expect(everyPublicString, `${h.slug}/${l}`).not.toContain(code)
+      }
+    }
+  })
+
   it('uses all three figure kinds, so each kind is visible', () => {
     const kinds = new Set(DEMO_HOTELS.map((h) => DEMO_BENEFIT_VALUE[h.slug]).map((v) => (isPercent(v) ? 'percent' : v.kind)))
     expect([...kinds].sort()).toEqual(['amount', 'nights', 'percent'])
