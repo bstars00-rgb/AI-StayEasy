@@ -222,7 +222,7 @@ export const en = {
     partnerCtaText:
       'Promote your official booking benefits through trusted content and sponsored placements — and keep 100% of your booking revenue.',
     partnerCtaBtn: 'Partner with StayEasy',
-    partnerCtaBtn2: 'See the hotel dashboard',
+    partnerCtaBtn2: 'See a sample dashboard',
   },
 
   vietnam: {
@@ -263,7 +263,7 @@ export const en = {
     compare3: 'Whether breakfast is included',
     compare4: 'The deposit and refund terms',
     neutralNote:
-      'StayEasy stays neutral: we explain the trade-offs so you can decide. OTAs are convenient too — the right choice depends on your trip.',
+      'StayEasy stays neutral: we explain the trade-offs so you can decide. OTAs (online travel agencies) are convenient too — the right choice depends on your trip.',
     ctaTitle: 'Ready to start planning?',
     ctaText: 'Da Nang leads with 20 real, verified hotels chosen by travel style and official booking benefits.',
     ctaBtn: 'Start with Da Nang hotels',
@@ -339,7 +339,7 @@ export const en = {
     rail2: 'Direct-only perks included',
     rail3: 'The hotel handles your booking & support',
     saveTitle: 'The direct-booking advantage',
-    saveText: 'You book on the hotel’s own website — no OTA commission in between. Many hotels save their best rates and perks for guests who book direct.',
+    saveText: 'You book on the hotel’s own website — no OTA (online travel agency) commission in between. Many hotels save their best rates and perks for guests who book direct.',
     railGuideTitle: 'New to booking direct? 🤔',
     railGuideText: 'Read the direct booking guide',
     ctaTitle: 'Ready to book directly?',
@@ -353,11 +353,19 @@ export const en = {
   guide: {
     metaTitle: 'Direct booking guide — StayEasy',
     metaDesc:
-      'Should you book directly with the hotel? A neutral, practical guide comparing OTA vs direct booking, with a pre-booking checklist.',
+      'Should you book directly with the hotel? A neutral, practical guide comparing online travel agencies (OTAs) vs direct booking, with a pre-booking checklist.',
     heroBadge: 'Neutral & practical',
     heroTitle: 'Should you book directly with the hotel?',
     heroSubtitle:
       'Direct booking can offer better communication and official benefits, but you should always check price, cancellation, and payment terms.',
+    defEyebrow: 'Before you compare',
+    defTitle: 'Two ways to book a hotel',
+    defOtaTitle: 'What is an OTA?',
+    defOtaText:
+      'An OTA (online travel agency) is a booking site or app such as Booking.com, Expedia or Agoda. It lists many hotels in one place and takes the booking for them. When a stay is booked, the hotel pays the OTA a commission.',
+    defDirectTitle: 'What is direct booking?',
+    defDirectText:
+      'You book on the hotel’s own official website, with no booking site in between. The hotel handles your reservation and any requests itself. StayEasy takes no bookings; we only link you to the official site.',
     cmpEyebrow: 'Side by side',
     cmpTitle: 'OTA vs direct booking',
     cmpSubtitle: 'OTAs are convenient. Direct booking has its own strengths. Here’s an honest comparison.',
@@ -490,7 +498,7 @@ export const en = {
       market: 'Top source market',
       traveler: 'Top traveler type',
     },
-    reportLink: 'See the full hotel dashboard',
+    reportLink: 'See the full sample dashboard',
     plansEyebrow: 'Plans',
     plansTitle: 'Simple, commission-free plans',
     plans: {

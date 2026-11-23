@@ -1,14 +1,19 @@
 /**
- * StayEasy brand mark + wordmark.
+ * StayEasy brand: the lowercase wordmark "stayeasy" with a coral full stop.
  *
- * The symbol fuses an arched doorway/window (stay), a location-pin point
- * (travel), and a teal "S" ribbon (the StayEasy journey). Brand colors are
- * intentionally hard-coded — this is a fixed brand asset, not theme UI.
+ * The letters are drawn as round-capped strokes (Quicksand-like), not set in a
+ * font, so the logo looks identical in the header, the social image and the
+ * app icon and needs no webfont request. Colors come from the Tailwind brand
+ * palette. `LogoMark` is the one-letter "s." tile used where a wordmark can't
+ * fit (app icon, favicon, back-office).
  */
 const GREEN = '#15564A'
-const TEAL = '#46B1A2'
+const CORAL = '#FB5D2C'
 
-/** The app-icon mark: a rounded green tile with the white doorway-pin symbol. */
+/** The "s." mark. Same geometry as public/favicon.svg and public/icon.svg. */
+export const S_DOT_PATH = 'M66 38 C62 28 36 26 34 40 C32 54 66 48 66 62 C66 76 38 76 32 64'
+
+/** App-icon mark: a rounded green tile with a white "s" and a coral dot. */
 export function LogoMark({ size = 36, className = '' }: { size?: number; className?: string }) {
   return (
     <span
@@ -16,26 +21,48 @@ export function LogoMark({ size = 36, className = '' }: { size?: number; classNa
       style={{ width: size, height: size, background: GREEN }}
       aria-hidden="true"
     >
-      <svg width={size * 0.72} height={size * 0.72} viewBox="0 0 100 100" fill="none">
-        <g transform="translate(0,-3)">
-          <path d="M28 40 A22 22 0 0 1 72 40 L72 66 Q72 80 50 92 Q28 80 28 66 Z" fill="#FFFFFF" />
-          <path d="M37 41 A14 14 0 0 1 63 41" fill="none" stroke={GREEN} strokeWidth="2.4" strokeLinecap="round" opacity="0.18" />
-          <path d="M59 35 C45 39 45 50 52 55 C59 60 59 70 45 74" fill="none" stroke={TEAL} strokeWidth="7" strokeLinecap="round" />
-        </g>
+      <svg width={size * 0.8} height={size * 0.8} viewBox="0 0 100 100" fill="none">
+        <path d={S_DOT_PATH} stroke="#FFFFFF" strokeWidth="12" strokeLinecap="round" strokeLinejoin="round" />
+        <circle cx="78" cy="78" r="7.5" fill={CORAL} />
       </svg>
     </span>
   )
 }
 
-/** Horizontal lockup: mark + two-tone wordmark. */
-export function Logo({ size = 36, className = '', textClass = 'text-lg' }: { size?: number; className?: string; textClass?: string }) {
+/** Wordmark box: 100 units = the letters' x-height; room above for the t and below for the y. */
+const VB_X = -11
+const VB_Y = -34
+const VB_W = 851
+const VB_H = 173
+
+/**
+ * The wordmark. `size` keeps the old tile-size meaning for call sites: the
+ * x-height is 0.5 × size, so 36 → an 18px x-height (about a 36px font).
+ */
+export function Logo({ size = 36, className = '' }: { size?: number; className?: string }) {
+  const unit = (size * 0.5) / 100
   return (
-    <span className={`inline-flex items-center gap-2 ${className}`}>
-      <LogoMark size={size} />
-      <span className={`font-extrabold tracking-tight ${textClass}`}>
-        <span className="text-ink-900">Stay</span>
-        <span className="text-brand-600">Easy</span>
-      </span>
-    </span>
+    <svg
+      role="img"
+      aria-label="StayEasy"
+      className={className}
+      width={VB_W * unit}
+      height={VB_H * unit}
+      viewBox={`${VB_X} ${VB_Y} ${VB_W} ${VB_H}`}
+      fill="none"
+      strokeWidth="22"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <g className="stroke-ink-900"><path transform="translate(-47.37,-43.72) scale(1.8)" d="M66 38 C62 28 36 26 34 40 C32 54 66 48 66 62 C66 76 38 76 32 64" strokeWidth="12.1"/></g>
+      <g className="stroke-ink-900"><path d="M121 -12 V64 Q121 89 148 89 M99 11 H149"/></g>
+      <g className="stroke-ink-900"><circle cx="218" cy="50" r="39"/><path d="M257 11 V89"/></g>
+      <g className="stroke-ink-900"><path d="M286 11 L327 91 M364 11 L310 128"/></g>
+      <g className="stroke-brand-600"><path d="M399 50 H477 A39 39 0 1 0 465.6 77.6"/></g>
+      <g className="stroke-brand-600"><circle cx="545" cy="50" r="39"/><path d="M584 11 V89"/></g>
+      <g className="stroke-brand-600"><path transform="translate(554.65,-43.72) scale(1.8)" d="M66 38 C62 28 36 26 34 40 C32 54 66 48 66 62 C66 76 38 76 32 64" strokeWidth="12.1"/></g>
+      <g className="stroke-brand-600"><path d="M704 11 L745 91 M782 11 L728 128"/></g>
+      <circle cx="815.0" cy="87" r="13" className="fill-accent-500 stroke-none" />
+    </svg>
   )
 }

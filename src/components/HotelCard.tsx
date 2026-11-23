@@ -12,6 +12,8 @@ import { BM_ENABLED } from '../lib/bm'
 import { imageNotice } from '../lib/imageNoticeI18n'
 import { distinctionOf } from '../lib/distinction'
 import { headlineBenefit } from '../data/hotels'
+import { benefitValue } from '../data/benefitValue'
+import { benefitValueStrings, withPct } from '../lib/benefitValueI18n'
 import { StarRating, DistinctionBadge } from './HotelRating'
 
 /**
@@ -28,6 +30,8 @@ export function HotelCard({ hotel: raw }: { hotel: Hotel }) {
   const type = (t.enums.hotelType as Record<string, string>)[hotel.hotelType] ?? hotel.hotelType
   const dist = distinctionOf(raw.slug)
   const benefit = headlineBenefit(hotel)
+  const bv = benefitValue(raw.slug)
+  const bvText = bv ? withPct((bv.upTo ? benefitValueStrings[lang].upTo : benefitValueStrings[lang].save), bv.pct) : null
 
   return (
     <div className="group relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-black/5 transition-all hover:-translate-y-0.5 hover:shadow-card-hover">
@@ -91,7 +95,10 @@ export function HotelCard({ hotel: raw }: { hotel: Hotel }) {
             no box at all. */}
         {benefit && (
           <div className="rounded-xl bg-brand-50 px-3 py-2">
-            <p className="flex items-center gap-1 text-xs font-semibold text-brand-700"><IconTag className="h-3.5 w-3.5" /> {t.common.officialBenefit}</p>
+            <p className="flex items-center gap-1 text-xs font-semibold text-brand-700">
+              <IconTag className="h-3.5 w-3.5" /> {t.common.officialBenefit}
+              {bvText && <span className="ml-auto rounded-full bg-brand-600 px-2 py-0.5 text-xs font-extrabold text-white">{bvText}</span>}
+            </p>
             <p className="line-clamp-1 text-sm text-ink-800">{benefit}</p>
           </div>
         )}

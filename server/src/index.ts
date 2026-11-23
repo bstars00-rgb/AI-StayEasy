@@ -4,6 +4,7 @@ import cors from '@fastify/cors'
 import { prisma, toDestination, toHotel } from './db'
 import { recommend } from '../../src/lib/searchEngine'
 import { partners, campaigns, inquiries, overviewKpis, clicksByCity } from '../../src/data/adminData'
+import { registerReviewSummary } from './reviewSummary'
 
 const V = '/api/v1'
 const page = <T>(items: T[]) => ({ items, page: 1, pageSize: items.length, total: items.length })
@@ -56,6 +57,9 @@ app.get<{ Params: { slug: string } }>(`${V}/hotels/:slug/similar`, async (req) =
   const rows = await prisma.hotel.findMany({ where: { slug: { in: slugs } }, include: { city: true } })
   return rows.map(toHotel)
 })
+
+// ---- Public: Google's AI review summary (live pass-through, never stored) ----
+registerReviewSummary(app, V)
 
 // ---- Public: AI recommend (runs the shared engine over the DB catalogue) ----
 app.post<{ Body: { query?: string; limit?: number } }>(`${V}/recommend`, async (req) => {

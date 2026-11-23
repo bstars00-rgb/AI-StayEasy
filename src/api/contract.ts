@@ -23,6 +23,8 @@ export const endpoints = {
   cityHotels: (slug: string) => `${API_BASE}/cities/${slug}/hotels`,
   hotel: (slug: string) => `${API_BASE}/hotels/${slug}`,
   recommend: () => `${API_BASE}/recommend`,
+  /** Google's AI review summary for a hotel, fetched live (never stored). 404 = none available. */
+  hotelReviewSummary: (slug: string) => `${API_BASE}/hotels/${slug}/review-summary`,
   track: () => `${API_BASE}/track`,
   inquiries: () => `${API_BASE}/inquiries`,
   // partner
@@ -39,6 +41,24 @@ export const endpoints = {
   adminInquiries: () => `${API_BASE}/admin/inquiries`,
   adminClicks: () => `${API_BASE}/admin/clicks`,
 } as const
+
+/**
+ * Google's AI summary of a hotel's Google Maps reviews, relayed by the backend.
+ * Google requires the AI disclosure and its links to travel with the text, and
+ * forbids storing Places content — so this is fetched per view and never cached.
+ */
+export interface ReviewSummaryDto {
+  /** Google's summary text, shown as-is. */
+  text: string
+  /** BCP-47 language of `text` as reported by Google, when present. */
+  textLang?: string
+  /** AI disclosure, e.g. "Summarized with Gemini" (localized by Google). */
+  disclosure: string
+  /** Where to read the underlying reviews on Google Maps. */
+  reviewsUri?: string
+  /** Where a user can report a problem with the summary. */
+  flagUri?: string
+}
 
 // ---- Envelopes ----
 export interface ApiError {

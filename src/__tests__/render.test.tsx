@@ -13,6 +13,7 @@ import { hotelEdits } from '../lib/hotelEdits'
 import { guestAuth } from '../lib/guestAuth'
 import * as analytics from '../lib/analytics'
 import SignInPage from '../pages/SignInPage'
+import { planInterest } from '../lib/planInterest'
 
 // jsdom is missing a few browser APIs the app touches. Polyfill them so the
 // real components render and interact exactly as in a browser.
@@ -47,7 +48,7 @@ describe('route render (lazy chunks resolve, no throw)', () => {
     '/hotels/olalani-resort-condotel', '/guides/direct-booking',
     '/guides', '/guides/why-book-hotels-direct', '/guides/da-nang-travel-guide',
     '/privacy', '/terms', '/contact',
-    '/partners', '/dashboard', '/admin', '/admin/register', '/partner/login', '/partner/reset', '/about', '/no-such-page',
+    '/partners', '/dashboard', '/plans', '/admin', '/admin/register', '/partner/login', '/partner/reset', '/about', '/no-such-page',
   ]
   for (const path of routes) {
     it(`renders ${path}`, async () => {
@@ -318,5 +319,97 @@ describe('interaction: member-gated hotel voucher', () => {
     )
     expect(screen.getByText(/“Gift code” field/i)).toBeTruthy()
     guestAuth.signOut()
+  })
+})
+
+describe('hotel detail: nearby places', () => {
+  it('lists the city’s recommended places nearest-first with distances', async () => {
+    wrap('/hotels/olalani-resort-condotel')
+    await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
+    expect(await screen.findByRole('heading', { name: /places worth visiting nearby/i })).toBeTruthy()
+    const items = screen.getAllByRole('listitem').filter((li) => /about [\d.]+ (m|km)/.test(li.textContent ?? ''))
+    expect(items.length).toBe(5)
+    // Olalani sits on the southern beach strip: My Khe is nearest, Ba Na Hills (inland) farthest.
+    expect(items[0].textContent).toContain('My Khe Beach')
+    expect(items[items.length - 1].textContent).toContain('Ba Na Hills')
+  })
+})
+
+describe('subscription plans preview (/plans)', () => {
+  it('shows the three plans and a prototype notice, and no nav link while BM is off', async () => {
+    wrap('/plans')
+    await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
+    for (const name of ['Getaway', 'Voyager', 'Nomad']) {
+      expect(screen.getAllByRole('heading', { name }).length).toBeGreaterThan(0)
+    }
+    expect(screen.getByRole('note').textContent).toMatch(/preview before launch/i)
+    expect(screen.queryByRole('link', { name: 'Plans' })).toBeNull()
+  })
+
+  it('records interest in one plan at a time, fires the intent event, and toggles off', async () => {
+    planInterest.set(null)
+    const spy = vi.spyOn(analytics, 'trackEvent')
+    wrap('/plans')
+    await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
+
+    const buttons = screen.getAllByRole('button', { name: /notify me at launch/i })
+    expect(buttons.length).toBe(3)
+    fireEvent.click(buttons[1])
+    expect(planInterest.get()).toEqual({ plan: 'voyager', period: 'monthly' })
+    expect(spy).toHaveBeenCalledWith('plan_interest', expect.objectContaining({ plan: 'voyager', period: 'monthly' }))
+    expect(screen.getByRole('button', { name: /you’re on the list/i }).getAttribute('aria-pressed')).toBe('true')
+
+    // Choosing another plan moves the selection; choosing the same one clears it.
+    fireEvent.click(screen.getAllByRole('button', { name: /notify me at launch/i })[0])
+    expect(planInterest.get()).toEqual({ plan: 'getaway', period: 'monthly' })
+    fireEvent.click(screen.getByRole('button', { name: /you’re on the list/i }))
+    expect(planInterest.get()).toBeNull()
+    spy.mockRestore()
+  })
+
+  it('offers 1 month, 6 months and 1 year, and keeps a registered plan in sync with the period', async () => {
+    planInterest.set(null)
+    wrap('/plans')
+    await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
+
+    const radios = screen.getAllByRole('radio')
+    expect(radios.map((r) => r.textContent)).toEqual(['1 month', '6 months', '1 year'])
+    expect(radios[0].getAttribute('aria-checked')).toBe('true')
+    expect(screen.getAllByText(/Highest monthly cost/).length).toBe(3)
+
+    fireEvent.click(screen.getAllByRole('button', { name: /notify me at launch/i })[2])
+    fireEvent.click(radios[2])
+    expect(radios[2].getAttribute('aria-checked')).toBe('true')
+    expect(planInterest.get()).toEqual({ plan: 'nomad', period: 'annual' })
+    expect(screen.getAllByText(/Lowest monthly cost/).length).toBe(3)
+    planInterest.set(null)
+  })
+})
+
+describe('official-benefit numbers', () => {
+  it('shows the stated percentage and turns the visitor’s own rate into money', async () => {
+    wrap('/hotels/amiana-resort-nha-trang')
+    await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
+    expect((await screen.findAllByText('10% off')).length).toBeGreaterThan(0)
+
+    fireEvent.change(screen.getByLabelText(/nightly rate/i), { target: { value: '1,000' } })
+    fireEvent.change(screen.getByLabelText(/nights/i), { target: { value: '2' } })
+    const result = await screen.findByTestId('savings-result')
+    expect(result.textContent).toContain('$200')
+    expect(result.textContent).toContain('at 10% off')
+  })
+
+  it('shows no figure and no calculator for a hotel that states no percentage', async () => {
+    wrap('/hotels/olalani-resort-condotel')
+    await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
+    await screen.findByRole('heading', { name: /places worth visiting nearby/i })
+    expect(screen.queryByLabelText(/nightly rate/i)).toBeNull()
+    expect(screen.queryByText(/% off/)).toBeNull()
+  })
+
+  it('puts the number on the hotel card too', async () => {
+    wrap('/destinations/nha-trang')
+    await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
+    expect((await screen.findAllByText('10% off')).length).toBeGreaterThan(0)
   })
 })

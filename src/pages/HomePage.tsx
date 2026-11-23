@@ -146,7 +146,7 @@ export default function HomePage() {
         {hot.loading ? (
           <CardGridSkeleton count={3} />
         ) : (
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid auto-rows-fr gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {featured.map((h) => (
               <HotelCard key={h.id} hotel={h} />
             ))}

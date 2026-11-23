@@ -35,6 +35,21 @@ export default function BookingGuidePage() {
         </div>
       </section>
 
+      {/* 1b. Plain-language definitions — most travelers don't know what "OTA" means. */}
+      <section className="container-page mt-12">
+        <SectionHeading eyebrow={t.guide.defEyebrow} title={t.guide.defTitle} />
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="rounded-2xl bg-white p-6 shadow-card ring-1 ring-black/5">
+            <h3 className="text-lg font-extrabold text-ink-900">{t.guide.defOtaTitle}</h3>
+            <p className="mt-2 text-sm leading-relaxed text-ink-700/90">{t.guide.defOtaText}</p>
+          </div>
+          <div className="rounded-2xl bg-brand-50 p-6 ring-1 ring-brand-100">
+            <h3 className="text-lg font-extrabold text-ink-900">{t.guide.defDirectTitle}</h3>
+            <p className="mt-2 text-sm leading-relaxed text-ink-700/90">{t.guide.defDirectText}</p>
+          </div>
+        </div>
+      </section>
+
       {/* 2. Comparison table */}
       <section className="container-page mt-12">
         <SectionHeading eyebrow={t.guide.cmpEyebrow} title={t.guide.cmpTitle} subtitle={t.guide.cmpSubtitle} />

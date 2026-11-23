@@ -55,6 +55,7 @@ export type StayEvent =
   | 'contact_click'
   | 'search'
   | 'wishlist_add'
+  | 'plan_interest'
 
 export function trackEvent(name: StayEvent, params: Record<string, string | number | undefined> = {}): void {
   if (!GA_ID || typeof window === 'undefined' || !window.gtag) return
