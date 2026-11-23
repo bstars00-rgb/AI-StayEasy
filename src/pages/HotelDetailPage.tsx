@@ -28,6 +28,7 @@ import { HotelMap } from '../components/HotelMap'
 import { mapStrings } from '../lib/mapI18n'
 import { nearbyAttractions } from '../lib/nearby'
 import { nearbyStrings } from '../lib/nearbyI18n'
+import { plansStrings } from '../lib/plansI18n'
 import { NearbyPlaces } from '../components/NearbyPlaces'
 import { GoogleReviewSummary } from '../components/GoogleReviewSummary'
 import { BenefitSavings } from '../components/BenefitSavings'
@@ -360,7 +361,15 @@ export default function HotelDetailPage() {
 
         {/* Sticky rail */}
         <aside className="lg:sticky lg:top-20 lg:h-fit space-y-3">
-          {BM_ENABLED && <VoucherCard hotel={hotel} />}
+          {BM_ENABLED && (
+            <>
+              <VoucherCard hotel={hotel} />
+              {/* Entry to the subscription preview — a revenue surface, so BM-gated like the voucher. */}
+              <Link to="/plans" className="block rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-brand-700 shadow-card ring-1 ring-black/5 hover:bg-brand-50">
+                {plansStrings[lang].detailLink} →
+              </Link>
+            </>
+          )}
           <div className="rounded-2xl bg-white p-5 shadow-card ring-1 ring-black/5">
             <p className="text-sm font-bold text-ink-900">{t.detail.railTitle}</p>
             <p className="mt-1 text-sm text-ink-700/70">{t.detail.railText}</p>
