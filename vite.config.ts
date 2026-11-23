@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import { copyFileSync, existsSync } from 'node:fs'
 
@@ -24,4 +24,9 @@ function spa404Fallback() {
 export default defineConfig({
   base,
   plugins: [react(), spa404Fallback()],
+  test: {
+    // Tests assume the business-model switch is OFF (its default) no matter what a
+    // developer's local .env says; cases that need it ON stub it themselves.
+    env: { VITE_ENABLE_BM: '' },
+  },
 })
