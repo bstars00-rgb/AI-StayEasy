@@ -1,8 +1,8 @@
 import type { Country } from '../types'
-import { hotels } from './hotels'
+import { LISTED_HOTELS } from './listedHotels'
 
-/** Derived from the real catalogue so Vietnam's count can't drift (was hardcoded). */
-const VIETNAM_HOTELS = hotels.filter((h) => h.country === 'Vietnam').length
+/** Derived from the listed hotels so Vietnam's count can't drift (was hardcoded). */
+const VIETNAM_HOTELS = LISTED_HOTELS.filter((h) => h.country === 'Vietnam').length
 
 /**
  * Asia expansion roadmap. StayEasy launched in Vietnam to enter the market, then
