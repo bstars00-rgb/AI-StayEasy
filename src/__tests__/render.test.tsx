@@ -13,6 +13,7 @@ import { hotelEdits } from '../lib/hotelEdits'
 import { guestAuth } from '../lib/guestAuth'
 import * as analytics from '../lib/analytics'
 import SignInPage from '../pages/SignInPage'
+import { planInterest } from '../lib/planInterest'
 
 // jsdom is missing a few browser APIs the app touches. Polyfill them so the
 // real components render and interact exactly as in a browser.
@@ -47,7 +48,7 @@ describe('route render (lazy chunks resolve, no throw)', () => {
     '/hotels/olalani-resort-condotel', '/guides/direct-booking',
     '/guides', '/guides/why-book-hotels-direct', '/guides/da-nang-travel-guide',
     '/privacy', '/terms', '/contact',
-    '/partners', '/dashboard', '/admin', '/admin/register', '/partner/login', '/partner/reset', '/about', '/no-such-page',
+    '/partners', '/dashboard', '/plans', '/admin', '/admin/register', '/partner/login', '/partner/reset', '/about', '/no-such-page',
   ]
   for (const path of routes) {
     it(`renders ${path}`, async () => {
@@ -331,5 +332,38 @@ describe('hotel detail: nearby places', () => {
     // Olalani sits on the southern beach strip: My Khe is nearest, Ba Na Hills (inland) farthest.
     expect(items[0].textContent).toContain('My Khe Beach')
     expect(items[items.length - 1].textContent).toContain('Ba Na Hills')
+  })
+})
+
+describe('subscription plans preview (/plans)', () => {
+  it('shows the three plans and a prototype notice, and no nav link while BM is off', async () => {
+    wrap('/plans')
+    await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
+    for (const name of ['Getaway', 'Voyager', 'Nomad']) {
+      expect(screen.getAllByRole('heading', { name }).length).toBeGreaterThan(0)
+    }
+    expect(screen.getByRole('note').textContent).toMatch(/preview before launch/i)
+    expect(screen.queryByRole('link', { name: 'Plans' })).toBeNull()
+  })
+
+  it('records interest in one plan at a time, fires the intent event, and toggles off', async () => {
+    planInterest.set(null)
+    const spy = vi.spyOn(analytics, 'trackEvent')
+    wrap('/plans')
+    await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
+
+    const buttons = screen.getAllByRole('button', { name: /notify me at launch/i })
+    expect(buttons.length).toBe(3)
+    fireEvent.click(buttons[1])
+    expect(planInterest.get()).toBe('voyager')
+    expect(spy).toHaveBeenCalledWith('plan_interest', expect.objectContaining({ plan: 'voyager' }))
+    expect(screen.getByRole('button', { name: /you’re on the list/i }).getAttribute('aria-pressed')).toBe('true')
+
+    // Choosing another plan moves the selection; choosing the same one clears it.
+    fireEvent.click(screen.getAllByRole('button', { name: /notify me at launch/i })[0])
+    expect(planInterest.get()).toBe('getaway')
+    fireEvent.click(screen.getByRole('button', { name: /you’re on the list/i }))
+    expect(planInterest.get()).toBeNull()
+    spy.mockRestore()
   })
 })

@@ -10,6 +10,7 @@ import { wishlistStrings } from '../lib/wishlistI18n'
 import { useGuest } from '../lib/guestAuth'
 import { accountStrings } from '../lib/accountI18n'
 import { BM_ENABLED } from '../lib/bm'
+import { plansStrings } from '../lib/plansI18n'
 
 export function Navbar() {
   const [open, setOpen] = useState(false)
@@ -30,6 +31,8 @@ export function Navbar() {
     { to: '/destinations/vietnam', label: t.nav.destinations },
     { to: '/guides/direct-booking', label: t.nav.guide },
     { to: '/partners', label: t.nav.forHotels },
+    // Traveler subscription preview — a revenue surface, so shown only when BM is on.
+    ...(BM_ENABLED ? [{ to: '/plans', label: plansStrings[lang].nav }] : []),
   ]
 
   return (
