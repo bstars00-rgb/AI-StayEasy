@@ -25,6 +25,8 @@ export interface PlanCopy {
 
 export interface PlansStrings {
   nav: string
+  /** Link text on the hotel detail page, next to the member voucher. */
+  detailLink: string
   metaTitle: string
   metaDesc: string
   eyebrow: string
@@ -57,6 +59,7 @@ export interface PlansStrings {
 export const plansStrings: Record<Lang, PlansStrings> = {
   en: {
     nav: 'Plans',
+    detailLink: 'See subscription plans',
     metaTitle: 'Subscription plans preview — StayEasy',
     metaDesc: 'A preview of StayEasy’s three subscription plans, Getaway, Voyager and Nomad, built around how often you travel.',
     eyebrow: 'Plans preview',
@@ -125,6 +128,7 @@ export const plansStrings: Record<Lang, PlansStrings> = {
   },
   ko: {
     nav: '요금제',
+    detailLink: '구독 단계 보기',
     metaTitle: '구독 요금제 미리보기 — StayEasy',
     metaDesc: '여행 횟수에 맞춰 고르는 StayEasy 구독 3단계, Getaway·Voyager·Nomad를 미리 소개합니다.',
     eyebrow: '구독 미리보기',
@@ -193,6 +197,7 @@ export const plansStrings: Record<Lang, PlansStrings> = {
   },
   ja: {
     nav: 'プラン',
+    detailLink: 'プランを見る',
     metaTitle: '購読プランのプレビュー — StayEasy',
     metaDesc: '旅行の頻度に合わせて選ぶStayEasyの3つの購読プラン、Getaway・Voyager・Nomadの紹介です。',
     eyebrow: 'プランのプレビュー',
@@ -261,6 +266,7 @@ export const plansStrings: Record<Lang, PlansStrings> = {
   },
   vi: {
     nav: 'Gói đăng ký',
+    detailLink: 'Xem các gói đăng ký',
     metaTitle: 'Xem trước các gói đăng ký — StayEasy',
     metaDesc: 'Giới thiệu trước ba gói đăng ký của StayEasy — Getaway, Voyager và Nomad — chọn theo mức độ bạn đi du lịch.',
     eyebrow: 'Xem trước gói đăng ký',
@@ -329,6 +335,7 @@ export const plansStrings: Record<Lang, PlansStrings> = {
   },
   zh: {
     nav: '订阅方案',
+    detailLink: '查看订阅方案',
     metaTitle: '订阅方案预览 — StayEasy',
     metaDesc: '预览StayEasy按出行频率划分的三档订阅方案：Getaway、Voyager、Nomad。',
     eyebrow: '方案预览',
