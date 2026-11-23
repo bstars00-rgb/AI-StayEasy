@@ -229,6 +229,8 @@ export interface Hotel {
   /** The hotel's preferred direct contact channels (optional). */
   contact?: ContactChannels
   isSponsored: boolean
+  /** True ONLY for the fictional "Lunas Park Hotel" demo chain (data/demoHotels.ts). */
+  isDemo?: boolean
   /** Optional downloadable direct-booking discount voucher from the hotel. */
   voucher?: Voucher
   similarHotelSlugs: string[]

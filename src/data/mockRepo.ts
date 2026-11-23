@@ -4,6 +4,8 @@ import { destinations, getDestination } from './destinations'
 import { recommend } from '../lib/searchEngine'
 import { partnerDrafts } from '../lib/partnerDrafts'
 import { applyEdits } from '../lib/hotelEdits'
+import { DEMO_HOTELS } from './demoHotels'
+import { DEMO_HOTELS_ENABLED } from '../lib/demo'
 
 /** Resolves `value`. Catalogue reads are immediate (no artificial latency, so
  *  navigation feels instant); pass `ms` only where a deliberate pause helps. */
@@ -13,7 +15,9 @@ const later = <T>(value: T, ms = 0): Promise<T> =>
 // The live catalogue = hotels registered through the back-office (drafts, newest
 // first) + the bundled launch catalogue. Computed per-call so a hotel registered
 // in this session appears immediately on navigation, without a refresh.
-const catalogue = () => [...partnerDrafts.getAll().map((d) => d.hotel), ...hotels].map(applyEdits)
+// The fictional demo chain joins only while its switch is on (lib/demo.ts).
+const catalogue = () =>
+  [...partnerDrafts.getAll().map((d) => d.hotel), ...hotels, ...(DEMO_HOTELS_ENABLED ? DEMO_HOTELS : [])].map(applyEdits)
 
 /** Synchronous catalogue lookup (drafts + static + self-service edits applied).
  *  Used by the partner portal, which scopes to a single signed-in property. */
@@ -27,7 +31,8 @@ export const mockRepo: CatalogRepo = {
   listHotelsByCity: (city) =>
     later(catalogue().filter((h) => h.city.toLowerCase() === city.toLowerCase())),
   getHotel: (slug) => later(catalogue().find((h) => h.slug === slug)),
-  getSimilarHotels: (hotel) => later(getSimilarHotels(hotel)),
+  getSimilarHotels: (hotel) =>
+    later(hotel.isDemo ? catalogue().filter((h) => hotel.similarHotelSlugs.includes(h.slug)) : getSimilarHotels(hotel)),
   // A brief pause to sell the "AI thinking" moment (the one place latency helps UX).
   recommend: (query, limit) => later(recommend(query, catalogue(), limit), 250),
 }
