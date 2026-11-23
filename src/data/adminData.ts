@@ -1,4 +1,5 @@
 import { hotels } from './hotels'
+import { LISTED_HOTELS } from './listedHotels'
 import type { PriceTier, Country } from '../types'
 
 /**
@@ -125,7 +126,7 @@ const totalClicks = partners.reduce((n, p) => n + p.clicks30d, 0)
 const mrr = partners.filter((p) => p.status === 'Active').reduce((n, p) => n + p.monthlyFee, 0)
 
 export const overviewKpis = [
-  { label: 'Hotels listed', value: hotels.length.toString(), delta: '+4', icon: '🏨' },
+  { label: 'Hotels listed', value: LISTED_HOTELS.length.toString(), delta: '+4', icon: '🏨' },
   { label: 'Active partners', value: partners.filter((p) => p.status === 'Active').length.toString(), delta: '+3', icon: '🤝' },
   { label: 'Live campaigns', value: campaigns.filter((c) => c.status === 'Live').length.toString(), delta: '+1', icon: '📣' },
   { label: 'Official-site clicks (30d)', value: totalClicks.toLocaleString(), delta: '+18%', icon: '↗️' },

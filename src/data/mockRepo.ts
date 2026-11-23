@@ -1,11 +1,10 @@
 import type { CatalogRepo } from './catalog'
-import { hotels, getSimilarHotels } from './hotels'
+import { getSimilarHotels } from './hotels'
+import { LISTED_HOTELS } from './listedHotels'
 import { destinations, getDestination } from './destinations'
 import { recommend } from '../lib/searchEngine'
 import { partnerDrafts } from '../lib/partnerDrafts'
 import { applyEdits } from '../lib/hotelEdits'
-import { DEMO_HOTELS } from './demoHotels'
-import { DEMO_HOTELS_ENABLED } from '../lib/demo'
 
 /** Resolves `value`. Catalogue reads are immediate (no artificial latency, so
  *  navigation feels instant); pass `ms` only where a deliberate pause helps. */
@@ -15,9 +14,8 @@ const later = <T>(value: T, ms = 0): Promise<T> =>
 // The live catalogue = hotels registered through the back-office (drafts, newest
 // first) + the bundled launch catalogue. Computed per-call so a hotel registered
 // in this session appears immediately on navigation, without a refresh.
-// The fictional demo chain joins only while its switch is on (lib/demo.ts).
-const catalogue = () =>
-  [...partnerDrafts.getAll().map((d) => d.hotel), ...hotels, ...(DEMO_HOTELS_ENABLED ? DEMO_HOTELS : [])].map(applyEdits)
+// LISTED_HOTELS = the verified catalogue plus the demo chain while its switch is on.
+const catalogue = () => [...partnerDrafts.getAll().map((d) => d.hotel), ...LISTED_HOTELS].map(applyEdits)
 
 /** Synchronous catalogue lookup (drafts + static + self-service edits applied).
  *  Used by the partner portal, which scopes to a single signed-in property. */
