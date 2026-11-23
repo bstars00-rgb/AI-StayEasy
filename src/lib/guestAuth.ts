@@ -1,5 +1,6 @@
 import { useSyncExternalStore } from 'react'
 import { subscription } from './subscription'
+import { wallet } from './voucherWallet'
 
 /**
  * Guest (traveler) account — DEMO (localStorage, no backend). Nothing here is
@@ -67,7 +68,10 @@ export const guestAuth = {
   signOut: () => commit(null),
   /** Remove this account's data from the browser: its subscription request, then the session. */
   deleteAccount() {
-    if (session) subscription.cancel(session.email)
+    if (session) {
+      subscription.cancel(session.email)
+      wallet.clear(session.email)
+    }
     commit(null)
   },
   subscribe: (l: () => void) => {

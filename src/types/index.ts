@@ -121,6 +121,8 @@ export interface Voucher {
    *  - 'online' (default): enter the code in the hotel booking form's discount field.
    *  - 'onsite': download to mobile and show it at check-in for the perk. */
   redeem?: 'online' | 'onsite'
+  /** On-site perks only: 'guests' = staying guests only, 'anyone' = visitors too. The hotel decides. */
+  eligibility?: 'guests' | 'anyone'
   /** Exact label of the code field in this hotel's booking widget, e.g.
    *  'Promo code', 'Voucher', 'Gift code'. Set by StayEasy sales per hotel
    *  (the field name varies). When set, redeem instructions name it exactly. */
