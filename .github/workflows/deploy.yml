@@ -47,6 +47,10 @@ jobs:
           # vouchers, sponsored labels, ad slots, the plans preview and the hotel
           # pricing sections. Remove this line (or set it to 'false') to hide them all.
           VITE_ENABLE_BM: 'true'
+          # Google sign-in client ID (public value). Set it as a repo Variable named
+          # VITE_GOOGLE_CLIENT_ID to turn on "Continue with Google"; empty = email only.
+          # See docs/GOOGLE_SIGNIN.md.
+          VITE_GOOGLE_CLIENT_ID: ${{ vars.VITE_GOOGLE_CLIENT_ID }}
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

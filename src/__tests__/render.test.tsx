@@ -13,7 +13,7 @@ import { hotelEdits } from '../lib/hotelEdits'
 import { guestAuth } from '../lib/guestAuth'
 import * as analytics from '../lib/analytics'
 import SignInPage from '../pages/SignInPage'
-import { planInterest } from '../lib/planInterest'
+import { subscription } from '../lib/subscription'
 
 // jsdom is missing a few browser APIs the app touches. Polyfill them so the
 // real components render and interact exactly as in a browser.
@@ -173,8 +173,8 @@ describe('interaction: hotel partner self-service portal', () => {
   })
 })
 
-describe('interaction: sign-in page issues a member voucher', () => {
-  it('signs in with email and stores a member voucher', async () => {
+describe('interaction: sign-in page', () => {
+  it('signs in with email and issues no made-up voucher', async () => {
     guestAuth.signOut()
     render(
       <I18nProvider>
@@ -186,7 +186,9 @@ describe('interaction: sign-in page issues a member voucher', () => {
     fireEvent.change(screen.getByPlaceholderText(/you@gmail.com/i), { target: { value: 'me@gmail.com' } })
     fireEvent.click(screen.getByRole('button', { name: /continue with email/i }))
     expect(guestAuth.get()?.email).toBe('me@gmail.com')
-    expect(guestAuth.get()?.welcomeCode).toMatch(/^STAY-/)
+    // A StayEasy-minted "10% off" code that no hotel honors would be a made-up benefit.
+    expect(guestAuth.get()).not.toHaveProperty('welcomeCode')
+    expect(guestAuth.get()).not.toHaveProperty('discountLabel')
     guestAuth.signOut()
   })
 })
@@ -346,43 +348,106 @@ describe('subscription plans preview (/plans)', () => {
     expect(screen.queryByRole('link', { name: 'Plans' })).toBeNull()
   })
 
-  it('records interest in one plan at a time, fires the intent event, and toggles off', async () => {
-    planInterest.set(null)
-    const spy = vi.spyOn(analytics, 'trackEvent')
+  it('offers 1 month, 6 months and 1 year', async () => {
     wrap('/plans')
     await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
-
-    const buttons = screen.getAllByRole('button', { name: /notify me at launch/i })
-    expect(buttons.length).toBe(3)
-    fireEvent.click(buttons[1])
-    expect(planInterest.get()).toEqual({ plan: 'voyager', period: 'monthly' })
-    expect(spy).toHaveBeenCalledWith('plan_interest', expect.objectContaining({ plan: 'voyager', period: 'monthly' }))
-    expect(screen.getByRole('button', { name: /you’re on the list/i }).getAttribute('aria-pressed')).toBe('true')
-
-    // Choosing another plan moves the selection; choosing the same one clears it.
-    fireEvent.click(screen.getAllByRole('button', { name: /notify me at launch/i })[0])
-    expect(planInterest.get()).toEqual({ plan: 'getaway', period: 'monthly' })
-    fireEvent.click(screen.getByRole('button', { name: /you’re on the list/i }))
-    expect(planInterest.get()).toBeNull()
-    spy.mockRestore()
-  })
-
-  it('offers 1 month, 6 months and 1 year, and keeps a registered plan in sync with the period', async () => {
-    planInterest.set(null)
-    wrap('/plans')
-    await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
-
     const radios = screen.getAllByRole('radio')
     expect(radios.map((r) => r.textContent)).toEqual(['1 month', '6 months', '1 year'])
     expect(radios[0].getAttribute('aria-checked')).toBe('true')
     expect(screen.getAllByText(/Highest monthly cost/).length).toBe(3)
-
-    fireEvent.click(screen.getAllByRole('button', { name: /notify me at launch/i })[2])
     fireEvent.click(radios[2])
-    expect(radios[2].getAttribute('aria-checked')).toBe('true')
-    expect(planInterest.get()).toEqual({ plan: 'nomad', period: 'annual' })
     expect(screen.getAllByText(/Lowest monthly cost/).length).toBe(3)
-    planInterest.set(null)
+  })
+})
+
+describe('subscribing: sign up first, then My page', () => {
+  const reset = () => {
+    guestAuth.signOut()
+    window.localStorage.clear()
+    window.localStorage.setItem('stayeasy-lang', 'en')
+  }
+  afterEach(reset)
+
+  it('sends a signed-out visitor to sign-up, carrying the plan and period', async () => {
+    reset()
+    wrap('/plans')
+    await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
+    fireEvent.click(screen.getAllByRole('radio')[1]) // 6 months
+    fireEvent.click(screen.getAllByRole('button', { name: /^subscribe$/i })[1]) // Voyager
+    expect(await screen.findByRole('heading', { name: /create your account/i })).toBeTruthy()
+    expect(screen.getByRole('note').textContent).toContain('Voyager · 6 months')
+    expect(subscription.get('anyone@gmail.com')).toBeNull() // nothing is recorded before an account exists
+  })
+
+  it('requires consent to the terms and privacy policy before creating the account', async () => {
+    reset()
+    wrap('/signup')
+    await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
+    fireEvent.change(screen.getByLabelText(/^email/i), { target: { value: 'me@gmail.com' } })
+    fireEvent.click(screen.getByRole('button', { name: /sign up and continue/i }))
+    expect((await screen.findByRole('alert')).textContent).toMatch(/agree to the terms of use and privacy policy/i)
+    expect(guestAuth.get()).toBeNull()
+    fireEvent.change(screen.getByLabelText(/^email/i), { target: { value: 'not-an-email' } })
+    fireEvent.click(screen.getByRole('checkbox'))
+    fireEvent.click(screen.getByRole('button', { name: /sign up and continue/i }))
+    expect((await screen.findByRole('alert')).textContent).toMatch(/valid email/i)
+    expect(guestAuth.get()).toBeNull()
+  })
+
+  it('signs up with email, finishes the pending request, and lands on My page', async () => {
+    reset()
+    wrap('/signup?next=' + encodeURIComponent('/plans?plan=voyager&period=annual'))
+    await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
+    fireEvent.change(screen.getByLabelText(/^name/i), { target: { value: 'Mina' } })
+    fireEvent.change(screen.getByLabelText(/^email/i), { target: { value: 'Mina@Gmail.com' } })
+    fireEvent.click(screen.getByRole('checkbox'))
+    fireEvent.click(screen.getByRole('button', { name: /sign up and continue/i }))
+
+    expect(await screen.findByRole('heading', { name: 'My page' }, { timeout: 5000 })).toBeTruthy()
+    expect(guestAuth.get()?.email).toBe('mina@gmail.com')
+    expect(subscription.get('mina@gmail.com')).toMatchObject({ plan: 'voyager', period: 'annual' })
+    expect(screen.getByRole('status').textContent).toMatch(/Voyager · 1 year request was received/)
+    expect(screen.getByText('Request received')).toBeTruthy()
+  })
+
+  it('lets a signed-in member subscribe straight from the plans page', async () => {
+    reset()
+    guestAuth.signIn({ email: 'jun@gmail.com', name: 'Jun' })
+    wrap('/plans')
+    await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
+    fireEvent.click(screen.getAllByRole('button', { name: /^subscribe$/i })[2]) // Nomad, 1 month
+    expect(await screen.findByRole('heading', { name: 'My page' }, { timeout: 5000 })).toBeTruthy()
+    expect(subscription.get('jun@gmail.com')).toMatchObject({ plan: 'nomad', period: 'monthly' })
+  })
+
+  it('My page: shows no made-up voucher, cancels the request, and deletes the account', async () => {
+    reset()
+    guestAuth.signIn({ email: 'sol@gmail.com', name: 'Sol' })
+    subscription.request('sol@gmail.com', 'getaway', 'semiannual')
+    wrap('/account')
+    await waitFor(() => expect(screen.queryByTestId('route-loading')).toBeNull(), { timeout: 5000 })
+    expect(await screen.findByRole('heading', { name: 'My page' })).toBeTruthy()
+    expect(screen.getByText('Getaway')).toBeTruthy()
+    expect(screen.getByText('6 months')).toBeTruthy()
+    expect(document.body.textContent).not.toMatch(/10% off your direct booking|STAY-[A-Z0-9]{6}/)
+    expect(screen.getByText(/none available right now/i)).toBeTruthy()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Cancel request' }))
+    fireEvent.click(screen.getAllByRole('button', { name: 'Cancel request' })[0])
+    expect(await screen.findByText(/subscription request was cancelled/i)).toBeTruthy()
+    expect(subscription.get('sol@gmail.com')).toBeNull()
+
+    subscription.request('sol@gmail.com', 'nomad', 'annual')
+    fireEvent.click(screen.getByRole('button', { name: 'Delete account' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Delete' }))
+    await waitFor(() => expect(guestAuth.get()).toBeNull())
+    expect(subscription.get('sol@gmail.com')).toBeNull()
+  })
+
+  it('sends a signed-out visitor from My page to sign-in', async () => {
+    reset()
+    wrap('/account')
+    expect(await screen.findByRole('heading', { name: /sign in to stayeasy/i }, { timeout: 5000 })).toBeTruthy()
   })
 })
 

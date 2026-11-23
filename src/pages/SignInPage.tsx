@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useLang } from '../i18n'
 import { accountStrings } from '../lib/accountI18n'
+import { memberStrings } from '../lib/memberI18n'
+import { safeNext } from './SignUpPage'
 import { guestAuth, useGuest } from '../lib/guestAuth'
 import { promptGoogle, googleEnabled } from '../lib/googleAuth'
 import { Logo } from '../components/Logo'
@@ -23,10 +25,11 @@ function GoogleG() {
 export default function SignInPage() {
   const { lang } = useLang()
   const s = accountStrings[lang]
+  const m = memberStrings[lang].signup
   useDocumentMeta('Sign in — StayEasy', 'Sign in to StayEasy and get a member voucher.')
   const navigate = useNavigate()
   const [params] = useSearchParams()
-  const next = params.get('next') || '/account'
+  const next = safeNext(params.get('next'))
   const guest = useGuest()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
@@ -75,7 +78,11 @@ export default function SignInPage() {
 
           <p className="mt-3 text-center text-xs text-ink-600/55">🧪 {s.demoNote}</p>
         </div>
-        <div className="mt-4 text-center text-sm">
+        <p className="mt-4 text-center text-sm text-ink-700/80">
+          {m.newHere}{' '}
+          <Link to={`/signup?next=${encodeURIComponent(next)}`} className="font-semibold text-brand-700 hover:underline">{m.signUpLink}</Link>
+        </p>
+        <div className="mt-2 text-center text-sm">
           <Link to="/" className="text-ink-700/70 hover:text-ink-900">← Back to site</Link>
         </div>
       </div>

@@ -1,79 +1,154 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Navigate, useNavigate, useSearchParams } from 'react-router-dom'
 import { useLang, useT } from '../i18n'
 import { accountStrings } from '../lib/accountI18n'
-import { voucherStrings } from '../lib/voucherI18n'
+import { memberStrings, fill } from '../lib/memberI18n'
+import { plansStrings } from '../lib/plansI18n'
 import { guestAuth, useGuest } from '../lib/guestAuth'
+import { subscription, useSubscription } from '../lib/subscription'
+import { useWishlist } from '../lib/wishlist'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 
+const Card = ({ title, children, id }: { title: string; children: React.ReactNode; id?: string }) => (
+  <section id={id} className="rounded-2xl bg-white p-5 shadow-card ring-1 ring-black/5 sm:p-6">
+    <h2 className="text-base font-extrabold text-ink-900">{title}</h2>
+    <div className="mt-3">{children}</div>
+  </section>
+)
+
+/** "My page": profile, subscription management, member vouchers, account actions. */
 export default function AccountPage() {
   const { lang } = useLang()
   const t = useT()
-  const s = accountStrings[lang]
-  useDocumentMeta('My account — StayEasy', 'Your StayEasy member account and voucher.')
+  const as = accountStrings[lang]
+  const m = memberStrings[lang].mypage
+  const ps = plansStrings[lang]
+  useDocumentMeta(`${m.title} — StayEasy`, 'Your StayEasy profile and subscription.')
+  const navigate = useNavigate()
+  const [params] = useSearchParams()
   const guest = useGuest()
-  const [copied, setCopied] = useState(false)
+  const sub = useSubscription(guest?.email)
+  const { count } = useWishlist()
+  const [askCancel, setAskCancel] = useState(false)
+  const [cancelled, setCancelled] = useState(false)
+  const [askDelete, setAskDelete] = useState(false)
 
-  const copy = async () => {
-    if (!guest) return
-    try { await navigator.clipboard.writeText(guest.welcomeCode) } catch { /* blocked */ }
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1600)
+  if (!guest) return <Navigate to="/signin?next=/account" replace />
+
+  const planName = sub ? ps.plans[sub.plan].name : ''
+  const periodLabel = sub ? ps.periods[sub.period].label : ''
+  const justSubscribed = params.get('subscribed') === '1' && !!sub && !cancelled
+
+  const cancelSub = () => {
+    subscription.cancel(guest.email)
+    setAskCancel(false)
+    setCancelled(true)
   }
 
+  const deleteAccount = () => {
+    guestAuth.deleteAccount()
+    navigate('/', { replace: true })
+  }
+
+  const btn = 'rounded-full px-4 py-2 text-sm font-semibold transition-colors'
+
   return (
-    <div className="container-page max-w-xl py-12">
+    <div className="container-page max-w-2xl py-10">
       <nav className="mb-4 text-sm text-ink-700/60">
-        <Link to="/" className="hover:text-brand-700">{t.common.home}</Link> <span className="px-1">/</span> {s.accountTitle}
+        <Link to="/" className="hover:text-brand-700">{t.common.home}</Link> <span className="px-1">/</span> {m.title}
       </nav>
+      <h1 className="text-2xl font-extrabold text-ink-900">{m.title}</h1>
 
-      {!guest ? (
-        <div className="rounded-3xl bg-gradient-to-br from-brand-50 to-sand-50 p-8 ring-1 ring-brand-100">
-          <div className="text-4xl">🎟️</div>
-          <h1 className="mt-3 text-2xl font-extrabold text-ink-900">{s.perkTitle}</h1>
-          <p className="mt-2 text-ink-700/80">{s.perkText}</p>
-          <Link to="/signin?next=/account" className="mt-5 inline-block rounded-full bg-brand-600 px-6 py-3 text-sm font-semibold text-white hover:bg-brand-700">{s.signIn}</Link>
-        </div>
-      ) : (
-        <>
-          <div className="flex items-center gap-3">
-            {guest.picture ? (
-              <img src={guest.picture} alt="" className="h-12 w-12 rounded-full" />
-            ) : (
-              <span className="grid h-12 w-12 place-items-center rounded-full bg-brand-600 text-lg font-bold text-white">{guest.name.charAt(0).toUpperCase()}</span>
-            )}
-            <div>
-              <p className="font-extrabold text-ink-900">{guest.name} <span className="ml-1 rounded-full bg-brand-50 px-2 py-0.5 text-xs font-semibold text-brand-700">{s.member}</span></p>
-              <p className="text-sm text-ink-600/70">{s.signedInAs} {guest.email}</p>
-            </div>
-          </div>
-
-          <div className="mt-6 overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-brand-200">
-            <div className="bg-gradient-to-br from-brand-600 to-brand-700 px-6 py-4 text-white">
-              <p className="flex items-center gap-2 text-base font-bold">🎟️ {s.welcomeTitle}</p>
-              <p className="mt-0.5 text-sm text-white/85">{s.welcomeText}</p>
-            </div>
-            <div className="space-y-4 p-6">
-              <p className="text-lg font-extrabold text-brand-700">{guest.discountLabel}</p>
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-wide text-ink-700/50">{s.voucherLabel}</p>
-                <div className="mt-1 flex items-stretch gap-2">
-                  <code className="flex-1 rounded-xl bg-brand-50 px-4 py-3 text-center font-mono text-xl font-extrabold tracking-[0.2em] text-brand-700 ring-1 ring-brand-200">{guest.welcomeCode}</code>
-                  <button onClick={copy} className="shrink-0 rounded-xl bg-ink-900 px-4 text-sm font-semibold text-white hover:bg-ink-800">{copied ? `✓ ${s.copied}` : s.copy}</button>
-                </div>
-              </div>
-              <p className="text-sm text-ink-700/70">{s.validUntil}: <b>{guest.validUntil}</b></p>
-              <p className="rounded-xl bg-brand-50 px-3 py-2.5 text-xs font-medium text-brand-800 ring-1 ring-brand-100">🎟️ {voucherStrings[lang].howToUse}</p>
-              <p className="text-xs text-ink-700/55">{s.useNote}</p>
-            </div>
-          </div>
-
-          <div className="mt-6 flex justify-between">
-            <Link to="/destinations/da-nang" className="text-sm font-semibold text-brand-700 hover:underline">Browse hotels →</Link>
-            <button onClick={() => guestAuth.signOut()} className="text-sm font-semibold text-ink-700/70 hover:text-ink-900">{s.signOut}</button>
-          </div>
-        </>
+      {justSubscribed && sub && (
+        <p role="status" className="mt-4 rounded-2xl bg-brand-50 px-4 py-3 text-sm font-semibold text-brand-800 ring-1 ring-brand-100">
+          ✓ {fill(m.subDone, { plan: planName, period: periodLabel })}
+        </p>
       )}
+      {cancelled && (
+        <p role="status" className="mt-4 rounded-2xl bg-sand-100 px-4 py-3 text-sm font-semibold text-ink-800 ring-1 ring-black/5">
+          {m.subCancelled}
+        </p>
+      )}
+
+      <div className="mt-5 space-y-5">
+        {/* Profile */}
+        <section className="flex items-center gap-4 rounded-2xl bg-white p-5 shadow-card ring-1 ring-black/5 sm:p-6">
+          {guest.picture ? (
+            <img src={guest.picture} alt="" className="h-14 w-14 rounded-full" />
+          ) : (
+            <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-brand-600 text-xl font-bold text-white">{guest.name.charAt(0).toUpperCase()}</span>
+          )}
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-lg font-extrabold text-ink-900">
+              {guest.name} <span className="ml-1 rounded-full bg-brand-50 px-2 py-0.5 align-middle text-xs font-semibold text-brand-700">{as.member}</span>
+            </p>
+            <p className="truncate text-sm text-ink-600/70">{as.signedInAs} {guest.email}</p>
+            <p className="text-xs text-ink-600/55">{m.joined} {guest.joinedAt}</p>
+          </div>
+          <button onClick={() => guestAuth.signOut()} className={`${btn} shrink-0 text-ink-700 ring-1 ring-black/10 hover:bg-sand-50`}>{as.signOut}</button>
+        </section>
+
+        {/* Subscription */}
+        <Card id="subscription" title={m.subTitle}>
+          {sub ? (
+            <div>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-2xl font-extrabold tracking-tight text-ink-900">{planName}</span>
+                <span className="rounded-full bg-sand-100 px-2.5 py-0.5 text-sm font-semibold text-ink-700">{periodLabel}</span>
+                <span className="rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-bold text-amber-800 ring-1 ring-amber-200">{m.subStatus}</span>
+              </div>
+              <p className="mt-1 text-sm text-ink-700/80">{ps.plans[sub.plan].kicker}</p>
+              <p className="mt-3 text-xs text-ink-700/65">{m.subRequested} {sub.requestedAt} · {ps.periods[sub.period].hint}</p>
+              <p className="mt-2 rounded-xl bg-sand-50 px-3 py-2 text-xs text-ink-700/80 ring-1 ring-black/5">{m.subStatusNote}</p>
+
+              {askCancel ? (
+                <div className="mt-4 rounded-xl bg-rose-50 p-3 ring-1 ring-rose-100">
+                  <p className="text-sm font-semibold text-rose-900">{m.subCancelAsk}</p>
+                  <div className="mt-2 flex gap-2">
+                    <button onClick={cancelSub} className={`${btn} bg-rose-600 text-white hover:bg-rose-700`}>{m.subCancelYes}</button>
+                    <button onClick={() => setAskCancel(false)} className={`${btn} text-ink-700 ring-1 ring-black/10 hover:bg-white`}>{m.subCancelNo}</button>
+                  </div>
+                </div>
+              ) : (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <Link to="/plans" className={`${btn} bg-ink-900 text-white hover:bg-ink-800`}>{m.subChange}</Link>
+                  <button onClick={() => setAskCancel(true)} className={`${btn} text-ink-700 ring-1 ring-black/10 hover:bg-sand-50`}>{m.subCancel}</button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div>
+              <p className="text-sm text-ink-700/80">{m.subNone}</p>
+              <Link to="/plans" className={`${btn} mt-3 inline-block bg-brand-600 text-white hover:bg-brand-700`}>{m.subNoneCta}</Link>
+            </div>
+          )}
+        </Card>
+
+        {/* Member-only vouchers — hotels supply these; none exist yet, and none are invented. */}
+        <Card title={m.voucherTitle}>
+          <p className="text-sm text-ink-700/80">{m.voucherEmpty}</p>
+          <Link to="/destinations/da-nang" className="mt-3 inline-block text-sm font-semibold text-brand-700 hover:underline">{m.voucherCta} →</Link>
+        </Card>
+
+        <Card title={m.wishlist}>
+          <Link to="/wishlist" className="text-sm font-semibold text-brand-700 hover:underline">{m.wishlist} ({count}) →</Link>
+        </Card>
+
+        {/* Account management */}
+        <Card title={m.manageTitle}>
+          {askDelete ? (
+            <div className="rounded-xl bg-rose-50 p-3 ring-1 ring-rose-100">
+              <p className="text-sm font-semibold text-rose-900">{m.deleteAsk}</p>
+              <div className="mt-2 flex gap-2">
+                <button onClick={deleteAccount} className={`${btn} bg-rose-600 text-white hover:bg-rose-700`}>{m.deleteYes}</button>
+                <button onClick={() => setAskDelete(false)} className={`${btn} text-ink-700 ring-1 ring-black/10 hover:bg-white`}>{m.deleteNo}</button>
+              </div>
+            </div>
+          ) : (
+            <button onClick={() => setAskDelete(true)} className="text-sm font-semibold text-rose-700 hover:underline">{m.deleteBtn}</button>
+          )}
+        </Card>
+      </div>
     </div>
   )
 }

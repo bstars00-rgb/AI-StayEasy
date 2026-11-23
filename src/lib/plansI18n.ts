@@ -45,6 +45,8 @@ export interface PlansStrings {
   plans: Record<PlanId, PlanCopy>
   interest: string
   interestDone: string
+  /** Button on the other plans once the member already has one. */
+  change: string
   interestNote: string
   compareTitle: string
   colFeature: string
@@ -103,9 +105,10 @@ export const plansStrings: Record<Lang, PlansStrings> = {
         features: ['Everything in Voyager', 'Voucher expiry reminders and room to keep several', 'Unlimited AI picks and itineraries', 'Save your frequent inquiry phrases', 'Share wishlists with your team'],
       },
     },
-    interest: 'Notify me at launch',
-    interestDone: 'You’re on the list',
-    interestNote: 'No payment. We only record your interest, in this browser only.',
+    interest: 'Subscribe',
+    interestDone: 'Request received',
+    change: 'Switch to this plan',
+    interestNote: 'Subscribing starts with a free account. For now we only take the request on My page and charge nothing; we’ll explain payment after launch.',
     compareTitle: 'Compare the plans',
     colFeature: 'Feature',
     rows: [
@@ -172,9 +175,10 @@ export const plansStrings: Record<Lang, PlansStrings> = {
         features: ['Voyager의 모든 기능', '바우처 만료 알림, 여러 개 보관', 'AI 호텔 추천·일정 제한 없음', '자주 쓰는 문의 문구 저장', '위시리스트를 팀·동료와 공유'],
       },
     },
-    interest: '출시 알림 받기',
-    interestDone: '등록했어요',
-    interestNote: '결제 없이 관심만 기록합니다. 이 브라우저에만 저장됩니다.',
+    interest: '구독 신청하기',
+    interestDone: '신청 접수됨',
+    change: '이 단계로 변경',
+    interestNote: '구독은 무료 회원가입부터 시작해요. 지금은 신청만 접수하고 요금은 청구하지 않으며, 결제는 정식 출시 후에 안내해 드려요.',
     compareTitle: '단계별 비교',
     colFeature: '기능',
     rows: [
@@ -241,9 +245,10 @@ export const plansStrings: Record<Lang, PlansStrings> = {
         features: ['Voyagerのすべての機能', 'バウチャーの期限通知と複数保管', 'AIのおすすめ・旅程は無制限', 'よく使う問い合わせ文を保存', 'ウィッシュリストをチームや同僚と共有'],
       },
     },
-    interest: '開始時に通知を受け取る',
-    interestDone: '登録しました',
-    interestNote: 'お支払いは不要です。関心だけをこのブラウザ内に記録します。',
+    interest: '購読を申し込む',
+    interestDone: '申し込み済み',
+    change: 'このプランに変更',
+    interestNote: '購読は無料の会員登録から始まります。現在は申し込みの受け付けのみで料金は請求せず、お支払いは正式リリース後にご案内します。',
     compareTitle: 'プランの比較',
     colFeature: '機能',
     rows: [
@@ -310,9 +315,10 @@ export const plansStrings: Record<Lang, PlansStrings> = {
         features: ['Mọi tính năng của Voyager', 'Nhắc voucher sắp hết hạn, lưu được nhiều voucher', 'Gợi ý và lịch trình AI không giới hạn', 'Lưu các câu hay dùng khi hỏi khách sạn', 'Chia sẻ danh sách yêu thích với nhóm, đồng nghiệp'],
       },
     },
-    interest: 'Báo cho tôi khi ra mắt',
-    interestDone: 'Đã đăng ký',
-    interestNote: 'Không thanh toán. Chúng tôi chỉ ghi nhận sự quan tâm của bạn, và chỉ lưu trong trình duyệt này.',
+    interest: 'Đăng ký gói',
+    interestDone: 'Đã nhận yêu cầu',
+    change: 'Chuyển sang gói này',
+    interestNote: 'Đăng ký gói bắt đầu bằng tài khoản miễn phí. Hiện chỉ nhận yêu cầu và không thu phí; chúng tôi sẽ hướng dẫn thanh toán sau khi chính thức ra mắt.',
     compareTitle: 'So sánh các gói',
     colFeature: 'Tính năng',
     rows: [
@@ -379,9 +385,10 @@ export const plansStrings: Record<Lang, PlansStrings> = {
         features: ['包含Voyager的全部功能', '优惠券到期提醒，可保存多张', 'AI推荐与行程不限次数', '保存常用咨询话术', '心愿单与团队、同事共享'],
       },
     },
-    interest: '上线时通知我',
-    interestDone: '已登记',
-    interestNote: '无需付款。仅在此浏览器中记录您的兴趣。',
+    interest: '申请订阅',
+    interestDone: '已申请',
+    change: '改为此方案',
+    interestNote: '订阅从免费注册开始。目前只受理申请、不收取费用，付款方式将在正式上线后说明。',
     compareTitle: '方案对比',
     colFeature: '功能',
     rows: [
