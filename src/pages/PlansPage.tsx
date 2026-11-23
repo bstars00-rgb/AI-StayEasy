@@ -1,41 +1,54 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { SectionHeading } from '../components/SectionHeading'
 import { useLang, useT } from '../i18n'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 import { trackEvent } from '../lib/analytics'
-import { planInterest } from '../lib/planInterest'
+import { useGuest } from '../lib/guestAuth'
+import { subscription, useSubscription } from '../lib/subscription'
+import { memberStrings } from '../lib/memberI18n'
 import { PLAN_IDS, PERIOD_IDS, plansStrings, type PlanId, type PeriodId } from '../lib/plansI18n'
 
 /**
- * Traveler subscription plans — PROTOTYPE. Explains the model and lets a visitor
- * register interest; there is no billing, no price and no account behind it.
- * The route exists but is not linked from the nav unless VITE_ENABLE_BM is on,
- * and it is left out of the sitemap, like every other revenue surface.
+ * Traveler subscription plans — PROTOTYPE. Explains the model and takes a
+ * subscription REQUEST; there is no billing and no price behind it. Requesting
+ * needs an account: signed-out visitors are sent to sign-up first and come back
+ * here, where the request they were making is recorded and they land on My page.
+ * The route is not linked from the nav unless VITE_ENABLE_BM is on, and it is
+ * left out of the sitemap, like every other revenue surface.
  */
 export default function PlansPage() {
   const { lang } = useLang()
   const t = useT()
   const s = plansStrings[lang]
   useDocumentMeta(s.metaTitle, s.metaDesc)
-  const saved = planInterest.get()
-  const [period, setPeriod] = useState<PeriodId>(saved?.period ?? 'monthly')
-  const [chosen, setChosen] = useState<PlanId | null>(saved?.plan ?? null)
+  const navigate = useNavigate()
+  const [params] = useSearchParams()
+  const guest = useGuest()
+  const sub = useSubscription(guest?.email)
+  const [period, setPeriod] = useState<PeriodId>(() => {
+    const q = params.get('period') as PeriodId
+    return PERIOD_IDS.includes(q) ? q : sub?.period ?? 'monthly'
+  })
 
-  const toggle = (id: PlanId) => {
-    const next = chosen === id ? null : id
-    planInterest.set(next ? { plan: next, period } : null)
-    setChosen(next)
-    if (next) trackEvent('plan_interest', { plan: next, period, lang })
+  const record = (email: string, plan: PlanId, per: PeriodId) => {
+    subscription.request(email, plan, per)
+    trackEvent('plan_interest', { plan, period: per, lang })
+    navigate('/account?subscribed=1#subscription', { replace: true })
   }
 
-  // Changing the period while a plan is registered keeps the registration in sync.
-  const pickPeriod = (p: PeriodId) => {
-    setPeriod(p)
-    if (chosen) {
-      planInterest.set({ plan: chosen, period: p })
-      trackEvent('plan_interest', { plan: chosen, period: p, lang })
-    }
+  // Back from sign-up with a plan in the URL → record the request and go to My page.
+  useEffect(() => {
+    const plan = params.get('plan') as PlanId
+    const per = params.get('period') as PeriodId
+    if (guest && PLAN_IDS.includes(plan) && PERIOD_IDS.includes(per)) record(guest.email, plan, per)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [guest?.email])
+
+  const choose = (id: PlanId) => {
+    if (guest) return record(guest.email, id, period)
+    // Sign up first, then return here to finish the request.
+    navigate(`/signup?next=${encodeURIComponent(`/plans?plan=${id}&period=${period}`)}`)
   }
 
   return (
@@ -87,7 +100,7 @@ export default function PlansPage() {
                 type="button"
                 role="radio"
                 aria-checked={period === p}
-                onClick={() => pickPeriod(p)}
+                onClick={() => setPeriod(p)}
                 className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${period === p ? 'bg-ink-900 text-white' : 'text-ink-700 hover:bg-sand-100'}`}
               >
                 {s.periods[p].label}
@@ -100,9 +113,10 @@ export default function PlansPage() {
         <div className="grid gap-5 lg:grid-cols-3">
           {PLAN_IDS.map((id) => {
             const p = s.plans[id]
-            const on = chosen === id
+            const current = sub?.plan === id && sub.period === period
+            const samePlan = sub?.plan === id
             return (
-              <div key={id} className={`flex flex-col rounded-3xl bg-white p-6 shadow-card ring-1 ${on ? 'ring-2 ring-brand-500' : 'ring-black/5'}`}>
+              <div key={id} className={`flex flex-col rounded-3xl bg-white p-6 shadow-card ring-1 ${samePlan ? 'ring-2 ring-brand-500' : 'ring-black/5'}`}>
                 <p className="text-sm font-semibold text-brand-700">{p.kicker}</p>
                 <h3 className="mt-1 text-3xl font-extrabold tracking-tight text-ink-900">{p.name}</h3>
                 <p className="mt-3 text-xs font-bold uppercase tracking-wide text-ink-700/50">{s.forWho}</p>
@@ -118,14 +132,22 @@ export default function PlansPage() {
                     </li>
                   ))}
                 </ul>
-                <button
-                  type="button"
-                  onClick={() => toggle(id)}
-                  aria-pressed={on}
-                  className={`mt-6 rounded-full px-5 py-3 text-sm font-bold transition-colors ${on ? 'bg-brand-50 text-brand-700 ring-1 ring-brand-200' : 'bg-ink-900 text-white hover:bg-ink-800'}`}
-                >
-                  {on ? `✓ ${s.interestDone}` : s.interest}
-                </button>
+                {current ? (
+                  <Link
+                    to="/account#subscription"
+                    className="mt-6 rounded-full bg-brand-50 px-5 py-3 text-center text-sm font-bold text-brand-700 ring-1 ring-brand-200"
+                  >
+                    ✓ {s.interestDone} · {memberStrings[lang].mypage.title}
+                  </Link>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => choose(id)}
+                    className="mt-6 rounded-full bg-ink-900 px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-ink-800"
+                  >
+                    {sub ? s.change : s.interest}
+                  </button>
+                )}
               </div>
             )
           })}
@@ -176,16 +198,19 @@ export default function PlansPage() {
         </div>
       </section>
 
-      {/* Free start */}
-      <section className="container-page my-16">
-        <div className="rounded-3xl bg-ink-900 p-8 text-center text-white sm:p-12">
-          <h2 className="text-2xl font-extrabold sm:text-3xl">{s.endTitle}</h2>
-          <p className="mx-auto mt-3 max-w-xl text-white/80">{s.endText}</p>
-          <Link to="/signin?next=/plans" className="mt-6 inline-block rounded-full bg-brand-600 px-6 py-3 text-base font-bold text-white hover:bg-brand-700">
-            {s.endBtn}
-          </Link>
-        </div>
-      </section>
+      {/* Free start — only for visitors without an account. */}
+      {!guest && (
+        <section className="container-page my-16">
+          <div className="rounded-3xl bg-ink-900 p-8 text-center text-white sm:p-12">
+            <h2 className="text-2xl font-extrabold sm:text-3xl">{s.endTitle}</h2>
+            <p className="mx-auto mt-3 max-w-xl text-white/80">{s.endText}</p>
+            <Link to="/signup?next=/plans" className="mt-6 inline-block rounded-full bg-brand-600 px-6 py-3 text-base font-bold text-white hover:bg-brand-700">
+              {s.endBtn}
+            </Link>
+          </div>
+        </section>
+      )}
+      {guest && <div className="my-16" />}
     </>
   )
 }

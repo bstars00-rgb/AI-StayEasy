@@ -1,18 +1,22 @@
 import { useSyncExternalStore } from 'react'
+import { subscription } from './subscription'
 
 /**
- * Guest (traveler) sign-in — DEMO (localStorage, no backend). Signing in grants
- * a one-time member welcome voucher usable on a direct booking. Real Google
- * sign-in activates when VITE_GOOGLE_CLIENT_ID is set (see googleAuth.ts);
- * otherwise an email demo flow is used.
+ * Guest (traveler) account — DEMO (localStorage, no backend). Nothing here is
+ * sent to a server: the profile lives in this browser only. Real Google sign-in
+ * activates when VITE_GOOGLE_CLIENT_ID is set (see googleAuth.ts); otherwise the
+ * email form is used. A production build verifies the Google credential and
+ * keeps accounts server-side.
+ *
+ * Signing up grants NO voucher or discount. Member vouchers come from hotels
+ * (Hotel.voucher), and until a hotel supplies one there is nothing to show — a
+ * StayEasy-minted "10% off" code that no hotel honors would be a made-up benefit.
  */
 export interface GuestSession {
   email: string
   name: string
   picture?: string
-  welcomeCode: string
-  discountLabel: string
-  validUntil: string
+  /** ISO date (YYYY-MM-DD) the account was created. */
   joinedAt: string
 }
 
@@ -22,7 +26,9 @@ function read(): GuestSession | null {
   if (typeof localStorage === 'undefined') return null
   try {
     const v = JSON.parse(localStorage.getItem(KEY) ?? 'null')
-    return v && typeof v === 'object' && v.email ? (v as GuestSession) : null
+    if (!v || typeof v !== 'object' || !v.email) return null
+    // Sessions saved before the welcome voucher was removed carry extra fields; keep only ours.
+    return { email: v.email, name: v.name || String(v.email).split('@')[0], picture: v.picture, joinedAt: v.joinedAt || new Date().toISOString().slice(0, 10) }
   } catch {
     return null
   }
@@ -44,32 +50,26 @@ function commit(next: GuestSession | null) {
   listeners.forEach((l) => l())
 }
 
-/** Deterministic member voucher code from the email, so re-login is stable. */
-function welcomeCode(email: string): string {
-  let h = 0
-  for (let i = 0; i < email.length; i++) h = (h * 31 + email.charCodeAt(i)) >>> 0
-  return `STAY-${h.toString(36).toUpperCase().slice(0, 6).padStart(6, '0')}`
-}
-
 export const guestAuth = {
   get: () => session,
+  /** Create the account (first time) or sign back in (same email keeps its profile). */
   signIn(input: { email: string; name?: string; picture?: string }) {
     const email = input.email.trim().toLowerCase()
     if (!email) return
-    // Keep the existing welcome voucher if the same guest signs back in.
     if (session?.email === email) return
-    const now = Date.now()
     commit({
       email,
       name: input.name?.trim() || email.split('@')[0],
       picture: input.picture,
-      welcomeCode: welcomeCode(email),
-      discountLabel: '10% off your direct booking',
-      validUntil: new Date(now + 30 * 86400000).toISOString().slice(0, 10),
-      joinedAt: new Date(now).toISOString().slice(0, 10),
+      joinedAt: new Date().toISOString().slice(0, 10),
     })
   },
   signOut: () => commit(null),
+  /** Remove this account's data from the browser: its subscription request, then the session. */
+  deleteAccount() {
+    if (session) subscription.cancel(session.email)
+    commit(null)
+  },
   subscribe: (l: () => void) => {
     listeners.add(l)
     return () => {

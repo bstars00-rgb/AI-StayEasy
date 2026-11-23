@@ -212,20 +212,19 @@ describe('partner account approval workflow', () => {
   })
 })
 
-describe('guest sign-in + member voucher', () => {
-  it('issues a deterministic member voucher on sign-in', () => {
+describe('guest account', () => {
+  it('normalizes the email, keeps the profile for the same email, and issues no voucher', () => {
     guestAuth.signOut()
     guestAuth.signIn({ email: 'Traveler@Gmail.com', name: 'Traveler' })
     const g = guestAuth.get()!
     expect(g.email).toBe('traveler@gmail.com') // normalized
-    expect(g.welcomeCode).toMatch(/^STAY-[A-Z0-9]{6}$/)
-    expect(g.discountLabel.length).toBeGreaterThan(0)
-    expect(g.validUntil).toMatch(/^\d{4}-\d{2}-\d{2}$/)
-    const code = g.welcomeCode
+    expect(g.name).toBe('Traveler')
+    expect(g.joinedAt).toMatch(/^\d{4}-\d{2}-\d{2}$/)
+    expect(Object.keys(g).sort()).toEqual(['email', 'joinedAt', 'name', 'picture'].filter((k) => k in g).sort())
+    guestAuth.signIn({ email: 'traveler@gmail.com', name: 'Someone else' }) // same guest signing back in
+    expect(guestAuth.get()!.name).toBe('Traveler')
     guestAuth.signOut()
-    guestAuth.signIn({ email: 'traveler@gmail.com' })
-    expect(guestAuth.get()!.welcomeCode).toBe(code) // same guest → same code
-    guestAuth.signOut()
+    expect(guestAuth.get()).toBeNull()
   })
 })
 
