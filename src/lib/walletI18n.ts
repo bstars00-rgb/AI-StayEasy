@@ -17,8 +17,8 @@ export interface WalletStrings {
     preview: string
     open: string
     status: { issued: string; used: string; expired: string; void: string }
-    guestsOnly: string
-    anyone: string
+    /** Shown on a used voucher: the booking number staff recorded. {ref} */
+    bookedWith: string
     validUntil: string
     pastTitle: string
     staffLink: string
@@ -27,6 +27,10 @@ export interface WalletStrings {
   voucher: {
     title: string
     showStaff: string
+    /** How the perk is earned: book on the official site, then show voucher + booking number. */
+    howTo: string
+    bookCta: string
+    bookingLabel: string
     codeLabel: string
     member: string
     perk: string
@@ -53,8 +57,14 @@ export interface WalletStrings {
     perkLabel: string
     memberLabel: string
     validUntilLabel: string
-    eligGuests: string
-    eligAnyone: string
+    bookingLabel: string
+    bookingPh: string
+    bookingNeeded: string
+    bookingReused: string
+    verifyNote: string
+    historyTitle: string
+    historyEmpty: string
+    historyCount: string
     confirm: string
     done: string
     usedAt: string
@@ -83,7 +93,7 @@ export const walletStrings: Record<Lang, WalletStrings> = {
   en: {
     wallet: {
       title: 'Perk vouchers this period',
-      intro: 'Each period we send you hotel perk vouchers. They don’t depend on a booking — show one at the hotel within its dates.',
+      intro: 'Each period we send you hotel perk vouchers. Book the hotel on its official website, then show the voucher and your booking number at check-in.',
       period: '{from} to {to}',
       nextBatch: 'Your next vouchers are issued on {date}.',
       needSub: 'Subscribe to receive perk vouchers from hotels each period.',
@@ -92,8 +102,7 @@ export const walletStrings: Record<Lang, WalletStrings> = {
       preview: 'See the message we send',
       open: 'Open voucher',
       status: { issued: 'Ready to use', used: 'Used', expired: 'Expired', void: 'Cancelled' },
-      guestsOnly: 'Staying guests only',
-      anyone: 'Visitors welcome',
+      bookedWith: 'Booking {ref}',
       validUntil: 'Valid until {date}',
       pastTitle: 'Earlier vouchers',
       staffLink: 'Hotel staff check screen (demo)',
@@ -101,7 +110,10 @@ export const walletStrings: Record<Lang, WalletStrings> = {
     },
     voucher: {
       title: 'Perk voucher',
-      showStaff: 'Show this screen to hotel staff.',
+      showStaff: 'At check-in, show this screen and your booking number to the hotel staff.',
+      howTo: 'Book on the hotel’s official website, then show this voucher and your booking number at check-in.',
+      bookCta: 'See the hotel',
+      bookingLabel: 'Booking number',
       codeLabel: 'Code',
       member: 'Member',
       perk: 'Perk',
@@ -113,7 +125,7 @@ export const walletStrings: Record<Lang, WalletStrings> = {
     },
     staff: {
       title: 'Hotel staff check',
-      intro: 'Check a member’s voucher and mark the perk as given. Each voucher can be marked once.',
+      intro: 'Check a member’s voucher, enter the guest’s booking number and mark the perk as given. Each voucher works once, and each booking number once.',
       hotelLabel: 'Your hotel',
       codeLabel: 'Voucher code',
       codePh: 'XXXX-XXXX-XXXX-XXXX',
@@ -128,8 +140,14 @@ export const walletStrings: Record<Lang, WalletStrings> = {
       perkLabel: 'Perk',
       memberLabel: 'Member',
       validUntilLabel: 'Valid until',
-      eligGuests: 'Staying guests only — please confirm the guest is staying before giving the perk.',
-      eligAnyone: 'Visitors are welcome for this perk.',
+      bookingLabel: 'Guest’s booking number',
+      bookingPh: 'Booking number from your reservation system',
+      bookingNeeded: 'Enter the booking number to record the perk.',
+      bookingReused: 'This booking number already received a voucher perk at your hotel.',
+      verifyNote: 'Check that the booking exists in your reservation system and came from StayEasy before giving the perk.',
+      historyTitle: 'Given at your hotel',
+      historyEmpty: 'Nothing recorded yet.',
+      historyCount: '{n} given so far',
       confirm: 'Mark as given',
       done: 'Recorded as given. This voucher can’t be used again.',
       usedAt: 'Used on {when}',
@@ -144,7 +162,7 @@ export const walletStrings: Record<Lang, WalletStrings> = {
       messenger: null,
       subject: '[StayEasy] {n} perk voucher(s) arrived for this period',
       greeting: 'Hi {name},',
-      body: 'Your subscription includes hotel perk vouchers. Open a voucher and show its QR at the hotel — it works however you booked, within its dates.',
+      body: 'Your subscription includes hotel perk vouchers. Book the hotel on its official website, then open the voucher and show its QR with your booking number at check-in.',
       cta: 'Open voucher',
       footer: 'A voucher can be used once. If someone else uses it first, it can’t be used again.',
       bubbleTitle: '',
@@ -155,7 +173,7 @@ export const walletStrings: Record<Lang, WalletStrings> = {
   ko: {
     wallet: {
       title: '이번 기간 특전 바우처',
-      intro: '기간마다 호텔 특전 바우처를 보내 드려요. 예약과 상관없이, 유효기간 안에 호텔에서 보여 주면 됩니다.',
+      intro: '기간마다 호텔 특전 바우처를 보내 드려요. 호텔 공식 사이트에서 예약한 뒤, 체크인할 때 바우처와 예약번호를 보여 주세요.',
       period: '{from} ~ {to}',
       nextBatch: '다음 바우처는 {date}에 발급돼요.',
       needSub: '구독하면 기간마다 호텔 특전 바우처를 받아요.',
@@ -164,8 +182,7 @@ export const walletStrings: Record<Lang, WalletStrings> = {
       preview: '발송 메시지 미리보기',
       open: '바우처 열기',
       status: { issued: '사용 가능', used: '사용함', expired: '기간 만료', void: '구독 종료로 무효' },
-      guestsOnly: '투숙객 전용',
-      anyone: '방문객도 가능',
+      bookedWith: '예약번호 {ref}',
       validUntil: '{date}까지',
       pastTitle: '지난 바우처',
       staffLink: '호텔 직원 확인 화면(시연)',
@@ -173,7 +190,10 @@ export const walletStrings: Record<Lang, WalletStrings> = {
     },
     voucher: {
       title: '특전 바우처',
-      showStaff: '호텔 직원에게 이 화면을 보여 주세요.',
+      showStaff: '체크인할 때 이 화면과 예약번호를 호텔 직원에게 보여 주세요.',
+      howTo: '호텔 공식 사이트에서 예약하고, 체크인할 때 이 바우처와 예약번호를 보여 주세요.',
+      bookCta: '호텔 보기',
+      bookingLabel: '예약번호',
       codeLabel: '코드',
       member: '회원',
       perk: '특전',
@@ -185,7 +205,7 @@ export const walletStrings: Record<Lang, WalletStrings> = {
     },
     staff: {
       title: '호텔 직원 확인',
-      intro: '회원의 바우처를 확인하고 특전을 제공했다고 기록하세요. 바우처마다 한 번만 기록할 수 있어요.',
+      intro: '회원의 바우처를 확인하고, 투숙객의 예약번호를 입력해 특전을 제공했다고 기록하세요. 바우처도 예약번호도 한 번만 쓸 수 있어요.',
       hotelLabel: '우리 호텔',
       codeLabel: '바우처 코드',
       codePh: 'XXXX-XXXX-XXXX-XXXX',
@@ -200,8 +220,14 @@ export const walletStrings: Record<Lang, WalletStrings> = {
       perkLabel: '특전',
       memberLabel: '회원',
       validUntilLabel: '유효기간',
-      eligGuests: '투숙객 전용이에요. 투숙 중인 손님인지 확인한 뒤 제공해 주세요.',
-      eligAnyone: '방문객에게도 제공할 수 있는 특전이에요.',
+      bookingLabel: '투숙객 예약번호',
+      bookingPh: '예약 시스템의 예약번호',
+      bookingNeeded: '예약번호를 입력해야 기록할 수 있어요.',
+      bookingReused: '이 예약번호로는 이미 바우처 특전을 제공했어요.',
+      verifyNote: '예약 시스템에 이 예약이 있고 StayEasy를 통해 들어온 예약인지 확인한 뒤 제공해 주세요.',
+      historyTitle: '우리 호텔 제공 기록',
+      historyEmpty: '아직 기록이 없어요.',
+      historyCount: '지금까지 {n}건 제공',
       confirm: '제공 완료',
       done: '제공 완료로 기록했어요. 이 바우처는 다시 쓸 수 없어요.',
       usedAt: '{when}에 사용함',
@@ -216,7 +242,7 @@ export const walletStrings: Record<Lang, WalletStrings> = {
       messenger: '카카오톡',
       subject: '[StayEasy] 이번 기간 특전 바우처 {n}장이 도착했어요',
       greeting: '{name}님,',
-      body: '구독 혜택으로 호텔 특전 바우처를 보내 드려요. 바우처를 열어 호텔에서 QR을 보여 주세요. 어디서 예약했는지와 상관없이 유효기간 안에 쓸 수 있어요.',
+      body: '구독 혜택으로 호텔 특전 바우처를 보내 드려요. 호텔 공식 사이트에서 예약하고, 체크인할 때 바우처의 QR과 예약번호를 보여 주세요.',
       cta: '바우처 열기',
       footer: '바우처는 한 번만 쓸 수 있어요. 다른 사람이 먼저 쓰면 쓸 수 없어요.',
       bubbleTitle: '특전 바우처 도착',
@@ -227,7 +253,7 @@ export const walletStrings: Record<Lang, WalletStrings> = {
   ja: {
     wallet: {
       title: '今期の特典バウチャー',
-      intro: '期間ごとにホテルの特典バウチャーをお送りします。ご予約とは関係なく、有効期間内にホテルで提示してください。',
+      intro: '期間ごとにホテルの特典バウチャーをお送りします。ホテルの公式サイトで予約し、チェックイン時にバウチャーと予約番号をご提示ください。',
       period: '{from} 〜 {to}',
       nextBatch: '次のバウチャーは{date}に発行されます。',
       needSub: '購読すると、期間ごとにホテルの特典バウチャーが届きます。',
@@ -236,8 +262,7 @@ export const walletStrings: Record<Lang, WalletStrings> = {
       preview: '送信メッセージを見る',
       open: 'バウチャーを開く',
       status: { issued: '利用可能', used: '使用済み', expired: '期限切れ', void: '購読終了のため無効' },
-      guestsOnly: '宿泊者のみ',
-      anyone: '宿泊者以外もOK',
+      bookedWith: '予約番号 {ref}',
       validUntil: '{date}まで',
       pastTitle: '過去のバウチャー',
       staffLink: 'ホテルスタッフ確認画面(デモ)',
@@ -245,7 +270,10 @@ export const walletStrings: Record<Lang, WalletStrings> = {
     },
     voucher: {
       title: '特典バウチャー',
-      showStaff: 'この画面をホテルスタッフにお見せください。',
+      showStaff: 'チェックイン時に、この画面と予約番号をホテルスタッフにお見せください。',
+      howTo: 'ホテルの公式サイトで予約し、チェックイン時にこのバウチャーと予約番号をご提示ください。',
+      bookCta: 'ホテルを見る',
+      bookingLabel: '予約番号',
       codeLabel: 'コード',
       member: '会員',
       perk: '特典',
@@ -257,7 +285,7 @@ export const walletStrings: Record<Lang, WalletStrings> = {
     },
     staff: {
       title: 'ホテルスタッフ確認',
-      intro: '会員のバウチャーを確認し、特典を提供したことを記録してください。バウチャーごとに1回だけ記録できます。',
+      intro: '会員のバウチャーを確認し、宿泊者の予約番号を入力して特典を提供したことを記録してください。バウチャーも予約番号も1回だけ使えます。',
       hotelLabel: 'ご自身のホテル',
       codeLabel: 'バウチャーコード',
       codePh: 'XXXX-XXXX-XXXX-XXXX',
@@ -272,8 +300,14 @@ export const walletStrings: Record<Lang, WalletStrings> = {
       perkLabel: '特典',
       memberLabel: '会員',
       validUntilLabel: '有効期間',
-      eligGuests: '宿泊者のみの特典です。ご宿泊中のお客様か確認してから提供してください。',
-      eligAnyone: '宿泊者以外にも提供できる特典です。',
+      bookingLabel: '宿泊者の予約番号',
+      bookingPh: '予約システムの予約番号',
+      bookingNeeded: '予約番号を入力すると記録できます。',
+      bookingReused: 'この予約番号ではすでにバウチャー特典を提供済みです。',
+      verifyNote: '予約システムにこの予約があり、StayEasy経由の予約か確認してから提供してください。',
+      historyTitle: '当ホテルの提供記録',
+      historyEmpty: 'まだ記録がありません。',
+      historyCount: 'これまでに{n}件提供',
       confirm: '提供済みにする',
       done: '提供済みとして記録しました。このバウチャーは再び使えません。',
       usedAt: '{when}に使用',
@@ -288,7 +322,7 @@ export const walletStrings: Record<Lang, WalletStrings> = {
       messenger: 'LINE',
       subject: '[StayEasy] 今期の特典バウチャーが{n}枚届きました',
       greeting: '{name}さん',
-      body: '購読特典としてホテルの特典バウチャーをお送りします。バウチャーを開き、ホテルでQRをお見せください。どこで予約したかに関係なく、有効期間内にご利用いただけます。',
+      body: '購読特典としてホテルの特典バウチャーをお送りします。ホテルの公式サイトで予約し、チェックイン時にバウチャーのQRと予約番号をご提示ください。',
       cta: 'バウチャーを開く',
       footer: 'バウチャーは1回だけ使えます。他の人が先に使うと使えなくなります。',
       bubbleTitle: '特典バウチャーが届きました',
@@ -299,7 +333,7 @@ export const walletStrings: Record<Lang, WalletStrings> = {
   vi: {
     wallet: {
       title: 'Voucher đặc quyền kỳ này',
-      intro: 'Mỗi kỳ chúng tôi gửi bạn các voucher đặc quyền của khách sạn. Không phụ thuộc vào việc đặt phòng — hãy xuất trình tại khách sạn trong thời hạn.',
+      intro: 'Mỗi kỳ chúng tôi gửi bạn các voucher đặc quyền của khách sạn. Hãy đặt phòng trên website chính thức của khách sạn, rồi xuất trình voucher và mã đặt phòng khi nhận phòng.',
       period: '{from} đến {to}',
       nextBatch: 'Voucher kế tiếp được phát hành vào {date}.',
       needSub: 'Đăng ký gói để nhận voucher đặc quyền từ khách sạn mỗi kỳ.',
@@ -308,8 +342,7 @@ export const walletStrings: Record<Lang, WalletStrings> = {
       preview: 'Xem tin nhắn chúng tôi gửi',
       open: 'Mở voucher',
       status: { issued: 'Có thể dùng', used: 'Đã dùng', expired: 'Hết hạn', void: 'Vô hiệu do kết thúc gói' },
-      guestsOnly: 'Chỉ dành cho khách lưu trú',
-      anyone: 'Khách ghé thăm cũng dùng được',
+      bookedWith: 'Mã đặt phòng {ref}',
       validUntil: 'Có hiệu lực đến {date}',
       pastTitle: 'Voucher trước đây',
       staffLink: 'Màn hình kiểm tra cho nhân viên khách sạn (thử nghiệm)',
@@ -317,7 +350,10 @@ export const walletStrings: Record<Lang, WalletStrings> = {
     },
     voucher: {
       title: 'Voucher đặc quyền',
-      showStaff: 'Hãy cho nhân viên khách sạn xem màn hình này.',
+      showStaff: 'Khi nhận phòng, hãy cho nhân viên khách sạn xem màn hình này và mã đặt phòng.',
+      howTo: 'Đặt phòng trên website chính thức của khách sạn, rồi xuất trình voucher này cùng mã đặt phòng khi nhận phòng.',
+      bookCta: 'Xem khách sạn',
+      bookingLabel: 'Mã đặt phòng',
       codeLabel: 'Mã',
       member: 'Thành viên',
       perk: 'Đặc quyền',
@@ -329,7 +365,7 @@ export const walletStrings: Record<Lang, WalletStrings> = {
     },
     staff: {
       title: 'Nhân viên khách sạn kiểm tra',
-      intro: 'Kiểm tra voucher của thành viên và ghi nhận đã cung cấp đặc quyền. Mỗi voucher chỉ ghi nhận được một lần.',
+      intro: 'Kiểm tra voucher của thành viên, nhập mã đặt phòng của khách và ghi nhận đã cung cấp đặc quyền. Mỗi voucher và mỗi mã đặt phòng chỉ dùng được một lần.',
       hotelLabel: 'Khách sạn của bạn',
       codeLabel: 'Mã voucher',
       codePh: 'XXXX-XXXX-XXXX-XXXX',
@@ -344,8 +380,14 @@ export const walletStrings: Record<Lang, WalletStrings> = {
       perkLabel: 'Đặc quyền',
       memberLabel: 'Thành viên',
       validUntilLabel: 'Có hiệu lực đến',
-      eligGuests: 'Chỉ dành cho khách lưu trú. Hãy xác nhận khách đang lưu trú trước khi cung cấp.',
-      eligAnyone: 'Đặc quyền này khách ghé thăm cũng được hưởng.',
+      bookingLabel: 'Mã đặt phòng của khách',
+      bookingPh: 'Mã từ hệ thống đặt phòng của bạn',
+      bookingNeeded: 'Hãy nhập mã đặt phòng để ghi nhận.',
+      bookingReused: 'Mã đặt phòng này đã nhận đặc quyền voucher tại khách sạn của bạn.',
+      verifyNote: 'Trước khi cung cấp, hãy kiểm tra đặt phòng có trong hệ thống của bạn và đến từ StayEasy.',
+      historyTitle: 'Đã cung cấp tại khách sạn của bạn',
+      historyEmpty: 'Chưa có ghi nhận nào.',
+      historyCount: 'Đã cung cấp {n} lần',
       confirm: 'Đã cung cấp',
       done: 'Đã ghi nhận là đã cung cấp. Voucher này không thể dùng lại.',
       usedAt: 'Đã dùng lúc {when}',
@@ -360,7 +402,7 @@ export const walletStrings: Record<Lang, WalletStrings> = {
       messenger: 'Zalo',
       subject: '[StayEasy] Đã có {n} voucher đặc quyền cho kỳ này',
       greeting: 'Chào {name},',
-      body: 'Gói đăng ký của bạn có voucher đặc quyền của khách sạn. Hãy mở voucher và xuất trình mã QR tại khách sạn — dùng được dù bạn đặt phòng ở đâu, trong thời hạn.',
+      body: 'Gói đăng ký của bạn có voucher đặc quyền của khách sạn. Hãy đặt phòng trên website chính thức của khách sạn, rồi mở voucher và xuất trình mã QR cùng mã đặt phòng khi nhận phòng.',
       cta: 'Mở voucher',
       footer: 'Voucher chỉ dùng được một lần. Nếu người khác dùng trước, bạn sẽ không dùng được nữa.',
       bubbleTitle: 'Voucher đặc quyền đã đến',
@@ -371,7 +413,7 @@ export const walletStrings: Record<Lang, WalletStrings> = {
   zh: {
     wallet: {
       title: '本期特权优惠券',
-      intro: '每个周期我们会发送酒店特权优惠券给您。无论如何预订都不受影响，在有效期内向酒店出示即可。',
+      intro: '每个周期我们会发送酒店特权优惠券给您。请在酒店官网预订，入住时出示优惠券和预订号。',
       period: '{from} 至 {to}',
       nextBatch: '下一批优惠券将于{date}发放。',
       needSub: '订阅后，每个周期都会收到酒店的特权优惠券。',
@@ -380,8 +422,7 @@ export const walletStrings: Record<Lang, WalletStrings> = {
       preview: '查看发送的消息',
       open: '打开优惠券',
       status: { issued: '可使用', used: '已使用', expired: '已过期', void: '订阅结束，已失效' },
-      guestsOnly: '仅限入住客人',
-      anyone: '到店访客也可使用',
+      bookedWith: '预订号 {ref}',
       validUntil: '有效期至{date}',
       pastTitle: '以往的优惠券',
       staffLink: '酒店员工核验页面(演示)',
@@ -389,7 +430,10 @@ export const walletStrings: Record<Lang, WalletStrings> = {
     },
     voucher: {
       title: '特权优惠券',
-      showStaff: '请向酒店员工出示此页面。',
+      showStaff: '入住时，请向酒店员工出示此页面和预订号。',
+      howTo: '请在酒店官网预订，入住时出示此优惠券和预订号。',
+      bookCta: '查看酒店',
+      bookingLabel: '预订号',
       codeLabel: '代码',
       member: '会员',
       perk: '特权',
@@ -401,7 +445,7 @@ export const walletStrings: Record<Lang, WalletStrings> = {
     },
     staff: {
       title: '酒店员工核验',
-      intro: '核验会员的优惠券，并记录已提供特权。每张优惠券只能记录一次。',
+      intro: '核验会员的优惠券，输入客人的预订号并记录已提供特权。每张优惠券和每个预订号都只能使用一次。',
       hotelLabel: '您的酒店',
       codeLabel: '优惠券代码',
       codePh: 'XXXX-XXXX-XXXX-XXXX',
@@ -416,8 +460,14 @@ export const walletStrings: Record<Lang, WalletStrings> = {
       perkLabel: '特权',
       memberLabel: '会员',
       validUntilLabel: '有效期',
-      eligGuests: '仅限入住客人。请确认客人正在入住后再提供。',
-      eligAnyone: '到店访客也可享受此特权。',
+      bookingLabel: '客人的预订号',
+      bookingPh: '预订系统中的预订号',
+      bookingNeeded: '请输入预订号后再记录。',
+      bookingReused: '该预订号已在贵酒店领取过优惠券特权。',
+      verifyNote: '提供前，请确认该预订存在于您的预订系统，且来自StayEasy。',
+      historyTitle: '本酒店已提供记录',
+      historyEmpty: '暂无记录。',
+      historyCount: '累计已提供{n}次',
       confirm: '已提供',
       done: '已记录为已提供。此优惠券无法再次使用。',
       usedAt: '已于{when}使用',
@@ -432,7 +482,7 @@ export const walletStrings: Record<Lang, WalletStrings> = {
       messenger: null,
       subject: '[StayEasy] 本期已发放{n}张特权优惠券',
       greeting: '{name}，您好：',
-      body: '您的订阅包含酒店特权优惠券。打开优惠券，在酒店出示二维码即可——无论在哪里预订，只要在有效期内都能使用。',
+      body: '您的订阅包含酒店特权优惠券。请在酒店官网预订，入住时打开优惠券，出示二维码和预订号。',
       cta: '打开优惠券',
       footer: '优惠券只能使用一次。如果别人先使用，您就无法再使用。',
       bubbleTitle: '',

@@ -88,7 +88,7 @@ function member(plan: 'getaway' | 'voyager' | 'nomad' = 'voyager') {
   window.localStorage.setItem('stayeasy-sub:mina@gmail.com', JSON.stringify({ plan, period: 'monthly', requestedAt: TODAY, startedAt: TODAY }))
 }
 
-const ledger = () => JSON.parse(window.localStorage.getItem('stayeasy-wallet') ?? '[]') as { id: string; token: string; hotelSlug: string; usedAt?: string }[]
+const ledger = () => JSON.parse(window.localStorage.getItem('stayeasy-wallet') ?? '[]') as { id: string; token: string; hotelSlug: string; usedAt?: string; bookingRef?: string }[]
 
 /** Hotel staff screen: choose the hotel, type the code, press Check. */
 async function checkAt(slug: string, token: string) {
@@ -144,6 +144,9 @@ describe('perk-voucher wallet, demo switch ON', () => {
     const code = `${v.token.slice(0, 4)}-${v.token.slice(4, 8)}-${v.token.slice(8, 12)}-${v.token.slice(12)}`
     expect(screen.getByText(code)).toBeTruthy()
     expect(screen.getByText('Mina')).toBeTruthy()
+    // How the perk is earned: book on the official site, then show voucher + booking number.
+    expect(screen.getByText(/show this screen and your booking number/i)).toBeTruthy()
+    expect(screen.getByRole('link', { name: /see the hotel/i }).getAttribute('href')).toBe(`/hotels/${v.hotelSlug}`)
     cleanup()
 
     await open(`/voucher/${v.id}?t=WRONGWRONGWRONG0`)
@@ -169,9 +172,19 @@ describe('perk-voucher wallet, demo switch ON', () => {
     expect(await screen.findByText('Valid voucher')).toBeTruthy()
     expect(ledger()[0].usedAt).toBeUndefined() // checking does not use it
 
-    fireEvent.click(screen.getByRole('button', { name: /mark as given/i }))
+    // The perk belongs to a booking: the button stays off until staff enter a booking number.
+    const give = screen.getByRole('button', { name: /mark as given/i }) as HTMLButtonElement
+    expect(give.disabled).toBe(true)
+    expect(screen.getByText(/enter the booking number to record the perk/i)).toBeTruthy()
+    fireEvent.change(screen.getByLabelText(/guest’s booking number/i), { target: { value: 'res 1001' } })
+    expect(give.disabled).toBe(false)
+    fireEvent.click(give)
     expect(await screen.findByText(/recorded as given/i)).toBeTruthy()
     expect(ledger()[0].usedAt).toBeTruthy()
+    expect(ledger()[0].bookingRef).toBe('RES1001')
+    // The hotel's own record of what it has given.
+    expect(screen.getByText('1 given so far')).toBeTruthy()
+    expect(screen.getAllByText('RES1001').length).toBeGreaterThan(0)
 
     fireEvent.click(screen.getByRole('button', { name: /check another voucher/i }))
     await checkAt(v.hotelSlug, v.token)
@@ -207,12 +220,15 @@ describe('perk-voucher wallet, demo switch ON', () => {
     await open('/staff/redeem')
     await screen.findByLabelText(/your hotel/i)
     await checkAt(v.hotelSlug, v.token)
-    fireEvent.click(await screen.findByRole('button', { name: /mark as given/i }))
+    fireEvent.change(await screen.findByLabelText(/guest’s booking number/i), { target: { value: 'RES-77' } })
+    fireEvent.click(screen.getByRole('button', { name: /mark as given/i }))
     await screen.findByText(/recorded as given/i)
     cleanup()
     await open(`/voucher/${v.id}?t=${v.token}`)
     expect((await screen.findAllByText('Used')).length).toBeGreaterThan(0)
-    expect(screen.queryByText(/show this screen to hotel staff/i)).toBeNull()
+    expect(screen.getByText('RES-77')).toBeTruthy() // the member sees which booking it was used for
+    expect(screen.queryByText(/show this screen and your booking number/i)).toBeNull()
+    expect(screen.queryByRole('link', { name: /see the hotel/i })).toBeNull()
   })
 })
 

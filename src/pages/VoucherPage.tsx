@@ -55,9 +55,15 @@ export default function VoucherPage() {
         <dl className="mt-5 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-left text-sm">
           <dt className="text-ink-700/60">{s.voucher.member}</dt><dd className="font-semibold text-ink-900">{v.name}</dd>
           <dt className="text-ink-700/60">{s.voucher.validUntil}</dt><dd className="font-semibold text-ink-900">{v.validUntil}</dd>
-          {p?.eligibility && (<><dt className="text-ink-700/60">{s.voucher.perk}</dt><dd className="font-semibold text-ink-900">{p.eligibility === 'guests' ? s.wallet.guestsOnly : s.wallet.anyone}</dd></>)}
+          {v.bookingRef && (<><dt className="text-ink-700/60">{s.voucher.bookingLabel}</dt><dd className="font-semibold text-ink-900">{v.bookingRef}</dd></>)}
         </dl>
-        {live && <p className="mt-4 text-sm font-semibold text-ink-800">{s.voucher.showStaff}</p>}
+        {live && (
+          <>
+            <p className="mt-4 text-sm font-semibold text-ink-800">{s.voucher.showStaff}</p>
+            <p className="mt-2 text-xs text-ink-700/70">{s.voucher.howTo}</p>
+            <Link to={`/hotels/${v.hotelSlug}`} className="mt-3 inline-block rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-700">{s.voucher.bookCta} →</Link>
+          </>
+        )}
         <p className="mt-3 text-xs text-ink-700/60">{s.voucher.note}</p>
       </div>
     </div>
