@@ -40,6 +40,8 @@ export interface WalletVoucher {
   token: string
   /** ISO timestamp it was redeemed at; absent while unused. */
   usedAt?: string
+  /** The guest's booking number at the hotel, recorded by staff when the perk was given. */
+  bookingRef?: string
 }
 
 export type WalletStatus = 'issued' | 'used' | 'expired' | 'void'
@@ -80,6 +82,13 @@ export const normalizeToken = (s: string) =>
     .replace(/[^0-9A-Z]/g, '')
     .replace(/O/g, '0')
     .replace(/[IL]/g, '1')
+
+/**
+ * A hotel booking number as staff type it: spaces and case don't matter. Hotels'
+ * formats differ, so the only rule is "something that looks like a reference".
+ */
+export const normalizeRef = (s: string) => s.trim().toUpperCase().replace(/\s+/g, '')
+export const isBookingRef = (s: string) => /^[0-9A-Z][0-9A-Z\-_/]{3,39}$/.test(normalizeRef(s))
 
 const newId = () => `v_${Array.from(randomBytes(6), (x) => ALPHABET[x % 32]).join('').toLowerCase()}`
 
@@ -123,7 +132,7 @@ export function statusOf(v: WalletVoucher, sub: Subscription | null, now: string
 }
 
 /** Why a staff check fails, or 'valid'. */
-export type InspectState = 'valid' | 'used' | 'expired' | 'void' | 'wrong_hotel' | 'not_found'
+export type InspectState = 'valid' | 'used' | 'expired' | 'void' | 'wrong_hotel' | 'not_found' | 'booking_missing' | 'booking_reused'
 export interface Inspection {
   state: InspectState
   voucher?: WalletVoucher
@@ -182,14 +191,28 @@ export const wallet = {
     return { state: s === 'issued' ? 'valid' : s, voucher: v }
   },
 
-  /** Staff confirm the perk was given: marks it used, once. A second call fails with 'used'. */
-  redeem(code: string, hotelSlug: string, now: string = today()): Inspection {
+  /**
+   * Staff confirm the perk was given for a booking: marks the voucher used, once, and
+   * records the booking number. The perk belongs to a booking, so a missing number is
+   * refused, and one booking number can only ever earn one voucher at a hotel.
+   */
+  redeem(code: string, hotelSlug: string, bookingRef: string, now: string = today()): Inspection {
     const r = wallet.inspect(code, hotelSlug, now)
     if (r.state !== 'valid' || !r.voucher) return r
-    const used: WalletVoucher = { ...r.voucher, usedAt: new Date().toISOString() }
-    writeAll(readAll().map((x) => (x.id === used.id ? used : x)))
+    if (!isBookingRef(bookingRef)) return { state: 'booking_missing', voucher: r.voucher }
+    const ref = normalizeRef(bookingRef)
+    const all = readAll()
+    if (all.some((x) => x.hotelSlug === hotelSlug && x.bookingRef === ref)) return { state: 'booking_reused', voucher: r.voucher }
+    const used: WalletVoucher = { ...r.voucher, usedAt: new Date().toISOString(), bookingRef: ref }
+    writeAll(all.map((x) => (x.id === used.id ? used : x)))
     return { state: 'valid', voucher: used }
   },
+
+  /** What a hotel has given so far (newest first) — the count it can show its own management. */
+  redemptions: (hotelSlug: string): WalletVoucher[] =>
+    readAll()
+      .filter((v) => v.hotelSlug === hotelSlug && v.usedAt)
+      .sort((a, b) => (a.usedAt! < b.usedAt! ? 1 : -1)),
 
   /** Remove a member's vouchers (account deletion). */
   clear(email: string) {
@@ -214,6 +237,16 @@ export function useWalletVouchers(email: string | undefined): WalletVoucher[] {
   )
   const list = JSON.parse(raw) as WalletVoucher[]
   return list.sort((a, b) => (a.periodStart < b.periodStart ? 1 : a.periodStart > b.periodStart ? -1 : 0))
+}
+
+/** Live list of what a hotel has given so far (the staff screen's history). */
+export function useWalletLedger(hotelSlug: string): WalletVoucher[] {
+  const raw = useSyncExternalStore(
+    wallet.subscribe,
+    () => JSON.stringify(wallet.redemptions(hotelSlug)),
+    () => '[]',
+  )
+  return JSON.parse(raw) as WalletVoucher[]
 }
 
 // ---- links the vouchers carry ----

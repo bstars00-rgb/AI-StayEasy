@@ -60,7 +60,7 @@ export function VoucherWallet({ email, name, sub }: { email: string; name: strin
         </div>
         <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-ink-700/70">
           <span>{fillW(w.validUntil, { date: v.validUntil })}</span>
-          {p?.eligibility && <span className="rounded-full bg-white px-2 py-0.5 ring-1 ring-black/10">{p.eligibility === 'guests' ? w.guestsOnly : w.anyone}</span>}
+          {v.bookingRef && <span className="rounded-full bg-white px-2 py-0.5 ring-1 ring-black/10">{fillW(w.bookedWith, { ref: v.bookingRef })}</span>}
           <Link to={`/voucher/${v.id}?t=${v.token}`} className="ml-auto font-semibold text-brand-700 hover:underline">{w.open} →</Link>
         </div>
       </li>

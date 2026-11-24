@@ -28,5 +28,8 @@ export default defineConfig({
     // Tests assume the business-model switch is OFF (its default) no matter what a
     // developer's local .env says; cases that need it ON stub it themselves.
     env: { VITE_ENABLE_BM: '', VITE_DEMO_HOTELS: '' },
+    // The first render in a file re-imports the whole app (the flag cases reset modules);
+    // on a busy machine that alone can pass the 5 s default.
+    testTimeout: 20000,
   },
 })
