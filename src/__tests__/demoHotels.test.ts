@@ -86,9 +86,25 @@ describe('each demo hotel has its own voucher and benefit', () => {
     }
   })
 
-  it('uses all three figure kinds, so each kind is visible', () => {
-    const kinds = new Set(DEMO_HOTELS.map((h) => DEMO_BENEFIT_VALUE[h.slug]).map((v) => (isPercent(v) ? 'percent' : v.kind)))
-    expect([...kinds].sort()).toEqual(['amount', 'nights', 'percent'])
+  it('every benefit is a perk with a stated value — never a price cut', () => {
+    // Hotels don't discount their direct rate for members, so no percentage and no free night.
+    for (const h of DEMO_HOTELS) {
+      const v = DEMO_BENEFIT_VALUE[h.slug]
+      expect(isPercent(v), h.slug).toBe(false)
+      expect(isPercent(v) ? '' : v.kind, h.slug).toBe('amount')
+      expect(h.voucher!.redeem, h.slug).toBe('onsite') // delivered as a wallet voucher, not a promo code
+    }
+    // ...and the wording says so in every language: no "% off", "discount" or "free night".
+    const PRICE_CUT = /%|\boff\b|discount|free nights?|할인|무료\s*\d*\s*박|1박 무료|割引|オフ|無料|giảm|tặng 1 đêm|减|立减|免费\d*晚|免费1晚/i
+    const strings = (h: (typeof DEMO_HOTELS)[number], l: (typeof OTHER)[number] | 'en') => {
+      const text = l === 'en' ? { officialBenefits: h.officialBenefits, label: h.voucher!.discountLabel } : { officialBenefits: DEMO_TEXT[l][h.slug].officialBenefits, label: DEMO_TEXT[l][h.slug].voucher.discountLabel }
+      return [text.officialBenefits[0], text.label]
+    }
+    for (const h of DEMO_HOTELS) {
+      for (const l of ['en', ...OTHER] as const) {
+        for (const line of strings(h, l)) expect(line, `${h.slug}/${l}`).not.toMatch(PRICE_CUT)
+      }
+    }
   })
 
   it('writes the figure into the hotel’s own benefit line', () => {

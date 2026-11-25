@@ -42,18 +42,13 @@ async function open(path: string, env: { demo: boolean; bm: boolean }) {
 }
 
 describe('demo hotels, switch ON', () => {
-  it('labels the hotel as fictional and shows a free-night figure that turns the visitor’s rate into money', async () => {
+  it('labels the hotel as fictional and shows its perk as a stated value, not a price cut', async () => {
     await open('/hotels/lunas-park-hotel-nhatrang', { demo: true, bm: true })
     expect((await screen.findByRole('alert')).textContent).toMatch(/this hotel is fictional/i)
-    expect(screen.getAllByText('3 free night when you stay'.replace('3', '1') + ' 3+').length).toBeGreaterThan(0)
-
-    fireEvent.change(screen.getByLabelText(/nightly rate/i), { target: { value: '100' } })
-    fireEvent.change(screen.getByLabelText(/nights/i), { target: { value: '2' } })
-    expect(await screen.findByText(/applies from 3 nights/i)).toBeTruthy() // too short: says why, no number
-    expect(screen.queryByTestId('savings-result')).toBeNull()
-
-    fireEvent.change(screen.getByLabelText(/nights/i), { target: { value: '3' } })
-    expect((await screen.findByTestId('savings-result')).textContent).toContain('$100')
+    expect(screen.getAllByText(/Beach cabana & drinks for two, worth USD 40/).length).toBeGreaterThan(0)
+    expect(screen.queryByText(/% off|free night|discount/i)).toBeNull()
+    expect((await screen.findByTestId('savings-result')).textContent).toContain('$40')
+    expect(screen.queryByLabelText(/nights/i)).toBeNull() // a per-stay perk doesn't scale with nights
   })
 
   it('shows a fixed-value perk as its stated value, scaled by nights when it is per night', async () => {
@@ -65,12 +60,35 @@ describe('demo hotels, switch ON', () => {
     await waitFor(() => expect(screen.getByTestId('savings-result').textContent).toContain('$80'))
   })
 
-  it('shows a percentage as "up to" and computes it from the rate', async () => {
-    await open('/hotels/lunas-park-hotel-hanoi', { demo: true, bm: true })
-    expect((await screen.findAllByText('Up to 20% off')).length).toBeGreaterThan(0)
-    fireEvent.change(screen.getByLabelText(/nightly rate/i), { target: { value: '100' } })
+  it('scales a per-night perk by the number of nights', async () => {
+    await open('/hotels/lunas-park-hotel-danang', { demo: true, bm: true })
+    expect((await screen.findByTestId('savings-result')).textContent).toContain('$30') // 1 night by default
+    fireEvent.change(screen.getByLabelText(/nights/i), { target: { value: '3' } })
+    await waitFor(() => expect(screen.getByTestId('savings-result').textContent).toContain('$90'))
+  })
+
+  it('gives a member the perk through the wallet: no shared code on the card, and a way to their vouchers', async () => {
+    const today = new Date().toISOString().slice(0, 10)
+    window.localStorage.setItem('stayeasy-guest', JSON.stringify({ email: 'mina@gmail.com', name: 'Mina', joinedAt: today }))
+    await open('/hotels/lunas-park-hotel-danang', { demo: true, bm: true })
+    await screen.findByRole('alert')
+    expect((await screen.findAllByText(/Member perk/)).length).toBeGreaterThan(0)
+    expect(screen.getAllByText(/show the voucher and your booking number at check-in/i).length).toBeGreaterThan(0)
+    expect(document.body.textContent).not.toContain('LUNAS-') // nothing to copy and share
+    expect(screen.queryByRole('button', { name: /copy code|download voucher/i })).toBeNull()
+    // Without a subscription the way forward is the plans page; with one, the member's vouchers.
+    expect(screen.getByRole('link', { name: /see plans to get vouchers/i }).getAttribute('href')).toBe('/plans')
+    cleanup()
+    window.localStorage.setItem('stayeasy-sub:mina@gmail.com', JSON.stringify({ plan: 'getaway', period: 'monthly', requestedAt: today, startedAt: today }))
+    await open('/hotels/lunas-park-hotel-danang', { demo: true, bm: true })
+    expect((await screen.findByRole('link', { name: /see my vouchers/i })).getAttribute('href')).toBe('/account#vouchers')
+  })
+
+  it('still computes a hotel-stated percentage for a real hotel', async () => {
+    await open('/hotels/brilliant-hotel-danang', { demo: false, bm: true })
+    fireEvent.change(await screen.findByLabelText(/nightly rate/i), { target: { value: '100' } })
     fireEvent.change(screen.getByLabelText(/nights/i), { target: { value: '2' } })
-    expect((await screen.findByTestId('savings-result')).textContent).toContain('$40')
+    expect((await screen.findByTestId('savings-result')).textContent).toContain('$30')
   })
 
   it('lists the demo hotel on its city page with the fictional chip and its figure', async () => {
