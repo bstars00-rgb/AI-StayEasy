@@ -20,7 +20,7 @@ export function LanguageSwitcher({ block = false }: { block?: boolean }) {
     <div className={`relative ${block ? 'w-full' : ''}`} ref={ref}>
       <button
         onClick={() => setOpen((v) => !v)}
-        className={`flex items-center gap-1.5 rounded-full border border-black/10 bg-white px-3 py-2 text-sm font-medium text-ink-800 hover:bg-sand-50 ${block ? 'w-full justify-center' : ''}`}
+        className={`flex items-center gap-1.5 whitespace-nowrap rounded-full border border-black/10 bg-white px-3 py-2 text-sm font-medium text-ink-800 hover:bg-sand-50 ${block ? 'w-full justify-center' : ''}`}
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-label={t.nav.language}

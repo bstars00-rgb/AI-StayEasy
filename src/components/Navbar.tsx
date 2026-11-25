@@ -27,6 +27,8 @@ export function Navbar() {
   const fcName = fc ? ((t.enums.city as Record<string, string>)[fc.city] ?? fc.city) : ''
   const featured = fc ? { to: `/destinations/${fc.slug}`, label: t.nav.tripLabel.replace('{city}', fcName) } : null
 
+  // Vietnamese labels are the longest: with the promoted trip link the bar needs ~1300px, but the page
+  // container stops at 1280px, so there it lives in the menu instead of wrapping the bar.
   const links = [
     { to: '/destinations/vietnam', label: t.nav.destinations },
     { to: '/guides/direct-booking', label: t.nav.guide },
@@ -42,13 +44,13 @@ export function Navbar() {
           <Logo size={36} />
         </Link>
 
-        <div className="hidden items-center gap-1 md:flex">
+        <div className="hidden items-center gap-1 xl:flex">
           {links.map((l, i) => (
             <Fragment key={l.to}>
               <NavLink
                 to={l.to}
                 className={({ isActive }) =>
-                  `rounded-full px-3.5 py-2 text-sm font-medium transition-colors ${
+                  `whitespace-nowrap rounded-full px-3.5 py-2 text-sm font-medium transition-colors ${
                     isActive ? 'bg-brand-100 text-brand-800' : 'text-ink-700 hover:bg-sand-100'
                   }`
                 }
@@ -59,7 +61,7 @@ export function Navbar() {
                 <NavLink
                   to={featured.to}
                   className={({ isActive }) =>
-                    `rounded-full px-3.5 py-2 text-sm font-medium transition-colors ${
+                    `${lang === 'vi' ? 'hidden ' : ''}whitespace-nowrap rounded-full px-3.5 py-2 text-sm font-medium transition-colors ${
                       isActive ? 'bg-brand-100 text-brand-800' : 'text-ink-700 hover:bg-sand-100'
                     }`
                   }
@@ -93,7 +95,7 @@ export function Navbar() {
                 {guest.name.charAt(0).toUpperCase()}
               </Link>
             ) : (
-              <Link to="/signin" className="ml-1 rounded-full px-3.5 py-2 text-sm font-medium text-ink-700 hover:bg-sand-100">
+              <Link to="/signin" className="ml-1 whitespace-nowrap rounded-full px-3.5 py-2 text-sm font-medium text-ink-700 hover:bg-sand-100">
                 {as.signIn}
               </Link>
             ))}
@@ -101,7 +103,7 @@ export function Navbar() {
             to="/partner/login"
             target="_blank"
             rel="noopener noreferrer"
-            className="ml-1 rounded-full bg-ink-900 px-4 py-2 text-sm font-semibold text-white hover:bg-ink-800"
+            className="ml-1 whitespace-nowrap rounded-full bg-ink-900 px-4 py-2 text-sm font-semibold text-white hover:bg-ink-800"
           >
             {t.nav.hotelLogin}
           </Link>
@@ -110,7 +112,7 @@ export function Navbar() {
           </div>
         </div>
 
-        <div className="flex items-center gap-1 md:hidden">
+        <div className="flex items-center gap-1 xl:hidden">
           <NavLink to="/wishlist" aria-label={ws.nav} className="relative grid h-10 w-10 place-items-center rounded-lg text-lg text-ink-900 hover:bg-sand-100">
             <span aria-hidden>{count > 0 ? '♥' : '♡'}</span>
             {count > 0 && (
@@ -131,7 +133,7 @@ export function Navbar() {
       </nav>
 
       {open && (
-        <div className="border-t border-black/5 bg-sand-50 md:hidden">
+        <div className="border-t border-black/5 bg-sand-50 xl:hidden">
           <div className="container-page flex flex-col py-3">
             <NavLink
               to={links[0].to}
