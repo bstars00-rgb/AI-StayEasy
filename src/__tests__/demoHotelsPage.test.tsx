@@ -73,7 +73,7 @@ describe('demo hotels, switch ON', () => {
     await open('/hotels/lunas-park-hotel-danang', { demo: true, bm: true })
     await screen.findByRole('alert')
     expect((await screen.findAllByText(/Member perk/)).length).toBeGreaterThan(0)
-    expect(screen.getAllByText(/show the voucher and your booking number at check-in/i).length).toBeGreaterThan(0)
+    expect(screen.getAllByText(/show your member voucher at check-in/i).length).toBeGreaterThan(0)
     expect(document.body.textContent).not.toContain('LUNAS-') // nothing to copy and share
     expect(screen.queryByRole('button', { name: /copy code|download voucher/i })).toBeNull()
     // Without a subscription the way forward is the plans page; with one, the member's vouchers.

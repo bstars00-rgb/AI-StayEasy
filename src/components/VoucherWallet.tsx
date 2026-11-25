@@ -60,7 +60,7 @@ export function VoucherWallet({ email, name, sub }: { email: string; name: strin
         </div>
         <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-ink-700/70">
           <span>{fillW(w.validUntil, { date: v.validUntil })}</span>
-          {v.bookingRef && <span className="rounded-full bg-white px-2 py-0.5 ring-1 ring-black/10">{fillW(w.bookedWith, { ref: v.bookingRef })}</span>}
+          {v.usedAt && <span className="rounded-full bg-white px-2 py-0.5 ring-1 ring-black/10">{fillW(w.usedOn, { date: v.usedAt.slice(0, 10) })}</span>}
           <Link to={`/voucher/${v.id}?t=${v.token}`} className="ml-auto font-semibold text-brand-700 hover:underline">{w.open} →</Link>
         </div>
       </li>
@@ -95,7 +95,6 @@ export function VoucherWallet({ email, name, sub }: { email: string; name: strin
       )}
 
       <p className="mt-4 rounded-xl bg-sand-50 px-3 py-2 text-xs text-ink-700/75 ring-1 ring-black/5">{w.prototypeNote}</p>
-      <Link to="/staff/redeem" className="mt-2 inline-block text-xs font-semibold text-ink-700/70 hover:underline">{w.staffLink}</Link>
     </div>
   )
 }
