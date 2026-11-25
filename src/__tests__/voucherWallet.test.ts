@@ -3,7 +3,7 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { DEMO_HOTELS } from '../data/demoHotels'
 import { subscription } from '../lib/subscription'
 import {
-  wallet, newToken, formatToken, normalizeToken, addDays, daysBetween, statusOf, perkHotels,
+  wallet, allowanceOf, newToken, formatToken, normalizeToken, addDays, daysBetween, statusOf, perkHotels,
   PERIOD_DAYS, VOUCHERS_PER_PERIOD, DEMO_PIN, MAX_PIN_TRIES, LOCK_MINUTES, type WalletVoucher,
 } from '../lib/voucherWallet'
 import type { PlanId, PeriodId } from '../lib/plansI18n'
@@ -39,58 +39,80 @@ describe('codes', () => {
   })
 })
 
-describe('issuing', () => {
-  it('has a pool of on-site perks to issue from', () => {
+describe('picking a hotel', () => {
+  const claim = (email: string, slug: string, day = START, name = 'Mina') => wallet.claim(email, name, sub(email), slug, day, POOL)
+
+  it('has a pool of on-site perks to pick from', () => {
     expect(POOL.length).toBeGreaterThanOrEqual(6)
     // The pool is empty while the demo switch is off (the test default).
     expect(perkHotels()).toEqual([])
   })
 
-  it('issues the plan’s quota, each from a different hotel, valid for one period', () => {
+  it('gives each plan its allowance, one voucher per picked hotel, valid from the pick day', () => {
     for (const plan of Object.keys(VOUCHERS_PER_PERIOD) as PlanId[]) {
       const email = `${plan}@gmail.com`
       setSub(email, plan)
-      const got = wallet.ensureBatch(email, 'Mina', sub(email), START, POOL)
-      expect(got.length, plan).toBe(VOUCHERS_PER_PERIOD[plan])
-      expect(new Set(got.map((v) => v.hotelSlug)).size, plan).toBe(got.length)
-      for (const v of got) {
-        expect(v.validFrom, plan).toBe(START)
-        expect(v.validUntil, plan).toBe(addDays(START, PERIOD_DAYS - 1))
-        expect(v.usedAt).toBeUndefined()
-        expect(POOL.some((h) => h.slug === v.hotelSlug)).toBe(true)
+      const quota = VOUCHERS_PER_PERIOD[plan]
+      for (let i = 0; i < quota; i++) {
+        const r = claim(email, POOL[i].slug)
+        expect(r.state, `${plan} #${i}`).toBe('ok')
+        expect(r.voucher!.hotelSlug).toBe(POOL[i].slug)
+        expect(r.voucher!.validFrom).toBe(START)
+        expect(r.voucher!.validUntil).toBe(addDays(START, PERIOD_DAYS - 1))
+        expect(r.voucher!.usedAt).toBeUndefined()
       }
+      expect(claim(email, POOL[quota].slug).state, plan).toBe('none_left')
+      expect(wallet.list(email).length).toBe(quota)
     }
   })
 
-  it('is idempotent: reopening the page does not issue more', () => {
+  it('counts the allowance: total, picked, left — and the refresh date', () => {
     setSub('a@gmail.com', 'voyager')
-    wallet.ensureBatch('a@gmail.com', 'A', sub('a@gmail.com'), START, POOL)
-    wallet.ensureBatch('a@gmail.com', 'A', sub('a@gmail.com'), addDays(START, 10), POOL)
-    expect(wallet.list('a@gmail.com').length).toBe(VOUCHERS_PER_PERIOD.voyager)
+    expect(allowanceOf(wallet.list('a@gmail.com'), sub('a@gmail.com'), START)).toMatchObject({ total: 2, picked: 0, left: 2 })
+    claim('a@gmail.com', POOL[0].slug)
+    const al = allowanceOf(wallet.list('a@gmail.com'), sub('a@gmail.com'), addDays(START, 3))
+    expect(al).toMatchObject({ total: 2, picked: 1, left: 1 })
+    expect(al.period).toEqual({ index: 0, start: START, end: addDays(START, PERIOD_DAYS - 1) })
   })
 
-  it('starts a new batch each period, with different hotels, and the old one expires', () => {
-    setSub('a@gmail.com', 'voyager')
-    const first = wallet.ensureBatch('a@gmail.com', 'A', sub('a@gmail.com'), START, POOL)
-    const nextDay = addDays(START, PERIOD_DAYS)
-    const second = wallet.ensureBatch('a@gmail.com', 'A', sub('a@gmail.com'), nextDay, POOL)
-    expect(second.length).toBe(VOUCHERS_PER_PERIOD.voyager)
-    expect(second[0].periodStart).toBe(nextDay)
-    expect(second.map((v) => v.hotelSlug).sort()).not.toEqual(first.map((v) => v.hotelSlug).sort())
-    expect(statusOf(first[0], sub('a@gmail.com'), nextDay)).toBe('expired')
-    expect(statusOf(first[0], sub('a@gmail.com'), addDays(START, PERIOD_DAYS - 1))).toBe('issued')
+  it('gives a hotel to a member only once a period', () => {
+    setSub('a@gmail.com', 'nomad')
+    const first = claim('a@gmail.com', POOL[0].slug)
+    const again = claim('a@gmail.com', POOL[0].slug, addDays(START, 5))
+    expect(again.state).toBe('already')
+    expect(again.voucher?.id).toBe(first.voucher!.id) // hands back the one they hold
+    expect(wallet.list('a@gmail.com').length).toBe(1)
   })
 
-  it('does not restart the periods when the member changes plan, and only tops up to the new quota', () => {
+  it('lets the member pick the same hotel again next period — a new voucher for the next visit', () => {
     setSub('a@gmail.com', 'getaway')
-    wallet.ensureBatch('a@gmail.com', 'A', sub('a@gmail.com'), START, POOL)
-    // Change plan later in the period: startedAt must survive the change.
-    const later = addDays(START, 5)
+    const first = claim('a@gmail.com', POOL[0].slug)
+    expect(claim('a@gmail.com', POOL[1].slug, addDays(START, 10)).state).toBe('none_left') // allowance used up
+    const nextPeriod = addDays(START, PERIOD_DAYS)
+    const second = claim('a@gmail.com', POOL[0].slug, nextPeriod)
+    expect(second.state).toBe('ok')
+    expect(second.voucher!.id).not.toBe(first.voucher!.id)
+    expect(second.voucher!.token).not.toBe(first.voucher!.token)
+    expect(second.voucher!.periodStart).toBe(nextPeriod)
+    expect(statusOf(first.voucher!, sub('a@gmail.com'), nextPeriod)).toBe('expired') // the old one ran out
+    expect(statusOf(second.voucher!, sub('a@gmail.com'), nextPeriod)).toBe('issued')
+  })
+
+  it('does not carry unpicked allowance into the next period', () => {
+    setSub('a@gmail.com', 'nomad')
+    claim('a@gmail.com', POOL[0].slug) // picked 1 of 3
+    const next = addDays(START, PERIOD_DAYS)
+    expect(allowanceOf(wallet.list('a@gmail.com'), sub('a@gmail.com'), next)).toMatchObject({ total: 3, picked: 0, left: 3 })
+  })
+
+  it('does not restart the periods when the member changes plan; only the total changes', () => {
+    setSub('a@gmail.com', 'getaway')
+    claim('a@gmail.com', POOL[0].slug)
     setSub('a@gmail.com', 'nomad', START) // what subscription.request does: keeps startedAt
-    wallet.ensureBatch('a@gmail.com', 'A', sub('a@gmail.com'), later, POOL)
-    const mine = wallet.list('a@gmail.com')
-    expect(mine.length).toBe(VOUCHERS_PER_PERIOD.nomad) // 3 in total, not 1 + 3
-    expect(new Set(mine.map((v) => v.periodStart)).size).toBe(1)
+    const al = allowanceOf(wallet.list('a@gmail.com'), sub('a@gmail.com'), addDays(START, 5))
+    expect(al).toMatchObject({ total: 3, picked: 1, left: 2 })
+    expect(al.period.start).toBe(START)
+    expect(claim('a@gmail.com', POOL[1].slug, addDays(START, 5)).state).toBe('ok')
   })
 
   it('keeps the original start date when the real store changes plan', () => {
@@ -99,27 +121,28 @@ describe('issuing', () => {
     expect(subscription.get('a@gmail.com')!.startedAt).toBe('2026-01-01')
   })
 
-  it('issues nothing without a subscription or without a pool', () => {
-    expect(wallet.ensureBatch('a@gmail.com', 'A', null, START, POOL)).toEqual([])
+  it('refuses without a subscription, for a hotel outside the program, and never over the allowance', () => {
+    expect(wallet.claim('a@gmail.com', 'A', null, POOL[0].slug, START, POOL).state).toBe('no_sub')
     setSub('a@gmail.com', 'nomad')
-    expect(wallet.ensureBatch('a@gmail.com', 'A', sub('a@gmail.com'), START, [])).toEqual([])
+    expect(claim('a@gmail.com', 'not-a-hotel').state).toBe('unknown_hotel')
+    expect(wallet.claim('a@gmail.com', 'A', sub('a@gmail.com'), POOL[0].slug, START, []).state).toBe('unknown_hotel')
     expect(wallet.list('a@gmail.com')).toEqual([])
   })
 
-  it('gives different members different starting hotels', () => {
-    const heads = new Set<string>()
-    for (const e of ['a@x.com', 'b@x.com', 'c@x.com', 'd@x.com', 'e@x.com', 'f@x.com']) {
-      setSub(e, 'getaway')
-      heads.add(wallet.ensureBatch(e, 'x', sub(e), START, POOL)[0].hotelSlug)
-    }
-    expect(heads.size).toBeGreaterThan(1)
+  it('keeps members apart: one member’s picks never use another’s allowance', () => {
+    setSub('a@gmail.com', 'getaway')
+    setSub('b@gmail.com', 'getaway')
+    expect(claim('a@gmail.com', POOL[0].slug).state).toBe('ok')
+    expect(claim('b@gmail.com', POOL[0].slug).state).toBe('ok')
+    expect(wallet.list('a@gmail.com').length).toBe(1)
+    expect(wallet.list('b@gmail.com').length).toBe(1)
   })
 })
 
 describe('redeeming — the hotel PIN, once', () => {
   const issue = (plan: PlanId = 'getaway', email = 'a@gmail.com'): WalletVoucher => {
     setSub(email, plan)
-    return wallet.ensureBatch(email, 'Mina', sub(email), START, POOL)[0]
+    return wallet.claim(email, 'Mina', sub(email), POOL[0].slug, START, POOL).voucher!
   }
   /** A moment on a given day (UTC). */
   const at = (day: string, hour = 12, minute = 0) => new Date(`${day}T${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:00Z`)
@@ -175,7 +198,7 @@ describe('redeeming — the hotel PIN, once', () => {
 
   it('stops working when the subscription is cancelled; a used voucher stays used', () => {
     const v = issue('nomad')
-    const other = wallet.list('a@gmail.com')[1]
+    const other = wallet.claim('a@gmail.com', 'Mina', sub('a@gmail.com'), POOL[1].slug, START, POOL).voucher!
     expect(wallet.redeem(v.id, v.token, DEMO_PIN, at(START)).state).toBe('ok')
     subscription.cancel('a@gmail.com')
     expect(wallet.redeem(other.id, other.token, DEMO_PIN, at(START)).state).toBe('void')

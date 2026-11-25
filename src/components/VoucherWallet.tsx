@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useLang } from '../i18n'
 import { walletStrings, fillW } from '../lib/walletI18n'
 import { perkOf } from '../lib/walletView'
 import { DeliveryPreview } from './DeliveryPreview'
 import type { Subscription } from '../lib/subscription'
-import { addDays, PERIOD_DAYS, statusOf, today, useWalletVouchers, wallet, type WalletStatus, type WalletVoucher } from '../lib/voucherWallet'
+import { addDays, allowanceOf, perkHotels, statusOf, today, useWalletVouchers, wallet, type WalletStatus, type WalletVoucher } from '../lib/voucherWallet'
 
 const PILL: Record<WalletStatus, string> = {
   issued: 'bg-brand-50 text-brand-800 ring-brand-100',
@@ -15,21 +15,17 @@ const PILL: Record<WalletStatus, string> = {
 }
 
 /**
- * My page section: this period's perk vouchers, the next issue date and the
- * delivery preview. Vouchers are issued here on open (a server would issue and
- * send them on the period's first day).
+ * My page section: the allowance for this period, the hotels the member can pick a
+ * voucher for, and the vouchers they already hold. Picking a hotel issues one voucher
+ * from the allowance (a server would also send it by email / KakaoTalk — here it is a
+ * preview). The same hotel can be picked again in a later period.
  */
 export function VoucherWallet({ email, name, sub }: { email: string; name: string; sub: Subscription | null }) {
   const { lang } = useLang()
   const w = walletStrings[lang].wallet
   const vouchers = useWalletVouchers(email)
-  const [fresh, setFresh] = useState<WalletVoucher[]>([])
+  const [fresh, setFresh] = useState<WalletVoucher | null>(null)
   const [showPreview, setShowPreview] = useState(false)
-
-  useEffect(() => {
-    const got = wallet.ensureBatch(email, name, sub)
-    if (got.length) setFresh(got)
-  }, [email, name, sub])
 
   if (!sub) {
     return (
@@ -41,10 +37,19 @@ export function VoucherWallet({ email, name, sub }: { email: string; name: strin
   }
 
   const now = today()
-  const current = vouchers[0]?.periodStart
-  const thisPeriod = vouchers.filter((v) => v.periodStart === current)
-  const past = vouchers.filter((v) => v.periodStart !== current)
-  const nextDate = current ? addDays(current, PERIOD_DAYS) : ''
+  const allowance = allowanceOf(vouchers, sub, now)
+  const inPeriod = (v: WalletVoucher) => v.periodStart === allowance.period.start
+  const thisPeriod = vouchers.filter(inPeriod)
+  const earlier = vouchers.filter((v) => !inPeriod(v))
+  const have = new Set(thisPeriod.map((v) => v.hotelSlug))
+
+  const pick = (slug: string) => {
+    const r = wallet.claim(email, name, sub, slug)
+    if (r.state === 'ok' && r.voucher) {
+      setFresh(r.voucher)
+      setShowPreview(false)
+    }
+  }
 
   const row = (v: WalletVoucher) => {
     const p = perkOf(v, lang)
@@ -71,26 +76,48 @@ export function VoucherWallet({ email, name, sub }: { email: string; name: strin
     <div>
       <p className="text-sm text-ink-700/80">{w.intro}</p>
 
-      {fresh.length > 0 && (
+      {fresh && (
         <div role="status" className="mt-3 rounded-xl bg-brand-50 px-3 py-2 text-sm font-semibold text-brand-800 ring-1 ring-brand-100">
-          {fillW(w.newBatch, { n: fresh.length })}{' '}
+          {fillW(w.newBatch, { hotel: perkOf(fresh, lang)?.hotel.name ?? fresh.hotelSlug })}{' '}
           <button onClick={() => setShowPreview((s) => !s)} className="ml-1 font-bold underline">{w.preview}</button>
         </div>
       )}
-      {showPreview && fresh.length > 0 && <div className="mt-3"><DeliveryPreview vouchers={fresh} name={name} onClose={() => setShowPreview(false)} /></div>}
+      {showPreview && fresh && <div className="mt-3"><DeliveryPreview vouchers={[fresh]} name={name} onClose={() => setShowPreview(false)} /></div>}
 
-      {thisPeriod.length > 0 && (
-        <>
-          <p className="mt-4 text-xs font-bold text-ink-700/60">{w.title} · {fillW(w.period, { from: thisPeriod[0].validFrom, to: thisPeriod[0].validUntil })}</p>
-          <ul className="mt-2 space-y-2">{thisPeriod.map(row)}</ul>
-          <p className="mt-2 text-xs text-ink-700/65">{fillW(w.nextBatch, { date: nextDate })}</p>
-        </>
-      )}
+      <p className="mt-4 text-sm font-extrabold text-ink-900">{fillW(w.allowance, { left: allowance.left, total: allowance.total })}</p>
+      <p className="text-xs text-ink-700/65">{fillW(w.nextBatch, { date: addDays(allowance.period.end, 1) })}</p>
 
-      {past.length > 0 && (
+      {thisPeriod.length > 0 && <ul className="mt-3 space-y-2">{thisPeriod.map(row)}</ul>}
+
+      <p className="mt-5 text-xs font-bold text-ink-700/60">{w.pickTitle}</p>
+      <p className="mt-1 text-xs text-ink-700/65">{w.pickIntro}</p>
+      <ul className="mt-2 grid gap-2 sm:grid-cols-2">
+        {perkHotels().map((h) => {
+          const p = perkOf({ hotelSlug: h.slug }, lang)
+          const owned = have.has(h.slug)
+          return (
+            <li key={h.slug} className="flex flex-col justify-between rounded-xl bg-white p-3 ring-1 ring-black/10">
+              <div className="min-w-0">
+                <p className="truncate text-sm font-extrabold text-ink-900">{p?.hotel.name}</p>
+                <p className="text-xs text-ink-700/60">{p?.hotel.city}</p>
+                <p className="mt-1 text-sm font-semibold text-brand-800">{p?.label}</p>
+              </div>
+              {owned ? (
+                <span className="mt-2 inline-block text-xs font-semibold text-ink-700/70">✓ {w.inWallet}</span>
+              ) : allowance.left > 0 ? (
+                <button onClick={() => pick(h.slug)} className="mt-2 rounded-full bg-brand-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-brand-700">{w.getBtn}</button>
+              ) : (
+                <span className="mt-2 inline-block text-xs font-semibold text-ink-700/50">{w.noneLeft}</span>
+              )}
+            </li>
+          )
+        })}
+      </ul>
+
+      {earlier.length > 0 && (
         <>
-          <p className="mt-4 text-xs font-bold text-ink-700/60">{w.pastTitle}</p>
-          <ul className="mt-2 space-y-2">{past.map(row)}</ul>
+          <p className="mt-5 text-xs font-bold text-ink-700/60">{w.pastTitle}</p>
+          <ul className="mt-2 space-y-2">{earlier.map(row)}</ul>
         </>
       )}
 

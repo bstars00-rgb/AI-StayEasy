@@ -92,11 +92,12 @@ type Row = { id: string; token: string; hotelSlug: string; usedAt?: string; fail
 const ledger = () => JSON.parse(window.localStorage.getItem('stayeasy-wallet') ?? '[]') as Row[]
 const PIN = '1234' // the demo hotels' PIN (DEMO_PIN)
 
-/** Visit My page once so this period's vouchers get issued, then hand back the first. */
+/** On My page, pick the first hotel in the list; hand back the voucher that was issued. */
 async function issued(plan: 'getaway' | 'voyager' | 'nomad' = 'getaway'): Promise<Row> {
   member(plan)
   await open('/account')
-  await screen.findByText(/new voucher/i)
+  fireEvent.click((await screen.findAllByRole('button', { name: /^get voucher$/i }))[0])
+  await screen.findByText(/voucher added/i)
   const v = ledger()[0]
   cleanup()
   return v
@@ -104,14 +105,22 @@ async function issued(plan: 'getaway' | 'voyager' | 'nomad' = 'getaway'): Promis
 const voucherPath = (v: Row, token = v.token) => `/voucher/${v.id}?t=${token}`
 
 describe('perk-voucher wallet, demo switch ON', () => {
-  it('My page shows this period’s vouchers for the plan and a preview of the message', async () => {
+  it('My page shows the allowance and the hotels to pick from; nothing is issued until the member picks', async () => {
     member('voyager')
     await open('/account')
-    expect((await screen.findByText(/2 new voucher\(s\) just arrived/i)).textContent).toBeTruthy()
-    expect(ledger().length).toBe(2)
-    expect(screen.getAllByText('Ready to use').length).toBe(2)
-    expect(screen.getAllByRole('link', { name: /open voucher/i }).length).toBe(2)
+    expect(await screen.findByText('This period: 2 of 2 vouchers left')).toBeTruthy()
+    expect(ledger()).toEqual([])
+    const buttons = screen.getAllByRole('button', { name: /^get voucher$/i })
+    expect(buttons.length).toBeGreaterThanOrEqual(6)
     expect(screen.queryByText(/staff check screen/i)).toBeNull() // no staff screen: the PIN is typed on the member's phone
+
+    fireEvent.click(buttons[0])
+    expect(await screen.findByText(/voucher added: lunas park hotel/i)).toBeTruthy()
+    expect(screen.getByText('This period: 1 of 2 vouchers left')).toBeTruthy()
+    expect(ledger().length).toBe(1)
+    expect(screen.getByText('Ready to use')).toBeTruthy()
+    expect(screen.getAllByText(/in your wallet/i).length).toBe(1) // the picked hotel can't be picked twice
+    expect(screen.getAllByRole('button', { name: /^get voucher$/i }).length).toBe(buttons.length - 1)
 
     fireEvent.click(screen.getByRole('button', { name: /see the message we send/i }))
     const dialog = await screen.findByRole('dialog')
@@ -121,6 +130,17 @@ describe('perk-voucher wallet, demo switch ON', () => {
     expect(within(dialog).queryByText(/kakao|line|zalo/i)).toBeNull()
   })
 
+  it('stops offering vouchers once the allowance is used', async () => {
+    member('getaway')
+    await open('/account')
+    fireEvent.click((await screen.findAllByRole('button', { name: /^get voucher$/i }))[0])
+    await screen.findByText(/voucher added/i)
+    expect(screen.getByText('This period: 0 of 1 vouchers left')).toBeTruthy()
+    expect(screen.queryByRole('button', { name: /^get voucher$/i })).toBeNull()
+    expect(screen.getAllByText(/no vouchers left this period/i).length).toBeGreaterThan(0)
+    expect(ledger().length).toBe(1)
+  })
+
   it('without a subscription it asks the member to subscribe and issues nothing', async () => {
     window.localStorage.setItem('stayeasy-guest', JSON.stringify({ email: 'mina@gmail.com', name: 'Mina', joinedAt: TODAY }))
     await open('/account')
@@ -128,15 +148,16 @@ describe('perk-voucher wallet, demo switch ON', () => {
     expect(ledger()).toEqual([])
   })
 
-  it('reopening My page does not issue more vouchers', async () => {
+  it('reopening My page keeps what was picked and issues nothing more', async () => {
     member('voyager')
     await open('/account')
-    await screen.findByText(/new voucher/i)
+    fireEvent.click((await screen.findAllByRole('button', { name: /^get voucher$/i }))[0])
+    await screen.findByText(/voucher added/i)
     cleanup()
     await open('/account')
-    await screen.findAllByText('Ready to use')
-    expect(ledger().length).toBe(2)
-    expect(screen.queryByText(/new voucher\(s\) just arrived/i)).toBeNull()
+    expect(await screen.findByText('This period: 1 of 2 vouchers left')).toBeTruthy()
+    expect(ledger().length).toBe(1)
+    expect(screen.queryByText(/voucher added/i)).toBeNull()
   })
 
   it('the voucher opens for its subscriber: hotel, perk, a live clock, no QR to copy', async () => {
