@@ -3,8 +3,8 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { DEMO_HOTELS } from '../data/demoHotels'
 import { subscription } from '../lib/subscription'
 import {
-  wallet, newToken, formatToken, normalizeToken, normalizeRef, isBookingRef, addDays, daysBetween, statusOf, perkHotels,
-  PERIOD_DAYS, VOUCHERS_PER_PERIOD, type WalletVoucher,
+  wallet, newToken, formatToken, normalizeToken, addDays, daysBetween, statusOf, perkHotels,
+  PERIOD_DAYS, VOUCHERS_PER_PERIOD, DEMO_PIN, MAX_PIN_TRIES, LOCK_MINUTES, type WalletVoucher,
 } from '../lib/voucherWallet'
 import type { PlanId, PeriodId } from '../lib/plansI18n'
 
@@ -116,105 +116,70 @@ describe('issuing', () => {
   })
 })
 
-describe('redeeming — the one-time rule', () => {
+describe('redeeming — the hotel PIN, once', () => {
   const issue = (plan: PlanId = 'getaway', email = 'a@gmail.com'): WalletVoucher => {
     setSub(email, plan)
     return wallet.ensureBatch(email, 'Mina', sub(email), START, POOL)[0]
   }
+  /** A moment on a given day (UTC). */
+  const at = (day: string, hour = 12, minute = 0) => new Date(`${day}T${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:00Z`)
 
-  it('works once, then says the voucher is used', () => {
+  it('works once with the hotel PIN, then says the voucher is used', () => {
     const v = issue()
-    expect(wallet.inspect(v.token, v.hotelSlug, START).state).toBe('valid')
-    const first = wallet.redeem(v.token, v.hotelSlug, 'BK1001', START)
-    expect(first.state).toBe('valid')
+    const first = wallet.redeem(v.id, v.token, DEMO_PIN, at(START))
+    expect(first.state).toBe('ok')
     expect(first.voucher?.usedAt).toBeTruthy()
-    expect(wallet.redeem(v.token, v.hotelSlug, 'BK1001', START).state).toBe('used')
-    expect(wallet.inspect(v.token, v.hotelSlug, START).state).toBe('used')
     expect(statusOf(wallet.list('a@gmail.com')[0], sub('a@gmail.com'), START)).toBe('used')
+    const usedAt = wallet.list('a@gmail.com')[0].usedAt
+    expect(wallet.redeem(v.id, v.token, DEMO_PIN, at(START, 13)).state).toBe('used')
+    expect(wallet.list('a@gmail.com')[0].usedAt).toBe(usedAt) // the first stamp stands
   })
 
-  it('the perk belongs to a booking: no booking number, no perk — and the voucher stays usable', () => {
+  it('a wrong PIN is refused and counted, and the voucher stays usable', () => {
     const v = issue()
-    for (const bad of ['', '   ', 'ab', '!!!!', 'x'.repeat(41)]) {
-      expect(wallet.redeem(v.token, v.hotelSlug, bad, START).state, JSON.stringify(bad)).toBe('booking_missing')
-    }
+    const one = wallet.redeem(v.id, v.token, '0000', at(START))
+    expect(one.state).toBe('wrong_pin')
+    expect(one.triesLeft).toBe(MAX_PIN_TRIES - 1)
+    expect(wallet.redeem(v.id, v.token, '', at(START)).triesLeft).toBe(MAX_PIN_TRIES - 2)
     expect(wallet.list('a@gmail.com')[0].usedAt).toBeUndefined()
-    expect(wallet.inspect(v.token, v.hotelSlug, START).state).toBe('valid')
+    expect(wallet.redeem(v.id, v.token, DEMO_PIN, at(START)).state).toBe('ok')
+    expect(wallet.list('a@gmail.com')[0].failures).toBe(0) // a success clears the count
   })
 
-  it('records the booking number as the hotel will read it: case and spaces folded', () => {
-    expect(normalizeRef(' bk 1001-x ')).toBe('BK1001-X')
-    expect(isBookingRef('bk-1001')).toBe(true)
-    expect(isBookingRef('12')).toBe(false)
+  it('locks after too many wrong PINs — even the right PIN is refused — and unlocks later', () => {
     const v = issue()
-    const r = wallet.redeem(v.token, v.hotelSlug, ' bk 1001 ', START)
-    expect(r.state).toBe('valid')
-    expect(r.voucher?.bookingRef).toBe('BK1001')
-    expect(wallet.list('a@gmail.com')[0].bookingRef).toBe('BK1001')
+    for (let i = 0; i < MAX_PIN_TRIES - 1; i++) expect(wallet.redeem(v.id, v.token, '9999', at(START)).state).toBe('wrong_pin')
+    expect(wallet.redeem(v.id, v.token, '9999', at(START)).state).toBe('locked')
+    expect(wallet.redeem(v.id, v.token, DEMO_PIN, at(START, 12, 5)).state).toBe('locked')
+    expect(wallet.list('a@gmail.com')[0].usedAt).toBeUndefined()
+    expect(wallet.redeem(v.id, v.token, DEMO_PIN, at(START, 12, LOCK_MINUTES + 1)).state).toBe('ok')
   })
 
-  it('one booking number earns one voucher perk per hotel — not two for the same stay', () => {
-    const only = [POOL[0]]
-    setSub('a@gmail.com', 'getaway')
-    setSub('b@gmail.com', 'getaway')
-    const a = wallet.ensureBatch('a@gmail.com', 'A', sub('a@gmail.com'), START, only)[0]
-    const b = wallet.ensureBatch('b@gmail.com', 'B', sub('b@gmail.com'), START, only)[0]
-    expect(a.hotelSlug).toBe(b.hotelSlug)
-    expect(wallet.redeem(a.token, a.hotelSlug, 'RES-42', START).state).toBe('valid')
-    const second = wallet.redeem(b.token, b.hotelSlug, 'res-42', START)
-    expect(second.state).toBe('booking_reused')
-    expect(wallet.inspect(b.token, b.hotelSlug, START).state).toBe('valid') // b's voucher is untouched
-    expect(wallet.redeem(b.token, b.hotelSlug, 'RES-43', START).state).toBe('valid')
-  })
-
-  it('lists what a hotel has given, newest first, and only its own', () => {
-    setSub('a@gmail.com', 'nomad')
-    const got = wallet.ensureBatch('a@gmail.com', 'Mina', sub('a@gmail.com'), START, POOL)
-    expect(wallet.redemptions(got[0].hotelSlug)).toEqual([])
-    wallet.redeem(got[0].token, got[0].hotelSlug, 'R-0001', START)
-    wallet.redeem(got[1].token, got[1].hotelSlug, 'R-0002', START)
-    const mine = wallet.redemptions(got[0].hotelSlug)
-    expect(mine.map((v) => v.bookingRef)).toEqual(['R-0001'])
-  })
-
-  it('inspecting never uses the voucher', () => {
+  it('takes the PIN however it is typed', () => {
     const v = issue()
-    for (let i = 0; i < 3; i++) expect(wallet.inspect(v.token, v.hotelSlug, START).state).toBe('valid')
-    expect(wallet.redeem(v.token, v.hotelSlug, 'BK1001', START).state).toBe('valid')
+    expect(wallet.redeem(v.id, v.token, ` ${DEMO_PIN.slice(0, 2)}-${DEMO_PIN.slice(2)} `, at(START)).state).toBe('ok')
   })
 
-  it('rejects another hotel’s voucher, an unknown code and an empty code — and does not use it', () => {
+  it('needs the voucher’s own secret: another token or id redeems nothing', () => {
     const v = issue()
-    const other = POOL.find((h) => h.slug !== v.hotelSlug)!
-    expect(wallet.redeem(v.token, other.slug, 'BK1001', START).state).toBe('wrong_hotel')
-    expect(wallet.redeem('ZZZZ-ZZZZ-ZZZZ-ZZZZ', v.hotelSlug, 'BK1001', START).state).toBe('not_found')
-    expect(wallet.redeem('', v.hotelSlug, 'BK1001', START).state).toBe('not_found')
-    expect(wallet.inspect(v.token, v.hotelSlug, START).state).toBe('valid') // still usable at the right hotel
+    expect(wallet.redeem(v.id, newToken(), DEMO_PIN, at(START)).state).toBe('not_found')
+    expect(wallet.redeem('v_nope', v.token, DEMO_PIN, at(START)).state).toBe('not_found')
+    expect(wallet.list('a@gmail.com')[0].usedAt).toBeUndefined()
   })
 
-  it('accepts the code however it is typed', () => {
+  it('rejects an expired voucher, but the last day still works', () => {
     const v = issue()
-    const typed = formatToken(v.token).toLowerCase()
-    expect(wallet.inspect(typed, v.hotelSlug, START).state).toBe('valid')
+    expect(wallet.redeem(v.id, v.token, DEMO_PIN, at(addDays(v.validUntil, 1))).state).toBe('expired')
+    expect(wallet.redeem(v.id, v.token, DEMO_PIN, at(v.validUntil, 23)).state).toBe('ok')
   })
 
-  it('rejects an expired voucher', () => {
-    const v = issue()
-    expect(wallet.redeem(v.token, v.hotelSlug, 'BK1001', addDays(v.validUntil, 1)).state).toBe('expired')
-    expect(wallet.redeem(v.token, v.hotelSlug, 'BK1001', v.validUntil).state).toBe('valid') // last day still works
-  })
-
-  it('stops working when the subscription is cancelled', () => {
-    const v = issue()
+  it('stops working when the subscription is cancelled; a used voucher stays used', () => {
+    const v = issue('nomad')
+    const other = wallet.list('a@gmail.com')[1]
+    expect(wallet.redeem(v.id, v.token, DEMO_PIN, at(START)).state).toBe('ok')
     subscription.cancel('a@gmail.com')
-    expect(wallet.redeem(v.token, v.hotelSlug, 'BK1001', START).state).toBe('void')
-  })
-
-  it('a used voucher stays used even if the member cancels', () => {
-    const v = issue()
-    wallet.redeem(v.token, v.hotelSlug, 'BK1001', START)
-    subscription.cancel('a@gmail.com')
-    expect(wallet.inspect(v.token, v.hotelSlug, START).state).toBe('used')
+    expect(wallet.redeem(other.id, other.token, DEMO_PIN, at(START)).state).toBe('void')
+    expect(wallet.redeem(v.id, v.token, DEMO_PIN, at(START)).state).toBe('used')
   })
 
   it('opens a voucher only with its own secret', () => {

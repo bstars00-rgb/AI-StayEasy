@@ -9,15 +9,17 @@ import type { PlanId } from './plansI18n'
  * Member perk vouchers — PROTOTYPE of the "perk wallet".
  *
  * Model: each subscription period the member is issued on-site perk vouchers
- * (breakfast, spa, transfer...) that hotels have agreed to honor. A voucher does
- * not depend on any booking: the member shows its QR at the hotel, staff confirm
- * it, and the server marks it used so the same QR can never be used twice. The
- * next period brings new vouchers, which is what keeps the subscription useful.
+ * (breakfast, spa, transfer...) that hotels have agreed to honor. The voucher lives
+ * on the member's phone and opens only for the signed-in subscriber. At check-in the
+ * member shows it; hotel staff type the hotel's PIN on the member's phone and the
+ * voucher is stamped used, once. No staff login, no booking system, no integration
+ * with the hotel: the hotel is under contract and the PIN is the safeguard.
+ * The next period brings new vouchers, which is what keeps the subscription useful.
  *
  * Everything here lives in THIS browser (localStorage). That is enough to show
- * the flow, but it cannot actually stop reuse: the ledger has to live on a server
- * the hotel's phone can reach. The functions are shaped so that move is a swap of
- * the storage layer, not a redesign.
+ * the flow, but it cannot stop reuse across devices, and the PIN could be read from
+ * the page source: the ledger and the PIN check have to move to a server. The
+ * functions are shaped so that move is a swap of the storage layer, not a redesign.
  */
 
 /** Days each issued batch is valid; the next batch follows. */
@@ -40,8 +42,10 @@ export interface WalletVoucher {
   token: string
   /** ISO timestamp it was redeemed at; absent while unused. */
   usedAt?: string
-  /** The guest's booking number at the hotel, recorded by staff when the perk was given. */
-  bookingRef?: string
+  /** Wrong PINs typed since the last success; the voucher locks for a while after too many. */
+  failures?: number
+  /** ISO timestamp until which PIN entry is locked. */
+  lockedUntil?: string
 }
 
 export type WalletStatus = 'issued' | 'used' | 'expired' | 'void'
@@ -82,13 +86,6 @@ export const normalizeToken = (s: string) =>
     .replace(/[^0-9A-Z]/g, '')
     .replace(/O/g, '0')
     .replace(/[IL]/g, '1')
-
-/**
- * A hotel booking number as staff type it: spaces and case don't matter. Hotels'
- * formats differ, so the only rule is "something that looks like a reference".
- */
-export const normalizeRef = (s: string) => s.trim().toUpperCase().replace(/\s+/g, '')
-export const isBookingRef = (s: string) => /^[0-9A-Z][0-9A-Z\-_/]{3,39}$/.test(normalizeRef(s))
 
 const newId = () => `v_${Array.from(randomBytes(6), (x) => ALPHABET[x % 32]).join('').toLowerCase()}`
 
@@ -131,11 +128,23 @@ export function statusOf(v: WalletVoucher, sub: Subscription | null, now: string
   return 'issued'
 }
 
-/** Why a staff check fails, or 'valid'. */
-export type InspectState = 'valid' | 'used' | 'expired' | 'void' | 'wrong_hotel' | 'not_found' | 'booking_missing' | 'booking_reused'
-export interface Inspection {
-  state: InspectState
+/**
+ * PROTOTYPE: the PIN of every demo hotel. A real hotel sets its own in the partner
+ * portal, and it is checked on a server — shipping it in the page, as here, only works
+ * because the hotels are fictional.
+ */
+export const DEMO_PIN = '1234'
+export const MAX_PIN_TRIES = 3
+export const LOCK_MINUTES = 15
+
+const hotelPin = (_hotelSlug: string) => DEMO_PIN
+
+export type RedeemState = 'ok' | 'used' | 'expired' | 'void' | 'not_found' | 'wrong_pin' | 'locked'
+export interface RedeemResult {
+  state: RedeemState
   voucher?: WalletVoucher
+  /** After a wrong PIN: how many tries remain before the voucher locks. */
+  triesLeft?: number
 }
 
 export const wallet = {
@@ -181,38 +190,35 @@ export const wallet = {
     return v && normalizeToken(v.token) === normalizeToken(token) ? v : null
   },
 
-  /** What staff see after scanning or typing a code — no change is made. */
-  inspect(code: string, hotelSlug: string, now: string = today()): Inspection {
-    const t = normalizeToken(code)
-    const v = t ? readAll().find((x) => normalizeToken(x.token) === t) : undefined
-    if (!v) return { state: 'not_found' }
-    if (v.hotelSlug !== hotelSlug) return { state: 'wrong_hotel' }
-    const s = statusOf(v, subscription.get(v.email), now)
-    return { state: s === 'issued' ? 'valid' : s, voucher: v }
-  },
-
   /**
-   * Staff confirm the perk was given for a booking: marks the voucher used, once, and
-   * records the booking number. The perk belongs to a booking, so a missing number is
-   * refused, and one booking number can only ever earn one voucher at a hotel.
+   * Hotel staff type the hotel's PIN on the member's phone: the voucher is stamped used,
+   * once. A wrong PIN is counted; after MAX_PIN_TRIES the voucher locks for LOCK_MINUTES
+   * so the PIN cannot be guessed. Used, expired and cancelled vouchers never redeem.
    */
-  redeem(code: string, hotelSlug: string, bookingRef: string, now: string = today()): Inspection {
-    const r = wallet.inspect(code, hotelSlug, now)
-    if (r.state !== 'valid' || !r.voucher) return r
-    if (!isBookingRef(bookingRef)) return { state: 'booking_missing', voucher: r.voucher }
-    const ref = normalizeRef(bookingRef)
-    const all = readAll()
-    if (all.some((x) => x.hotelSlug === hotelSlug && x.bookingRef === ref)) return { state: 'booking_reused', voucher: r.voucher }
-    const used: WalletVoucher = { ...r.voucher, usedAt: new Date().toISOString(), bookingRef: ref }
-    writeAll(all.map((x) => (x.id === used.id ? used : x)))
-    return { state: 'valid', voucher: used }
-  },
+  redeem(id: string, token: string, pin: string, now: Date = new Date()): RedeemResult {
+    const v = wallet.open(id, token)
+    if (!v) return { state: 'not_found' }
+    const st = statusOf(v, subscription.get(v.email), now.toISOString().slice(0, 10))
+    if (st !== 'issued') return { state: st, voucher: v }
+    const iso = now.toISOString()
+    if (v.lockedUntil && v.lockedUntil > iso) return { state: 'locked', voucher: v }
 
-  /** What a hotel has given so far (newest first) — the count it can show its own management. */
-  redemptions: (hotelSlug: string): WalletVoucher[] =>
-    readAll()
-      .filter((v) => v.hotelSlug === hotelSlug && v.usedAt)
-      .sort((a, b) => (a.usedAt! < b.usedAt! ? 1 : -1)),
+    const save = (next: WalletVoucher) => writeAll(readAll().map((x) => (x.id === next.id ? next : x)))
+    if (pin.replace(/\D/g, '') !== hotelPin(v.hotelSlug)) {
+      const failures = (v.failures ?? 0) + 1
+      if (failures >= MAX_PIN_TRIES) {
+        const next = { ...v, failures: 0, lockedUntil: new Date(now.getTime() + LOCK_MINUTES * 60_000).toISOString() }
+        save(next)
+        return { state: 'locked', voucher: next }
+      }
+      const next = { ...v, failures }
+      save(next)
+      return { state: 'wrong_pin', voucher: next, triesLeft: MAX_PIN_TRIES - failures }
+    }
+    const used: WalletVoucher = { ...v, usedAt: iso, failures: 0, lockedUntil: undefined }
+    save(used)
+    return { state: 'ok', voucher: used }
+  },
 
   /** Remove a member's vouchers (account deletion). */
   clear(email: string) {
@@ -239,22 +245,9 @@ export function useWalletVouchers(email: string | undefined): WalletVoucher[] {
   return list.sort((a, b) => (a.periodStart < b.periodStart ? 1 : a.periodStart > b.periodStart ? -1 : 0))
 }
 
-/** Live list of what a hotel has given so far (the staff screen's history). */
-export function useWalletLedger(hotelSlug: string): WalletVoucher[] {
-  const raw = useSyncExternalStore(
-    wallet.subscribe,
-    () => JSON.stringify(wallet.redemptions(hotelSlug)),
-    () => '[]',
-  )
-  return JSON.parse(raw) as WalletVoucher[]
-}
-
 // ---- links the vouchers carry ----
 const origin = () => (typeof window === 'undefined' ? '' : window.location.origin)
 const base = () => import.meta.env.BASE_URL
 
 /** Where the member opens their voucher (the link in the email / KakaoTalk message). */
 export const voucherLink = (v: WalletVoucher) => `${origin()}${base()}voucher/${v.id}?t=${v.token}`
-
-/** What the QR encodes: the hotel staff screen with the code filled in. */
-export const redeemLink = (v: WalletVoucher) => `${origin()}${base()}staff/redeem?c=${v.token}`

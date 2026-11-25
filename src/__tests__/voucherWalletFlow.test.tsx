@@ -88,14 +88,20 @@ function member(plan: 'getaway' | 'voyager' | 'nomad' = 'voyager') {
   window.localStorage.setItem('stayeasy-sub:mina@gmail.com', JSON.stringify({ plan, period: 'monthly', requestedAt: TODAY, startedAt: TODAY }))
 }
 
-const ledger = () => JSON.parse(window.localStorage.getItem('stayeasy-wallet') ?? '[]') as { id: string; token: string; hotelSlug: string; usedAt?: string; bookingRef?: string }[]
+type Row = { id: string; token: string; hotelSlug: string; usedAt?: string; failures?: number }
+const ledger = () => JSON.parse(window.localStorage.getItem('stayeasy-wallet') ?? '[]') as Row[]
+const PIN = '1234' // the demo hotels' PIN (DEMO_PIN)
 
-/** Hotel staff screen: choose the hotel, type the code, press Check. */
-async function checkAt(slug: string, token: string) {
-  fireEvent.change(screen.getByLabelText(/your hotel/i), { target: { value: slug } })
-  fireEvent.change(screen.getByLabelText(/voucher code/i), { target: { value: token.toLowerCase() } })
-  fireEvent.click(screen.getByRole('button', { name: /^check$/i }))
+/** Visit My page once so this period's vouchers get issued, then hand back the first. */
+async function issued(plan: 'getaway' | 'voyager' | 'nomad' = 'getaway'): Promise<Row> {
+  member(plan)
+  await open('/account')
+  await screen.findByText(/new voucher/i)
+  const v = ledger()[0]
+  cleanup()
+  return v
 }
+const voucherPath = (v: Row, token = v.token) => `/voucher/${v.id}?t=${token}`
 
 describe('perk-voucher wallet, demo switch ON', () => {
   it('My page shows this period’s vouchers for the plan and a preview of the message', async () => {
@@ -105,6 +111,7 @@ describe('perk-voucher wallet, demo switch ON', () => {
     expect(ledger().length).toBe(2)
     expect(screen.getAllByText('Ready to use').length).toBe(2)
     expect(screen.getAllByRole('link', { name: /open voucher/i }).length).toBe(2)
+    expect(screen.queryByText(/staff check screen/i)).toBeNull() // no staff screen: the PIN is typed on the member's phone
 
     fireEvent.click(screen.getByRole('button', { name: /see the message we send/i }))
     const dialog = await screen.findByRole('dialog')
@@ -132,115 +139,95 @@ describe('perk-voucher wallet, demo switch ON', () => {
     expect(screen.queryByText(/new voucher\(s\) just arrived/i)).toBeNull()
   })
 
-  it('the voucher page shows a QR and the code, and only opens with its own secret', async () => {
-    member('getaway')
-    await open('/account')
-    await screen.findByText(/new voucher/i)
-    const [v] = ledger()
-    cleanup()
-
-    await open(`/voucher/${v.id}?t=${v.token}`)
-    expect((await screen.findAllByRole('img', { name: /^QR /i })).length).toBe(1)
-    const code = `${v.token.slice(0, 4)}-${v.token.slice(4, 8)}-${v.token.slice(8, 12)}-${v.token.slice(12)}`
-    expect(screen.getByText(code)).toBeTruthy()
+  it('the voucher opens for its subscriber: hotel, perk, a live clock, no QR to copy', async () => {
+    const v = await issued()
+    await open(voucherPath(v))
+    expect(await screen.findByText('Ready to use')).toBeTruthy()
     expect(screen.getByText('Mina')).toBeTruthy()
-    // How the perk is earned: book on the official site, then show voucher + booking number.
-    expect(screen.getByText(/show this screen and your booking number/i)).toBeTruthy()
+    expect(screen.getByText(/at check-in, show this screen to the hotel staff/i)).toBeTruthy()
+    expect(screen.getByLabelText('Now').textContent).toMatch(/^\d\d:\d\d:\d\d$/) // a screenshot shows a stale time
+    expect(screen.queryByRole('img', { name: /qr/i })).toBeNull()
     expect(screen.getByRole('link', { name: /see the hotel/i }).getAttribute('href')).toBe(`/hotels/${v.hotelSlug}`)
-    cleanup()
-
-    await open(`/voucher/${v.id}?t=WRONGWRONGWRONG0`)
-    expect(await screen.findByRole('heading', { name: /voucher not found/i })).toBeTruthy()
-    expect(screen.queryByText(code)).toBeNull()
-    cleanup()
-
-    await open(`/voucher/${v.id}`) // the id alone is not enough
-    expect(await screen.findByRole('heading', { name: /voucher not found/i })).toBeTruthy()
   })
 
-  it('hotel staff can give the perk once; the second check says it is used', async () => {
-    member('getaway')
-    await open('/account')
-    await screen.findByText(/new voucher/i)
-    const [v] = ledger()
+  it('does not open for anyone else: signed out → sign-in, wrong secret, another member, ended subscription', async () => {
+    const v = await issued()
+
+    window.localStorage.removeItem('stayeasy-guest') // signed out: the link alone is not enough
+    await open(voucherPath(v))
+    expect(await screen.findByRole('heading', { name: /sign in to stayeasy/i })).toBeTruthy()
+    expect(screen.queryByText('Ready to use')).toBeNull()
     cleanup()
 
-    await open(`/staff/redeem?c=${v.token}`)
-    await screen.findByRole('heading', { name: /hotel staff check/i })
-    expect((screen.getByLabelText(/voucher code/i) as HTMLInputElement).value).toBe(v.token) // QR pre-fills the code
-    await checkAt(v.hotelSlug, v.token)
-    expect(await screen.findByText('Valid voucher')).toBeTruthy()
-    expect(ledger()[0].usedAt).toBeUndefined() // checking does not use it
+    member('getaway')
+    await open(voucherPath(v, 'WRONGWRONGWRONG0'))
+    expect(await screen.findByRole('heading', { name: /voucher not found/i })).toBeTruthy()
+    cleanup()
 
-    // The perk belongs to a booking: the button stays off until staff enter a booking number.
-    const give = screen.getByRole('button', { name: /mark as given/i }) as HTMLButtonElement
-    expect(give.disabled).toBe(true)
-    expect(screen.getByText(/enter the booking number to record the perk/i)).toBeTruthy()
-    fireEvent.change(screen.getByLabelText(/guest’s booking number/i), { target: { value: 'res 1001' } })
-    expect(give.disabled).toBe(false)
-    fireEvent.click(give)
-    expect(await screen.findByText(/recorded as given/i)).toBeTruthy()
-    expect(ledger()[0].usedAt).toBeTruthy()
-    expect(ledger()[0].bookingRef).toBe('RES1001')
-    // The hotel's own record of what it has given.
-    expect(screen.getByText('1 given so far')).toBeTruthy()
-    expect(screen.getAllByText('RES1001').length).toBeGreaterThan(0)
+    window.localStorage.setItem('stayeasy-guest', JSON.stringify({ email: 'sam@gmail.com', name: 'Sam', joinedAt: TODAY }))
+    await open(voucherPath(v)) // someone else, with the right link
+    expect(await screen.findByRole('heading', { name: /voucher not found/i })).toBeTruthy()
+    expect(screen.queryByText('Ready to use')).toBeNull()
+    cleanup()
 
-    fireEvent.click(screen.getByRole('button', { name: /check another voucher/i }))
-    await checkAt(v.hotelSlug, v.token)
-    expect(await screen.findByText('Already used')).toBeTruthy()
-    expect(screen.queryByRole('button', { name: /mark as given/i })).toBeNull()
+    member('getaway')
+    window.localStorage.removeItem('stayeasy-sub:mina@gmail.com') // the subscription ended
+    await open(voucherPath(v))
+    expect(await screen.findByText(/opens for active subscribers only/i)).toBeTruthy()
+    expect(screen.queryByRole('button', { name: /confirm use/i })).toBeNull()
   })
 
-  it('another hotel’s staff, and an unknown code, get nothing', async () => {
-    member('getaway')
-    await open('/account')
-    await screen.findByText(/new voucher/i)
-    const [v] = ledger()
-    cleanup()
+  it('hotel staff type the PIN on the member’s phone: a wrong PIN is refused, the right one stamps it used, once', async () => {
+    const v = await issued()
+    await open(voucherPath(v))
+    fireEvent.click(await screen.findByRole('button', { name: /hotel staff: confirm use/i }))
 
-    await open('/staff/redeem')
-    const select = (await screen.findByLabelText(/your hotel/i)) as HTMLSelectElement
-    const other = Array.from(select.options).map((o) => o.value).find((s) => s !== v.hotelSlug)!
-    await checkAt(other, v.token)
-    expect(await screen.findByText('This voucher is for another hotel')).toBeTruthy()
-    expect(screen.queryByRole('button', { name: /mark as given/i })).toBeNull()
+    const pin = screen.getByLabelText(/hotel pin/i)
+    expect((screen.getByRole('button', { name: /^confirm$/i }) as HTMLButtonElement).disabled).toBe(true) // needs 4 digits
+    fireEvent.change(pin, { target: { value: '0000' } })
+    fireEvent.click(screen.getByRole('button', { name: /^confirm$/i }))
+    expect((await screen.findByRole('alert')).textContent).toMatch(/wrong pin\. 2 tries left/i)
     expect(ledger()[0].usedAt).toBeUndefined()
 
-    await checkAt(v.hotelSlug, 'ZZZZZZZZZZZZZZZZ')
-    expect(await screen.findByText('Code not found')).toBeTruthy()
+    fireEvent.change(screen.getByLabelText(/hotel pin/i), { target: { value: PIN } })
+    fireEvent.click(screen.getByRole('button', { name: /^confirm$/i }))
+    expect((await screen.findAllByText(/^✓ Used$/)).length).toBe(1)
+    expect(ledger()[0].usedAt).toBeTruthy()
+    expect(screen.getByText(/used on/i)).toBeTruthy()
+    expect(screen.queryByRole('button', { name: /confirm use/i })).toBeNull() // nothing left to do
+    expect(screen.queryByLabelText('Now')).toBeNull()
+    cleanup()
+
+    await open(voucherPath(v)) // opened again later: still used
+    expect((await screen.findAllByText(/^✓ Used$/)).length).toBe(1)
+    expect(screen.queryByRole('button', { name: /confirm use/i })).toBeNull()
   })
 
-  it('a used voucher shows as used on the member’s own voucher page', async () => {
-    member('getaway')
-    await open('/account')
-    await screen.findByText(/new voucher/i)
-    const [v] = ledger()
-    cleanup()
-    await open('/staff/redeem')
-    await screen.findByLabelText(/your hotel/i)
-    await checkAt(v.hotelSlug, v.token)
-    fireEvent.change(await screen.findByLabelText(/guest’s booking number/i), { target: { value: 'RES-77' } })
-    fireEvent.click(screen.getByRole('button', { name: /mark as given/i }))
-    await screen.findByText(/recorded as given/i)
-    cleanup()
-    await open(`/voucher/${v.id}?t=${v.token}`)
-    expect((await screen.findAllByText('Used')).length).toBeGreaterThan(0)
-    expect(screen.getByText('RES-77')).toBeTruthy() // the member sees which booking it was used for
-    expect(screen.queryByText(/show this screen and your booking number/i)).toBeNull()
-    expect(screen.queryByRole('link', { name: /see the hotel/i })).toBeNull()
+  it('too many wrong PINs lock the voucher — even the right PIN waits', async () => {
+    const v = await issued()
+    await open(voucherPath(v))
+    fireEvent.click(await screen.findByRole('button', { name: /hotel staff: confirm use/i }))
+    for (let i = 0; i < 3; i++) {
+      fireEvent.change(screen.getByLabelText(/hotel pin/i), { target: { value: '9999' } })
+      fireEvent.click(screen.getByRole('button', { name: /^confirm$/i }))
+      await screen.findByRole('alert')
+    }
+    expect(screen.getByRole('alert').textContent).toMatch(/too many wrong tries/i)
+    const input = screen.getByLabelText(/hotel pin/i) as HTMLInputElement
+    expect(input.disabled).toBe(true)
+    expect(ledger()[0].usedAt).toBeUndefined()
   })
 })
 
 describe('perk-voucher wallet, demo switch OFF (the public default)', () => {
-  it('has no perk hotels: My page keeps the empty voucher card and the staff screen says so', async () => {
+  it('has no perk hotels: My page keeps the empty voucher card, and no voucher exists to open', async () => {
     member('nomad')
     await open('/account', { demo: false })
     await screen.findByRole('heading', { name: /subscription/i })
     expect(screen.queryByText(/perk vouchers this period/i)).toBeNull()
     expect(ledger()).toEqual([])
     cleanup()
-    await open('/staff/redeem', { demo: false })
-    expect(await screen.findByText(/no hotel has joined the voucher program yet/i)).toBeTruthy()
+    await open('/voucher/v_none?t=ABCD', { demo: false })
+    expect(await screen.findByRole('heading', { name: /voucher not found/i })).toBeTruthy()
   })
 })
