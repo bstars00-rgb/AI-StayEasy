@@ -8,13 +8,15 @@ import type { PlanId } from './plansI18n'
 /**
  * Member perk vouchers — PROTOTYPE of the "perk wallet".
  *
- * Model: each subscription period the member is issued on-site perk vouchers
- * (breakfast, spa, transfer...) that hotels have agreed to honor. The voucher lives
- * on the member's phone and opens only for the signed-in subscriber. At check-in the
- * member shows it; hotel staff type the hotel's PIN on the member's phone and the
- * voucher is stamped used, once. No staff login, no booking system, no integration
- * with the hotel: the hotel is under contract and the PIN is the safeguard.
- * The next period brings new vouchers, which is what keeps the subscription useful.
+ * Model: each subscription period the member has an allowance of perk vouchers (by plan)
+ * and picks which participating hotel each one is for — a hotel they are about to visit,
+ * the same one again in a later period if they like. A voucher is valid for PERIOD_DAYS
+ * from the day it is picked, lives on the member's phone and opens only for the signed-in
+ * subscriber. At check-in hotel staff type the hotel's PIN on the member's phone and the
+ * voucher is stamped used, once. No staff login, no booking system, no integration with
+ * the hotel: the hotel is under contract and the PIN is the safeguard. Each hotel gives
+ * one voucher per member per period; unpicked allowance does not carry over. The next
+ * period brings a fresh allowance, which is what keeps the subscription useful.
  *
  * Everything here lives in THIS browser (localStorage). That is enough to show
  * the flow, but it cannot stop reuse across devices, and the PIN could be read from
@@ -89,12 +91,6 @@ export const normalizeToken = (s: string) =>
 
 const newId = () => `v_${Array.from(randomBytes(6), (x) => ALPHABET[x % 32]).join('').toLowerCase()}`
 
-const hash = (s: string) => {
-  let h = 0
-  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0
-  return h
-}
-
 // ---- storage ----
 const KEY = 'stayeasy-wallet'
 
@@ -147,41 +143,70 @@ export interface RedeemResult {
   triesLeft?: number
 }
 
+/** The subscription period (PERIOD_DAYS blocks from the first subscription date) that contains `now`. */
+export interface PeriodInfo {
+  index: number
+  start: string
+  /** Last day of the period; the allowance refreshes the day after. */
+  end: string
+}
+export function periodOf(sub: Subscription, now: string = today()): PeriodInfo {
+  const first = sub.startedAt || sub.requestedAt || now
+  const index = Math.max(0, Math.floor(daysBetween(first, now) / PERIOD_DAYS))
+  const start = addDays(first, index * PERIOD_DAYS)
+  return { index, start, end: addDays(start, PERIOD_DAYS - 1) }
+}
+
+export interface Allowance {
+  total: number
+  picked: number
+  left: number
+  period: PeriodInfo
+}
+/** This period's allowance for a subscriber, given their vouchers. Changing plan mid-period only changes the total. */
+export function allowanceOf(list: WalletVoucher[], sub: Subscription, now: string = today()): Allowance {
+  const period = periodOf(sub, now)
+  const total = VOUCHERS_PER_PERIOD[sub.plan]
+  const picked = list.filter((v) => v.periodStart === period.start).length
+  return { total, picked, left: Math.max(0, total - picked), period }
+}
+
+export type ClaimState = 'ok' | 'already' | 'none_left' | 'no_sub' | 'unknown_hotel'
+export interface ClaimResult {
+  state: ClaimState
+  voucher?: WalletVoucher
+}
+
 export const wallet = {
   all: readAll,
   list: (email: string) => readAll().filter((v) => v.email === email.trim().toLowerCase()),
 
   /**
-   * Issue this period's vouchers for a subscriber — idempotent. Periods run in
-   * PERIOD_DAYS blocks from the member's FIRST subscription date, so changing plan
-   * or re-opening the page cannot restart them. Hotels rotate by member and period.
+   * The member picks a hotel: one voucher is issued from this period's allowance. Refused
+   * without a subscription, for a hotel that isn't in the program, when the member already
+   * has this hotel's voucher for the period, or when the allowance is used up.
    */
-  ensureBatch(email: string, name: string, sub: Subscription | null, now: string = today(), pool: Hotel[] = perkHotels()): WalletVoucher[] {
-    if (!sub || pool.length === 0) return []
+  claim(email: string, name: string, sub: Subscription | null, hotelSlug: string, now: string = today(), pool: Hotel[] = perkHotels()): ClaimResult {
+    if (!sub) return { state: 'no_sub' }
+    if (!pool.some((h) => h.slug === hotelSlug)) return { state: 'unknown_hotel' }
     const e = email.trim().toLowerCase()
-    const idx = Math.max(0, Math.floor(daysBetween(sub.startedAt || sub.requestedAt || now, now) / PERIOD_DAYS))
-    const periodStart = addDays(sub.startedAt || sub.requestedAt || now, idx * PERIOD_DAYS)
     const all = readAll()
-    const have = all.filter((v) => v.email === e && v.periodStart === periodStart)
-    const quota = VOUCHERS_PER_PERIOD[sub.plan]
-    const base = hash(e) + idx * quota
-    const issued: WalletVoucher[] = []
-    for (let k = 0; k < quota; k++) {
-      const hotel = pool[(base + k) % pool.length]
-      if (have.some((v) => v.hotelSlug === hotel.slug) || issued.some((v) => v.hotelSlug === hotel.slug)) continue
-      issued.push({
-        id: newId(),
-        email: e,
-        name: name || e.split('@')[0],
-        hotelSlug: hotel.slug,
-        periodStart,
-        validFrom: periodStart,
-        validUntil: addDays(periodStart, PERIOD_DAYS - 1),
-        token: newToken(),
-      })
+    const period = periodOf(sub, now)
+    const mine = all.filter((v) => v.email === e && v.periodStart === period.start)
+    if (mine.some((v) => v.hotelSlug === hotelSlug)) return { state: 'already', voucher: mine.find((v) => v.hotelSlug === hotelSlug) }
+    if (mine.length >= VOUCHERS_PER_PERIOD[sub.plan]) return { state: 'none_left' }
+    const voucher: WalletVoucher = {
+      id: newId(),
+      email: e,
+      name: name || e.split('@')[0],
+      hotelSlug,
+      periodStart: period.start,
+      validFrom: now,
+      validUntil: addDays(now, PERIOD_DAYS - 1),
+      token: newToken(),
     }
-    if (issued.length) writeAll([...all, ...issued])
-    return issued
+    writeAll([...all, voucher])
+    return { state: 'ok', voucher }
   },
 
   /** The voucher behind a link (id + secret), or null. Used by the voucher page. */

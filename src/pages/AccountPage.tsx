@@ -74,17 +74,17 @@ export default function AccountPage() {
 
       <div className="mt-5 space-y-5">
         {/* Profile */}
-        <section className="flex items-center gap-4 rounded-2xl bg-white p-5 shadow-card ring-1 ring-black/5 sm:p-6">
+        <section className="flex flex-wrap items-center gap-4 rounded-2xl bg-white p-5 shadow-card ring-1 ring-black/5 sm:p-6">
           {guest.picture ? (
             <img src={guest.picture} alt="" className="h-14 w-14 rounded-full" />
           ) : (
             <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-brand-600 text-xl font-bold text-white">{guest.name.charAt(0).toUpperCase()}</span>
           )}
-          <div className="min-w-0 flex-1">
-            <p className="truncate text-lg font-extrabold text-ink-900">
+          <div className="min-w-0 flex-1 basis-44">
+            <p className="break-words text-lg font-extrabold text-ink-900">
               {guest.name} <span className="ml-1 rounded-full bg-brand-50 px-2 py-0.5 align-middle text-xs font-semibold text-brand-700">{as.member}</span>
             </p>
-            <p className="truncate text-sm text-ink-600/70">{as.signedInAs} {guest.email}</p>
+            <p className="break-all text-sm text-ink-600/70">{as.signedInAs} {guest.email}</p>
             <p className="text-xs text-ink-600/55">{m.joined} {guest.joinedAt}</p>
           </div>
           <button onClick={() => guestAuth.signOut()} className={`${btn} shrink-0 text-ink-700 ring-1 ring-black/10 hover:bg-sand-50`}>{as.signOut}</button>

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import type { Hotel } from '../types'
 import { useLang } from '../i18n'
 import { voucherStrings } from '../lib/voucherI18n'
@@ -10,7 +10,8 @@ import { guestAuth, useGuest } from '../lib/guestAuth'
 import { promptGoogle, googleEnabled } from '../lib/googleAuth'
 import { trackEvent } from '../lib/analytics'
 import { useSubscription } from '../lib/subscription'
-import { perkHotels } from '../lib/voucherWallet'
+import { allowanceOf, perkHotels, useWalletVouchers, wallet } from '../lib/voucherWallet'
+import { fillW } from '../lib/walletI18n'
 
 /** Sparkle directions for the little burst when the lock springs open. */
 const SPARKS = [
@@ -74,6 +75,15 @@ export function VoucherCard({ hotel }: { hotel: Hotel }) {
   // Demo-chain perks reach members as wallet vouchers (one per member, used once), so the
   // card explains that instead of showing a code anyone could copy.
   const perk = !!v && perkHotels().some((h) => h.slug === hotel.slug)
+  const navigate = useNavigate()
+  const mine = useWalletVouchers(guest?.email)
+  const allowance = sub ? allowanceOf(mine, sub) : null
+  const held = allowance ? mine.find((x) => x.periodStart === allowance.period.start && x.hotelSlug === hotel.slug) : undefined
+  const getVoucher = () => {
+    if (!guest || !sub) return
+    const r = wallet.claim(guest.email, guest.name, sub, hotel.slug)
+    if (r.voucher) navigate(`/voucher/${r.voucher.id}?t=${r.voucher.token}`)
+  }
 
   const dims = { hotel_slug: hotel.slug, city: hotel.city, hotel_type: hotel.hotelType, lang }
 
@@ -182,9 +192,21 @@ export function VoucherCard({ hotel }: { hotel: Hotel }) {
                 <span className="truncate">{s.useOnSite}</span> ↗
               </a>
               {perk ? (
-                <Link to={sub ? '/account#vouchers' : '/plans'} className="inline-flex w-full items-center justify-center gap-1.5 whitespace-nowrap rounded-full bg-white px-4 py-3 text-sm font-semibold text-ink-900 ring-1 ring-black/10 transition-colors hover:bg-sand-50">
-                  <span className="truncate">{sub ? s.perkCtaWallet : s.perkCtaPlans}</span> →
-                </Link>
+                !sub || !allowance ? (
+                  <Link to="/plans" className="inline-flex w-full items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-4 py-3 text-sm font-semibold transition-colors bg-white text-ink-900 ring-1 ring-black/10 hover:bg-sand-50">
+                    <span className="truncate">{s.perkCtaPlans}</span> →
+                  </Link>
+                ) : held ? (
+                  <Link to={`/voucher/${held.id}?t=${held.token}`} className="inline-flex w-full items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-4 py-3 text-sm font-semibold transition-colors bg-white text-ink-900 ring-1 ring-black/10 hover:bg-sand-50">
+                    <span className="truncate">{s.perkCtaOpen}</span> →
+                  </Link>
+                ) : allowance.left > 0 ? (
+                  <button type="button" onClick={getVoucher} className="inline-flex w-full items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-4 py-3 text-sm font-semibold transition-colors bg-ink-900 text-white hover:bg-ink-800">
+                    <span className="truncate">{fillW(s.perkCtaGet, { left: allowance.left })}</span>
+                  </button>
+                ) : (
+                  <p className="rounded-full bg-sand-100 px-4 py-3 text-center text-sm font-semibold text-ink-700/70">{s.perkCtaNone}</p>
+                )
               ) : (
               <button type="button" onClick={download} className="inline-flex w-full items-center justify-center gap-1.5 whitespace-nowrap rounded-full bg-white px-4 py-3 text-sm font-semibold text-ink-900 ring-1 ring-black/10 transition-colors hover:bg-sand-50">
                 ⬇ <span className="truncate">{s.download}</span>

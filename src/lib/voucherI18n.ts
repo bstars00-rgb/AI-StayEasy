@@ -37,7 +37,9 @@ export interface VoucherStrings {
   perkSubtitle: string
   perkUnlockNote: string
   perkHow: string
-  perkCtaWallet: string
+  perkCtaGet: string
+  perkCtaOpen: string
+  perkCtaNone: string
   perkCtaPlans: string
   /** Shown when a hotel offers no voucher. */
   noVoucherTitle: string
@@ -68,8 +70,10 @@ export const voucherStrings: Record<Lang, VoucherStrings> = {
     perkTitle: 'Member perk',
     perkSubtitle: 'A perk the hotel gives its StayEasy members.',
     perkUnlockNote: 'StayEasy members unlock this hotel’s perk.',
-    perkHow: 'Subscribers receive this perk as a voucher each period. Show it on your phone at check-in.',
-    perkCtaWallet: 'See my vouchers',
+    perkHow: 'Subscribers pick this hotel’s voucher from their allowance each period, then show it on their phone at check-in.',
+    perkCtaGet: 'Get this hotel’s voucher ({left} left)',
+    perkCtaOpen: 'Open my voucher',
+    perkCtaNone: 'No vouchers left this period',
     perkCtaPlans: 'See plans to get vouchers',
     noVoucherTitle: 'No voucher from this hotel yet',
     noVoucherText: 'This hotel doesn’t offer a StayEasy voucher right now — but you still book direct for its official-website benefits.',
@@ -97,8 +101,10 @@ export const voucherStrings: Record<Lang, VoucherStrings> = {
     perkTitle: '회원 특전',
     perkSubtitle: '호텔이 StayEasy 회원에게 드리는 특전이에요.',
     perkUnlockNote: 'StayEasy 회원은 이 호텔의 특전을 열어 볼 수 있어요.',
-    perkHow: '구독하면 이 특전을 기간마다 바우처로 받아요. 체크인할 때 휴대폰으로 보여 주세요.',
-    perkCtaWallet: '내 바우처 보기',
+    perkHow: '구독하면 기간마다 받는 바우처 중에서 이 호텔을 골라 쓸 수 있어요. 체크인할 때 휴대폰으로 보여 주세요.',
+    perkCtaGet: '이 호텔 바우처 받기 (남은 {left}장)',
+    perkCtaOpen: '내 바우처 열기',
+    perkCtaNone: '이번 기간 남은 바우처가 없어요',
     perkCtaPlans: '요금제 보고 바우처 받기',
     noVoucherTitle: '아직 이 호텔의 바우처가 없어요',
     noVoucherText: '이 호텔은 현재 StayEasy 바우처를 제공하지 않아요 — 그래도 공식 사이트 혜택을 위해 직접 예약할 수 있어요.',
@@ -126,8 +132,10 @@ export const voucherStrings: Record<Lang, VoucherStrings> = {
     perkTitle: 'Đặc quyền thành viên',
     perkSubtitle: 'Đặc quyền khách sạn dành cho thành viên StayEasy.',
     perkUnlockNote: 'Thành viên StayEasy mở khóa đặc quyền của khách sạn này.',
-    perkHow: 'Người đăng ký nhận đặc quyền này dưới dạng voucher mỗi kỳ. Hãy xuất trình trên điện thoại khi nhận phòng.',
-    perkCtaWallet: 'Xem voucher của tôi',
+    perkHow: 'Người đăng ký có thể chọn khách sạn này trong số voucher của mỗi kỳ. Hãy xuất trình trên điện thoại khi nhận phòng.',
+    perkCtaGet: 'Nhận voucher của khách sạn này (còn {left})',
+    perkCtaOpen: 'Mở voucher của tôi',
+    perkCtaNone: 'Hết voucher trong kỳ này',
     perkCtaPlans: 'Xem các gói để nhận voucher',
     noVoucherTitle: 'Khách sạn này chưa có voucher',
     noVoucherText: 'Khách sạn này hiện chưa có voucher StayEasy — nhưng bạn vẫn đặt trực tiếp để nhận ưu đãi từ website chính thức.',
@@ -155,8 +163,10 @@ export const voucherStrings: Record<Lang, VoucherStrings> = {
     perkTitle: '会员特权',
     perkSubtitle: '酒店为StayEasy会员提供的特权。',
     perkUnlockNote: 'StayEasy 会员可解锁该酒店的特权。',
-    perkHow: '订阅后每个周期会以优惠券形式收到此特权。入住时在手机上出示即可。',
-    perkCtaWallet: '查看我的优惠券',
+    perkHow: '订阅后可从每个周期的优惠券中选择该酒店。入住时在手机上出示即可。',
+    perkCtaGet: '领取该酒店优惠券（还剩{left}张）',
+    perkCtaOpen: '打开我的优惠券',
+    perkCtaNone: '本期已无可领优惠券',
     perkCtaPlans: '查看方案以获取优惠券',
     noVoucherTitle: '该酒店暂无优惠券',
     noVoucherText: '该酒店目前未提供 StayEasy 优惠券——但您仍可官网直订以享受其官方权益。',
@@ -184,8 +194,10 @@ export const voucherStrings: Record<Lang, VoucherStrings> = {
     perkTitle: '会員特典',
     perkSubtitle: 'ホテルがStayEasy会員に提供する特典です。',
     perkUnlockNote: 'StayEasy会員はこのホテルの特典をご覧いただけます。',
-    perkHow: '購読すると、この特典が期間ごとにバウチャーで届きます。チェックイン時にスマートフォンでご提示ください。',
-    perkCtaWallet: 'マイバウチャーを見る',
+    perkHow: '購読すると、期間ごとのバウチャーの中からこのホテルを選べます。チェックイン時にスマートフォンでご提示ください。',
+    perkCtaGet: 'このホテルのバウチャーを受け取る(残り{left}枚)',
+    perkCtaOpen: 'マイバウチャーを開く',
+    perkCtaNone: '今期の残りバウチャーはありません',
     perkCtaPlans: 'プランを見てバウチャーを受け取る',
     noVoucherTitle: 'このホテルのクーポンはまだありません',
     noVoucherText: 'このホテルは現在 StayEasy クーポンを提供していません — それでも公式サイトの特典のために直接予約できます。',

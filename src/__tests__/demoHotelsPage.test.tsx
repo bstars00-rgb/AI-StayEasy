@@ -76,12 +76,28 @@ describe('demo hotels, switch ON', () => {
     expect(screen.getAllByText(/show your member voucher at check-in/i).length).toBeGreaterThan(0)
     expect(document.body.textContent).not.toContain('LUNAS-') // nothing to copy and share
     expect(screen.queryByRole('button', { name: /copy code|download voucher/i })).toBeNull()
-    // Without a subscription the way forward is the plans page; with one, the member's vouchers.
+    // Without a subscription the way forward is the plans page.
     expect(screen.getByRole('link', { name: /see plans to get vouchers/i }).getAttribute('href')).toBe('/plans')
     cleanup()
+
+    // With one, the member gets this hotel's voucher right here — and it is theirs for the next visit.
     window.localStorage.setItem('stayeasy-sub:mina@gmail.com', JSON.stringify({ plan: 'getaway', period: 'monthly', requestedAt: today, startedAt: today }))
     await open('/hotels/lunas-park-hotel-danang', { demo: true, bm: true })
-    expect((await screen.findByRole('link', { name: /see my vouchers/i })).getAttribute('href')).toBe('/account#vouchers')
+    fireEvent.click(await screen.findByRole('button', { name: /get this hotel’s voucher \(1 left\)/i }))
+    expect(await screen.findByText('Ready to use')).toBeTruthy() // lands on the voucher
+    const held = JSON.parse(window.localStorage.getItem('stayeasy-wallet') ?? '[]')
+    expect(held.length).toBe(1)
+    expect(held[0].hotelSlug).toBe('lunas-park-hotel-danang')
+    cleanup()
+
+    await open('/hotels/lunas-park-hotel-danang', { demo: true, bm: true })
+    expect((await screen.findByRole('link', { name: /open my voucher/i })).getAttribute('href')).toContain('/voucher/')
+    expect(screen.queryByRole('button', { name: /get this hotel’s voucher/i })).toBeNull()
+    cleanup()
+
+    // Another hotel: the allowance (1) is used up.
+    await open('/hotels/lunas-park-hotel-saigon', { demo: true, bm: true })
+    expect((await screen.findAllByText(/no vouchers left this period/i)).length).toBeGreaterThan(0)
   })
 
   it('still computes a hotel-stated percentage for a real hotel', async () => {

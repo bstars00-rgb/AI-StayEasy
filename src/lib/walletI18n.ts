@@ -13,7 +13,15 @@ export interface WalletStrings {
     nextBatch: string
     needSub: string
     needSubCta: string
+    /** After picking a hotel. {hotel} */
     newBatch: string
+    /** {left} of {total} */
+    allowance: string
+    pickTitle: string
+    pickIntro: string
+    getBtn: string
+    inWallet: string
+    noneLeft: string
     preview: string
     open: string
     status: { issued: string; used: string; expired: string; void: string }
@@ -73,12 +81,18 @@ export const walletStrings: Record<Lang, WalletStrings> = {
   en: {
     wallet: {
       title: 'Perk vouchers this period',
-      intro: 'Each period we send you hotel perk vouchers. Show one on your phone at check-in — the hotel staff confirm it with the hotel’s PIN.',
+      intro: 'Each period you get vouchers to use at hotels in the program. Pick a hotel, then show the voucher on your phone at check-in — the hotel staff confirm it with the hotel’s PIN.',
       period: '{from} to {to}',
-      nextBatch: 'Your next vouchers are issued on {date}.',
+      nextBatch: 'Your allowance refreshes on {date}.',
       needSub: 'Subscribe to receive perk vouchers from hotels each period.',
       needSubCta: 'See plans',
-      newBatch: '{n} new voucher(s) just arrived',
+      newBatch: 'Voucher added: {hotel}',
+      allowance: 'This period: {left} of {total} vouchers left',
+      pickTitle: 'Choose a hotel',
+      pickIntro: 'Pick the hotel you’re going to. You can pick the same hotel again in a later period — each visit needs its own voucher. One voucher per hotel each period; unused vouchers don’t carry over.',
+      getBtn: 'Get voucher',
+      inWallet: 'In your wallet',
+      noneLeft: 'No vouchers left this period',
       preview: 'See the message we send',
       open: 'Open voucher',
       status: { issued: 'Ready to use', used: 'Used', expired: 'Expired', void: 'Cancelled' },
@@ -129,12 +143,18 @@ export const walletStrings: Record<Lang, WalletStrings> = {
   ko: {
     wallet: {
       title: '이번 기간 특전 바우처',
-      intro: '기간마다 호텔 특전 바우처를 보내 드려요. 체크인할 때 휴대폰으로 보여 주면, 호텔 직원이 호텔 번호로 확인해요.',
+      intro: '기간마다 호텔 특전 바우처를 받을 수 있어요. 갈 호텔을 고르고, 체크인할 때 휴대폰으로 보여 주면 호텔 직원이 호텔 번호로 확인해요.',
       period: '{from} ~ {to}',
-      nextBatch: '다음 바우처는 {date}에 발급돼요.',
+      nextBatch: '{date}에 바우처가 새로 생겨요.',
       needSub: '구독하면 기간마다 호텔 특전 바우처를 받아요.',
       needSubCta: '요금제 보기',
-      newBatch: '새 바우처 {n}장이 도착했어요',
+      newBatch: '바우처를 받았어요: {hotel}',
+      allowance: '이번 기간: 바우처 {total}장 중 {left}장 남음',
+      pickTitle: '호텔 고르기',
+      pickIntro: '갈 호텔을 골라 주세요. 다음 기간에 같은 호텔을 다시 골라도 돼요. 방문할 때마다 바우처가 한 장씩 필요해요. 호텔마다 기간당 1장이고, 쓰지 않은 바우처는 넘어가지 않아요.',
+      getBtn: '바우처 받기',
+      inWallet: '내 바우처에 있어요',
+      noneLeft: '이번 기간 남은 바우처가 없어요',
       preview: '발송 메시지 미리보기',
       open: '바우처 열기',
       status: { issued: '사용 가능', used: '사용함', expired: '기간 만료', void: '구독 종료로 무효' },
@@ -185,12 +205,18 @@ export const walletStrings: Record<Lang, WalletStrings> = {
   ja: {
     wallet: {
       title: '今期の特典バウチャー',
-      intro: '期間ごとにホテルの特典バウチャーをお送りします。チェックイン時にスマートフォンでご提示いただくと、ホテルのスタッフがホテルの暗証番号で確認します。',
+      intro: '期間ごとにホテルの特典バウチャーを受け取れます。ホテルを選び、チェックイン時にスマートフォンでご提示いただくと、ホテルのスタッフが暗証番号で確認します。',
       period: '{from} 〜 {to}',
-      nextBatch: '次のバウチャーは{date}に発行されます。',
+      nextBatch: '{date}にバウチャーが更新されます。',
       needSub: '購読すると、期間ごとにホテルの特典バウチャーが届きます。',
       needSubCta: 'プランを見る',
-      newBatch: '新しいバウチャーが{n}枚届きました',
+      newBatch: 'バウチャーを受け取りました: {hotel}',
+      allowance: '今期: バウチャー{total}枚のうち残り{left}枚',
+      pickTitle: 'ホテルを選ぶ',
+      pickIntro: 'ご宿泊予定のホテルを選んでください。次の期間に同じホテルをもう一度選ぶこともできます。ご利用のたびにバウチャーが1枚必要です。ホテルごとに期間あたり1枚で、使わなかった分は繰り越されません。',
+      getBtn: 'バウチャーを受け取る',
+      inWallet: '受け取り済み',
+      noneLeft: '今期の残りバウチャーはありません',
       preview: '送信メッセージを見る',
       open: 'バウチャーを開く',
       status: { issued: '利用可能', used: '使用済み', expired: '期限切れ', void: '購読終了のため無効' },
@@ -241,12 +267,18 @@ export const walletStrings: Record<Lang, WalletStrings> = {
   vi: {
     wallet: {
       title: 'Voucher đặc quyền kỳ này',
-      intro: 'Mỗi kỳ chúng tôi gửi bạn các voucher đặc quyền của khách sạn. Hãy xuất trình trên điện thoại khi nhận phòng — nhân viên khách sạn xác nhận bằng mã PIN của khách sạn.',
+      intro: 'Mỗi kỳ bạn nhận được voucher để dùng tại các khách sạn trong chương trình. Hãy chọn khách sạn, rồi xuất trình voucher trên điện thoại khi nhận phòng — nhân viên xác nhận bằng mã PIN của khách sạn.',
       period: '{from} đến {to}',
-      nextBatch: 'Voucher kế tiếp được phát hành vào {date}.',
+      nextBatch: 'Voucher mới sẽ có vào {date}.',
       needSub: 'Đăng ký gói để nhận voucher đặc quyền từ khách sạn mỗi kỳ.',
       needSubCta: 'Xem các gói',
-      newBatch: 'Vừa có {n} voucher mới',
+      newBatch: 'Đã nhận voucher: {hotel}',
+      allowance: 'Kỳ này: còn {left}/{total} voucher',
+      pickTitle: 'Chọn khách sạn',
+      pickIntro: 'Hãy chọn khách sạn bạn sắp đến. Kỳ sau bạn có thể chọn lại cùng khách sạn — mỗi lần lưu trú cần một voucher riêng. Mỗi khách sạn một voucher mỗi kỳ; voucher chưa dùng không được cộng dồn.',
+      getBtn: 'Nhận voucher',
+      inWallet: 'Đã có trong ví',
+      noneLeft: 'Hết voucher trong kỳ này',
       preview: 'Xem tin nhắn chúng tôi gửi',
       open: 'Mở voucher',
       status: { issued: 'Có thể dùng', used: 'Đã dùng', expired: 'Hết hạn', void: 'Vô hiệu do kết thúc gói' },
@@ -297,12 +329,18 @@ export const walletStrings: Record<Lang, WalletStrings> = {
   zh: {
     wallet: {
       title: '本期特权优惠券',
-      intro: '每个周期我们会发送酒店特权优惠券给您。入住时在手机上出示，酒店员工会用酒店的PIN码确认。',
+      intro: '每个周期您可以领取酒店特权优惠券。选择酒店，入住时在手机上出示，酒店员工会用酒店的PIN码确认。',
       period: '{from} 至 {to}',
-      nextBatch: '下一批优惠券将于{date}发放。',
+      nextBatch: '{date}将刷新优惠券。',
       needSub: '订阅后，每个周期都会收到酒店的特权优惠券。',
       needSubCta: '查看方案',
-      newBatch: '刚刚收到{n}张新优惠券',
+      newBatch: '已领取优惠券：{hotel}',
+      allowance: '本期：{total}张中还剩{left}张',
+      pickTitle: '选择酒店',
+      pickIntro: '请选择您要入住的酒店。下一个周期可以再次选择同一家酒店——每次入住需要一张优惠券。每家酒店每个周期一张，未使用的不会顺延。',
+      getBtn: '领取优惠券',
+      inWallet: '已在钱包中',
+      noneLeft: '本期已无可领优惠券',
       preview: '查看发送的消息',
       open: '打开优惠券',
       status: { issued: '可使用', used: '已使用', expired: '已过期', void: '订阅结束，已失效' },
