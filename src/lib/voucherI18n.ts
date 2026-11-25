@@ -32,6 +32,13 @@ export interface VoucherStrings {
   howToUseNamed: string
   /** Redeem instructions for show-at-check-in vouchers. */
   howToUseOnsite: string
+  /** Wallet perks (demo hotels): the card explains the voucher instead of showing a shared code. */
+  perkTitle: string
+  perkSubtitle: string
+  perkUnlockNote: string
+  perkHow: string
+  perkCtaWallet: string
+  perkCtaPlans: string
   /** Shown when a hotel offers no voucher. */
   noVoucherTitle: string
   noVoucherText: string
@@ -58,6 +65,12 @@ export const voucherStrings: Record<Lang, VoucherStrings> = {
     howToUse: 'Enter this code in the discount field on the hotel’s booking form — it may be labeled “Promo code”, “Voucher”, or “Gift code”.',
     howToUseNamed: 'Enter this code in the “{field}” field on the hotel’s booking form.',
     howToUseOnsite: 'Download it to your phone and show it at the front desk on arrival to get the perk.',
+    perkTitle: 'Member perk',
+    perkSubtitle: 'A perk the hotel gives members who book on its official website.',
+    perkUnlockNote: 'StayEasy members unlock this hotel’s perk.',
+    perkHow: 'Subscribers receive this perk as a voucher each period. Book on the hotel’s official website, then show the voucher and your booking number at check-in.',
+    perkCtaWallet: 'See my vouchers',
+    perkCtaPlans: 'See plans to get vouchers',
     noVoucherTitle: 'No voucher from this hotel yet',
     noVoucherText: 'This hotel doesn’t offer a StayEasy voucher right now — but you still book direct for its official-website benefits.',
   },
@@ -81,6 +94,12 @@ export const voucherStrings: Record<Lang, VoucherStrings> = {
     howToUse: '호텔 예약 폼의 할인 코드 칸에 이 코드를 입력하세요 — “Promo code”, “Voucher”, “Gift code” 등으로 표시될 수 있어요.',
     howToUseNamed: '호텔 예약 폼의 “{field}” 칸에 이 코드를 입력하세요.',
     howToUseOnsite: '휴대폰에 다운로드해서 체크인 시 프런트에 보여주면 혜택을 받을 수 있어요.',
+    perkTitle: '회원 특전',
+    perkSubtitle: '호텔 공식 사이트에서 예약한 회원에게 호텔이 드리는 특전이에요.',
+    perkUnlockNote: 'StayEasy 회원은 이 호텔의 특전을 열어 볼 수 있어요.',
+    perkHow: '구독하면 이 특전을 기간마다 바우처로 받아요. 호텔 공식 사이트에서 예약하고, 체크인할 때 바우처와 예약번호를 보여 주세요.',
+    perkCtaWallet: '내 바우처 보기',
+    perkCtaPlans: '요금제 보고 바우처 받기',
     noVoucherTitle: '아직 이 호텔의 바우처가 없어요',
     noVoucherText: '이 호텔은 현재 StayEasy 바우처를 제공하지 않아요 — 그래도 공식 사이트 혜택을 위해 직접 예약할 수 있어요.',
   },
@@ -104,6 +123,12 @@ export const voucherStrings: Record<Lang, VoucherStrings> = {
     howToUse: 'Nhập mã này vào ô mã giảm giá trên biểu mẫu đặt phòng của khách sạn — có thể được ghi là “Promo code”, “Voucher” hoặc “Gift code”.',
     howToUseNamed: 'Nhập mã này vào ô “{field}” trên biểu mẫu đặt phòng của khách sạn.',
     howToUseOnsite: 'Tải về điện thoại và xuất trình tại quầy lễ tân khi nhận phòng để nhận ưu đãi.',
+    perkTitle: 'Đặc quyền thành viên',
+    perkSubtitle: 'Đặc quyền khách sạn dành cho thành viên đặt phòng trên website chính thức.',
+    perkUnlockNote: 'Thành viên StayEasy mở khóa đặc quyền của khách sạn này.',
+    perkHow: 'Người đăng ký nhận đặc quyền này dưới dạng voucher mỗi kỳ. Hãy đặt phòng trên website chính thức của khách sạn, rồi xuất trình voucher và mã đặt phòng khi nhận phòng.',
+    perkCtaWallet: 'Xem voucher của tôi',
+    perkCtaPlans: 'Xem các gói để nhận voucher',
     noVoucherTitle: 'Khách sạn này chưa có voucher',
     noVoucherText: 'Khách sạn này hiện chưa có voucher StayEasy — nhưng bạn vẫn đặt trực tiếp để nhận ưu đãi từ website chính thức.',
   },
@@ -127,6 +152,12 @@ export const voucherStrings: Record<Lang, VoucherStrings> = {
     howToUse: '在酒店预订表单的优惠码栏中输入此优惠码 — 该栏可能标注为“Promo code”“Voucher”或“Gift code”。',
     howToUseNamed: '在酒店预订表单的“{field}”栏中输入此优惠码。',
     howToUseOnsite: '下载到手机，入住时在前台出示即可获得礼遇。',
+    perkTitle: '会员特权',
+    perkSubtitle: '酒店为在官网预订的会员提供的特权。',
+    perkUnlockNote: 'StayEasy 会员可解锁该酒店的特权。',
+    perkHow: '订阅后每个周期会以优惠券形式收到此特权。请在酒店官网预订，入住时出示优惠券和预订号。',
+    perkCtaWallet: '查看我的优惠券',
+    perkCtaPlans: '查看方案以获取优惠券',
     noVoucherTitle: '该酒店暂无优惠券',
     noVoucherText: '该酒店目前未提供 StayEasy 优惠券——但您仍可官网直订以享受其官方权益。',
   },
@@ -150,6 +181,12 @@ export const voucherStrings: Record<Lang, VoucherStrings> = {
     howToUse: 'ホテルの予約フォームの割引コード欄にこのコードを入力してください — 「Promo code」「Voucher」「Gift code」などと表示される場合があります。',
     howToUseNamed: 'ホテルの予約フォームの「{field}」欄にこのコードを入力してください。',
     howToUseOnsite: 'スマホにダウンロードし、チェックイン時にフロントで提示すると特典が受けられます。',
+    perkTitle: '会員特典',
+    perkSubtitle: 'ホテル公式サイトで予約した会員に、ホテルが提供する特典です。',
+    perkUnlockNote: 'StayEasy会員はこのホテルの特典をご覧いただけます。',
+    perkHow: '購読すると、この特典が期間ごとにバウチャーで届きます。ホテルの公式サイトで予約し、チェックイン時にバウチャーと予約番号をご提示ください。',
+    perkCtaWallet: 'マイバウチャーを見る',
+    perkCtaPlans: 'プランを見てバウチャーを受け取る',
     noVoucherTitle: 'このホテルのクーポンはまだありません',
     noVoucherText: 'このホテルは現在 StayEasy クーポンを提供していません — それでも公式サイトの特典のために直接予約できます。',
   },

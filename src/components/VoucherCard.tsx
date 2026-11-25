@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import type { Hotel } from '../types'
 import { useLang } from '../i18n'
 import { voucherStrings } from '../lib/voucherI18n'
@@ -8,6 +9,8 @@ import { officialLink } from '../lib/officialLink'
 import { guestAuth, useGuest } from '../lib/guestAuth'
 import { promptGoogle, googleEnabled } from '../lib/googleAuth'
 import { trackEvent } from '../lib/analytics'
+import { useSubscription } from '../lib/subscription'
+import { perkHotels } from '../lib/voucherWallet'
 
 /** Sparkle directions for the little burst when the lock springs open. */
 const SPARKS = [
@@ -67,6 +70,10 @@ export function VoucherCard({ hotel }: { hotel: Hotel }) {
   const [celebrate, setCelebrate] = useState(false)
   const [email, setEmail] = useState('')
   const v = hotel.voucher
+  const sub = useSubscription(guest?.email)
+  // Demo-chain perks reach members as wallet vouchers (one per member, used once), so the
+  // card explains that instead of showing a code anyone could copy.
+  const perk = !!v && perkHotels().some((h) => h.slug === hotel.slug)
 
   const dims = { hotel_slug: hotel.slug, city: hotel.city, hotel_type: hotel.hotelType, lang }
 
@@ -125,10 +132,10 @@ export function VoucherCard({ hotel }: { hotel: Hotel }) {
     <div className="overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-brand-200">
       <div className="bg-gradient-to-br from-brand-600 to-brand-700 px-5 py-4 text-white">
         <p className="flex items-center gap-2 text-base font-bold">
-          🎟️ {s.title}
+          🎟️ {perk ? s.perkTitle : s.title}
           <span className="ml-auto rounded-full bg-white/20 px-2 py-0.5 text-[11px] font-semibold">★ {s.memberBadge}</span>
         </p>
-        <p className="mt-0.5 text-sm text-white/85">{s.subtitle}</p>
+        <p className="mt-0.5 text-sm text-white/85">{perk ? s.perkSubtitle : s.subtitle}</p>
       </div>
 
       <div className="space-y-4 p-5">
@@ -136,6 +143,7 @@ export function VoucherCard({ hotel }: { hotel: Hotel }) {
 
         {guest ? (
           <div className={celebrate ? 'animate-chest-reveal space-y-4' : 'space-y-4'}>
+            {!perk && (
             <div>
               <p className="text-xs font-semibold uppercase tracking-wide text-ink-700/50">{s.codeLabel}</p>
               <div className="mt-1 flex items-stretch gap-2">
@@ -148,6 +156,7 @@ export function VoucherCard({ hotel }: { hotel: Hotel }) {
                 </button>
               </div>
             </div>
+            )}
 
             <dl className="space-y-1.5 rounded-xl bg-sand-50 p-3 text-sm ring-1 ring-black/5">
               <div className="flex gap-2">
@@ -161,7 +170,9 @@ export function VoucherCard({ hotel }: { hotel: Hotel }) {
             </dl>
 
             <p className="rounded-xl bg-brand-50 px-3 py-2.5 text-xs font-medium text-brand-800 ring-1 ring-brand-100">
-              {v.redeem === 'onsite'
+              {perk
+                ? `📲 ${s.perkHow}`
+                : v.redeem === 'onsite'
                 ? `📲 ${s.howToUseOnsite}`
                 : `🎟️ ${v.fieldLabel ? s.howToUseNamed.replace('{field}', v.fieldLabel) : s.howToUse}`}
             </p>
@@ -170,17 +181,23 @@ export function VoucherCard({ hotel }: { hotel: Hotel }) {
               <a href={officialLink(hotel)} target="_blank" rel="noopener noreferrer" onClick={() => trackEvent('official_site_click', dims)} className="inline-flex w-full items-center justify-center gap-1.5 whitespace-nowrap rounded-full bg-brand-600 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-700">
                 <span className="truncate">{s.useOnSite}</span> ↗
               </a>
+              {perk ? (
+                <Link to={sub ? '/account#vouchers' : '/plans'} className="inline-flex w-full items-center justify-center gap-1.5 whitespace-nowrap rounded-full bg-white px-4 py-3 text-sm font-semibold text-ink-900 ring-1 ring-black/10 transition-colors hover:bg-sand-50">
+                  <span className="truncate">{sub ? s.perkCtaWallet : s.perkCtaPlans}</span> →
+                </Link>
+              ) : (
               <button type="button" onClick={download} className="inline-flex w-full items-center justify-center gap-1.5 whitespace-nowrap rounded-full bg-white px-4 py-3 text-sm font-semibold text-ink-900 ring-1 ring-black/10 transition-colors hover:bg-sand-50">
                 ⬇ <span className="truncate">{s.download}</span>
               </button>
+              )}
             </div>
 
-            <p className="text-xs text-ink-700/55">{s.note}</p>
+            {!perk && <p className="text-xs text-ink-700/55">{s.note}</p>}
           </div>
         ) : (
           <form onSubmit={submitEmail} className="rounded-xl bg-sand-50 p-4 text-center ring-1 ring-black/5">
             <div className="flex justify-center"><UnlockingLock open={unlocking} /></div>
-            <p className="mt-1 text-sm text-ink-700/80">{s.unlockNote}</p>
+            <p className="mt-1 text-sm text-ink-700/80">{perk ? s.perkUnlockNote : s.unlockNote}</p>
 
             {googleEnabled && (
               <>
