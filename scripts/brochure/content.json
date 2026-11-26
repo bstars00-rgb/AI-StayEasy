@@ -7,7 +7,7 @@
     "soon": "준비 중",
     "headline": "호텔과 여행자를\n직접 잇습니다",
     "sub": "베트남 호텔 직접 예약 플랫폼",
-    "stats": { "cities": "개 도시", "hotels": "개 호텔", "languages": "개 언어" },
+    "stats": { "scope": "전국", "scopeLabel": "베트남 전역의 호텔 대상", "fee": "예약 수수료", "languages": "개 언어" },
     "what": {
       "title": "StayEasy가 하는 일",
       "lead": "여행자가 호텔을 더 잘 알고 직접 예약하도록 돕습니다. 예약 대행 사이트가 아니며, 예약과 결제는 호텔 공식 웹사이트에서 이뤄집니다.",
@@ -17,9 +17,9 @@
         ["예약은 호텔에 직접", "여행자는 호텔 공식 사이트에서 예약하고 결제합니다. StayEasy는 예약을 처리하지 않습니다."],
         ["예약 수수료 없음", "호텔에 예약 수수료를 부과하지 않습니다."]
       ],
-      "citiesHead": "소개하는 도시",
-      "hotelCount": "{n}곳",
-      "citiesNote": "2026년 11월 기준입니다. 한국어, 영어, 베트남어, 중국어, 일본어로 볼 수 있습니다."
+      "citiesHead": "베트남 전역으로",
+      "moreCities": "그리고 베트남 전역의 도시",
+      "citiesNote": "위 도시에서 시작해 베트남 전역으로 넓혀 갑니다. 공식 웹사이트가 있는 호텔은 어디든 함께할 수 있습니다. 한국어, 영어, 베트남어, 중국어, 일본어로 볼 수 있습니다."
     },
     "traveller": {
       "title": "여행자에게",
@@ -49,7 +49,7 @@
         ["예약 수수료 없음", "StayEasy에 내는 예약 수수료가 없습니다."]
       ],
       "partner": {
-        "head": "특전 파트너 호텔 모집 (다낭부터)",
+        "head": "베트남 전역의 특전 파트너 호텔 모집",
         "points": [
           "호텔이 직접 예약 손님에게 줄 특전을 정합니다. 객실 요금은 호텔이 정한 그대로입니다.",
           "새 시스템, 로그인, 연동이 필요하지 않습니다.",
@@ -69,7 +69,7 @@
     "soon": "In preparation",
     "headline": "Travellers and hotels,\nconnected directly",
     "sub": "A direct booking platform for hotels in Vietnam",
-    "stats": { "cities": "cities", "hotels": "hotels", "languages": "languages" },
+    "stats": { "scope": "Vietnam", "scopeLabel": "open to hotels nationwide", "fee": "booking commission", "languages": "languages" },
     "what": {
       "title": "What StayEasy does",
       "lead": "We help travellers understand hotels and book with them directly. We are not an online travel agency: booking and payment happen on the hotel's official website.",
@@ -79,9 +79,9 @@
         ["Book with the hotel", "Travellers book and pay on the hotel's official website. StayEasy does not process bookings."],
         ["No booking commission", "We charge hotels no commission on bookings."]
       ],
-      "citiesHead": "Cities we cover",
-      "hotelCount": "{n} hotels",
-      "citiesNote": "As of November 2026. Available in Korean, English, Vietnamese, Chinese and Japanese."
+      "citiesHead": "Across Vietnam",
+      "moreCities": "and cities across Vietnam",
+      "citiesNote": "We started with these cities and are expanding across Vietnam. Any hotel with an official website can join. Available in Korean, English, Vietnamese, Chinese and Japanese."
     },
     "traveller": {
       "title": "For travellers",
@@ -111,7 +111,7 @@
         ["No commission", "You pay StayEasy no commission on bookings."]
       ],
       "partner": {
-        "head": "Looking for perk partners, starting in Da Nang",
+        "head": "Looking for perk partners across Vietnam",
         "points": [
           "You choose the perk for guests who book directly. Room rates stay as you set them.",
           "No new system, login or integration.",
@@ -131,7 +131,7 @@
     "soon": "Đang chuẩn bị",
     "headline": "Kết nối trực tiếp\ndu khách và khách sạn",
     "sub": "Nền tảng đặt phòng trực tiếp cho khách sạn tại Việt Nam",
-    "stats": { "cities": "thành phố", "hotels": "khách sạn", "languages": "ngôn ngữ" },
+    "stats": { "scope": "Toàn quốc", "scopeLabel": "khách sạn khắp Việt Nam", "fee": "hoa hồng đặt phòng", "languages": "ngôn ngữ" },
     "what": {
       "title": "StayEasy làm gì",
       "lead": "Chúng tôi giúp du khách hiểu rõ khách sạn và đặt phòng trực tiếp. StayEasy không phải đại lý du lịch trực tuyến: đặt phòng và thanh toán diễn ra trên website chính thức của khách sạn.",
@@ -141,9 +141,9 @@
         ["Đặt trực tiếp với khách sạn", "Du khách đặt phòng và thanh toán trên website chính thức. StayEasy không xử lý đặt phòng."],
         ["Không hoa hồng đặt phòng", "Chúng tôi không thu hoa hồng đặt phòng của khách sạn."]
       ],
-      "citiesHead": "Các thành phố",
-      "hotelCount": "{n} khách sạn",
-      "citiesNote": "Số liệu tháng 11/2026. Có tiếng Hàn, Anh, Việt, Trung và Nhật."
+      "citiesHead": "Khắp Việt Nam",
+      "moreCities": "và các thành phố khắp Việt Nam",
+      "citiesNote": "Bắt đầu từ các thành phố này và mở rộng khắp Việt Nam. Khách sạn có website chính thức đều có thể tham gia. Có tiếng Hàn, Anh, Việt, Trung và Nhật."
     },
     "traveller": {
       "title": "Dành cho du khách",
@@ -173,7 +173,7 @@
         ["Không hoa hồng", "Không trả hoa hồng đặt phòng cho StayEasy."]
       ],
       "partner": {
-        "head": "Tìm đối tác ưu đãi, bắt đầu từ Đà Nẵng",
+        "head": "Tìm đối tác ưu đãi trên khắp Việt Nam",
         "points": [
           "Khách sạn chọn ưu đãi cho khách đặt trực tiếp. Giá phòng giữ nguyên như khách sạn quy định.",
           "Không cần hệ thống mới, tài khoản hay tích hợp.",
@@ -193,7 +193,7 @@
     "soon": "筹备中",
     "headline": "让旅客与酒店\n直接相连",
     "sub": "越南酒店直接预订平台",
-    "stats": { "cities": "个城市", "hotels": "家酒店", "languages": "种语言" },
+    "stats": { "scope": "全越南", "scopeLabel": "面向各地酒店", "fee": "预订佣金", "languages": "种语言" },
     "what": {
       "title": "StayEasy 做什么",
       "lead": "我们帮助旅客了解酒店并直接向酒店预订。我们不是在线旅行社，预订和付款都在酒店官方网站完成。",
@@ -203,9 +203,9 @@
         ["直接向酒店预订", "旅客在酒店官方网站预订并付款。StayEasy 不处理预订。"],
         ["不收预订佣金", "我们不向酒店收取预订佣金。"]
       ],
-      "citiesHead": "覆盖城市",
-      "hotelCount": "{n} 家",
-      "citiesNote": "截至2026年11月。提供韩语、英语、越南语、中文和日语。"
+      "citiesHead": "面向全越南",
+      "moreCities": "以及越南各地城市",
+      "citiesNote": "从以上城市起步，扩展到全越南。凡有官方网站的酒店均可加入。提供韩语、英语、越南语、中文和日语。"
     },
     "traveller": {
       "title": "致旅客",
@@ -235,7 +235,7 @@
         ["不收佣金", "无需向 StayEasy 支付预订佣金。"]
       ],
       "partner": {
-        "head": "招募礼遇合作酒店（从岘港开始）",
+        "head": "诚招全越南礼遇合作酒店",
         "points": [
           "由酒店决定给直接预订客人的礼遇。房价按酒店设定保持不变。",
           "无需新系统、账号或对接。",
@@ -255,7 +255,7 @@
     "soon": "準備中",
     "headline": "旅行者とホテルを\n直接つなぎます",
     "sub": "ベトナムのホテル直接予約プラットフォーム",
-    "stats": { "cities": "都市", "hotels": "ホテル", "languages": "言語" },
+    "stats": { "scope": "全土", "scopeLabel": "ベトナム各地のホテルが対象", "fee": "予約手数料", "languages": "言語" },
     "what": {
       "title": "StayEasyの役割",
       "lead": "旅行者がホテルをよく知り、直接予約できるようにお手伝いします。予約代理サイトではありません。予約と支払いはホテル公式サイトで行います。",
@@ -265,9 +265,9 @@
         ["予約はホテルに直接", "旅行者はホテル公式サイトで予約と支払いをします。StayEasyは予約を処理しません。"],
         ["予約手数料なし", "ホテルから予約手数料はいただきません。"]
       ],
-      "citiesHead": "掲載している都市",
-      "hotelCount": "{n}軒",
-      "citiesNote": "2026年11月時点。韓国語、英語、ベトナム語、中国語、日本語で表示できます。"
+      "citiesHead": "ベトナム全土へ",
+      "moreCities": "そしてベトナム各地の都市",
+      "citiesNote": "これらの都市から始め、ベトナム全土へ広げていきます。公式サイトのあるホテルならどこでも参加できます。韓国語、英語、ベトナム語、中国語、日本語で表示できます。"
     },
     "traveller": {
       "title": "旅行者の方へ",
@@ -297,7 +297,7 @@
         ["予約手数料なし", "StayEasyに支払う予約手数料はありません。"]
       ],
       "partner": {
-        "head": "特典パートナー募集（ダナンから）",
+        "head": "ベトナム全土の特典パートナー募集",
         "points": [
           "直接予約のお客様への特典はホテルが決めます。客室料金はホテルの設定のままです。",
           "新しいシステム、ログイン、連携は不要です。",

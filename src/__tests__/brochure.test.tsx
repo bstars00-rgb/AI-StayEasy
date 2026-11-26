@@ -26,11 +26,15 @@ function shape(value: unknown, path = ''): string[] {
 
 describe('company profile figures', () => {
   it('match the hotel catalogue', () => {
-    const count = new Map<string, number>()
-    for (const h of hotels) count.set(h.city, (count.get(h.city) ?? 0) + 1)
-    expect(figures.hotels).toBe(hotels.length)
     expect(figures.languages).toBe(CODES.length)
-    expect(Object.fromEntries(figures.cities.map((c) => [c.city, c.hotels]))).toEqual(Object.fromEntries(count))
+    expect(figures.cities.map((c) => c.city).sort()).toEqual([...new Set(hotels.map((h) => h.city))].sort())
+  })
+
+  it('never caps the offer at the size of the catalogue', () => {
+    // The profile is for every hotel in the country: no total and no per-city hotel count.
+    expect(Object.keys(figures).sort()).toEqual(['cities', 'languages'])
+    for (const c of figures.cities) expect(Object.keys(c).sort()).toEqual(['city', 'name'])
+    expect(JSON.stringify(content)).not.toContain(String(hotels.length))
   })
 
   it('use the same city names as the site, in every language', () => {

@@ -79,11 +79,12 @@ async function build(lang) {
     k.text(t.kind, { x: L, y: 2.75, w: W, h: 0.35, fontSize: 14, bold: true, color: GREEN, objectName: 'Cover kind' })
     k.text(t.headline, { x: L, y: 3.25, w: W, h: 1.9, fontSize: 36, bold: true, color: WHITE, objectName: 'Cover headline' })
     k.text(t.sub, { x: L, y: 5.35, w: W, h: 0.4, fontSize: 14, color: MINT, objectName: 'Cover sub' })
-    const stats = [[figures.cities.length, t.stats.cities], [figures.hotels, t.stats.hotels], [figures.languages, t.stats.languages]]
-    stats.forEach(([n, label], i) => {
+    // The offer is open to hotels across the country, so no catalogue size is printed anywhere.
+    const stats = [[t.stats.scope, t.stats.scopeLabel, 26], ['0', t.stats.fee, 38], [figures.languages, t.stats.languages, 38]]
+    stats.forEach(([n, label, size], i) => {
       const x = L + i * 2.43
       k.box(x, 7.1, 2.31, 1.35, '1B3A2F', 'Cover stat ' + (i + 1), 0.12)
-      k.text(String(n), { x, y: 7.2, w: 2.31, h: 0.72, fontSize: 38, bold: true, color: WHITE, align: 'center', valign: 'middle', objectName: 'Cover stat number ' + (i + 1) })
+      k.text(String(n), { x, y: 7.2, w: 2.31, h: 0.72, fontSize: size, bold: true, color: WHITE, align: 'center', valign: 'middle', objectName: 'Cover stat number ' + (i + 1) })
       k.text(label, { x: x + 0.08, y: 7.96, w: 2.15, h: 0.35, fontSize: 11, color: MINT, align: 'center', objectName: 'Cover stat label ' + (i + 1) })
     })
     k.text(SITE, { x: L, y: 10.65, w: 5.4, h: 0.25, fontSize: 10, color: MINT, objectName: 'Cover site' })
@@ -105,13 +106,14 @@ async function build(lang) {
     }
     heading(k, t.what.citiesHead, 6.85)
     figures.cities.forEach((c, i) => {
-      const x = L + (i % 2) * 3.65
-      const y = 7.34 + Math.floor(i / 2) * 0.6
-      k.box(x, y, 3.52, 0.5, PALE, 'City ' + (i + 1))
-      k.text(c.name[lang], { x: x + 0.18, y, w: 2.2, h: 0.5, fontSize: 11.5, bold: true, valign: 'middle', objectName: 'City name ' + (i + 1) })
-      k.text(t.what.hotelCount.replace('{n}', c.hotels), { x: x + 2.0, y, w: 1.34, h: 0.5, fontSize: 10.5, color: DEEP, align: 'right', valign: 'middle', objectName: 'City count ' + (i + 1) })
+      const x = L + (i % 5) * 1.4425
+      const y = 7.34 + Math.floor(i / 5) * 0.85
+      k.box(x, y, 1.4, 0.75, PALE, 'City ' + (i + 1))
+      k.text(c.name[lang], { x: x + 0.06, y, w: 1.28, h: 0.75, fontSize: 11, bold: true, align: 'center', valign: 'middle', objectName: 'City name ' + (i + 1) })
     })
-    k.text(t.what.citiesNote, { x: L, y: 10.45, w: W, h: 0.4, fontSize: 9.5, color: GRAY, objectName: 'City note' })
+    k.box(L, 9.1, W, 0.65, DEEP, 'More cities')
+    k.text(t.what.moreCities, { x: L, y: 9.1, w: W, h: 0.65, fontSize: 13, bold: true, color: WHITE, align: 'center', valign: 'middle', objectName: 'More cities text' })
+    k.text(t.what.citiesNote, { x: L, y: 9.98, w: W, h: 0.7, fontSize: 10.5, color: GRAY, objectName: 'City note' })
   }
 
   // ---- 3. travellers -------------------------------------------------------------------------------------
