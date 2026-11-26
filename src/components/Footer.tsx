@@ -1,9 +1,12 @@
 import { Link } from 'react-router-dom'
 import { Logo } from './Logo'
-import { useT } from '../i18n'
+import { useT, useLang } from '../i18n'
+import { BM_ENABLED } from '../lib/bm'
+import { brochureFile, brochureHref, brochureStrings } from '../lib/brochureI18n'
 
 export function Footer() {
   const t = useT()
+  const { lang } = useLang()
   return (
     <footer className="mt-16 border-t border-black/5 bg-white">
       <div className="container-page grid gap-8 py-12 sm:grid-cols-2 lg:grid-cols-4">
@@ -19,6 +22,13 @@ export function Footer() {
             <li><Link className="hover:text-brand-700" to="/guides">Guides</Link></li>
             <li><Link className="hover:text-brand-700" to="/partners">{t.footer.partner}</Link></li>
             <li><Link className="hover:text-brand-700" to="/contact">{t.footer.contact}</Link></li>
+            {BM_ENABLED && (
+              <li>
+                <a className="hover:text-brand-700" href={brochureHref(lang)} download={brochureFile(lang)} data-testid="brochure-footer-link">
+                  {brochureStrings[lang].footer}
+                </a>
+              </li>
+            )}
           </ul>
         </div>
 
