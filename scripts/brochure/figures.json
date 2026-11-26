@@ -1,10 +1,8 @@
 {
-  "hotels": 110,
   "languages": 5,
   "cities": [
     {
       "city": "Da Nang",
-      "hotels": 20,
       "name": {
         "en": "Da Nang",
         "ko": "다낭",
@@ -15,7 +13,6 @@
     },
     {
       "city": "Ho Chi Minh City",
-      "hotels": 10,
       "name": {
         "en": "Ho Chi Minh City",
         "ko": "호치민",
@@ -26,7 +23,6 @@
     },
     {
       "city": "Nha Trang",
-      "hotels": 10,
       "name": {
         "en": "Nha Trang",
         "ko": "나트랑",
@@ -37,7 +33,6 @@
     },
     {
       "city": "Phu Quoc",
-      "hotels": 10,
       "name": {
         "en": "Phu Quoc",
         "ko": "푸꾸옥",
@@ -48,7 +43,6 @@
     },
     {
       "city": "Hoi An",
-      "hotels": 10,
       "name": {
         "en": "Hoi An",
         "ko": "호이안",
@@ -59,7 +53,6 @@
     },
     {
       "city": "Hanoi",
-      "hotels": 10,
       "name": {
         "en": "Hanoi",
         "ko": "하노이",
@@ -70,7 +63,6 @@
     },
     {
       "city": "Hue",
-      "hotels": 10,
       "name": {
         "en": "Hue",
         "ko": "후에",
@@ -81,7 +73,6 @@
     },
     {
       "city": "Da Lat",
-      "hotels": 10,
       "name": {
         "en": "Da Lat",
         "ko": "달랏",
@@ -92,7 +83,6 @@
     },
     {
       "city": "Sapa",
-      "hotels": 10,
       "name": {
         "en": "Sapa",
         "ko": "사파",
@@ -103,7 +93,6 @@
     },
     {
       "city": "Ha Long Bay",
-      "hotels": 10,
       "name": {
         "en": "Ha Long Bay",
         "ko": "하롱베이",
