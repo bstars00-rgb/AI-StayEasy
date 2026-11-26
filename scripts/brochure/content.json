@@ -1,0 +1,312 @@
+{
+  "ko": {
+    "font": "Malgun Gothic",
+    "locale": "ko-KR",
+    "scale": 1,
+    "kind": "회사소개서",
+    "soon": "준비 중",
+    "headline": "호텔과 여행자를\n직접 잇습니다",
+    "sub": "베트남 호텔 직접 예약 플랫폼",
+    "stats": { "cities": "개 도시", "hotels": "개 호텔", "languages": "개 언어" },
+    "what": {
+      "title": "StayEasy가 하는 일",
+      "lead": "여행자가 호텔을 더 잘 알고 직접 예약하도록 돕습니다. 예약 대행 사이트가 아니며, 예약과 결제는 호텔 공식 웹사이트에서 이뤄집니다.",
+      "principlesHead": "세 가지 원칙",
+      "principles": [
+        ["공식 사이트에서 확인한 정보", "호텔의 성급, 객실, 시설, 혜택은 그 호텔의 공식 사이트가 밝힌 내용을 싣습니다. 확인할 수 없는 내용은 싣지 않습니다."],
+        ["예약은 호텔에 직접", "여행자는 호텔 공식 사이트에서 예약하고 결제합니다. StayEasy는 예약을 처리하지 않습니다."],
+        ["예약 수수료 없음", "호텔에 예약 수수료를 부과하지 않습니다."]
+      ],
+      "citiesHead": "소개하는 도시",
+      "hotelCount": "{n}곳",
+      "citiesNote": "2026년 11월 기준입니다. 한국어, 영어, 베트남어, 중국어, 일본어로 볼 수 있습니다."
+    },
+    "traveller": {
+      "title": "여행자에게",
+      "lead": "원하는 도시에서 호텔을 고르고, 공식 사이트로 바로 가세요.",
+      "stepsHead": "이렇게 이용합니다",
+      "steps": [
+        ["찾기", "도시와 취향에 맞는 호텔을 찾고 지도에서 위치를 봅니다."],
+        ["비교", "공식 사이트에서 확인한 정보와 혜택을 나란히 봅니다."],
+        ["직접 예약", "공식 사이트에서 예약하거나 호텔의 공식 연락 채널로 문의합니다."]
+      ],
+      "member": {
+        "head": "구독 특전 바우처",
+        "body": "구독 회원이 파트너 호텔의 특전을 받는 서비스를 준비하고 있습니다. 호텔에 직접 예약하고, 체크인 때 휴대폰으로 바우처를 보여 주는 방식입니다.",
+        "flow": ["StayEasy에서 호텔을 고름", "호텔 공식 사이트에서 직접 예약", "체크인 때 휴대폰 바우처 제시", "호텔 직원이 확인하면 특전 적용"],
+        "voucher": { "label": "특전 바우처 (예시)", "hotel": "파트너 호텔", "perk": "객실 업그레이드", "status": "사용 가능", "button": "호텔 직원 확인" },
+        "note": "요금과 시작 시점은 정해지는 대로 알려 드립니다."
+      }
+    },
+    "hotel": {
+      "title": "호텔에게",
+      "lead": "직접 예약하는 고객과 호텔의 이름으로 만나세요.",
+      "gainsHead": "호텔이 얻는 것",
+      "gains": [
+        ["직접 예약 고객", "여행자를 호텔 공식 웹사이트로 안내합니다."],
+        ["고객과 직접 접점", "예약과 투숙 정보를 호텔이 직접 받고 응대합니다."],
+        ["5개 언어 소개", "소개하는 호텔의 공식 정보를 5개 언어로 보여 줍니다."],
+        ["예약 수수료 없음", "StayEasy에 내는 예약 수수료가 없습니다."]
+      ],
+      "partner": {
+        "head": "특전 파트너 호텔 모집 (다낭부터)",
+        "points": [
+          "호텔이 직접 예약 손님에게 줄 특전을 정합니다. 객실 요금은 호텔이 정한 그대로입니다.",
+          "새 시스템, 로그인, 연동이 필요하지 않습니다.",
+          "체크인 때 직원이 손님 휴대폰에 호텔 번호를 입력해 확인합니다.",
+          "서비스를 준비하고 있으며 함께 시작할 첫 파트너 호텔을 찾습니다."
+        ]
+      },
+      "closing": "호텔과 여행자가 직접 만나는 길",
+      "visit": "웹사이트"
+    }
+  },
+  "en": {
+    "font": "Segoe UI",
+    "locale": "en-US",
+    "scale": 1,
+    "kind": "Company profile",
+    "soon": "In preparation",
+    "headline": "Travellers and hotels,\nconnected directly",
+    "sub": "A direct booking platform for hotels in Vietnam",
+    "stats": { "cities": "cities", "hotels": "hotels", "languages": "languages" },
+    "what": {
+      "title": "What StayEasy does",
+      "lead": "We help travellers understand hotels and book with them directly. We are not an online travel agency: booking and payment happen on the hotel's official website.",
+      "principlesHead": "Three principles",
+      "principles": [
+        ["Checked on official sites", "Star rating, rooms, facilities and benefits are published as the hotel's own official website states them. What we cannot confirm, we leave out."],
+        ["Book with the hotel", "Travellers book and pay on the hotel's official website. StayEasy does not process bookings."],
+        ["No booking commission", "We charge hotels no commission on bookings."]
+      ],
+      "citiesHead": "Cities we cover",
+      "hotelCount": "{n} hotels",
+      "citiesNote": "As of November 2026. Available in Korean, English, Vietnamese, Chinese and Japanese."
+    },
+    "traveller": {
+      "title": "For travellers",
+      "lead": "Choose a hotel in the city you want and go straight to its official website.",
+      "stepsHead": "How to use it",
+      "steps": [
+        ["Find", "Search by city and travel style, and see each hotel on the map."],
+        ["Compare", "See information and benefits checked on official sites side by side."],
+        ["Book direct", "Book on the official site, or ask through the hotel's official contact channels."]
+      ],
+      "member": {
+        "head": "Member perk vouchers",
+        "body": "We are preparing a subscription that gives members perks at partner hotels. You book with the hotel directly and show the voucher on your phone at check-in.",
+        "flow": ["Pick a hotel on StayEasy", "Book on its official website", "Show the voucher at check-in", "Hotel staff confirm and give the perk"],
+        "voucher": { "label": "Perk voucher (sample)", "hotel": "Partner hotel", "perk": "Room upgrade", "status": "Ready to use", "button": "Hotel staff check" },
+        "note": "Price and start date will be announced once they are set."
+      }
+    },
+    "hotel": {
+      "title": "For hotels",
+      "lead": "Meet guests who book directly, under your own name.",
+      "gainsHead": "What a hotel gets",
+      "gains": [
+        ["Direct guests", "We send travellers to your official website."],
+        ["Direct relationship", "You receive the booking and stay details and look after the guest."],
+        ["Five languages", "Official information of listed hotels is shown in five languages."],
+        ["No commission", "You pay StayEasy no commission on bookings."]
+      ],
+      "partner": {
+        "head": "Looking for perk partners, starting in Da Nang",
+        "points": [
+          "You choose the perk for guests who book directly. Room rates stay as you set them.",
+          "No new system, login or integration.",
+          "At check-in your staff enter the hotel number on the guest's phone.",
+          "The service is in preparation and we are looking for our first partner hotels."
+        ]
+      },
+      "closing": "A direct line between hotels and travellers",
+      "visit": "Website"
+    }
+  },
+  "vi": {
+    "font": "Segoe UI",
+    "locale": "vi-VN",
+    "scale": 0.97,
+    "kind": "Giới thiệu công ty",
+    "soon": "Đang chuẩn bị",
+    "headline": "Kết nối trực tiếp\ndu khách và khách sạn",
+    "sub": "Nền tảng đặt phòng trực tiếp cho khách sạn tại Việt Nam",
+    "stats": { "cities": "thành phố", "hotels": "khách sạn", "languages": "ngôn ngữ" },
+    "what": {
+      "title": "StayEasy làm gì",
+      "lead": "Chúng tôi giúp du khách hiểu rõ khách sạn và đặt phòng trực tiếp. StayEasy không phải đại lý du lịch trực tuyến: đặt phòng và thanh toán diễn ra trên website chính thức của khách sạn.",
+      "principlesHead": "Ba nguyên tắc",
+      "principles": [
+        ["Kiểm tra từ website chính thức", "Hạng sao, phòng, tiện nghi và ưu đãi được đăng theo nội dung website chính thức của khách sạn. Điều không xác minh được thì không đăng."],
+        ["Đặt trực tiếp với khách sạn", "Du khách đặt phòng và thanh toán trên website chính thức. StayEasy không xử lý đặt phòng."],
+        ["Không hoa hồng đặt phòng", "Chúng tôi không thu hoa hồng đặt phòng của khách sạn."]
+      ],
+      "citiesHead": "Các thành phố",
+      "hotelCount": "{n} khách sạn",
+      "citiesNote": "Số liệu tháng 11/2026. Có tiếng Hàn, Anh, Việt, Trung và Nhật."
+    },
+    "traveller": {
+      "title": "Dành cho du khách",
+      "lead": "Chọn khách sạn ở thành phố bạn muốn và đến thẳng website chính thức.",
+      "stepsHead": "Cách sử dụng",
+      "steps": [
+        ["Tìm", "Tìm theo thành phố, phong cách và xem vị trí trên bản đồ."],
+        ["So sánh", "Xem cạnh nhau thông tin và ưu đãi đã kiểm tra từ website chính thức."],
+        ["Đặt trực tiếp", "Đặt trên website chính thức hoặc hỏi qua kênh liên hệ chính thức."]
+      ],
+      "member": {
+        "head": "Voucher ưu đãi cho thành viên",
+        "body": "Chúng tôi đang chuẩn bị gói đăng ký mang đến cho thành viên ưu đãi tại khách sạn đối tác. Bạn đặt trực tiếp với khách sạn và mở voucher trên điện thoại khi nhận phòng.",
+        "flow": ["Chọn khách sạn trên StayEasy", "Đặt trên website chính thức", "Đưa voucher khi nhận phòng", "Nhân viên xác nhận và trao ưu đãi"],
+        "voucher": { "label": "Voucher ưu đãi (mẫu)", "hotel": "Khách sạn đối tác", "perk": "Nâng hạng phòng", "status": "Dùng được", "button": "Nhân viên xác nhận" },
+        "note": "Giá và thời điểm bắt đầu sẽ được thông báo sau."
+      }
+    },
+    "hotel": {
+      "title": "Dành cho khách sạn",
+      "lead": "Gặp khách đặt trực tiếp bằng chính tên khách sạn của bạn.",
+      "gainsHead": "Khách sạn nhận được gì",
+      "gains": [
+        ["Khách đặt trực tiếp", "Du khách được đưa đến website chính thức của khách sạn."],
+        ["Tiếp xúc trực tiếp", "Khách sạn tự nhận thông tin đặt phòng, lưu trú và chăm sóc khách."],
+        ["Năm ngôn ngữ", "Thông tin chính thức của khách sạn được giới thiệu bằng năm ngôn ngữ."],
+        ["Không hoa hồng", "Không trả hoa hồng đặt phòng cho StayEasy."]
+      ],
+      "partner": {
+        "head": "Tìm đối tác ưu đãi, bắt đầu từ Đà Nẵng",
+        "points": [
+          "Khách sạn chọn ưu đãi cho khách đặt trực tiếp. Giá phòng giữ nguyên như khách sạn quy định.",
+          "Không cần hệ thống mới, tài khoản hay tích hợp.",
+          "Khi nhận phòng, nhân viên nhập mã khách sạn trên điện thoại của khách.",
+          "Dịch vụ đang được chuẩn bị và chúng tôi tìm những khách sạn đối tác đầu tiên."
+        ]
+      },
+      "closing": "Đường nối trực tiếp giữa khách sạn và du khách",
+      "visit": "Website"
+    }
+  },
+  "zh": {
+    "font": "Microsoft YaHei",
+    "locale": "zh-CN",
+    "scale": 1,
+    "kind": "公司介绍",
+    "soon": "筹备中",
+    "headline": "让旅客与酒店\n直接相连",
+    "sub": "越南酒店直接预订平台",
+    "stats": { "cities": "个城市", "hotels": "家酒店", "languages": "种语言" },
+    "what": {
+      "title": "StayEasy 做什么",
+      "lead": "我们帮助旅客了解酒店并直接向酒店预订。我们不是在线旅行社，预订和付款都在酒店官方网站完成。",
+      "principlesHead": "三项原则",
+      "principles": [
+        ["以官方网站为准", "酒店的星级、客房、设施和权益，按酒店官方网站公布的内容刊登。无法核实的内容不刊登。"],
+        ["直接向酒店预订", "旅客在酒店官方网站预订并付款。StayEasy 不处理预订。"],
+        ["不收预订佣金", "我们不向酒店收取预订佣金。"]
+      ],
+      "citiesHead": "覆盖城市",
+      "hotelCount": "{n} 家",
+      "citiesNote": "截至2026年11月。提供韩语、英语、越南语、中文和日语。"
+    },
+    "traveller": {
+      "title": "致旅客",
+      "lead": "在想去的城市挑选酒店，直接前往酒店官方网站。",
+      "stepsHead": "使用方法",
+      "steps": [
+        ["查找", "按城市和旅行风格查找酒店，并在地图上查看位置。"],
+        ["比较", "并列查看经官方网站核实的信息和权益。"],
+        ["直接预订", "在官方网站预订，或通过酒店官方联系渠道咨询。"]
+      ],
+      "member": {
+        "head": "会员礼遇券",
+        "body": "我们正在筹备订阅服务，让会员在合作酒店享受专属礼遇。向酒店直接预订，入住时用手机出示礼遇券。",
+        "flow": ["在 StayEasy 选择酒店", "在酒店官方网站直接预订", "入住时出示手机礼遇券", "酒店员工确认后提供礼遇"],
+        "voucher": { "label": "礼遇券（示例）", "hotel": "合作酒店", "perk": "客房升级", "status": "可使用", "button": "酒店员工确认" },
+        "note": "价格和开始时间确定后另行公布。"
+      }
+    },
+    "hotel": {
+      "title": "致酒店",
+      "lead": "以酒店自己的名字，与直接预订的客人见面。",
+      "gainsHead": "酒店的收获",
+      "gains": [
+        ["直接预订的客人", "我们把旅客引导到酒店官方网站。"],
+        ["与客人直接联系", "预订和入住信息由酒店直接接收，由酒店接待。"],
+        ["五种语言介绍", "已收录酒店的官方信息以五种语言展示。"],
+        ["不收佣金", "无需向 StayEasy 支付预订佣金。"]
+      ],
+      "partner": {
+        "head": "招募礼遇合作酒店（从岘港开始）",
+        "points": [
+          "由酒店决定给直接预订客人的礼遇。房价按酒店设定保持不变。",
+          "无需新系统、账号或对接。",
+          "入住时由员工在客人手机上输入酒店编号确认。",
+          "服务正在筹备中，诚邀首批合作酒店。"
+        ]
+      },
+      "closing": "酒店与旅客直接相连的通道",
+      "visit": "网站"
+    }
+  },
+  "ja": {
+    "font": "Meiryo",
+    "locale": "ja-JP",
+    "scale": 0.93,
+    "kind": "会社案内",
+    "soon": "準備中",
+    "headline": "旅行者とホテルを\n直接つなぎます",
+    "sub": "ベトナムのホテル直接予約プラットフォーム",
+    "stats": { "cities": "都市", "hotels": "ホテル", "languages": "言語" },
+    "what": {
+      "title": "StayEasyの役割",
+      "lead": "旅行者がホテルをよく知り、直接予約できるようにお手伝いします。予約代理サイトではありません。予約と支払いはホテル公式サイトで行います。",
+      "principlesHead": "3つの原則",
+      "principles": [
+        ["公式サイトで確認した情報", "星の数、客室、設備、特典は、ホテル公式サイトの記載をもとに掲載します。確認できない内容は掲載しません。"],
+        ["予約はホテルに直接", "旅行者はホテル公式サイトで予約と支払いをします。StayEasyは予約を処理しません。"],
+        ["予約手数料なし", "ホテルから予約手数料はいただきません。"]
+      ],
+      "citiesHead": "掲載している都市",
+      "hotelCount": "{n}軒",
+      "citiesNote": "2026年11月時点。韓国語、英語、ベトナム語、中国語、日本語で表示できます。"
+    },
+    "traveller": {
+      "title": "旅行者の方へ",
+      "lead": "行きたい都市でホテルを選び、そのまま公式サイトへ。",
+      "stepsHead": "使い方",
+      "steps": [
+        ["探す", "都市や旅のスタイルから探し、地図で場所を確認します。"],
+        ["比べる", "公式サイトで確認した情報と特典を並べて見ます。"],
+        ["直接予約", "公式サイトで予約するか、公式の連絡手段で問い合わせます。"]
+      ],
+      "member": {
+        "head": "会員特典バウチャー",
+        "body": "会員が提携ホテルの特典を受けられる定期サービスを準備しています。ホテルに直接予約し、チェックイン時にスマートフォンでバウチャーを提示します。",
+        "flow": ["StayEasyでホテルを選ぶ", "公式サイトで直接予約する", "チェックインでバウチャー提示", "スタッフが確認して特典を提供"],
+        "voucher": { "label": "特典バウチャー（見本）", "hotel": "提携ホテル", "perk": "客室アップグレード", "status": "利用可能", "button": "スタッフ確認" },
+        "note": "料金と開始時期は決まり次第お知らせします。"
+      }
+    },
+    "hotel": {
+      "title": "ホテルの皆さまへ",
+      "lead": "直接予約するお客様と、ホテル自身の名前で出会えます。",
+      "gainsHead": "ホテルが得られるもの",
+      "gains": [
+        ["直接予約のお客様", "旅行者をホテル公式サイトへご案内します。"],
+        ["お客様との直接の接点", "予約と滞在の情報はホテルが直接受け取り、対応します。"],
+        ["5言語で紹介", "掲載ホテルの公式情報を5言語で表示します。"],
+        ["予約手数料なし", "StayEasyに支払う予約手数料はありません。"]
+      ],
+      "partner": {
+        "head": "特典パートナー募集（ダナンから）",
+        "points": [
+          "直接予約のお客様への特典はホテルが決めます。客室料金はホテルの設定のままです。",
+          "新しいシステム、ログイン、連携は不要です。",
+          "チェックイン時にスタッフがお客様の端末にホテル番号を入力して確認します。",
+          "サービスは準備中で、最初のパートナーホテルを探しています。"
+        ]
+      },
+      "closing": "ホテルと旅行者を直接結ぶ道",
+      "visit": "ウェブサイト"
+    }
+  }
+}

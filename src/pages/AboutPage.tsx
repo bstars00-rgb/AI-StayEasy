@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom'
 import Button from '../components/Button'
 import { SectionHeading } from '../components/SectionHeading'
 import { useT, useLang } from '../i18n'
+import { BM_ENABLED } from '../lib/bm'
+import { brochureFile, brochureHref, brochureStrings } from '../lib/brochureI18n'
 import { scoreStrings } from '../lib/scoreI18n'
 import { useDocumentMeta } from '../lib/useDocumentMeta'
 
@@ -9,6 +11,7 @@ export default function AboutPage() {
   const t = useT()
   const { lang } = useLang()
   const sc = scoreStrings[lang]
+  const brochure = brochureStrings[lang]
   useDocumentMeta(t.about.metaTitle, t.about.metaDesc)
   return (
     <>
@@ -48,6 +51,26 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      {/* Company profile download. It presents the member perks, so it follows the business-model switch. */}
+      {BM_ENABLED && (
+        <section className="container-page mt-12">
+          <div className="flex flex-col items-start gap-4 rounded-3xl bg-white p-8 shadow-card ring-1 ring-black/5 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h2 className="text-2xl font-extrabold text-ink-900">{brochure.title}</h2>
+              <p className="mt-2 text-sm text-ink-700/80">{brochure.text}</p>
+            </div>
+            <a
+              href={brochureHref(lang)}
+              download={brochureFile(lang)}
+              data-testid="brochure-download"
+              className="inline-flex shrink-0 items-center gap-2 rounded-full bg-brand-600 px-6 py-3 text-sm font-bold text-white hover:bg-brand-700"
+            >
+              <span aria-hidden="true">↓</span> {brochure.button}
+            </a>
+          </div>
+        </section>
+      )}
 
       {/* The StayEasy Score — our guide-style rating */}
       <section className="container-page mt-12">

@@ -1,0 +1,116 @@
+{
+  "hotels": 110,
+  "languages": 5,
+  "cities": [
+    {
+      "city": "Da Nang",
+      "hotels": 20,
+      "name": {
+        "en": "Da Nang",
+        "ko": "다낭",
+        "vi": "Đà Nẵng",
+        "zh": "岘港",
+        "ja": "ダナン"
+      }
+    },
+    {
+      "city": "Ho Chi Minh City",
+      "hotels": 10,
+      "name": {
+        "en": "Ho Chi Minh City",
+        "ko": "호치민",
+        "vi": "TP. Hồ Chí Minh",
+        "zh": "胡志明市",
+        "ja": "ホーチミン"
+      }
+    },
+    {
+      "city": "Nha Trang",
+      "hotels": 10,
+      "name": {
+        "en": "Nha Trang",
+        "ko": "나트랑",
+        "vi": "Nha Trang",
+        "zh": "芽庄",
+        "ja": "ニャチャン"
+      }
+    },
+    {
+      "city": "Phu Quoc",
+      "hotels": 10,
+      "name": {
+        "en": "Phu Quoc",
+        "ko": "푸꾸옥",
+        "vi": "Phú Quốc",
+        "zh": "富国岛",
+        "ja": "フーコック"
+      }
+    },
+    {
+      "city": "Hoi An",
+      "hotels": 10,
+      "name": {
+        "en": "Hoi An",
+        "ko": "호이안",
+        "vi": "Hội An",
+        "zh": "会安",
+        "ja": "ホイアン"
+      }
+    },
+    {
+      "city": "Hanoi",
+      "hotels": 10,
+      "name": {
+        "en": "Hanoi",
+        "ko": "하노이",
+        "vi": "Hà Nội",
+        "zh": "河内",
+        "ja": "ハノイ"
+      }
+    },
+    {
+      "city": "Hue",
+      "hotels": 10,
+      "name": {
+        "en": "Hue",
+        "ko": "후에",
+        "vi": "Huế",
+        "zh": "顺化",
+        "ja": "フエ"
+      }
+    },
+    {
+      "city": "Da Lat",
+      "hotels": 10,
+      "name": {
+        "en": "Da Lat",
+        "ko": "달랏",
+        "vi": "Đà Lạt",
+        "zh": "大叻",
+        "ja": "ダラット"
+      }
+    },
+    {
+      "city": "Sapa",
+      "hotels": 10,
+      "name": {
+        "en": "Sapa",
+        "ko": "사파",
+        "vi": "Sa Pa",
+        "zh": "沙巴",
+        "ja": "サパ"
+      }
+    },
+    {
+      "city": "Ha Long Bay",
+      "hotels": 10,
+      "name": {
+        "en": "Ha Long Bay",
+        "ko": "하롱베이",
+        "vi": "Vịnh Hạ Long",
+        "zh": "下龙湾",
+        "ja": "ハロン湾"
+      }
+    }
+  ]
+}
